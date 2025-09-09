@@ -142,10 +142,63 @@
       .book-btn {
         padding: 14px 18px !important;
       }
+     .topbar {
+  	width: 100%;
+  	background: #181818;
+  	color: #ffe029;
+  	display: flex;
+  	align-items: center;
+  	padding: 0 0 0 24px;
+  	height: 58px;
+  	box-sizing: border-box;
+  	border-bottom: 1px solid #292929;
+      }
+     .topbar-left {
+  	display: flex;
+  	align-items: center;
+  	height: 100%;
+      }
+     .logo {
+  	height: 36px;
+  	width: 36px;
+  	border-radius: 8px;
+  	margin-right: 12px;
+  	box-shadow: 0 2px 10px #ffe02944;
+  	background: #222;
+  	object-fit: cover;
+      }
+     .brand {
+  	font-size: 1.45rem;
+  	font-weight: 700;
+  	letter-spacing: .5px;
+  	color: #ffe029;
+  	font-family: 'Comfortaa', cursive;
+      }
+	@media (max-width: 600px) {
+     .topbar {
+   	padding: 0 0 0 10px;
+    	height: 48px;
+      }
+     .logo {
+    	height: 26px;
+    	width: 26px;
+    	margin-right: 8px;
+      }
+     .brand {
+    	font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Top bar / header -->
+  <header class="topbar">
+    <div class="topbar-left">
+       <img src="https://1drv.ms/i/c/0cea9974c83dc73a/IQTn_Ym2XeH-Sqw0y4YSLmv_AYepVQgbOJe87hJKM47Wm7E" alt="Games Lab Logo" class="logo" />
+       <span class="brand">Games Lab</span>
+    </div>
+  </header>
+
   <div class="wrap">
     <div class="title"><h2>Upcoming Events</h2></div>
     <div id="events" class="cards-row" aria-live="polite"></div>
@@ -244,7 +297,7 @@
         btn.textContent = "Book Now";
         footer.appendChild(btn);
         card.appendChild(footer);
-        container.appendChild(card);
+        container.appendChilad(card);
       });
       if(upcomingCount === 0){
         container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
