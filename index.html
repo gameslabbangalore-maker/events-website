@@ -7,7 +7,7 @@
   <!-- Viewport for responsive scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Mobile status bar color -->
-  <meta name="theme-color" content="rgba(24, 24, 24, 0.75)" />
+  <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <!-- Comfortaa font -->
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
@@ -30,7 +30,7 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
-    /* Top bar styles */
+    /* Top bar styles: extended under system UI */
     .topbar {
       position: fixed;
       top: 0;
@@ -42,8 +42,8 @@
       color: white;
       display: flex;
       align-items: center;
-      padding: 0 0 0 24px;
-      height: 58px;
+      padding: env(safe-area-inset-top, 24px) 0 0 24px;
+      height: calc(58px + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
       border-bottom: 1px solid rgba(41, 41, 41, 0.7);
       z-index: 9999;
@@ -73,8 +73,8 @@
     }
     @media (max-width: 600px) {
       .topbar {
-        padding: 0 0 0 10px;
-        height: 48px;
+        padding-left: env(safe-area-inset-top, 10px);
+        height: calc(48px + env(safe-area-inset-top, 0px));
       }
       .logo {
         height: 26px;
@@ -88,7 +88,7 @@
 
     /* Main content wrapper */
     .wrap {
-      padding-top: 130px; /* increased padding for mobile and animated text */
+      padding-top: 160px; /* increased padding for top bar + animated text + spacing */
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 18px;
@@ -97,14 +97,17 @@
     }
     @media (max-width: 768px) {
       .wrap {
-        padding-top: 140px; /* extra padding for safe mobile spacing */
+        padding-top: 180px; /* extra spacing for safe display on mobile */
         padding-left: 12px !important;
         padding-right: 12px !important;
       }
-      /* Extra margin so animated text isn't hidden behind top bar */
+      /* Animated text adjustments */
       .animated-text {
         margin-top: 24px;
-        font-size: 1.4rem;
+        margin-bottom: 36px;
+        font-size: 1.9rem; /* reduced size */
+        max-width: 100%;
+        white-space: normal;
       }
     }
 
@@ -113,13 +116,12 @@
       color: white;
       font-weight: 700;
       font-family: 'Comfortaa', cursive;
-      font-size: 1.8rem;
+      font-size: 2.3rem;
       text-transform: uppercase;
       text-align: center;
-      margin-bottom: 36px;
-      min-height: 70px;
-      letter-spacing: 2px;
-      white-space: normal;
+      margin-bottom: 40px;
+      min-height: 90px;
+      letter-spacing: 2.2px;
       overflow: hidden;
       border-right: none; /* removed blinking cursor */
       width: 100%;
@@ -127,6 +129,7 @@
       margin-left: auto;
       margin-right: auto;
       user-select: none;
+      white-space: normal;
     }
 
     .title {
@@ -258,16 +261,18 @@
     <div id="events" class="cards-row" aria-live="polite"></div>
   </div>
   <script>
-    // Animated text with entire multiline message typing, faster speed, and full visible pause
+    // Animated text with multiline full message in one loop, faster speed, pauses full message visible
     const texts = [
-      'IF "HOW TO HAVE A GOOD TIME?\\nIS THE QUESTION,\\nWE ARE THE ANSWER.'
+      `IF "HOW TO HAVE A GOOD TIME?"
+IS THE QUESTION,
+WE ARE THE ANSWER.`
     ];
     const animatedTextElem = document.querySelector('.animated-text');
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    const delay = 60; // Faster typing speed
-    const pauseBetweenTexts = 2500; // 2.5 seconds full text pause
+    const delay = 60; // faster typing speed
+    const pauseBetweenTexts = 2500; // 2.5s pause on full message
 
     function type() {
       const current = texts[textIndex];
