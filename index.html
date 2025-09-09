@@ -5,7 +5,7 @@
   <title>Games Lab</title>
   <link rel="icon" href="Games Lab Logo.png" type="image/png" />
   <!-- Viewport for responsive scaling -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <!-- Mobile status bar color -->
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -20,6 +20,9 @@
       --muted: #d0d0d0;
       --accent: #fce029;
       --link: #4dabf7;
+      --topbar-height: 58px;
+      --animated-min-height-desktop: 110px;
+      --animated-min-height-mobile: 66px;
     }
     html,body{
       height:100%;
@@ -29,23 +32,25 @@
       color:#fff;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+      /* Safe area for notch devices */
+      padding-top: env(safe-area-inset-top, 0px);
     }
     /* Top bar styles: extended under system UI */
     .topbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(24, 24, 24, 0.75);
+      top: 0; left: 0;
+      width: 100vw;
+      background: rgba(24,24,24,0.75);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color: white;
       display: flex;
       align-items: center;
-      padding: env(safe-area-inset-top, 24px) 0 0 24px;
-      height: calc(58px + env(safe-area-inset-top, 0px));
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-left: 24px;
+      height: calc(var(--topbar-height) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
-      border-bottom: 1px solid rgba(41, 41, 41, 0.7);
+      border-bottom: 1px solid rgba(41,41,41,0.7);
       z-index: 9999;
       transition: background 0.3s ease;
     }
@@ -73,7 +78,7 @@
     }
     @media (max-width: 600px) {
       .topbar {
-        padding-left: env(safe-area-inset-top, 10px);
+        padding-left: 10px;
         height: calc(48px + env(safe-area-inset-top, 0px));
       }
       .logo {
@@ -85,10 +90,10 @@
         font-size: 1rem;
       }
     }
-
     /* Main content wrapper */
     .wrap {
-      padding-top: 160px; /* offset for fixed top bar + animated text + spacing */
+      /* Enough space for topbar, for animated text, and extra breathing room */
+      padding-top: calc(var(--topbar-height) + env(safe-area-inset-top, 0px) + var(--animated-min-height-desktop) + 60px);
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 18px;
@@ -97,40 +102,47 @@
     }
     @media (max-width: 768px) {
       .wrap {
-        padding-top: 180px; /* extra spacing for safe display on mobile */
+        padding-top: calc(48px + env(safe-area-inset-top, 0px) + var(--animated-min-height-mobile) + 48px);
         padding-left: 12px !important;
         padding-right: 12px !important;
       }
     }
-
     /* Animated text */
     .animated-text {
       color: white;
       font-weight: 700;
       font-family: 'Comfortaa', cursive;
-      font-size: 2.3rem;
+      font-size: 2.1rem;
       text-transform: uppercase;
       text-align: center;
-      margin-bottom: 48px; /* extra bottom padding to avoid push */
-      min-height: 110px;
+      margin-bottom: 48px;
       letter-spacing: 2.2px;
-      overflow: hidden;
-      border-right: none;
       width: 100%;
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
       user-select: none;
-      white-space: pre-line; /* preserve line breaks */
+      white-space: pre-line;
+      min-height: var(--animated-min-height-desktop);
+      padding-top: 16px;
+      padding-bottom: 16px;
+      line-height: 1.27;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
     }
     @media (max-width: 768px) {
       .animated-text {
-        font-size: 1rem; /* reduced font size on mobile */
-        min-height: 100px;
-        margin-bottom: 48px;
+        font-size: 1rem;
+        min-height: var(--animated-min-height-mobile);
+        margin-bottom: 40px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        max-width: 96vw;
       }
     }
-
     .title {
       text-align: center;
       margin-bottom: 18px;
@@ -260,40 +272,40 @@
     <div id="events" class="cards-row" aria-live="polite"></div>
   </div>
   <script>
-    // Animated text with multiline full message in one loop, faster speed, long pause
-    const texts = [
-      `IF "HOW TO HAVE A GOOD TIME ?"
-IS THE QUESTION,
-WE ARE THE ANSWER`
+    // Animated text: show the three lines, exactly as given, with correct breaks, and no shifting
+    const message = [
+      `IF "HOW TO HAVE A GOOD TIME ?"`,
+      `IS THE QUESTION,`,
+      `WE ARE THE ANSWER`
     ];
+    const fullText = message.join('\n');
     const animatedTextElem = document.querySelector('.animated-text');
-    let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    const delay = 60; // faster typing speed
-    const pauseBetweenTexts = 3000; // 3 seconds full text pause
+    const delay = 60;
+    const pauseBetween = 3000;
 
     function type() {
-      const current = texts[textIndex];
       if (!isDeleting) {
-        animatedTextElem.textContent = current.substring(0, charIndex + 1);
+        animatedTextElem.textContent = fullText.substring(0, charIndex + 1);
         charIndex++;
-        if (charIndex === current.length) {
+        if (charIndex === fullText.length) {
           isDeleting = true;
-          setTimeout(type, pauseBetweenTexts);
+          setTimeout(type, pauseBetween);
           return;
         }
       } else {
-        animatedTextElem.textContent = current.substring(0, charIndex - 1);
+        animatedTextElem.textContent = fullText.substring(0, charIndex - 1);
         charIndex--;
         if (charIndex === 0) {
           isDeleting = false;
-          textIndex = (textIndex + 1) % texts.length;
         }
       }
       setTimeout(type, isDeleting ? delay / 2 : delay);
     }
-    type();
+    // Set initial minHeight and line breaks to fully reserve space
+    animatedTextElem.textContent = fullText;
+    setTimeout(type, pauseBetween);
 
     // Existing event loading code
     (async function(){
