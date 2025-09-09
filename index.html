@@ -6,6 +6,9 @@
   <link rel="icon" href="Games Lab Logo.png" type="image/png" />
   <!-- Viewport for responsive scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Mobile status bar color -->
+  <meta name="theme-color" content="rgba(24, 24, 24, 0.75)" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <!-- Comfortaa font -->
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
   <!-- PapaParse for robust CSV parsing -->
@@ -85,7 +88,7 @@
 
     /* Main content wrapper */
     .wrap {
-      padding-top: 110px; /* offset for fixed top bar + animated text */
+      padding-top: 130px; /* increased padding for mobile and animated text */
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 18px;
@@ -94,13 +97,14 @@
     }
     @media (max-width: 768px) {
       .wrap {
-        padding-top: 110px;
+        padding-top: 140px; /* extra padding for safe mobile spacing */
         padding-left: 12px !important;
         padding-right: 12px !important;
       }
       /* Extra margin so animated text isn't hidden behind top bar */
       .animated-text {
-        margin-top: 16px;
+        margin-top: 24px;
+        font-size: 1.4rem;
       }
     }
 
@@ -113,9 +117,9 @@
       text-transform: uppercase;
       text-align: center;
       margin-bottom: 36px;
-      min-height: 50px;
+      min-height: 70px;
       letter-spacing: 2px;
-      white-space: nowrap;
+      white-space: normal;
       overflow: hidden;
       border-right: none; /* removed blinking cursor */
       width: 100%;
@@ -254,33 +258,31 @@
     <div id="events" class="cards-row" aria-live="polite"></div>
   </div>
   <script>
-    // Typewriter looping animation without cursor, pauses full message visible for 2 seconds
+    // Animated text with entire multiline message typing, faster speed, and full visible pause
     const texts = [
-      'IF "HOW TO HAVE A GOOD TIME?"',
-      'IS THE QUESTION,',
-      'WE ARE THE ANSWER.'
+      'IF "HOW TO HAVE A GOOD TIME?\\nIS THE QUESTION,\\nWE ARE THE ANSWER.'
     ];
     const animatedTextElem = document.querySelector('.animated-text');
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
-    const delay = 150;
-    const pauseBetweenTexts = 2000; // 2 seconds pause for full message
+    const delay = 60; // Faster typing speed
+    const pauseBetweenTexts = 2500; // 2.5 seconds full text pause
 
     function type() {
       const current = texts[textIndex];
-      if(!isDeleting){
+      if (!isDeleting) {
         animatedTextElem.textContent = current.substring(0, charIndex + 1);
         charIndex++;
-        if(charIndex === current.length){
+        if (charIndex === current.length) {
           isDeleting = true;
           setTimeout(type, pauseBetweenTexts);
           return;
         }
-      } else{
+      } else {
         animatedTextElem.textContent = current.substring(0, charIndex - 1);
         charIndex--;
-        if(charIndex === 0){
+        if (charIndex === 0) {
           isDeleting = false;
           textIndex = (textIndex + 1) % texts.length;
         }
