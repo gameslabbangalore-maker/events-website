@@ -4,43 +4,39 @@
   <meta charset="utf-8" />
   <title>Games Lab</title>
   <link rel="icon" href="Games Lab Logo.png" type="image/png" />
-  <!-- Viewport for responsive scaling -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <!-- Mobile status bar color -->
-  <meta name="theme-color" content="#181818" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <!-- Comfortaa font -->
+  <meta name="theme-color" content="#181818">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-  <!-- PapaParse for robust CSV parsing -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
-    :root{
+    :root {
       --bg: #000000;
       --card: #1a1a1a;
       --muted: #d0d0d0;
       --accent: #fce029;
       --link: #4dabf7;
-      --topbar-height: 58px;
-      --animated-min-height-desktop: 110px;
-      --animated-min-height-mobile: 66px;
+      --topbar-height-desktop: 58px;
+      --topbar-height-mobile: 48px;
+      --animated-min-height-desktop: 90px;
+      --animated-min-height-mobile: 62px;
     }
-    html,body{
-      height:100%;
-      margin:0;
-      font-family:'Comfortaa',cursive;
-      background:var(--bg);
-      color:#fff;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      /* Safe area for notch devices */
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: 'Comfortaa', cursive;
+      background: var(--bg);
+      color: #fff;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      /* For notch devices */
       padding-top: env(safe-area-inset-top, 0px);
     }
-    /* Top bar styles: extended under system UI */
     .topbar {
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
-      background: rgba(24,24,24,0.75);
+      background: rgba(24, 24, 24, 0.85);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color: white;
@@ -48,11 +44,10 @@
       align-items: center;
       padding-top: env(safe-area-inset-top, 0px);
       padding-left: 24px;
-      height: calc(var(--topbar-height) + env(safe-area-inset-top, 0px));
+      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
-      border-bottom: 1px solid rgba(41,41,41,0.7);
+      border-bottom: 1px solid rgba(41, 41, 41, 0.7);
       z-index: 9999;
-      transition: background 0.3s ease;
     }
     .topbar-left {
       display: flex;
@@ -60,8 +55,7 @@
       height: 100%;
     }
     .logo {
-      height: 36px;
-      width: 36px;
+      height: 36px; width: 36px;
       border-radius: 8px;
       margin-right: 12px;
       object-fit: cover;
@@ -76,38 +70,15 @@
       color: white;
       font-family: 'Comfortaa', cursive;
     }
-    @media (max-width: 600px) {
-      .topbar {
-        padding-left: 10px;
-        height: calc(48px + env(safe-area-inset-top, 0px));
-      }
-      .logo {
-        height: 26px;
-        width: 26px;
-        margin-right: 8px;
-      }
-      .brand {
-        font-size: 1rem;
-      }
-    }
-    /* Main content wrapper */
     .wrap {
-      /* Enough space for topbar, for animated text, and extra breathing room */
-      padding-top: calc(var(--topbar-height) + env(safe-area-inset-top, 0px) + var(--animated-min-height-desktop) + 60px);
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 18px;
       padding-right: 18px;
       box-sizing: border-box;
+      /* Padding for top bar + animated text */
+      padding-top: calc(var(--topbar-height-desktop) + var(--animated-min-height-desktop) + 24px);
     }
-    @media (max-width: 768px) {
-      .wrap {
-        padding-top: calc(48px + env(safe-area-inset-top, 0px) + var(--animated-min-height-mobile) + 48px);
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-      }
-    }
-    /* Animated text */
     .animated-text {
       color: white;
       font-weight: 700;
@@ -115,33 +86,19 @@
       font-size: 2.1rem;
       text-transform: uppercase;
       text-align: center;
-      margin-bottom: 48px;
-      letter-spacing: 2.2px;
-      width: 100%;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
+      letter-spacing: 2.1px;
+      background: transparent;
+      margin-top: 24px;
+      margin-bottom: 36px;
+      min-height: var(--animated-min-height-desktop);
       user-select: none;
       white-space: pre-line;
-      min-height: var(--animated-min-height-desktop);
-      padding-top: 16px;
-      padding-bottom: 16px;
-      line-height: 1.27;
+      line-height: 1.19;
+      padding-top: 10px;
+      padding-bottom: 18px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      align-items: center;
-      background: transparent;
-    }
-    @media (max-width: 768px) {
-      .animated-text {
-        font-size: 1rem;
-        min-height: var(--animated-min-height-mobile);
-        margin-bottom: 40px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        max-width: 96vw;
-      }
     }
     .title {
       text-align: center;
@@ -211,9 +168,7 @@
       text-decoration: none;
       font-weight: 600;
     }
-    .location a:hover {
-      text-decoration: underline;
-    }
+    .location a:hover { text-decoration: underline; }
     .card-footer {
       padding: 12px 14px 18px;
       display: flex;
@@ -229,37 +184,45 @@
       text-decoration: none;
       display: inline-block;
     }
-    .book-btn:hover {
-      background: #ffe974;
-    }
-    /* Responsive adjustments for mobile */
+    .book-btn:hover{ background:#ffe974; }
     @media (max-width: 768px) {
-      .cards-row {
-        justify-content: center;
+      .topbar {
+        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px));
+        padding-left: 10px;
       }
-      .card {
-        width: 95vw !important;
+      .logo {
+        height: 26px; width: 26px; margin-right: 8px;
       }
+      .brand { font-size: 1rem; }
       .wrap {
-        padding: 18px 12px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        /* Padding for mobile top bar + mobile animated text + extra */
+        padding-top: calc(var(--topbar-height-mobile) + var(--animated-min-height-mobile) + 28px);
+      }
+      .animated-text {
+        font-size: 1rem;
+        min-height: var(--animated-min-height-mobile);
+        margin-top: 16px;
+        margin-bottom: 35px;
+        padding-top: 10px;
+        padding-bottom: 14px;
+        max-width: 98vw;
       }
       .title h2 {
         font-size: 1.5rem !important;
       }
       .event-title {
-        font-size: 1.8rem !important;
+        font-size: 1.3rem !important;
       }
-      .meta, .location, .book-btn {
-        font-size: 1.2rem !important;
-      }
-      .book-btn {
-        padding: 14px 18px !important;
-      }
+      .cards-row { gap: 18px; }
+      .meta, .location, .book-btn { font-size: 1.1rem !important; }
+      .book-btn { padding: 12px 16px !important; }
+      .card { width: 98vw !important; }
     }
   </style>
 </head>
 <body>
-  <!-- Top bar / header -->
   <header class="topbar">
     <div class="topbar-left">
       <img src="https://1drv.ms/i/c/0cea9974c83dc73a/IQTn_Ym2XeH-Sqw0y4YSLmv_AYepVQgbOJe87hJKM47Wm7E" alt="Games Lab Logo" class="logo" />
@@ -272,30 +235,30 @@
     <div id="events" class="cards-row" aria-live="polite"></div>
   </div>
   <script>
-    // Animated text: show the three lines, exactly as given, with correct breaks, and no shifting
-    const message = [
+    // Animated text with exact line breaks, consistent min-height
+    const lines = [
       `IF "HOW TO HAVE A GOOD TIME ?"`,
       `IS THE QUESTION,`,
       `WE ARE THE ANSWER`
     ];
-    const fullText = message.join('\n');
+    const msg = lines.join('\n');
     const animatedTextElem = document.querySelector('.animated-text');
     let charIndex = 0;
     let isDeleting = false;
-    const delay = 60;
-    const pauseBetween = 3000;
+    const delay = 55;
+    const pauseBetween = 2600;
 
     function type() {
       if (!isDeleting) {
-        animatedTextElem.textContent = fullText.substring(0, charIndex + 1);
+        animatedTextElem.textContent = msg.substring(0, charIndex + 1);
         charIndex++;
-        if (charIndex === fullText.length) {
+        if (charIndex === msg.length) {
           isDeleting = true;
           setTimeout(type, pauseBetween);
           return;
         }
       } else {
-        animatedTextElem.textContent = fullText.substring(0, charIndex - 1);
+        animatedTextElem.textContent = msg.substring(0, charIndex - 1);
         charIndex--;
         if (charIndex === 0) {
           isDeleting = false;
@@ -303,8 +266,8 @@
       }
       setTimeout(type, isDeleting ? delay / 2 : delay);
     }
-    // Set initial minHeight and line breaks to fully reserve space
-    animatedTextElem.textContent = fullText;
+    // Reserve text block space. Show full text first, then start animation for perfect layout.
+    animatedTextElem.textContent = msg;
     setTimeout(type, pauseBetween);
 
     // Existing event loading code
