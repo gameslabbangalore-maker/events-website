@@ -5,8 +5,8 @@
   <title>Games Lab</title>
   <link rel="icon" href="Games Lab Logo.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#181818">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#181818" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
@@ -18,8 +18,6 @@
       --link: #4dabf7;
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
-      --animated-min-height-desktop: 90px;
-      --animated-min-height-mobile: 62px;
     }
     html, body {
       margin: 0;
@@ -36,7 +34,7 @@
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
-      background: rgba(24, 24, 24, 0.75);
+      background: rgba(24, 24, 24, 0.85);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color: white;
@@ -70,14 +68,33 @@
       color: white;
       font-family: 'Comfortaa', cursive;
     }
+    @media (max-width: 600px) {
+      .topbar {
+        padding-left: 10px;
+        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px));
+      }
+      .logo {
+        height: 26px; width: 26px;
+        margin-right: 8px;
+      }
+      .brand { font-size: 1rem; }
+    }
     .wrap {
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 18px;
       padding-right: 18px;
       box-sizing: border-box;
-      /* Padding for top bar + animated text */
-      padding-top: calc(var(--topbar-height-desktop) + var(--animated-min-height-desktop) + 20px);
+      /* Reduce top padding to topbar + 24px gap */
+      padding-top: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px) + 24px);
+    }
+    @media (max-width: 768px) {
+      .wrap {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        /* Mobile top padding: topbar + 16px gap */
+        padding-top: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px) + 16px);
+      }
     }
     .animated-text {
       color: white;
@@ -88,17 +105,27 @@
       text-align: center;
       letter-spacing: 2.1px;
       background: transparent;
-      margin-top: 20px;
-      margin-bottom: 36px;
-      min-height: var(--animated-min-height-desktop);
+      margin-top: 0;
+      margin-bottom: 20px;
+      min-height: 72px;
       user-select: none;
       white-space: pre-line;
       line-height: 1.19;
-      padding-top: 10px;
-      padding-bottom: 18px;
+      padding-top: 4px;
+      padding-bottom: 6px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+    }
+    @media (max-width: 768px) {
+      .animated-text {
+        font-size: 1rem;
+        min-height: 40px;
+        margin-bottom: 14px;
+        padding-top: 2px;
+        padding-bottom: 4px;
+        max-width: 98vw;
+      }
     }
     .title {
       text-align: center;
@@ -139,6 +166,7 @@
     .media img {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+      loading: lazy;
     }
     .card-body {
       padding: 14px;
@@ -184,41 +212,15 @@
       text-decoration: none;
       display: inline-block;
     }
-    .book-btn:hover{ background:#ffe974; }
+    .book-btn:hover { background:#ffe974; }
     @media (max-width: 768px) {
-      .topbar {
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px));
-        padding-left: 10px;
-      }
-      .logo {
-        height: 26px; width: 26px; margin-right: 8px;
-      }
-      .brand { font-size: 1rem; }
-      .wrap {
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-        /* Padding for mobile top bar + mobile animated text + extra */
-        padding-top: calc(var(--topbar-height-mobile) + var(--animated-min-height-mobile) + 28px);
-      }
-      .animated-text {
-        font-size: 1rem;
-        min-height: var(--animated-min-height-mobile);
-        margin-top: 16px;
-        margin-bottom: 35px;
-        padding-top: 10px;
-        padding-bottom: 14px;
-        max-width: 98vw;
-      }
-      .title h2 {
-        font-size: 1.5rem !important;
-      }
-      .event-title {
-        font-size: 1.3rem !important;
-      }
-      .cards-row { gap: 18px; }
+      .cards-row { justify-content: center; }
+      .card { width: 95vw !important; }
+      .wrap { padding: 18px 12px !important; }
+      .title h2 { font-size: 1.5rem !important; }
+      .event-title { font-size: 1.3rem !important; }
       .meta, .location, .book-btn { font-size: 1.1rem !important; }
       .book-btn { padding: 12px 16px !important; }
-      .card { width: 98vw !important; }
     }
   </style>
 </head>
@@ -235,7 +237,6 @@
     <div id="events" class="cards-row" aria-live="polite"></div>
   </div>
   <script>
-    // Animated text with exact line breaks, consistent min-height
     const lines = [
       `IF "HOW TO HAVE A GOOD TIME ?"`,
       `IS THE QUESTION,`,
@@ -266,14 +267,13 @@
       }
       setTimeout(type, isDeleting ? delay / 2 : delay);
     }
-    // Reserve text block space. Show full text first, then start animation for perfect layout.
     animatedTextElem.textContent = msg;
     setTimeout(type, pauseBetween);
 
-    // Existing event loading code
     (async function(){
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+
       function clean(v){
         if (v === undefined || v === null) return "";
         return String(v).trim().replace(/^"|"$/g, '');
@@ -327,8 +327,11 @@
           const media = document.createElement("div");
           media.className = "media";
           const img = document.createElement("img");
+          img.loading = "lazy";
           img.src = image || fallbackImage;
           img.alt = name || "Event image";
+          img.width = 340;
+          img.height = 191;
           img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
           media.appendChild(img);
           card.appendChild(media);
@@ -377,5 +380,3 @@
   </script>
 </body>
 </html>
-
-
