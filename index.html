@@ -20,7 +20,8 @@
       --topbar-height-mobile: 48px;
       --line-height-desktop: 1.19;
       --line-height-mobile: 1;
-      --mobile-padding-top-incr: 35px;
+      --mobile-extra-gap: 1em; /* one line of text on mobile */
+      --animated-min-height: 72px; /* used for desktop animated text spacing */
     }
 
     html, body {
@@ -31,25 +32,27 @@
       color: #fff;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      padding-top: env(safe-area-inset-top, 0px);
+      /* NOTE: removed padding-top: env(safe-area-inset-top) here on purpose.
+         We handle safe-area inside the topbar itself to avoid layout problems. */
     }
 
-    /* ===== Topbar Fix ===== */
+    /* ===== Topbar (fixed, covers notch) ===== */
     .topbar {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       width: 100%;
-      background: rgba(24, 24, 24, 0.85);
+      /* solid-ish background so notch area looks filled */
+      background: rgba(24, 24, 24, 0.95);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color: white;
       display: flex;
       align-items: center;
 
-      /* ✅ Extend into safe area to remove black gap */
-      padding-top: max(env(safe-area-inset-top), 0px);
+      /* ensure topbar extends into the notch / status area */
+      padding-top: env(safe-area-inset-top, 0px);
 
       padding-left: 24px;
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
@@ -94,26 +97,48 @@
       .brand { font-size: 1rem; }
     }
 
-    /* ===== Content Wrapper ===== */
+    /* ===== Spacer that matches the topbar height =====
+       This is the key: the spacer sits AFTER the fixed topbar and pushes content below it.
+    */
+    .topbar-spacer {
+      width: 100%;
+      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
+      flex-shrink: 0;
+    }
+    @media (max-width: 600px) {
+      .topbar-spacer {
+        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px));
+      }
+    }
+
+    /* ===== Content Wrapper =====
+       We no longer need to include topbar height in this padding because the spacer already
+       pushes content below the topbar. Here we only add the extra vertical spacing required
+       for the animated text + small page padding.
+    */
     .wrap {
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 18px;
       padding-right: 18px;
       box-sizing: border-box;
-      /* Desktop padding: topbar + animated text min-height + margin */
-      padding-top: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px) + 72px + 20px);
+      /* small default gap (desktop will get a larger one in query below) */
+      padding-top: 20px;
     }
 
-    /* ===== Mobile Adjustments ===== */
+    /* Desktop: provide room for animated text's min height + 20px margin */
+    @media (min-width: 769px) {
+      .wrap {
+        padding-top: calc(var(--animated-min-height) + 20px);
+      }
+    }
+
+    /* Mobile: only one line gap (1em) between topbar and animated line + a small extra */
     @media (max-width: 768px) {
       .wrap {
         padding-left: 12px !important;
         padding-right: 12px !important;
-        /* Mobile padding: added +1em extra space for animated text */
-        padding-top: calc(
-          var(--topbar-height-mobile) + env(safe-area-inset-top, 0px) + 40px + var(--mobile-padding-top-incr) + 1em
-        );
+        padding-top: calc(var(--mobile-extra-gap) + 12px);
       }
     }
 
@@ -139,7 +164,6 @@
       flex-direction: column;
       justify-content: center;
     }
-
     @media (max-width: 768px) {
       .animated-text {
         font-size: 1rem;
@@ -148,12 +172,11 @@
         padding-top: 2px;
         padding-bottom: 4px;
         max-width: 98vw;
-        /* Mobile line height smaller but controlled */
         line-height: var(--line-height-mobile);
       }
     }
 
-    /* ===== Title ===== */
+    /* ===== rest of styles unchanged (cards, title, etc.) ===== */
     .title {
       text-align: center;
       margin-bottom: 18px;
@@ -164,8 +187,6 @@
       font-size: 1.9rem;
       letter-spacing: 0.2px;
     }
-
-    /* ===== Cards ===== */
     .cards-row {
       display: flex;
       flex-wrap: wrap;
@@ -173,7 +194,6 @@
       justify-content: center;
       align-items: flex-start;
     }
-
     .card {
       width: 340px;
       background: var(--card);
@@ -187,7 +207,6 @@
       transform: translateY(-6px);
       box-shadow: 0 10px 28px rgba(252,224,41,0.18);
     }
-
     .media {
       width: 100%;
       padding-top: 56.25%;
@@ -199,7 +218,6 @@
       top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
       loading: lazy;
     }
-
     .card-body {
       padding: 14px;
       display: flex;
@@ -229,14 +247,12 @@
       font-weight: 600;
     }
     .location a:hover { text-decoration: underline; }
-
     .card-footer {
       padding: 12px 14px 18px;
       display: flex;
       justify-content: center;
       box-sizing: border-box;
     }
-
     .book-btn {
       background: var(--accent);
       color: #000;
@@ -247,11 +263,10 @@
       display: inline-block;
     }
     .book-btn:hover { background:#ffe974; }
-
     @media (max-width: 768px) {
       .cards-row { justify-content: center; }
       .card { width: 95vw !important; }
-      .wrap { padding: 18px 12px !important; }
+      .wrap { padding: 18px 12px !important; } /* this overrides the earlier wrap padding for small screens */
       .title h2 { font-size: 1.5rem !important; }
       .event-title { font-size: 1.3rem !important; }
       .meta, .location, .book-btn { font-size: 1.1rem !important; }
@@ -266,6 +281,9 @@
       <span class="brand">Games Lab</span>
     </div>
   </header>
+
+  <!-- spacer: must be right after the fixed topbar so content is pushed beneath it -->
+  <div class="topbar-spacer" aria-hidden="true"></div>
 
   <div class="wrap">
     <div class="animated-text" aria-live="polite"></div>
@@ -309,7 +327,7 @@
     animatedTextElem.textContent = msg;
     setTimeout(type, pauseBetween);
 
-    /* ===== Fetch Events ===== */
+    /* ===== Fetch Events (unchanged) ===== */
     (async function(){
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
