@@ -9,7 +9,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
   <style>
     :root{
       --bg: #000000;
@@ -29,7 +28,6 @@
       --line-height-mobile: 1.5;
     }
 
-    /* ---------- base ---------- */
     html,body{
       margin:0;
       height:100%;
@@ -40,81 +38,50 @@
       -moz-osx-font-smoothing:grayscale;
     }
 
-    /* ---------- TOPBAR BLEED (covers the status area / notch) ---------- */
-    /* Use both constant() (old iOS) and env() (modern) — provides best compatibility */
+    /* topbar bleed (fills the status bar notch) */
     .topbar-bleed {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      /* fallbacks: constant() then env(), default 0px */
+      top: 0; left: 0; right: 0;
       height: constant(safe-area-inset-top, 0px);
       height: env(safe-area-inset-top, 0px);
       background: rgba(24,24,24,0.40);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      z-index: 10002; /* above body but below the topbar content */
+      z-index: 10002;
       pointer-events: none;
     }
 
-    /* ---------- TOPBAR ---------- */
+    /* topbar (content) */
     .topbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       display: flex;
       align-items: center;
       padding-left: 24px;
 
-      /* add safe-area padding for content */
       padding-top: constant(safe-area-inset-top, 0px);
       padding-top: env(safe-area-inset-top, 0px);
 
-      /* include the safe-area in computed height so bleed + topbar align */
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
-      z-index: 10003; /* above bleed */
+      z-index: 10003;
       border-bottom: 1px solid rgba(41,41,41,0.65);
-
-      /* translucent glass look */
       background: rgba(24,24,24,0.35);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
 
-    .topbar-left {
-      display:flex;
-      align-items:center;
-      height:100%;
-    }
-
-    .logo {
-      height:36px; width:36px;
-      border-radius:8px;
-      margin-right:12px;
-      object-fit:cover;
-      background:transparent;
-      border:none;
-    }
-
-    .brand {
-      font-size:1.45rem;
-      font-weight:700;
-      letter-spacing:.5px;
-      color:white;
-    }
+    .topbar-left { display:flex; align-items:center; height:100%; }
+    .logo { height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover; }
+    .brand { font-size:1.45rem; font-weight:700; letter-spacing:.5px; color:white; }
 
     @media (max-width:600px){
-      .topbar {
-        padding-left: 10px;
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px));
-      }
+      .topbar { padding-left:10px; height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
       .logo { height:26px; width:26px; margin-right:8px; }
       .brand { font-size:1rem; }
     }
 
-    /* ---------- spacer to push content under the fixed topbar ---------- */
+    /* spacer */
     .topbar-spacer {
       width:100%;
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
@@ -124,104 +91,26 @@
       .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
     }
 
-    /* ---------- main wrapper ---------- */
-    .wrap {
-      max-width:1200px;
-      margin:0 auto;
-      padding-left:18px;
-      padding-right:18px;
-      box-sizing:border-box;
-      padding-top: 20px;
-    }
+    /* wrapper */
+    .wrap { max-width:1200px; margin:0 auto; padding-left:18px; padding-right:18px; box-sizing:border-box; padding-top:20px; }
+    @media (min-width:769px){ .wrap { padding-top:12px; } }
+    @media (max-width:768px){ .wrap { padding-left:12px !important; padding-right:12px !important; padding-top:14px; } }
 
-    @media (min-width:769px){
-      .wrap { padding-top: 12px; }
-    }
+    /* animated */
+    .animated-wrapper { width:100%; display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:8px; padding:0 8px; height:var(--animated-height-desktop); }
+    @media (max-width:768px) { .animated-wrapper { height:var(--animated-height-mobile); margin-bottom:10px; } }
+    .animated-text { width:100%; max-width:980px; font-weight:700; font-family:'Comfortaa', cursive; font-size:1.9rem; text-transform:uppercase; text-align:center; letter-spacing:2.1px; color:#fff; margin:0; padding:0; line-height:var(--line-height-desktop); user-select:none; white-space:pre-line; display:flex; align-items:center; justify-content:center; height:100%; box-sizing:border-box; }
+    @media (max-width:768px){ .animated-text { font-size:1rem; line-height:var(--line-height-mobile); letter-spacing:1.50px; padding:0 6px; } }
 
-    @media (max-width:768px){
-      .wrap { padding-left:12px !important; padding-right:12px !important; padding-top: 14px; }
-    }
+    .divider { width:100%; height:1px; margin:8px 0 18px; background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset; border-radius:1px; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); }
+    @media (max-width:768px){ .divider { margin:10px 0 16px; } }
 
-    /* ---------- animated area ---------- */
-    .animated-wrapper {
-      width:100%;
-      box-sizing:border-box;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      margin-bottom: 8px;
-      padding: 0 8px;
-      height: var(--animated-height-desktop);
-    }
-    @media (max-width:768px){
-      .animated-wrapper { height: var(--animated-height-mobile); margin-bottom:10px; }
-    }
-
-    .animated-text {
-      width:100%;
-      max-width: 980px;
-      font-weight:700;
-      font-family: 'Comfortaa', cursive;
-      font-size: 1.9rem;
-      text-transform: uppercase;
-      text-align:center;
-      letter-spacing: 2.1px;
-      color: #fff;
-      margin:0;
-      padding:0;
-      line-height: var(--line-height-desktop);
-      user-select:none;
-      white-space: pre-line;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      height:100%;
-      box-sizing:border-box;
-    }
-
-    @media (max-width:768px){
-      .animated-text {
-        font-size: 1rem;
-        line-height: var(--line-height-mobile);
-        letter-spacing: 1.50px;
-        padding: 0 6px;
-      }
-    }
-
-    /* ---------- divider ---------- */
-    .divider {
-      width:100%;
-      height:1px;
-      margin: 8px 0 18px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
-      border-radius: 1px;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-    }
-    @media (max-width:768px){
-      .divider { margin: 10px 0 16px; }
-    }
-
-    /* ---------- titles & cards ---------- */
     .title { text-align:center; margin-bottom:18px; }
-    .title h2 {
-      color: var(--accent);
-      margin:0;
-      font-size:1.9rem;
-      letter-spacing:0.2px;
-    }
+    .title h2 { color: var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.2px; }
 
-    .cards-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:22px;
-      justify-content:center;
-      align-items:flex-start;
-    }
+    .cards-row { display:flex; flex-wrap:wrap; gap:22px; justify-content:center; align-items:flex-start; }
 
-    /* ---------- desktop card (unchanged behavior) ---------- */
+    /* Desktop card: unchanged */
     .card {
       width:340px;
       background: var(--card);
@@ -230,96 +119,102 @@
       display:flex;
       flex-direction:column;
       transition: transform 0.16s ease, box-shadow 0.16s ease;
+      cursor: default;
     }
     .card:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(252,224,41,0.18); }
 
-    .media {
-      width:100%;
-      padding-top:56.25%;
-      position:relative;
-      background:#111;
-    }
+    .media { width:100%; padding-top:56.25%; position:relative; background:#111; }
     .media img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
 
     .card-body { padding:14px; display:flex; flex-direction:column; gap:6px; }
     .event-title { margin:0; font-size:17px; font-weight:700; color:#fff; line-height:1.18; }
-    .meta { margin:0; font-size:13.5px; color:var(--muted); }
+    .meta { margin:0; font-size:13.5px; color:var(--muted); }          /* full date/time on desktop */
     .location { margin:0; font-size:14px; color:var(--muted); }
     .location a { color: var(--accent); text-decoration:none; font-weight:600; }
     .location a:hover { text-decoration:underline; }
 
     .card-footer { padding:12px 14px 18px; display:flex; justify-content:center; box-sizing:border-box; }
-    .book-btn {
-      background: var(--accent);
-      color: #000;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight:700;
-      text-decoration:none;
-      display:inline-block;
-    }
+    .book-btn { background: var(--accent); color: #000; padding: 10px 16px; border-radius: 8px; font-weight:700; text-decoration:none; display:inline-block; }
     .book-btn:hover { background:#ffe974; }
 
-    /* ---------- MOBILE CARD LAYOUT (applies only under 768px) ---------- */
+    /* DEFAULT: hide date box (desktop) */
+    .card-date { display: none; }
+
+    /* Mobile card layout */
     @media (max-width:768px){
       .cards-row { justify-content:center; }
       .card {
         width: 100%;
-        display: flex;
-        flex-direction: row; /* horizontal compact card */
+        display:flex;
+        flex-direction: row;
         align-items: center;
-        gap: 10px;
-        padding: 10px;
-        border-radius: 10px;
+        gap:10px;
+        padding:10px;
+        border-radius:10px;
+        cursor: pointer; /* card clickable on mobile */
       }
 
-      /* make the image a thumbnail on left */
+      /* thumbnail on left */
       .media {
-        width: 60px;
-        height: 60px;
-        padding-top: 0;
-        border-radius: 8px;
-        overflow: hidden;
-        flex-shrink: 0;
-        background: #111;
+        width:60px;
+        height:60px;
+        padding-top:0;
+        border-radius:8px;
+        overflow:hidden;
+        flex-shrink:0;
+        background:#111;
+        position:relative;
       }
       .media img { position: static; width:100%; height:100%; object-fit:cover; }
 
       .card-body {
-        padding: 0;
+        padding:0;
         display:flex;
-        flex-direction: column;
+        flex-direction:column;
         gap:4px;
-        flex: 1 1 auto;
+        flex:1 1 auto;
       }
-      .event-title { font-size: 14px; font-weight:600; color:#fff; margin:0; }
-      .meta { font-size: 12px; color:var(--muted); margin:0; }
-      .location { font-size:12px; }
 
-      /* hide desktop footer button on mobile (compact card) */
-      .card-footer { display: none; }
+      .event-title { font-size:14px; font-weight:600; color:#fff; margin:0; }
+      /* hide the desktop meta on mobile (which shows full date) */
+      .meta { display:none; }
 
-      /* small date box on the right */
+      /* location element (desktop) hidden on mobile (we will use mobile-info) */
+      .location { display:none; }
+
+      /* mobile-specific info line: location + " | " + time */
+      .mobile-info { display:block; font-size:12px; color:var(--muted); }
+      .mobile-info a { color: var(--accent); text-decoration:none; font-weight:600; }
+      .mobile-info a:hover { text-decoration:underline; }
+
+      /* hide footer Book Now on mobile to keep compact layout */
+      .card-footer { display:none; }
+
+      /* Date box on right (visible on mobile only) */
       .card-date {
-        min-width: 56px;
-        text-align: center;
-        border-radius: 8px;
-        padding: 6px 8px;
-        background: rgba(255,255,255,0.03);
+        display:block;
+        min-width:56px;
+        text-align:center;
+        border-radius:8px;
+        padding:6px 8px;
+        background: rgba(255,255,255,0.02);
         border: 1px solid rgba(255,255,255,0.04);
-        color: #fff;
-        font-size: 12px;
-        line-height: 1;
+        color:#fff;
+        font-size:12px;
+        line-height:1;
       }
-      .card-date .day { font-weight:700; font-size: 16px; }
-      .card-date .month { font-size: 11px; color: #ddd; }
-      .card-date .time { font-size: 11px; color: var(--accent); margin-top: 4px; display:block; }
+      .card-date .day { font-weight:700; font-size:16px; }
+      .card-date .month { font-size:11px; color:#ddd; }
+      /* DO NOT show time inside date box on mobile */
+      .card-date .time { display:none; color:var(--accent); font-size:11px; margin-top:4px; display:block; }
+
+      /* small type adjustments */
+      .meta, .location, .book-btn { font-size: 12px !important; }
     }
 
   </style>
 </head>
 <body>
-  <!-- topbar bleed covers the status area (notch/battery area) -->
   <div class="topbar-bleed" aria-hidden="true"></div>
 
   <header class="topbar" role="banner">
@@ -329,16 +224,13 @@
     </div>
   </header>
 
-  <!-- spacer placed immediately after fixed topbar -->
   <div class="topbar-spacer" aria-hidden="true"></div>
 
   <main class="wrap" role="main">
-    <!-- animated wrapper reserves height to avoid layout shift -->
     <div class="animated-wrapper" aria-hidden="false">
       <div class="animated-text" aria-live="polite"></div>
     </div>
 
-    <!-- translucent divider under the animation -->
     <div class="divider" aria-hidden="true"></div>
 
     <div class="title"><h2>Upcoming Events</h2></div>
@@ -346,7 +238,7 @@
   </main>
 
   <script>
-    /* Animated typing (unchanged logic) */
+    /* Animated typing (unchanged) */
     const lines = [
       `IF "HOW TO HAVE A GOOD TIME ?"`,
       `IS THE QUESTION,`,
@@ -358,7 +250,6 @@
     let isDeleting = false;
     const delay = 55;
     const pauseBetween = 2600;
-
     function type() {
       if (!isDeleting) {
         animatedTextElem.textContent = msg.substring(0, charIndex + 1);
@@ -377,7 +268,6 @@
       }
       setTimeout(type, isDeleting ? delay/2 : delay);
     }
-
     animatedTextElem.textContent = msg;
     setTimeout(type, pauseBetween);
 
@@ -395,8 +285,7 @@
         const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
         if (!parts) return null;
         const [_, day, monthStr, yearStr] = parts;
-        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6,
-                        Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
         if (month === undefined) return null;
         const year = 2000 + parseInt(yearStr, 10);
         return new Date(year, month, parseInt(day, 10));
@@ -422,12 +311,13 @@
 
         dataRows.forEach(cols => {
           const name = clean(cols[0]);
-          const date = clean(cols[1]);
-          const time = clean(cols[2]);
+          const date = clean(cols[1]);          // original date string (e.g. "Fri, 12 Sep '25")
+          const time = clean(cols[2]);          // time string
           const locText = clean(cols[3]);
           const locLink = clean(cols[4]);
           const ticket = clean(cols[5]) || "#";
           const image = clean(cols[6]) || fallbackImage;
+
           const eventDateObj = parseEventDate(date);
           if (!eventDateObj) return;
           eventDateObj.setHours(0,0,0,0);
@@ -456,12 +346,14 @@
           h.textContent = name || "Untitled Event";
           body.appendChild(h);
 
+          // Desktop meta (full date/time shown on desktop)
           const meta = document.createElement("p");
           meta.className = "meta";
           meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
           body.appendChild(meta);
 
-          if (locText || locLink){
+          // Desktop location (kept for desktop)
+          if (locText || locLink) {
             const locP = document.createElement("p");
             locP.className = "location";
             const a = document.createElement("a");
@@ -473,20 +365,46 @@
             body.appendChild(locP);
           }
 
+          // Mobile compact info: location + " | " + time (hidden on desktop, shown on mobile via CSS)
+          const mobileInfo = document.createElement("p");
+          mobileInfo.className = "mobile-info";
+          // create inner content: location (link) and time separated by " | "
+          const parts = [];
+          if (locText) {
+            if (locLink) {
+              const a2 = document.createElement("a");
+              a2.href = locLink;
+              a2.target = "_blank";
+              a2.rel = "noopener noreferrer";
+              a2.textContent = locText;
+              mobileInfo.appendChild(a2);
+            } else {
+              mobileInfo.appendChild(document.createTextNode(locText));
+            }
+          }
+          if (locText && time) {
+            mobileInfo.appendChild(document.createTextNode(" | "));
+          }
+          if (time) {
+            mobileInfo.appendChild(document.createTextNode(time));
+          }
+          // Append mobile info (CSS controls visibility)
+          body.appendChild(mobileInfo);
+
           card.appendChild(body);
 
-          // date box (for mobile compact card)
-          if (date) {
+          // Date box for mobile (right side)
+          if (eventDateObj) {
+            const dayNum = eventDateObj.getDate();
+            const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' }); // 'Sep'
             const dateBox = document.createElement("div");
             dateBox.className = "card-date";
-            // Try to split date into day + month for compact display
-            const day = (date.split(' ')[0]) || '';
-            const month = (date.split(' ')[1]) || '';
-            dateBox.innerHTML = `<div class="day">${day}</div><div class="month">${month}</div><div class="time">${time || ''}</div>`;
+            // day and month; time intentionally not displayed here on mobile
+            dateBox.innerHTML = `<div class="day">${String(dayNum).padStart(2,'0')}</div><div class="month">${monthShort}</div><div class="time">${time || ''}</div>`;
             card.appendChild(dateBox);
           }
 
-          // footer (desktop Book Now)
+          // Footer (desktop Book Now)
           const footer = document.createElement("div");
           footer.className = "card-footer";
           const btn = document.createElement("a");
@@ -497,6 +415,18 @@
           btn.textContent = "Book Now";
           footer.appendChild(btn);
           card.appendChild(footer);
+
+          // Make card clickable on mobile: open ticket link on tap.
+          card.addEventListener('click', function(e) {
+            // If clicking an internal link (location, date link, etc.), allow default.
+            if (e.target.closest('a')) return;
+            // Only trigger on small viewports
+            if (window.innerWidth <= 768) {
+              if (ticket && ticket !== "#") {
+                window.open(ticket, '_blank');
+              }
+            }
+          });
 
           container.appendChild(card);
         });
