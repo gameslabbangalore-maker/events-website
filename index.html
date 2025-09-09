@@ -36,7 +36,7 @@
       background: rgba(24, 24, 24, 0.75);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      color: #ffe029;
+      color: white;
       display: flex;
       align-items: center;
       padding: 0 0 0 24px;
@@ -65,7 +65,7 @@
       font-size: 1.45rem;
       font-weight: 700;
       letter-spacing: .5px;
-      color: #ffe029;
+      color: white;
       font-family: 'Comfortaa', cursive;
     }
     @media (max-width: 600px) {
@@ -85,7 +85,7 @@
 
     /* Main content wrapper */
     .wrap {
-      padding-top: 90px; /* offset for fixed top bar */
+      padding-top: 110px; /* offset for fixed top bar + animated text */
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 18px;
@@ -94,10 +94,36 @@
     }
     @media (max-width: 768px) {
       .wrap {
-        padding-top: 90px;
+        padding-top: 110px;
         padding-left: 12px !important;
         padding-right: 12px !important;
       }
+    }
+
+    /* Animated text */
+    .animated-text {
+      color: white;
+      font-weight: 700;
+      font-family: 'Comfortaa', cursive;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 36px;
+      min-height: 50px;
+      letter-spacing: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid white;
+      width: 100%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: blink-caret 0.75s step-end infinite;
+      user-select: none;
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: white; }
     }
 
     .title {
@@ -224,113 +250,149 @@
     </div>
   </header>
   <div class="wrap">
+    <div class="animated-text" aria-live="polite"></div>
     <div class="title"><h2>Upcoming Events</h2></div>
     <div id="events" class="cards-row" aria-live="polite"></div>
   </div>
-  <script>
-    (async function(){
-      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-      const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
-      function clean(v){
-        if (v === undefined || v === null) return "";
-        return String(v).trim().replace(/^"|"$/g, '');
+<script>
+  // Typewriter looping animation
+  const texts = [
+    'IF "HOW TO HAVE A GOOD TIME?"',
+    'IS THE QUESTION,',
+    'WE ARE THE ANSWER.'
+  ];
+  const animatedTextElem = document.querySelector('.animated-text');
+  let textIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let delay = 150;
+  let pauseBetweenTexts = 1000;
+  function type() {
+    const current = texts[textIndex];
+    if(!isDeleting){
+      animatedTextElem.textContent = current.substring(0, charIndex + 1);
+      charIndex++;
+      if(charIndex === current.length){
+        isDeleting = true;
+        setTimeout(type, pauseBetweenTexts);
+        return;
       }
-      function parseEventDate(str) {
-        if (!str) return null;
-        str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
-        str = str.replace(/’/g, "'").replace(/`/g,"'");
-        const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-        if (!parts) return null;
-        const [_, day, monthStr, yearStr] = parts;
-        const month = {
-          Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6,
-          Aug:7, Sep:8, Oct:9, Nov:10, Dec:11
-        }[monthStr];
-        if (month === undefined) return null;
-        const year = 2000 + parseInt(yearStr, 10);
-        return new Date(year, month, parseInt(day, 10));
+    } else{
+      animatedTextElem.textContent = current.substring(0, charIndex - 1);
+      charIndex--;
+      if(charIndex === 0){
+        isDeleting = false;
+        textIndex = (textIndex + 1) % texts.length;
       }
-      try {
-        const res = await fetch(csvUrl, {cache: "no-cache"});
-        if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
-        const csvText = await res.text();
-        const parsed = Papa.parse(csvText, {skipEmptyLines:true});
-        const rows = parsed.data || [];
-        if (rows.length < 2) {
-          document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
-          return;
+    }
+    setTimeout(type, isDeleting ? delay / 2 : delay);
+  }
+  type();
+
+  // Existing event loading code
+  (async function(){
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+    const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+    function clean(v){
+      if (v === undefined || v === null) return "";
+      return String(v).trim().replace(/^"|"$/g, '');
+    }
+    function parseEventDate(str) {
+      if (!str) return null;
+      str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
+      str = str.replace(/’/g, "'").replace(/`/g,"'");
+      const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+      if (!parts) return null;
+      const [_, day, monthStr, yearStr] = parts;
+      const month = {
+        Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6,
+        Aug:7, Sep:8, Oct:9, Nov:10, Dec:11
+      }[monthStr];
+      if (month === undefined) return null;
+      const year = 2000 + parseInt(yearStr, 10);
+      return new Date(year, month, parseInt(day, 10));
+    }
+    try {
+      const res = await fetch(csvUrl, {cache: "no-cache"});
+      if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
+      const csvText = await res.text();
+      const parsed = Papa.parse(csvText, {skipEmptyLines:true});
+      const rows = parsed.data || [];
+      if (rows.length < 2) {
+        document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+        return;
+      }
+      const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+      const container = document.getElementById("events");
+      container.innerHTML = "";
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      let upcomingCount = 0;
+      dataRows.forEach(cols => {
+        const name = clean(cols[0]);
+        const date = clean(cols[1]);
+        const time = clean(cols[2]);
+        const locText = clean(cols[3]);
+        const locLink = clean(cols[4]);
+        const ticket = clean(cols[5]) || "#";
+        const image = clean(cols[6]) || "";
+        const eventDateObj = parseEventDate(date);
+        if (!eventDateObj) return;
+        eventDateObj.setHours(0,0,0,0);
+        if (eventDateObj < today) return;
+        upcomingCount++;
+        const card = document.createElement("article");
+        card.className = "card";
+        const media = document.createElement("div");
+        media.className = "media";
+        const img = document.createElement("img");
+        img.src = image || fallbackImage;
+        img.alt = name || "Event image";
+        img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+        media.appendChild(img);
+        card.appendChild(media);
+        const body = document.createElement("div");
+        body.className = "card-body";
+        const h = document.createElement("h3");
+        h.className = "event-title";
+        h.textContent = name || "Untitled Event";
+        body.appendChild(h);
+        const meta = document.createElement("p");
+        meta.className = "meta";
+        meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+        body.appendChild(meta);
+        if (locText || locLink){
+          const locP = document.createElement("p");
+          locP.className = "location";
+          const a = document.createElement("a");
+          a.href = locLink || "#";
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = locText;
+          locP.appendChild(a);
+          body.appendChild(locP);
         }
-        const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
-        const container = document.getElementById("events");
-        container.innerHTML = "";
-        const today = new Date();
-        today.setHours(0,0,0,0);
-        let upcomingCount = 0;
-        dataRows.forEach(cols => {
-          const name = clean(cols[0]);
-          const date = clean(cols[1]);
-          const time = clean(cols[2]);
-          const locText = clean(cols[3]);
-          const locLink = clean(cols[4]);
-          const ticket = clean(cols[5]) || "#";
-          const image = clean(cols[6]) || "";
-          const eventDateObj = parseEventDate(date);
-          if (!eventDateObj) return;
-          eventDateObj.setHours(0,0,0,0);
-          if (eventDateObj < today) return;
-          upcomingCount++;
-          const card = document.createElement("article");
-          card.className = "card";
-          const media = document.createElement("div");
-          media.className = "media";
-          const img = document.createElement("img");
-          img.src = image || fallbackImage;
-          img.alt = name || "Event image";
-          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
-          media.appendChild(img);
-          card.appendChild(media);
-          const body = document.createElement("div");
-          body.className = "card-body";
-          const h = document.createElement("h3");
-          h.className = "event-title";
-          h.textContent = name || "Untitled Event";
-          body.appendChild(h);
-          const meta = document.createElement("p");
-          meta.className = "meta";
-          meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
-          body.appendChild(meta);
-          if (locText || locLink){
-            const locP = document.createElement("p");
-            locP.className = "location";
-            const a = document.createElement("a");
-            a.href = locLink || "#";
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = locText;
-            locP.appendChild(a);
-            body.appendChild(locP);
-          }
-          card.appendChild(body);
-          const footer = document.createElement("div");
-          footer.className = "card-footer";
-          const btn = document.createElement("a");
-          btn.className = "book-btn";
-          btn.href = ticket;
-          btn.target = "_blank";
-          btn.rel = "noopener noreferrer";
-          btn.textContent = "Book Now";
-          footer.appendChild(btn);
-          card.appendChild(footer);
-          container.appendChild(card);
-        });
-        if(upcomingCount === 0){
-          container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
-        }
-      } catch (err) {
-        console.error(err);
-        document.getElementById("events").innerHTML = '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
+        card.appendChild(body);
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+        const btn = document.createElement("a");
+        btn.className = "book-btn";
+        btn.href = ticket;
+        btn.target = "_blank";
+        btn.rel = "noopener noreferrer";
+        btn.textContent = "Book Now";
+        footer.appendChild(btn);
+        card.appendChild(footer);
+        container.appendChild(card);
+      });
+      if(upcomingCount === 0){
+        container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
       }
-    })();
-  </script>
+    } catch (err) {
+      console.error(err);
+      document.getElementById("events").innerHTML = '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
+    }
+  })();
+</script>
 </body>
 </html>
