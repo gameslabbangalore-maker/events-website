@@ -17,14 +17,17 @@
       --accent: #fce029;
       --link: #4dabf7;
 
+      /* topbar heights */
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
 
-      --animated-height-desktop: 72px;  /* reserved area so typing doesn't push content */
-      --animated-height-mobile: 86px;   /* slightly larger on mobile as requested */
+      /* reserved animated area: increase desktop height so 3 lines don't overlap */
+      --animated-height-desktop: 220px; /* increased to comfortably fit 3 large lines */
+      --animated-height-mobile: 120px;
 
+      /* line heights */
       --line-height-desktop: 1.19;
-      --line-height-mobile: 1.12;       /* tiny bit more spacing on mobile */
+      --line-height-mobile: 1.18; /* tiny bit more spacing on mobile */
     }
 
     html,body{
@@ -37,7 +40,25 @@
       -moz-osx-font-smoothing:grayscale;
     }
 
-    /* ------------------ Topbar (fixed + translucent glass) ------------------ */
+    /* ====== Topbar bleed (covers the safe-area notch) ======
+       This element is fixed and fills only the safe-area top inset.
+       It uses the same translucent/blur styling as the topbar so the
+       notch/status area looks continuous.
+    */
+    .topbar-bleed {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: env(safe-area-inset-top, 0px);
+      background: rgba(24,24,24,0.40);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10000; /* below the topbar itself */
+      pointer-events: none;
+    }
+
+    /* ====== Topbar (fixed) ====== */
     .topbar {
       position: fixed;
       top: 0;
@@ -48,32 +69,17 @@
       align-items: center;
       padding-left: 24px;
 
-      /* ensure topbar extends into the notch/status bar */
+      /* include the safe area inside the topbar to place content below the notch */
       padding-top: env(safe-area-inset-top, 0px);
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
-      z-index: 9999;
+      z-index: 10001; /* above bleed */
       border-bottom: 1px solid rgba(41,41,41,0.65);
-      /* translucent base so blur is visible */
+
+      /* translucent glass look */
       background: rgba(24,24,24,0.35);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      /* make sure content is above the pseudo element */
-      position: fixed;
-    }
-
-    /* pseudo to fill the safe-area exactly and avoid black gap in notch area */
-    .topbar::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: env(safe-area-inset-top, 0px);
-      background: rgba(24,24,24,0.45); /* slightly different alpha to appear continuous */
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      pointer-events: none;
     }
 
     .topbar-left {
@@ -107,55 +113,45 @@
       .brand { font-size:1rem; }
     }
 
-    /* ----- Spacer: ensures page content starts after fixed topbar ----- */
+    /* ===== spacer to push page content under the fixed topbar ===== */
     .topbar-spacer {
       width:100%;
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       flex-shrink:0;
     }
     @media (max-width:600px){
-      .topbar-spacer {
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px));
-      }
+      .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
     }
 
-    /* ------------------ Main wrapper ------------------ */
+    /* ===== main wrapper; spacer handles the topbar height ===== */
     .wrap {
       max-width:1200px;
       margin:0 auto;
       padding-left:18px;
       padding-right:18px;
       box-sizing:border-box;
-      /* we only add general top padding — the spacer handles the fixed topbar height */
       padding-top: 20px;
     }
 
-    /* desktop: ensure enough room for the reserved animated block */
     @media (min-width:769px){
-      .wrap { padding-top: calc(var(--animated-height-desktop) + 20px); }
+      /* desktop: ensure there is enough room for the reserved animated block */
+      .wrap { padding-top: calc(var(--animated-height-desktop) + 8px); }
     }
 
-    /* mobile: small extra gap (1 line + small extra) */
     @media (max-width:768px){
-      .wrap {
-        padding-left:12px !important;
-        padding-right:12px !important;
-        padding-top: calc(1em + 12px);
-      }
+      .wrap { padding-left:12px !important; padding-right:12px !important; padding-top: calc(14px); }
     }
 
-    /* ------------------ Animated area (fixed height to avoid layout shift) ------------------ */
+    /* ===== animated area: fixed height so typing doesn't shift content ===== */
     .animated-wrapper {
       width:100%;
       box-sizing:border-box;
       display:flex;
       align-items:center;
       justify-content:center;
-      overflow:hidden; /* prevents text overflow affecting flow */
+      overflow:hidden;
       margin-bottom: 8px;
-      padding-left:6px;
-      padding-right:6px;
-      /* reserve height so typing never pushes content down */
+      padding: 0 8px;
       height: var(--animated-height-desktop);
     }
     @media (max-width:768px){
@@ -169,7 +165,7 @@
       font-family: 'Comfortaa', cursive;
       font-size: 2.1rem;
       text-transform: uppercase;
-      text-align: center;
+      text-align:center;
       letter-spacing: 2.1px;
       color: #fff;
       margin:0;
@@ -187,28 +183,28 @@
     @media (max-width:768px){
       .animated-text {
         font-size: 1rem;
-        line-height: var(--line-height-mobile); /* slightly larger line spacing on mobile */
+        line-height: var(--line-height-mobile);
         letter-spacing: 1.2px;
         padding: 0 6px;
       }
     }
 
-    /* ------------------ Divider (translucent) ------------------ */
+    /* ===== translucent divider below animation ===== */
     .divider {
       width:100%;
       height:1px;
-      margin: 6px 0 18px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      margin: 8px 0 18px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
       box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
       border-radius: 1px;
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
     }
     @media (max-width:768px){
-      .divider { margin: 8px 0 16px; height: 1px; }
+      .divider { margin: 10px 0 16px; }
     }
 
-    /* ------------------ Rest of the page (cards/title) ------------------ */
+    /* ===== rest of page styles ===== */
     .title { text-align:center; margin-bottom:18px; }
     .title h2 {
       color: var(--accent);
@@ -216,7 +212,6 @@
       font-size:1.9rem;
       letter-spacing:0.2px;
     }
-
     .cards-row {
       display:flex;
       flex-wrap:wrap;
@@ -224,7 +219,6 @@
       justify-content:center;
       align-items:flex-start;
     }
-
     .card {
       width:340px;
       background: var(--card);
@@ -235,17 +229,14 @@
       transition: transform 0.16s ease, box-shadow 0.16s ease;
     }
     .card:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(252,224,41,0.18); }
-
     .media { width:100%; padding-top:56.25%; position:relative; background:#111; }
     .media img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
-
     .card-body { padding:14px; display:flex; flex-direction:column; gap:6px; }
     .event-title { margin:0; font-size:17px; font-weight:700; color:#fff; line-height:1.18; }
     .meta { margin:0; font-size:13.5px; color:var(--muted); }
     .location { margin:0; font-size:14px; color:var(--muted); }
     .location a { color: var(--accent); text-decoration:none; font-weight:600; }
     .location a:hover { text-decoration:underline; }
-
     .card-footer { padding:12px 14px 18px; display:flex; justify-content:center; box-sizing:border-box; }
     .book-btn {
       background: var(--accent);
@@ -261,7 +252,7 @@
     @media (max-width:768px){
       .cards-row { justify-content:center; }
       .card { width:95vw !important; }
-      .wrap { padding: 18px 12px !important; } /* override for small screens */
+      .wrap { padding: 18px 12px !important; } /* keeps small-screen spacing consistent */
       .title h2 { font-size:1.5rem !important; }
       .event-title { font-size:1.3rem !important; }
       .meta, .location, .book-btn { font-size:1.1rem !important; }
@@ -270,6 +261,9 @@
   </style>
 </head>
 <body>
+  <!-- fixed bleed fills the safe-area notch area (iOS Safari) -->
+  <div class="topbar-bleed" aria-hidden="true"></div>
+
   <header class="topbar" role="banner">
     <div class="topbar-left">
       <img src="https://1drv.ms/i/c/0cea9974c83dc73a/IQTn_Ym2XeH-Sqw0y4YSLmv_AYepVQgbOJe87hJKM47Wm7E" alt="Games Lab Logo" class="logo" />
@@ -277,11 +271,11 @@
     </div>
   </header>
 
-  <!-- spacer placed immediately after fixed topbar to push content below it -->
+  <!-- spacer placed immediately after fixed topbar -->
   <div class="topbar-spacer" aria-hidden="true"></div>
 
   <main class="wrap" role="main">
-    <!-- animated wrapper reserves a fixed height so typing won't shift content below -->
+    <!-- animated wrapper reserves height to avoid layout shift -->
     <div class="animated-wrapper" aria-hidden="false">
       <div class="animated-text" aria-live="polite"></div>
     </div>
@@ -294,7 +288,7 @@
   </main>
 
   <script>
-    /* ========== Animated typing ========== */
+    /* Animated typing (unchanged logic) */
     const lines = [
       `IF "HOW TO HAVE A GOOD TIME ?"`,
       `IS THE QUESTION,`,
@@ -326,20 +320,14 @@
       setTimeout(type, isDeleting ? delay/2 : delay);
     }
 
-    // start with full text so a first draw is visible, then start animation
     animatedTextElem.textContent = msg;
     setTimeout(type, pauseBetween);
 
-    /* ========== Fetch events (unchanged logic) ========== */
+    /* Fetch events (unchanged) */
     (async function(){
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
-
-      function clean(v){
-        if (v === undefined || v === null) return "";
-        return String(v).trim().replace(/^"|"$/g, '');
-      }
-
+      function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
       function parseEventDate(str) {
         if (!str) return null;
         str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
@@ -347,10 +335,7 @@
         const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
         if (!parts) return null;
         const [_, day, monthStr, yearStr] = parts;
-        const month = {
-          Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6,
-          Aug:7, Sep:8, Oct:9, Nov:10, Dec:11
-        }[monthStr];
+        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
         if (month === undefined) return null;
         const year = 2000 + parseInt(yearStr, 10);
         return new Date(year, month, parseInt(day, 10));
@@ -362,12 +347,10 @@
         const csvText = await res.text();
         const parsed = Papa.parse(csvText, {skipEmptyLines:true});
         const rows = parsed.data || [];
-
         if (rows.length < 2) {
           document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
           return;
         }
-
         const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
         const container = document.getElementById("events");
         container.innerHTML = "";
@@ -384,16 +367,12 @@
           const ticket = clean(cols[5]) || "#";
           const image = clean(cols[6]) || "";
           const eventDateObj = parseEventDate(date);
-
           if (!eventDateObj) return;
           eventDateObj.setHours(0,0,0,0);
           if (eventDateObj < today) return;
-
           upcomingCount++;
-
           const card = document.createElement("article");
           card.className = "card";
-
           const media = document.createElement("div");
           media.className = "media";
           const img = document.createElement("img");
@@ -405,20 +384,16 @@
           img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
           media.appendChild(img);
           card.appendChild(media);
-
           const body = document.createElement("div");
           body.className = "card-body";
-
           const h = document.createElement("h3");
           h.className = "event-title";
           h.textContent = name || "Untitled Event";
           body.appendChild(h);
-
           const meta = document.createElement("p");
           meta.className = "meta";
           meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
           body.appendChild(meta);
-
           if (locText || locLink){
             const locP = document.createElement("p");
             locP.className = "location";
@@ -430,9 +405,7 @@
             locP.appendChild(a);
             body.appendChild(locP);
           }
-
           card.appendChild(body);
-
           const footer = document.createElement("div");
           footer.className = "card-footer";
           const btn = document.createElement("a");
@@ -443,7 +416,6 @@
           btn.textContent = "Book Now";
           footer.appendChild(btn);
           card.appendChild(footer);
-
           container.appendChild(card);
         });
 
