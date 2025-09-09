@@ -88,7 +88,7 @@
 
     /* Main content wrapper */
     .wrap {
-      padding-top: 160px; /* increased padding for top bar + animated text + spacing */
+      padding-top: 160px; /* offset for fixed top bar + animated text + spacing */
       max-width: 1200px;
       margin: 0 auto;
       padding-left: 18px;
@@ -101,14 +101,6 @@
         padding-left: 12px !important;
         padding-right: 12px !important;
       }
-      /* Animated text adjustments */
-      .animated-text {
-        margin-top: 24px;
-        margin-bottom: 36px;
-        font-size: 1.9rem; /* reduced size */
-        max-width: 100%;
-        white-space: normal;
-      }
     }
 
     /* Animated text */
@@ -119,17 +111,24 @@
       font-size: 2.3rem;
       text-transform: uppercase;
       text-align: center;
-      margin-bottom: 40px;
-      min-height: 90px;
+      margin-bottom: 48px; /* extra bottom padding to avoid push */
+      min-height: 110px;
       letter-spacing: 2.2px;
       overflow: hidden;
-      border-right: none; /* removed blinking cursor */
+      border-right: none;
       width: 100%;
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
       user-select: none;
-      white-space: normal;
+      white-space: pre-line; /* preserve line breaks */
+    }
+    @media (max-width: 768px) {
+      .animated-text {
+        font-size: 1rem; /* reduced font size on mobile */
+        min-height: 100px;
+        margin-bottom: 48px;
+      }
     }
 
     .title {
@@ -261,18 +260,18 @@
     <div id="events" class="cards-row" aria-live="polite"></div>
   </div>
   <script>
-    // Animated text with multiline full message in one loop, faster speed, pauses full message visible
+    // Animated text with multiline full message in one loop, faster speed, long pause
     const texts = [
-      `IF "HOW TO HAVE A GOOD TIME?"
+      `IF "HOW TO HAVE A GOOD TIME ?"
 IS THE QUESTION,
-WE ARE THE ANSWER.`
+WE ARE THE ANSWER`
     ];
     const animatedTextElem = document.querySelector('.animated-text');
     let textIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
     const delay = 60; // faster typing speed
-    const pauseBetweenTexts = 2500; // 2.5s pause on full message
+    const pauseBetweenTexts = 3000; // 3 seconds full text pause
 
     function type() {
       const current = texts[textIndex];
