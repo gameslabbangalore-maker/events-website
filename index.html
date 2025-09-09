@@ -9,6 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
   <style>
     :root{
       --bg: #000000;
@@ -21,15 +22,14 @@
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
 
-      /* reserved animated area: increase desktop height so 3 lines don't overlap */
-      --animated-height-desktop: 150px; /* increased to comfortably fit 3 large lines */
+      --animated-height-desktop: 150px;
       --animated-height-mobile: 80px;
 
-      /* line heights */
       --line-height-desktop: 1.4;
-      --line-height-mobile: 1.5; /* tiny bit more spacing on mobile */
+      --line-height-mobile: 1.5;
     }
 
+    /* ---------- base ---------- */
     html,body{
       margin:0;
       height:100%;
@@ -40,40 +40,41 @@
       -moz-osx-font-smoothing:grayscale;
     }
 
-    /* ====== Topbar bleed (covers the safe-area notch) ======
-       This element is fixed and fills only the safe-area top inset.
-       It uses the same translucent/blur styling as the topbar so the
-       notch/status area looks continuous.
-    */
+    /* ---------- TOPBAR BLEED (covers the status area / notch) ---------- */
+    /* Use both constant() (old iOS) and env() (modern) — provides best compatibility */
     .topbar-bleed {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
+      /* fallbacks: constant() then env(), default 0px */
+      height: constant(safe-area-inset-top, 0px);
       height: env(safe-area-inset-top, 0px);
       background: rgba(24,24,24,0.40);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      z-index: 10000; /* below the topbar itself */
+      z-index: 10002; /* above body but below the topbar content */
       pointer-events: none;
     }
 
-    /* ====== Topbar (fixed) ====== */
+    /* ---------- TOPBAR ---------- */
     .topbar {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      width: 100%;
       display: flex;
       align-items: center;
       padding-left: 24px;
 
-      /* include the safe area inside the topbar to place content below the notch */
+      /* add safe-area padding for content */
+      padding-top: constant(safe-area-inset-top, 0px);
       padding-top: env(safe-area-inset-top, 0px);
+
+      /* include the safe-area in computed height so bleed + topbar align */
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
-      z-index: 10001; /* above bleed */
+      z-index: 10003; /* above bleed */
       border-bottom: 1px solid rgba(41,41,41,0.65);
 
       /* translucent glass look */
@@ -113,7 +114,7 @@
       .brand { font-size:1rem; }
     }
 
-    /* ===== spacer to push page content under the fixed topbar ===== */
+    /* ---------- spacer to push content under the fixed topbar ---------- */
     .topbar-spacer {
       width:100%;
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
@@ -123,7 +124,7 @@
       .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
     }
 
-    /* ===== main wrapper; spacer handles the topbar height ===== */
+    /* ---------- main wrapper ---------- */
     .wrap {
       max-width:1200px;
       margin:0 auto;
@@ -134,15 +135,14 @@
     }
 
     @media (min-width:769px){
-  /* desktop: small top gap so the animated block sits closer to the topbar */
-  .wrap { padding-top: 12px; }
+      .wrap { padding-top: 12px; }
     }
 
     @media (max-width:768px){
-      .wrap { padding-left:12px !important; padding-right:12px !important; padding-top: calc(14px); }
+      .wrap { padding-left:12px !important; padding-right:12px !important; padding-top: 14px; }
     }
 
-    /* ===== animated area: fixed height so typing doesn't shift content ===== */
+    /* ---------- animated area ---------- */
     .animated-wrapper {
       width:100%;
       box-sizing:border-box;
@@ -189,7 +189,7 @@
       }
     }
 
-    /* ===== translucent divider below animation ===== */
+    /* ---------- divider ---------- */
     .divider {
       width:100%;
       height:1px;
@@ -204,7 +204,7 @@
       .divider { margin: 10px 0 16px; }
     }
 
-    /* ===== rest of page styles ===== */
+    /* ---------- titles & cards ---------- */
     .title { text-align:center; margin-bottom:18px; }
     .title h2 {
       color: var(--accent);
@@ -212,6 +212,7 @@
       font-size:1.9rem;
       letter-spacing:0.2px;
     }
+
     .cards-row {
       display:flex;
       flex-wrap:wrap;
@@ -219,6 +220,8 @@
       justify-content:center;
       align-items:flex-start;
     }
+
+    /* ---------- desktop card (unchanged behavior) ---------- */
     .card {
       width:340px;
       background: var(--card);
@@ -229,14 +232,22 @@
       transition: transform 0.16s ease, box-shadow 0.16s ease;
     }
     .card:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(252,224,41,0.18); }
-    .media { width:100%; padding-top:56.25%; position:relative; background:#111; }
+
+    .media {
+      width:100%;
+      padding-top:56.25%;
+      position:relative;
+      background:#111;
+    }
     .media img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
+
     .card-body { padding:14px; display:flex; flex-direction:column; gap:6px; }
     .event-title { margin:0; font-size:17px; font-weight:700; color:#fff; line-height:1.18; }
     .meta { margin:0; font-size:13.5px; color:var(--muted); }
     .location { margin:0; font-size:14px; color:var(--muted); }
     .location a { color: var(--accent); text-decoration:none; font-weight:600; }
     .location a:hover { text-decoration:underline; }
+
     .card-footer { padding:12px 14px 18px; display:flex; justify-content:center; box-sizing:border-box; }
     .book-btn {
       background: var(--accent);
@@ -249,19 +260,66 @@
     }
     .book-btn:hover { background:#ffe974; }
 
+    /* ---------- MOBILE CARD LAYOUT (applies only under 768px) ---------- */
     @media (max-width:768px){
       .cards-row { justify-content:center; }
-      .card { width:95vw !important; }
-      .wrap { padding: 18px 12px !important; } /* keeps small-screen spacing consistent */
-      .title h2 { font-size:1.5rem !important; }
-      .event-title { font-size:1.3rem !important; }
-      .meta, .location, .book-btn { font-size:1.1rem !important; }
-      .book-btn { padding:12px 16px !important; }
+      .card {
+        width: 100%;
+        display: flex;
+        flex-direction: row; /* horizontal compact card */
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 10px;
+      }
+
+      /* make the image a thumbnail on left */
+      .media {
+        width: 60px;
+        height: 60px;
+        padding-top: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: #111;
+      }
+      .media img { position: static; width:100%; height:100%; object-fit:cover; }
+
+      .card-body {
+        padding: 0;
+        display:flex;
+        flex-direction: column;
+        gap:4px;
+        flex: 1 1 auto;
+      }
+      .event-title { font-size: 14px; font-weight:600; color:#fff; margin:0; }
+      .meta { font-size: 12px; color:var(--muted); margin:0; }
+      .location { font-size:12px; }
+
+      /* hide desktop footer button on mobile (compact card) */
+      .card-footer { display: none; }
+
+      /* small date box on the right */
+      .card-date {
+        min-width: 56px;
+        text-align: center;
+        border-radius: 8px;
+        padding: 6px 8px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.04);
+        color: #fff;
+        font-size: 12px;
+        line-height: 1;
+      }
+      .card-date .day { font-weight:700; font-size: 16px; }
+      .card-date .month { font-size: 11px; color: #ddd; }
+      .card-date .time { font-size: 11px; color: var(--accent); margin-top: 4px; display:block; }
     }
+
   </style>
 </head>
 <body>
-  <!-- fixed bleed fills the safe-area notch area (iOS Safari) -->
+  <!-- topbar bleed covers the status area (notch/battery area) -->
   <div class="topbar-bleed" aria-hidden="true"></div>
 
   <header class="topbar" role="banner">
@@ -323,11 +381,13 @@
     animatedTextElem.textContent = msg;
     setTimeout(type, pauseBetween);
 
-    /* Fetch events (unchanged) */
+    /* Fetch events and render cards (desktop + mobile friendly) */
     (async function(){
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+
       function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
+
       function parseEventDate(str) {
         if (!str) return null;
         str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
@@ -335,7 +395,8 @@
         const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
         if (!parts) return null;
         const [_, day, monthStr, yearStr] = parts;
-        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6,
+                        Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
         if (month === undefined) return null;
         const year = 2000 + parseInt(yearStr, 10);
         return new Date(year, month, parseInt(day, 10));
@@ -351,6 +412,7 @@
           document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
           return;
         }
+
         const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
         const container = document.getElementById("events");
         container.innerHTML = "";
@@ -365,35 +427,40 @@
           const locText = clean(cols[3]);
           const locLink = clean(cols[4]);
           const ticket = clean(cols[5]) || "#";
-          const image = clean(cols[6]) || "";
+          const image = clean(cols[6]) || fallbackImage;
           const eventDateObj = parseEventDate(date);
           if (!eventDateObj) return;
           eventDateObj.setHours(0,0,0,0);
           if (eventDateObj < today) return;
           upcomingCount++;
+
           const card = document.createElement("article");
           card.className = "card";
+
+          // left thumbnail (or large media on desktop)
           const media = document.createElement("div");
           media.className = "media";
           const img = document.createElement("img");
           img.loading = "lazy";
-          img.src = image || fallbackImage;
+          img.src = image;
           img.alt = name || "Event image";
-          img.width = 340;
-          img.height = 191;
           img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
           media.appendChild(img);
           card.appendChild(media);
+
+          // body
           const body = document.createElement("div");
           body.className = "card-body";
           const h = document.createElement("h3");
           h.className = "event-title";
           h.textContent = name || "Untitled Event";
           body.appendChild(h);
+
           const meta = document.createElement("p");
           meta.className = "meta";
           meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
           body.appendChild(meta);
+
           if (locText || locLink){
             const locP = document.createElement("p");
             locP.className = "location";
@@ -405,7 +472,21 @@
             locP.appendChild(a);
             body.appendChild(locP);
           }
+
           card.appendChild(body);
+
+          // date box (for mobile compact card)
+          if (date) {
+            const dateBox = document.createElement("div");
+            dateBox.className = "card-date";
+            // Try to split date into day + month for compact display
+            const day = (date.split(' ')[0]) || '';
+            const month = (date.split(' ')[1]) || '';
+            dateBox.innerHTML = `<div class="day">${day}</div><div class="month">${month}</div><div class="time">${time || ''}</div>`;
+            card.appendChild(dateBox);
+          }
+
+          // footer (desktop Book Now)
           const footer = document.createElement("div");
           footer.className = "card-footer";
           const btn = document.createElement("a");
@@ -416,10 +497,11 @@
           btn.textContent = "Book Now";
           footer.appendChild(btn);
           card.appendChild(footer);
+
           container.appendChild(card);
         });
 
-        if(upcomingCount === 0){
+        if (upcomingCount === 0) {
           container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
         }
       } catch (err) {
