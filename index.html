@@ -24,8 +24,8 @@
       --line-height-desktop: 1.4;
       --line-height-mobile: 1.5;
 
-      /* Added variables for font size scaling */
-      --animated-font-size-max: 1.9rem;
+      /* Reduced desktop max font size for animated text */
+      --animated-font-size-max: 1.6rem;
       --animated-font-size-min: 1rem;
       --card-height-mobile-base: 80px; /* base height for mobile card at 100% width */
     }
@@ -83,7 +83,7 @@
     .topbar-spacer { width:100%; height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px)); flex-shrink:0; }
     @media (max-width:600px){ .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); } }
 
-    /* Divider below topbar and above animated text - fixed here */
+    /* Divider below topbar and above animated text */
     .top-divider {
       width: 100%;
       height: 1px;
@@ -127,7 +127,7 @@
       max-width:980px;
       font-weight:700;
       font-family:'Comfortaa', cursive;
-      font-size: var(--animated-font-size-max);  /* start with max for desktop */
+      font-size: var(--animated-font-size-max);
       text-transform:uppercase;
       text-align:center;
       letter-spacing:2.1px;
@@ -136,7 +136,7 @@
       padding:0;
       line-height:var(--line-height-desktop);
       user-select:none;
-      white-space:pre-line;
+      white-space: pre-wrap;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -146,7 +146,7 @@
     }
     @media (max-width:768px){
       .animated-text {
-        font-size: clamp(1rem, 5vw, 1.5rem);  /* dynamic font size based on viewport width */
+        font-size: clamp(0.85rem, 4.5vw, 1.2rem);
         line-height: var(--line-height-mobile);
         letter-spacing:1.50px;
         padding:0 6px;
@@ -292,16 +292,16 @@
         transition: height 0.3s ease;
       }
       .media {
-        width: 18vw; /* scales with viewport width */
-        max-width: 72px; /* max to base size */
-        height: auto; /* height to keep aspect ratio */
-        aspect-ratio: 16 / 9;
+        width: 18vw;
+        max-width: 72px;
+        aspect-ratio: 1 / 1;  /* square aspect ratio as requested */
+        height: auto;
         padding-top: 0 !important;
-        border-radius:10px;
-        overflow:hidden;
-        flex-shrink:0;
-        background:#111;
-        position:relative;
+        border-radius: 10px;
+        overflow: hidden;
+        flex-shrink: 0;
+        background: #111;
+        position: relative;
       }
       .media img {
         position: static;
@@ -351,7 +351,7 @@
       }
       .card-date {
         display:flex;
-        width: 18vw;  /* scale with viewport, matching media width */
+        width: 18vw;
         max-width: 72px;
         height: auto;
         aspect-ratio: 1 / 1;
@@ -438,7 +438,7 @@
   <div class="topbar-spacer" aria-hidden="true"></div>
 
   <main class="wrap" role="main">
-    <!-- Added divider below topbar -->
+    <!-- Divider below topbar -->
     <div class="top-divider" aria-hidden="true"></div>
 
     <div class="animated-wrapper" aria-live="polite">
