@@ -141,7 +141,7 @@
     .card-footer { padding:12px 14px 18px; display:flex; justify-content:center; box-sizing:border-box; }
     .book-btn {
       background: var(--accent);
-      color: #fff; /* White text for desktop button */
+      color: #000; /* Dark theme: Black text */
       padding: 10px 16px;
       border-radius: 8px;
       font-weight:700;
@@ -267,6 +267,10 @@
       }
       .card-date .month {
         color: #000; /* MMM in black */
+      }
+      /* Book Now button text becomes white in light theme */
+      .book-btn {
+        color: #fff;
       }
       .brand { color: #242424; }
     }
