@@ -53,6 +53,12 @@
       z-index: 10002;
       pointer-events: none;
     }
+    /* Light theme overrides for topbar-bleed background */
+    @media (prefers-color-scheme: light) {
+      .topbar-bleed {
+        background: #fff !important;
+      }
+    }
     /* TOPBAR */
     .topbar {
       position: fixed;
@@ -115,11 +121,14 @@
       margin-bottom:8px;
       padding:0 8px;
       height:var(--animated-height-desktop);
+      max-height: var(--animated-height-desktop);
     }
     @media (max-width:768px){
       .animated-wrapper {
         height: var(--animated-height-mobile);
         margin-bottom:10px;
+        max-height: var(--animated-height-mobile);
+        /* To restrict text container */
       }
     }
     .animated-text {
@@ -143,13 +152,18 @@
       height:100%;
       box-sizing:border-box;
       transition: font-size 0.3s ease;
+      overflow-wrap: break-word;
+      word-break: break-word;
     }
     @media (max-width:768px){
       .animated-text {
-        font-size: clamp(0.85rem, 4.5vw, 1.2rem);
-        line-height: var(--line-height-mobile);
-        letter-spacing:1.50px;
+        font-size: clamp(0.75rem, 4vw, 1.05rem); /* further reduced max to fit 3 lines */
+        line-height: 1.4;
+        letter-spacing:1.4px;
         padding:0 6px;
+        max-height: var(--animated-height-mobile);
+        overflow: hidden;
+        display: block;
       }
     }
     /* Divider (below animated text) */
@@ -294,7 +308,7 @@
       .media {
         width: 18vw;
         max-width: 72px;
-        aspect-ratio: 1 / 1;  /* square aspect ratio as requested */
+        aspect-ratio: 1 / 1;  /* square aspect ratio */
         height: auto;
         padding-top: 0 !important;
         border-radius: 10px;
@@ -362,19 +376,19 @@
         background: var(--datebox);
         border: 1.5px solid rgba(255,255,255,0.08);
         color:#fff;
-        font-size: calc(9px + 0.5vw);
+        font-size: calc(11px + 1vw); /* Increased base font size for date */
         box-sizing:border-box;
         backdrop-filter: blur(9px);
         -webkit-backdrop-filter: blur(9px);
       }
       .card-date .day {
         font-weight:700;
-        font-size: calc(18px + 1.2vw);
+        font-size: calc(22px + 2vw); /* increased font size proportionally */
         color: #fce029;
         line-height:1;
       }
       .card-date .month {
-        font-size: calc(9px + 0.7vw);
+        font-size: calc(12px + 1vw); /* increased font size */
         color: #fff;
         line-height:1;
       }
