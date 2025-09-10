@@ -518,29 +518,27 @@
     </div>
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- Current Upcoming Events Section (height dynamic by content) -->
+    <!-- Upcoming Events Section (height dynamic by content, unchanged container) -->
     <div class="title"><h2>Upcoming Events</h2></div>
     <div id="events" class="cards-row" aria-live="polite"></div>
 
-    <!-- Divider -->
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- Explore Other Events Section (placeholder for dynamic cards) -->
+    <!-- Explore Other Events Section (placeholder for dynamic cards, empty for now) -->
     <div id="explore-events" aria-live="polite">
       <div class="title"><h2>Explore Other Events</h2></div>
       <div class="cards-row" id="explore-cards-row">
-        <!-- Placeholder: Add event cards here dynamically -->
+        <!-- Placeholder for explore other event cards -->
       </div>
     </div>
 
-    <!-- Divider -->
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- Gallery Section (self playing carousel placeholder) -->
+    <!-- Gallery Section (self-playing carousel placeholder) -->
     <div id="gallery" aria-label="Gallery Carousel">
       <div class="title"><h2>Gallery</h2></div>
       <div class="gallery-carousel" id="gallery-carousel">
-        <!-- Placeholder images for carousel, replace or extend as needed -->
+        <!-- Sample placeholder images, replace with real gallery images -->
         <img src="https://via.placeholder.com/400x240?text=Gallery+Image+1" alt="Gallery Image 1" />
         <img src="https://via.placeholder.com/400x240?text=Gallery+Image+2" alt="Gallery Image 2" />
         <img src="https://via.placeholder.com/400x240?text=Gallery+Image+3" alt="Gallery Image 3" />
@@ -555,7 +553,6 @@
       Founded by passionate enthusiasts committed to creating memorable experiences.</p>
     </div>
 
-    <!-- Divider -->
     <div class="divider" aria-hidden="true"></div>
 
     <!-- Contact Us Section -->
@@ -570,11 +567,9 @@
         WhatsApp Message: <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer">Send Message</a>
       </p>
     </div>
-
   </main>
 
   <script>
-  // Animated text code unchanged (same as original)...
   const lines = [
     'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
   ];
@@ -599,13 +594,141 @@
   animatedTextElem.textContent = msg;
   setTimeout(type, pauseBetween);
 
-  // Existing event loading code unchanged, populates #events cards-row...
-
-  // Placeholder: You can add your explore other events cards dynamically to #explore-cards-row
-  // You will need to implement filtering logic to exclude events currently live from the "Explore Other Events" section.
-
-  // Placeholder for gallery auto-playing carousel behavior can be added via JS as needed.
-
+  (async function(){
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+    const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+    function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
+    function parseEventDate(str) {
+      if (!str) return null;
+      str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
+      str = str.replace(/’/g, "'").replace(/`/g,"'");
+      const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+      if (!parts) return null;
+      const [_, day, monthStr, yearStr] = parts;
+      const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+      if (month === undefined) return null;
+      const year = 2000 + parseInt(yearStr, 10);
+      return new Date(year, month, parseInt(day, 10));
+    }
+    try {
+      const res = await fetch(csvUrl, {cache: "no-cache"});
+      if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
+      const csvText = await res.text();
+      const parsed = Papa.parse(csvText, {skipEmptyLines:true});
+      const rows = parsed.data || [];
+      if (rows.length < 2) {
+        document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+        return;
+      }
+      const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+      const container = document.getElementById("events");
+      container.innerHTML = "";
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      let upcomingCount = 0;
+      dataRows.forEach(cols => {
+        const name = clean(cols[0]);
+        const date = clean(cols[1]);
+        const time = clean(cols[2]);
+        const locText = clean(cols[3]);
+        const locLink = clean(cols[4]);
+        const ticket = clean(cols[5]) || "#";
+        const image = clean(cols[6]) || fallbackImage;
+        const eventDateObj = parseEventDate(date);
+        if (!eventDateObj) return;
+        eventDateObj.setHours(0,0,0,0);
+        if (eventDateObj < today) return;
+        upcomingCount++;
+        const card = document.createElement("article");
+        card.className = "card";
+        // Media
+        const media = document.createElement("div");
+        media.className = "media";
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.src = image;
+        img.alt = name || "Event image";
+        img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+        media.appendChild(img);
+        card.appendChild(media);
+        // Body
+        const body = document.createElement("div");
+        body.className = "card-body";
+        const h = document.createElement("h3");
+        h.className = "event-title";
+        h.textContent = name || "Untitled Event";
+        body.appendChild(h);
+        // Desktop meta
+        const meta = document.createElement("p");
+        meta.className = "meta";
+        meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+        body.appendChild(meta);
+        // Desktop location
+        if (locText || locLink) {
+          const locP = document.createElement("p");
+          locP.className = "location";
+          const a = document.createElement("a");
+          a.href = locLink || "#";
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = locText;
+          locP.appendChild(a);
+          body.appendChild(locP);
+        }
+        // Mobile Info Line
+        const mobileInfo = document.createElement("p");
+        mobileInfo.className = "mobile-info";
+        if (locText) {
+          const a2 = document.createElement("a");
+          a2.href = locLink || "#";
+          a2.target = "_blank";
+          a2.rel = "noopener noreferrer";
+          a2.textContent = locText;
+          mobileInfo.appendChild(a2);
+        }
+        if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
+        if (time) mobileInfo.appendChild(document.createTextNode(time));
+        body.appendChild(mobileInfo);
+        card.appendChild(body);
+        // Mobile date box
+        if (eventDateObj) {
+          const dayNum = eventDateObj.getDate();
+          const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
+          const dateBox = document.createElement("div");
+          dateBox.className = "card-date";
+          dateBox.innerHTML =
+            `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
+            `<div class="month">${monthShort}</div>` +
+            `<div class="time"></div>`;
+          card.appendChild(dateBox);
+        }
+        // Desktop Book Now
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+        const btn = document.createElement("a");
+        btn.className = "book-btn";
+        btn.href = ticket;
+        btn.target = "_blank";
+        btn.rel = "noopener noreferrer";
+        btn.textContent = "Book Now";
+        footer.appendChild(btn);
+        card.appendChild(footer);
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return;
+          if (window.innerWidth <= 768) {
+            if (ticket && ticket !== "#") window.open(ticket, '_blank');
+          }
+        });
+        container.appendChild(card);
+      });
+      if (upcomingCount === 0)
+        container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
+    } catch (err) {
+      console.error(err);
+      document.getElementById("events").innerHTML =
+        '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
+    }
+  })();
   </script>
 </body>
 </html>
