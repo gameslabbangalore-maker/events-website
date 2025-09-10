@@ -177,21 +177,6 @@
       backdrop-filter:blur(2px);
       -webkit-backdrop-filter:blur(2px);
     }
-    @media (max-width:768px) {
-      .meta,
-      .location,
-      .card-footer {
-        display: block !important;
-        color: var(--muted);
-        font-size: 14px;
-        margin: 6px 0;
-      }
-      .card-footer {
-        display: flex !important;
-        justify-content: center;
-        padding: 10px 14px;
-      }
-    }
     @media (max-width:768px){
       .divider {
         margin:10px 0 16px;
@@ -931,7 +916,7 @@
     const exploreParsed = Papa.parse(exploreText, {header:true, skipEmptyLines:true});
     exploreContainer.innerHTML = '';
 
-    exploreParsed.data.forEach(event => {
+    exploreparsed.data.forEach(event => {
   if ((event['Scheduled'] || '').trim().toLowerCase() === 'no' && !window.upcomingEventNames.has(event['Event'].trim())) {
     const card = document.createElement('div');
     card.className = 'card';
@@ -1003,7 +988,4 @@
 </script>
 </body>
 </html>
-
-
-
 
