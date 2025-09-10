@@ -660,89 +660,35 @@
         '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
     }
   })();
-(async function(){
-  const exploreCsvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv'; // replace with actual CSV URL for Explore Events
-
-  // Assume you have a global Set of Upcoming event names called upcomingEventNames from your existing code.
-  // If not, you can declare it and populate from your Upcoming Events parsing logic.
-
-  const exploreContainer = document.getElementById('explore-cards');
-
-  try {
-    const response = await fetch(exploreCsvUrl, {cache: 'no-cache'});
-    if (!response.ok) throw new Error('Failed to fetch explore events CSV');
-    const csvText = await response.text();
-    const parsed = Papa.parse(csvText, {header: true, skipEmptyLines: true});
-
-    parsed.data.forEach(event => {
-  const name = event['Event'].trim();
-  const scheduled = event['Scheduled'].trim().toLowerCase();
-
-  if (scheduled === 'no' && (!window.upcomingEventNames || !window.upcomingEventNames.has(name))) {
-    const card = document.createElement('div');
-    card.style.width = '308px';
-    card.className = 'h-full overflow-hidden rounded-lg shadow-md dark:text-gray-300 transition-transform duration-300 hover:scale-105';
-
-    card.innerHTML = `
-      <div style="background-image: url('${event['Image Links']}'); background-size: cover;" class="relative w-full aspect-video">
-        <img src="${event['Image Links']}" alt="${name}" loading="lazy" class="invisible" />
-      </div>
-      <div style="height:165px" class="bg-zinc-800 flex flex-col justify-center gap-2 px-4 py-4">
-        <div class="flex items-center" style="height:80px">
-          <div style="min-width:0px" class="flex justify-center"></div>
-          <div class="w-full ml-6">
-            <h5 class="line-clamp-2 text-white text-lg font-semibold">${name}</h5>
-          </div>
-        </div>
-        <!-- Desktop only: Learn More button -->
-        <div class="mt-4 hidden md:flex justify-center">
-          <a href="${event['Page Link']}" target="_blank" rel="noopener noreferrer"
-             class="button-learn">Learn More</a>
-        </div>
-      </div>
-    `;
-
-    // Mobile only: whole card click
-    card.addEventListener('click', function (e) {
-      if (window.innerWidth <= 768 && !e.target.closest('a')) {
-        window.open(event['Page Link'], '_blank');
-      }
-    });
-
-    exploreContainer.appendChild(card);
-  }
-});
-
-
-  } catch (err) {
-    console.error('Error loading explore events:', err);
-    exploreContainer.innerHTML = '<p class="text-yellow-400">Unable to load explore events at this time.</p>';
-  }
-})();
   </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-<script>
-(async function() {
-  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
-  const container = document.getElementById('explore-cards');
-  try {
-    const response = await fetch(csvUrl, {cache: 'no-cache'});
-    if(!response.ok) throw new Error('Failed to fetch explore events');
-    const csvText = await response.text();
-    const parsed = Papa.parse(csvText, {header: true, skipEmptyLines: true});
-    container.innerHTML = '';
-    parsed.data.forEach(event => {
-      if ((event['Scheduled'] || '').trim().toLowerCase() === 'no') {
+
+  <!-- Consolidated Explore Events script: single implementation (non-clickable on desktop; clickable on mobile) -->
+  <script>
+  (async function() {
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
+    const container = document.getElementById('explore-cards');
+    const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+    try {
+      const res = await fetch(csvUrl, { cache: "no-cache" });
+      if (!res.ok) throw new Error("Failed to fetch explore events");
+      const csvText = await res.text();
+      const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+      container.innerHTML = '';
+      parsed.data.forEach(event => {
+        if (!event) return;
+        if ((event['Scheduled'] || '').trim().toLowerCase() !== 'no') return;
+
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = 'card'; // desktop: not clickable (cursor: default); mobile CSS will make it clickable
 
         // Image section
         const media = document.createElement('div');
         media.className = 'media';
         const img = document.createElement('img');
-        img.src = event['Image Links'];
-        img.alt = event['Event'] || '';
+        img.src = (event['Image Links'] || '').trim() || fallbackImage;
+        img.alt = (event['Event'] || '').trim();
         img.loading = "lazy";
+        img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
         media.appendChild(img);
         card.appendChild(media);
 
@@ -750,108 +696,55 @@
         const body = document.createElement('div');
         body.className = 'card-body';
 
-        // Event title (NOT a link)
+        // Event title
         const title = document.createElement('div');
         title.className = 'event-title';
-        title.textContent = event['Event'] || '';
+        title.textContent = (event['Event'] || '').trim();
         body.appendChild(title);
 
         // Tagline
-        if (event['Tagline']) {
+        if (event['Tagline'] && String(event['Tagline']).trim() !== '') {
           const tagline = document.createElement('div');
           tagline.className = 'event-tagline';
-          tagline.textContent = event['Tagline'];
+          tagline.textContent = String(event['Tagline']).trim();
           body.appendChild(tagline);
         }
 
         card.appendChild(body);
 
-        // Footer/button
+        // Footer (Learn More) — visible on desktop; hidden on mobile by existing CSS
         const footer = document.createElement('div');
         footer.className = 'card-footer';
-        const btn = document.createElement('a');
-        btn.className = 'button-learn';
-        btn.href = event['Page Link'];
-        btn.target = "_blank";
-        btn.rel = "noopener noreferrer";
-        btn.textContent = 'Learn More';
-        footer.appendChild(btn);
+        const learn = document.createElement('a');
+        learn.className = 'button-learn';
+        learn.href = (event['Page Link'] || '#').trim();
+        learn.target = '_blank';
+        learn.rel = 'noopener noreferrer';
+        learn.textContent = 'Learn More';
+        footer.appendChild(learn);
         card.appendChild(footer);
 
-        container.appendChild(card);
-      }
-    });
-    if (!container.children.length) {
-      container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
-    }
-  } catch(err) {
-    console.error(err);
-    container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
-  }
-})();
-</script>
-<script>
-(async function() {
-  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
-  const container = document.getElementById('explore-cards');
-  try {
-    const response = await fetch(csvUrl, {cache: 'no-cache'});
-    if(!response.ok) throw new Error('Failed to fetch explore events');
-    const csvText = await response.text();
-    const parsed = Papa.parse(csvText, {header: true, skipEmptyLines: true});
-    container.innerHTML = '';
-    parsed.data.forEach(event => {
-      if ((event['Scheduled'] || '').trim().toLowerCase() === 'no') {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.style.cursor = "pointer";
-
-        // Card click opens the event page
-        card.addEventListener('click', () => {
-          if (event['Page Link']) window.open(event['Page Link'], "_blank");
+        // Make whole card clickable on mobile only (<=768px). Ignore clicks that happened on links.
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return; // allow default link clicks
+          if (window.innerWidth <= 768) {
+            const url = (event['Page Link'] || '').trim();
+            if (url) window.open(url, '_blank');
+          }
         });
 
-        // Image section
-        const media = document.createElement('div');
-        media.className = 'media';
-        const img = document.createElement('img');
-        img.src = event['Image Links'];
-        img.alt = event['Event'] || '';
-        img.loading = "lazy";
-        media.appendChild(img);
-        card.appendChild(media);
-
-        // Body section
-        const body = document.createElement('div');
-        body.className = 'card-body';
-
-        // Event title (not a link)
-        const title = document.createElement('div');
-        title.className = 'event-title';
-        title.textContent = event['Event'] || '';
-        body.appendChild(title);
-
-        // Tagline
-        if (event['Tagline']) {
-          const tagline = document.createElement('div');
-          tagline.className = 'event-tagline';
-          tagline.textContent = event['Tagline'];
-          body.appendChild(tagline);
-        }
-
-        card.appendChild(body);
         container.appendChild(card);
+      });
+
+      if (!container.children.length) {
+        container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
       }
-    });
-    if (!container.children.length) {
-      container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
+    } catch (err) {
+      console.error('Error loading explore events:', err);
+      container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
     }
-  } catch(err) {
-    console.error(err);
-    container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
-  }
-})();
-</script>
+  })();
+  </script>
+
 </body>
 </html>
-
