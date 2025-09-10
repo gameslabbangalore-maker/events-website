@@ -17,13 +17,14 @@
       --accent: #fce029;
       --datebox: #303030;
       --text-main: #fff;
-      --heading-color: #fce029;
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
       --animated-height-desktop: 150px;
       --animated-height-mobile: 80px;
       --line-height-desktop: 1.4;
       --line-height-mobile: 1.5;
+
+      /* Reduced desktop max font size for animated text */
       --animated-font-size-max: 1.6rem;
       --animated-font-size-min: 1rem;
       --card-height-mobile-base: 80px; /* base height for mobile card at 100% width */
@@ -87,6 +88,7 @@
     /* Spacer to offset content from fixed topbar */
     .topbar-spacer { width:100%; height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px)); flex-shrink:0; }
     @media (max-width:600px){ .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); } }
+
     /* Divider below topbar and above animated text */
     .top-divider {
       width: 100%;
@@ -103,6 +105,7 @@
     @media (max-width:768px){
       .top-divider { margin-bottom: 10px; }
     }
+
     .wrap { max-width:1200px; margin:0 auto; padding-left:18px; padding-right:18px; box-sizing:border-box; padding-top:20px; }
     @media (min-width:769px){ .wrap { padding-top:12px; } }
     @media (max-width:768px){
@@ -180,17 +183,8 @@
       }
     }
     /* Title */
-    .title { 
-      text-align:center; 
-      margin-bottom:18px; 
-      color: var(--accent);
-      font-weight: 700;
-    }
-    .title h2 { 
-      margin:0; 
-      font-size:1.9rem; 
-      letter-spacing:0.2px; 
-    }
+    .title { text-align:center; margin-bottom:18px; }
+    .title h2 { color: var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.2px; }
     /* Cards Row */
     .cards-row {
       display:flex;
@@ -209,7 +203,7 @@
       flex-direction:column;
       transition: transform 0.16s ease, box-shadow 0.16s ease;
       cursor: default;
-      box-shadow: 0 6px 22px rgba(0,0,0,0.8);
+      box-shadow: 0 6px 22px rgba(0,0,0,0.8); /* Darker shadow */
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
@@ -270,7 +264,7 @@
     }
     .book-btn {
       background: var(--accent);
-      color: #000;
+      color: #000; /* Dark theme: Black text */
       padding: 10px 16px;
       border-radius: 8px;
       font-weight:700;
@@ -281,6 +275,12 @@
       background:#ffe974;
     }
     /* Mobile Card Layout */
+    .mobile-info {
+      display: none;
+    }
+    .card-date {
+      display: none;
+    }
     @media (max-width:768px){
       body {
         background:var(--bg);
@@ -289,14 +289,14 @@
         justify-content:center;
       }
       .card {
-        width: 90vw;
-        max-width: 400px;
-        height: auto;
+        width: 90vw; /* width relative to viewport */
+        max-width: 400px; /* optional max width */
+        height: auto; /* allow height to adjust automatically based on content */
         display:flex;
         flex-direction: row;
         align-items: center;
         gap:8px;
-        padding: calc(10px + 1vw) calc(8px + 1vw);
+        padding: calc(10px + 1vw) calc(8px + 1vw); /* padding scales slightly */
         border-radius:12px;
         cursor: pointer;
         background: var(--card);
@@ -308,7 +308,7 @@
       .media {
         width: 18vw;
         max-width: 72px;
-        aspect-ratio: 1 / 1;
+        aspect-ratio: 1 / 1;  /* square aspect ratio */
         height: auto;
         padding-top: 0 !important;
         border-radius: 10px;
@@ -324,24 +324,120 @@
         object-fit: cover;
       }
       .card-body {
-        padding: 0;
-        display: flex;
+        padding:0;
+        display:flex;
         flex-direction: column;
         gap: calc(4px + 0.3vw);
-        flex: 1 1 auto;
+        flex:1 1 auto;
       }
       .event-title {
         font-size: calc(14px + 1.5vw) !important;
         font-weight: 800 !important;
+        color:#fff;
+        margin:0;
+      }
+      .meta {
+        display:none;
+      }
+      .location {
+        display:none;
+      }
+      .mobile-info {
+        display:block;
+        font-size: calc(11px + 0.7vw);
+        color:var(--muted);
+        margin:0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90vw;
+      }
+      .mobile-info a {
+        color: var(--accent);
+        text-decoration:none;
+        font-weight:600;
+      }
+      .mobile-info a:hover {
+        text-decoration:underline;
+      }
+      .card-footer {
+        display:none;
+      }
+      .card-date {
+        display:flex;
+        width: 18vw;
+        max-width: 72px;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius:10px;
+        background: var(--datebox);
+        border: 1.5px solid rgba(255,255,255,0.08);
+        color:#fff;
+        font-size: calc(11px + 1vw); /* Increased base font size for date */
+        box-sizing:border-box;
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
+      }
+      .card-date .day {
+        font-weight:700;
+        font-size: calc(22px + 2vw); /* increased font size proportionally */
+        color: #fce029;
+        line-height:1;
+      }
+      .card-date .month {
+        font-size: calc(12px + 1vw); /* increased font size */
         color: #fff;
-        margin: 0;
+        line-height:1;
+      }
+      .card-date .time {
+        display:none;
       }
     }
 
-    /* New styles */
-    /* Add gap below #events container */
-    #events {
-      margin-bottom: 40px;
+    /* Light Mode Adjustments */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f5f5;
+        --card: #ffffff;
+        --muted: #444;
+        --accent: #0a75bc;
+        --datebox: #ececec;
+        --text-main: #181818;
+      }
+      body { background: var(--bg); color: var(--text-main); }
+      .animated-text { color: #000; } /* Black animated text */
+      .topbar, .topbar-bleed {
+        background: rgba(255,255,255,0.1);
+        color: #181818;
+      }
+      .card {
+        background: var(--card);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 6px 22px rgba(0,0,0,0.8);
+      }
+      .event-title { color: #000; } /* Black event title */
+      .card-date {
+        background: var(--datebox);
+        border: 1.5px solid rgba(0,0,0,0.03);
+        color: #181818;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      .card-date .day {
+        color: #0a75bc;
+      }
+      .card-date .month {
+        color: #000; /* MMM in black */
+      }
+      /* Book Now button text becomes white in light theme */
+      .book-btn {
+        color: #fff;
+      }
+      .brand { color: #242424; }
     }
   </style>
 </head>
@@ -354,181 +450,179 @@
     </div>
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
+
   <main class="wrap" role="main">
+    <!-- Divider below topbar -->
     <div class="top-divider" aria-hidden="true"></div>
+
     <div class="animated-wrapper" aria-live="polite">
       <div class="animated-text"></div>
     </div>
     <div class="divider" aria-hidden="true"></div>
-
-    <div class="title" style="margin-bottom: 24px;">
-      <h2>Upcoming Events</h2>
-    </div>
+    <div class="title"><h2>Upcoming Events</h2></div>
     <div id="events" class="cards-row" aria-live="polite"></div>
-
-    <div class="divider"></div>
-
-    <!-- Placeholder for further sections -->
-
+    <div class="divider" style="margin-top: 40px;"></div>
   </main>
 
   <script>
-    const lines = [
-      'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
-    ];
-    const msg = lines.join('\n');
-    const animatedTextElem = document.querySelector('.animated-text');
-    let charIndex = 0, isDeleting = false;
-    const delay = 55, pauseBetween = 2600;
-    function type() {
-      if (!isDeleting) {
-        animatedTextElem.textContent = msg.substring(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === msg.length) {
-          isDeleting = true; setTimeout(type, pauseBetween); return;
-        }
-      } else {
-        animatedTextElem.textContent = msg.substring(0, charIndex - 1);
-        charIndex--;
-        if (charIndex === 0) isDeleting = false;
+  const lines = [
+    'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
+  ];
+  const msg = lines.join('\n');
+  const animatedTextElem = document.querySelector('.animated-text');
+  let charIndex = 0, isDeleting = false;
+  const delay = 55, pauseBetween = 2600;
+  function type() {
+    if (!isDeleting) {
+      animatedTextElem.textContent = msg.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === msg.length) {
+        isDeleting = true; setTimeout(type, pauseBetween); return;
       }
-      setTimeout(type, isDeleting ? delay/2 : delay);
+    } else {
+      animatedTextElem.textContent = msg.substring(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) isDeleting = false;
     }
-    animatedTextElem.textContent = msg;
-    setTimeout(type, pauseBetween);
-
-    (async function(){
-      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-      const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
-      function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
-      function parseEventDate(str) {
-        if (!str) return null;
-        str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
-        str = str.replace(/’/g, "'").replace(/`/g,"'");
-        const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-        if (!parts) return null;
-        const [_, day, monthStr, yearStr] = parts;
-        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
-        if (month === undefined) return null;
-        const year = 2000 + parseInt(yearStr, 10);
-        return new Date(year, month, parseInt(day, 10));
+    setTimeout(type, isDeleting ? delay/2 : delay);
+  }
+  animatedTextElem.textContent = msg;
+  setTimeout(type, pauseBetween);
+  (async function(){
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+    const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+    function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
+    function parseEventDate(str) {
+      if (!str) return null;
+      str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
+      str = str.replace(/’/g, "'").replace(/`/g,"'");
+      const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+      if (!parts) return null;
+      const [_, day, monthStr, yearStr] = parts;
+      const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+      if (month === undefined) return null;
+      const year = 2000 + parseInt(yearStr, 10);
+      return new Date(year, month, parseInt(day, 10));
+    }
+    try {
+      const res = await fetch(csvUrl, {cache: "no-cache"});
+      if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
+      const csvText = await res.text();
+      const parsed = Papa.parse(csvText, {skipEmptyLines:true});
+      const rows = parsed.data || [];
+      if (rows.length < 2) {
+        document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+        return;
       }
-      try {
-        const res = await fetch(csvUrl, {cache: "no-cache"});
-        if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
-        const csvText = await res.text();
-        const parsed = Papa.parse(csvText, {skipEmptyLines:true});
-        const rows = parsed.data || [];
-        if (rows.length < 2) {
-          document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
-          return;
+      const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+      const container = document.getElementById("events");
+      container.innerHTML = "";
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      let upcomingCount = 0;
+      dataRows.forEach(cols => {
+        const name = clean(cols[0]);
+        const date = clean(cols[1]);
+        const time = clean(cols[2]);
+        const locText = clean(cols[3]);
+        const locLink = clean(cols[4]);
+        const ticket = clean(cols[5]) || "#";
+        const image = clean(cols[6]) || fallbackImage;
+        const eventDateObj = parseEventDate(date);
+        if (!eventDateObj) return;
+        eventDateObj.setHours(0,0,0,0);
+        if (eventDateObj < today) return;
+        upcomingCount++;
+        const card = document.createElement("article");
+        card.className = "card";
+        // Media
+        const media = document.createElement("div");
+        media.className = "media";
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.src = image;
+        img.alt = name || "Event image";
+        img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+        media.appendChild(img);
+        card.appendChild(media);
+        // Body
+        const body = document.createElement("div");
+        body.className = "card-body";
+        const h = document.createElement("h3");
+        h.className = "event-title";
+        h.textContent = name || "Untitled Event";
+        body.appendChild(h);
+        // Desktop meta
+        const meta = document.createElement("p");
+        meta.className = "meta";
+        meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+        body.appendChild(meta);
+        // Desktop location
+        if (locText || locLink) {
+          const locP = document.createElement("p");
+          locP.className = "location";
+          const a = document.createElement("a");
+          a.href = locLink || "#";
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = locText;
+          locP.appendChild(a);
+          body.appendChild(locP);
         }
-        const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
-        const container = document.getElementById("events");
-        container.innerHTML = "";
-        const today = new Date();
-        today.setHours(0,0,0,0);
-        let upcomingCount = 0;
-        dataRows.forEach(cols => {
-          const name = clean(cols[0]);
-          const date = clean(cols[1]);
-          const time = clean(cols[2]);
-          const locText = clean(cols[3]);
-          const locLink = clean(cols[4]);
-          const ticket = clean(cols[5]) || "#";
-          const image = clean(cols[6]) || fallbackImage;
-          const eventDateObj = parseEventDate(date);
-          if (!eventDateObj) return;
-          eventDateObj.setHours(0,0,0,0);
-          if (eventDateObj < today) return;
-          upcomingCount++;
-          const card = document.createElement("article");
-          card.className = "card";
-          // Media
-          const media = document.createElement("div");
-          media.className = "media";
-          const img = document.createElement("img");
-          img.loading = "lazy";
-          img.src = image;
-          img.alt = name || "Event image";
-          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
-          media.appendChild(img);
-          card.appendChild(media);
-          // Body
-          const body = document.createElement("div");
-          body.className = "card-body";
-          const h = document.createElement("h3");
-          h.className = "event-title";
-          h.textContent = name || "Untitled Event";
-          body.appendChild(h);
-          // Desktop meta and location, visible on desktop too
-          const meta = document.createElement("p");
-          meta.className = "meta";
-          meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
-          body.appendChild(meta);
-          if (locText || locLink) {
-            const locP = document.createElement("p");
-            locP.className = "location";
-            const a = document.createElement("a");
-            a.href = locLink || "#";
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = locText;
-            locP.appendChild(a);
-            body.appendChild(locP);
+        // Mobile Info Line
+        const mobileInfo = document.createElement("p");
+        mobileInfo.className = "mobile-info";
+        if (locText) {
+          const a2 = document.createElement("a");
+          a2.href = locLink || "#";
+          a2.target = "_blank";
+          a2.rel = "noopener noreferrer";
+          a2.textContent = locText;
+          mobileInfo.appendChild(a2);
+        }
+        if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
+        if (time) mobileInfo.appendChild(document.createTextNode(time));
+        body.appendChild(mobileInfo);
+        card.appendChild(body);
+        // Mobile date box
+        if (eventDateObj) {
+          const dayNum = eventDateObj.getDate();
+          const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
+          const dateBox = document.createElement("div");
+          dateBox.className = "card-date";
+          dateBox.innerHTML =
+            `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
+            `<div class="month">${monthShort}</div>` +
+            `<div class="time"></div>`;
+          card.appendChild(dateBox);
+        }
+        // Desktop Book Now
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+        const btn = document.createElement("a");
+        btn.className = "book-btn";
+        btn.href = ticket;
+        btn.target = "_blank";
+        btn.rel = "noopener noreferrer";
+        btn.textContent = "Book Now";
+        footer.appendChild(btn);
+        card.appendChild(footer);
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return;
+          if (window.innerWidth <= 768) {
+            if (ticket && ticket !== "#") window.open(ticket, '_blank');
           }
-          // Mobile Info Line, still appended
-          const mobileInfo = document.createElement("p");
-          mobileInfo.className = "mobile-info";
-          if (locText) {
-            const a2 = document.createElement("a");
-            a2.href = locLink || "#";
-            a2.target = "_blank";
-            a2.rel = "noopener noreferrer";
-            a2.textContent = locText;
-            mobileInfo.appendChild(a2);
-          }
-          if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
-          if (time) mobileInfo.appendChild(document.createTextNode(time));
-          body.appendChild(mobileInfo);
-          card.appendChild(body);
-          // Mobile date box
-          if (eventDateObj) {
-            const dayNum = eventDateObj.getDate();
-            const monthShort = eventDateObj.toLocaleString('en-US', {month: 'short'});
-            const dateBox = document.createElement("div");
-            dateBox.className = "card-date";
-            dateBox.innerHTML =
-              `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
-              `<div class="month">${monthShort}</div>` +
-              `<div class="time"></div>`;
-            card.appendChild(dateBox);
-          }
-          // Desktop Book Now
-          const footer = document.createElement("div");
-          footer.className = "card-footer";
-          const btn = document.createElement("a");
-          btn.className = "book-btn";
-          btn.href = ticket;
-          btn.target = "_blank";
-          btn.rel = "noopener noreferrer";
-          btn.textContent = "Book Now";
-          footer.appendChild(btn);
-          card.appendChild(footer);
-          card.addEventListener('click', function(e) {
-            if (e.target.closest('a')) return;
-            if (window.innerWidth <= 768) {
-              if (ticket && ticket !== "#") window.open(ticket, '_blank');
-            }
-          });
-          container.appendChild(card);
         });
-        if (upcomingCount === 0) container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
-      } catch(err) {
-        console.error(err);
-        document.getElementById("events").innerHTML = '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
-      }
-    })();
+        container.appendChild(card);
+      });
+      if (upcomingCount === 0)
+        container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
+    } catch (err) {
+      console.error(err);
+      document.getElementById("events").innerHTML =
+        '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
+    }
+  })();
   </script>
 </body>
 </html>
