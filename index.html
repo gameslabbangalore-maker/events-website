@@ -177,6 +177,21 @@
       backdrop-filter:blur(2px);
       -webkit-backdrop-filter:blur(2px);
     }
+    @media (max-width:768px) {
+      .meta,
+      .location,
+      .card-footer {
+        display: block !important;
+        color: var(--muted);
+        font-size: 14px;
+        margin: 6px 0;
+      }
+      .card-footer {
+        display: flex !important;
+        justify-content: center;
+        padding: 10px 14px;
+      }
+    }
     @media (max-width:768px){
       .divider {
         margin:10px 0 16px;
@@ -988,6 +1003,7 @@
 </script>
 </body>
 </html>
+
 
 
 
