@@ -13,38 +13,41 @@
     :root {
       --bg-dark: #181818;
       --bg-light: #f5f5f5;
-      --card-bg-dark: rgba(33, 33, 33, 0.85);
-      --card-bg-light: rgba(255, 255, 255, 0.9);
-      --datebox-bg-dark: rgba(48, 48, 48, 0.85);
-      --datebox-bg-light: rgba(240, 240, 240, 0.9);
+      --card-dark: #212121;
+      --card-light: #ffffff;
+      --datebox-dark: #303030;
+      --datebox-light: #ececec;
       --accent-dark: #fce029;
       --accent-light: #0a75bc;
       --text-dark: #fff;
       --text-light: #000;
       --shadow-dark: rgba(0, 0, 0, 0.5);
       --shadow-light: rgba(0, 0, 0, 0.85);
-
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
+      --animated-height-desktop: 150px;
+      --animated-height-mobile: 80px;
+      --line-height-desktop: 1.4;
+      --line-height-mobile: 1.5;
     }
 
-    html, body {
+    body {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+      font-family: 'Comfortaa', cursive;
       margin: 0;
       height: 100%;
-      font-family: 'Comfortaa', cursive;
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Safe area bleed for status bar */
+    /* Safe area for status bar */
     .topbar-bleed {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: env(safe-area-inset-top, 0);
+      height: env(safe-area-inset-top);
       background: rgba(24, 24, 24, 0.07);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -55,14 +58,12 @@
     /* Top bar */
     .topbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       display: flex;
       align-items: center;
       padding-left: 24px;
-      padding-top: env(safe-area-inset-top, 0);
-      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0));
+      padding-top: env(safe-area-inset-top);
+      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top));
       box-sizing: border-box;
       border-bottom: 1px solid transparent;
       background: rgba(24, 24, 24, 0.04);
@@ -100,7 +101,7 @@
     @media (max-width: 600px) {
       .topbar {
         padding-left: 10px;
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0));
+        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top));
       }
 
       .topbar img {
@@ -115,13 +116,13 @@
 
     .topbar-spacer {
       width: 100%;
-      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0));
+      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top));
       flex-shrink: 0;
     }
 
     @media (max-width: 600px) {
       .topbar-spacer {
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0));
+        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top));
       }
     }
 
@@ -178,14 +179,14 @@
       color: var(--text-dark);
       margin: 0;
       padding: 0;
-      line-height: var(--line-height);
+      line-height: var(--line-height-desktop);
       user-select: none;
       white-space: pre-line;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100%;
       box-sizing: border-box;
+      height: 100%;
     }
 
     @media (max-width: 768px) {
@@ -193,7 +194,7 @@
         font-size: 1rem;
         line-height: var(--line-height-mobile);
         letter-spacing: 1.5px;
-        color: #000;
+        color: var(--text-light);
         padding: 0 6px;
       }
     }
@@ -207,7 +208,7 @@
         rgba(255, 255, 255, 0.06),
         rgba(255, 255, 255, 0.02)
       );
-      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02) inset;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
       border-radius: 1px;
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
@@ -222,17 +223,11 @@
     .title {
       text-align: center;
       margin-bottom: 18px;
-    }
-
-    .title h2 {
       color: var(--accent-dark);
-      margin: 0;
-      font-size: 1.9rem;
-      letter-spacing: 0.2px;
     }
 
     @media (prefers-color-scheme: light) {
-      .title h2 {
+      .title {
         color: var(--accent-light);
       }
     }
@@ -245,19 +240,18 @@
       align-items: flex-start;
     }
 
-    /* Desktop cards */
     .card {
       width: 340px;
-      background: var(--card-bg-dark);
+      background: var(--card-dark);
       border-radius: 12px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.16s ease, box-shadow 0.16s ease;
-      cursor: default;
       box-shadow: 0 6px 22px var(--shadow-dark);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+      cursor: default;
     }
 
     .card:hover {
@@ -299,21 +293,21 @@
     .meta {
       margin: 0;
       font-size: 13.5px;
-      color: var(--text-dark);
+      color: var(--card-dark);
       opacity: 0.7;
     }
 
     .location {
       margin: 0;
       font-size: 14px;
-      color: var(--text-dark);
+      color: var(--card-dark);
       opacity: 0.7;
     }
 
     .location a {
       color: var(--accent-dark);
-      text-decoration: none;
       font-weight: 600;
+      text-decoration: none;
     }
 
     .location a:hover {
@@ -337,13 +331,9 @@
       line-height: 1;
     }
 
-    .card-date .time {
-      display: none;
-    }
-
     .card-date {
       border-radius: 10px;
-      background: var(--datebox-bg-dark);
+      background: var(--datebox-dark);
       border: 1.5px solid rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -389,25 +379,26 @@
       border-radius: 8px;
       font-weight: 700;
       display: inline-block;
-      cursor: pointer;
       user-select: none;
+      cursor: pointer;
     }
 
     .card-footer a:hover {
-      background: #ffc94c;
+      background: #ffc107;
     }
 
-    /* Mobile styles */
+    /* Mobile */
+
     @media (max-width: 768px) {
       body {
-        background-color: var(--bg-dark);
+        background: var(--bg-dark);
         color: var(--text-dark);
       }
 
       .wrap {
         padding-left: 12px !important;
         padding-right: 12px !important;
-        padding-top: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0) + 100px);
+        padding-top: calc(var(--topbar-height-mobile) + env(safe-area-inset-top) + 100px);
       }
 
       .cards-row {
@@ -424,10 +415,11 @@
         min-height: 80px;
         border-radius: 12px;
         cursor: pointer;
-        background: var(--card-bg-dark);
+        background: var(--card-dark);
         box-shadow: 0 6px 22px var(--shadow-dark);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
+        transition: box-shadow 0.3s ease;
       }
 
       .card:hover {
@@ -437,17 +429,14 @@
       .media {
         width: 72px;
         height: 72px;
-        padding: 0;
-        margin: 0;
-        overflow: hidden;
         border-radius: 10px;
-        flex-shrink: 0;
+        overflow: hidden;
         background: #111;
         position: relative;
+        flex-shrink: 0;
       }
 
       .media img {
-        position: static;
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -457,15 +446,15 @@
         padding: 0;
         display: flex;
         flex-direction: column;
-        gap: 2px;
+        gap: 4px;
         flex: 1 1 auto;
       }
 
       .event-title {
-        font-weight: 800 !important;
         font-size: 19px !important;
-        margin: 0;
+        font-weight: 800 !important;
         color: var(--text-dark);
+        margin: 0;
       }
 
       .meta {
@@ -479,19 +468,19 @@
       .mobile-info {
         display: block;
         font-size: 13px;
-        color: var(--text-dark);
+        color: var(--card-dark);
         opacity: 0.7;
         margin: 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 76vw;
+        max-width: 75vw;
       }
 
       .mobile-info a {
         color: var(--accent-dark);
-        text-decoration: none;
         font-weight: 600;
+        text-decoration: none;
       }
 
       .mobile-info a:hover {
@@ -500,6 +489,35 @@
 
       .card-date {
         display: flex;
+        border-radius: 10px;
+        background: var(--datebox-dark);
+        border: 1.5px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
+        color: var(--text-dark);
+        width: 72px;
+        height: 72px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+
+      .card-date .day {
+        font-weight: 700;
+        font-size: 28px;
+        color: var(--accent-dark);
+        line-height: 1;
+      }
+
+      .card-date .month {
+        font-size: 14px;
+        color: var(--text-dark);
+        line-height: 1;
+      }
+
+      .card-date .time {
+        display: none;
       }
 
       .card-footer {
@@ -507,19 +525,20 @@
       }
     }
 
-    /* Light theme */
+    /* Switch to Light theme */
+
     @media (prefers-color-scheme: light) {
       :root {
-        --bg-dark: #f5f5f5;
-        --card-bg-dark: rgba(255, 255, 255, 0.9);
-        --datebox-bg-dark: rgba(240, 240, 240, 0.9);
-        --accent-dark: #0a75bc;
-        --text-dark: #000;
+        --bg-dark: var(--bg-light);
+        --card-dark: var(--card-light);
+        --datebox-dark: var(--datebox-light);
+        --accent-dark: var(--accent-light);
+        --text-dark: var(--text-light);
         --shadow-dark: rgba(0, 0, 0, 0.85);
       }
 
       body {
-        background-color: var(--bg-dark);
+        background: var(--bg-dark);
         color: var(--text-dark);
       }
 
@@ -531,7 +550,7 @@
       }
 
       .card {
-        background: var(--card-bg-dark);
+        background: var(--card-dark);
         box-shadow: 0 6px 22px var(--shadow-dark);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
@@ -542,20 +561,10 @@
       }
 
       .card-date {
-        display: flex;
-        background: var(--datebox-bg-dark);
+        background: var(--datebox-dark);
         border: 1.5px solid rgba(0, 0, 0, 0.05);
-        color: var(--text-dark);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        cursor: default;
-      }
-
-      .card-date .day {
-        color: var(--accent-dark);
-      }
-
-      .card-date .month {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         color: var(--text-dark);
       }
 
@@ -568,7 +577,7 @@
         color: var(--accent-dark);
       }
 
-      .title h2 {
+      .title {
         color: var(--accent-dark);
       }
     }
@@ -584,204 +593,194 @@
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
   <main class="wrap" role="main">
-    <div class="animated-wrapper" aria-live="polite">
-      <div class="animated-text"></div>
+    <div class="animated-wrapper">
+      <div class="animated-text" aria-live="polite"></div>
     </div>
-    <div class="divider" aria-hidden="true"></div>
-    <div class="title"><h2>Upcoming Events</h2></div>
+    <div class="divider"></div>
+    <div class="title">
+      <h2>Upcoming Events</h2>
+    </div>
     <div id="events" class="cards-row"></div>
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.0/papaparse.min.js"></script>
   <script>
-    const lines = [
-      'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
-    ];
+    const lines = ['IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'];
     const msg = lines.join('\n');
-    const animatedTextElem = document.querySelector('.animated-text');
-    let charIndex = 0;
-    let isDeleting = false;
+    const animatedElem = document.querySelector('.animated-text');
+    let index = 0, isDeleting = false;
+
     const delay = 55;
-    const pauseBetween = 2600;
-    function type() {
+    const pause = 2600;
+
+    function typeWriter() {
       if (!isDeleting) {
-        animatedTextElem.textContent = msg.substring(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === msg.length) {
+        animatedElem.textContent = msg.substring(0, index + 1);
+        index++;
+        if (index === msg.length) {
           isDeleting = true;
-          setTimeout(type, pauseBetween);
+          setTimeout(typeWriter, pause);
           return;
         }
       } else {
-        animatedTextElem.textContent = msg.substring(0, charIndex - 1);
-        charIndex--;
-        if (charIndex === 0) isDeleting = false;
+        animatedElem.textContent = msg.substring(0, index - 1);
+        index--;
+        if (index === 0) {
+          isDeleting = false;
+        }
       }
-      setTimeout(type, isDeleting ? delay / 2 : delay);
+      setTimeout(typeWriter, isDeleting ? delay / 2 : delay);
     }
-    animatedTextElem.textContent = msg;
-    setTimeout(type, pauseBetween);
 
-    (async function () {
-      const csvUrl =
-        'https://docs.google.com/spreadsheets/d/e/2PACX-1vSsvlFaLHDFX-WSgAIeDFg/pub?output=csv';
-      const fallback = 'https://via.placeholder.com/800x450?text=Event+Image';
+    animatedElem.textContent = msg;
+    setTimeout(typeWriter, pause);
+
+    (async function(){
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSv7UEqmTnaJePZsldTDbvL6jpJ1R4GVi5H-Npt6wF09VuPYZWDbScqNrXmgYkpi7csEs-Cn9FJueLnL/pub?output=csv';
+      const fallback = 'https://via.placeholder.com/800x450?text=No+Image';
 
       function clean(v) {
-        if (v === undefined || v === null) return '';
-        return String(v).trim().replace(/^"|"$/g, '');
+        return v ? v.trim().replace(/^"|"$/g, '') : '';
       }
 
       function parseDate(d) {
         if (!d) return null;
         d = d.trim().replace(/^[A-Za-z]{3},?\s*/, '');
-        d = d.replace(/’/g, "'").replace(/`/g, "'");
+        d = d.replace(/’/g, "'").replace(/`/g,"'");
         const parts = d.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
         if (!parts) return null;
-        const [, day, m, y] = parts;
-        const months = {
-          Jan: 0,
-          Feb: 1,
-          Mar: 2,
-          Apr: 3,
-          May: 4,
-          Jun: 5,
-          Jul: 6,
-          Aug: 7,
-          Sep: 8,
-          Oct: 9,
-          Nov: 10,
-          Dec: 11,
-        };
-        if (!(m in months)) return null;
-        const year = 2000 + parseInt(y, 10);
-        return new Date(year, months[m], parseInt(day, 10));
+        const [, day, month, year] = parts;
+        const months = {'Jan':0,'Feb':1,'Mar':2,'Apr':3,'May':4,'Jun':5,'Jul':6,'Aug':7,'Sep':8,'Oct':9,'Nov':10,'Dec':11};
+        if (!(month in months)) return null;
+        return new Date(2000 + parseInt(year,10), months[month], parseInt(day,10));
       }
 
       try {
-        const res = await fetch(csvUrl, { cache: 'no-cache' });
-        if (!res.ok)
-          throw new Error('Failed to fetch events CSV: ' + res.status);
+        const res = await fetch(csvUrl, {cache: 'no-cache'});
+        if (!res.ok) throw new Error('Failed to fetch events');
         const text = await res.text();
-        const parsed = Papa.parse(text, { skipEmptyLines: true });
-        const rows = parsed.data || [];
-        if (rows.length < 2) {
-          document.getElementById('events').innerHTML =
-            '<p style="color:#bbb">No events found.</p>';
+        const parsed = Papa.parse(text, {skipEmptyLines: true});
+        const data = parsed.data || [];
+        if (data.length < 2) {
+          document.getElementById('events').innerHTML = '<p style="color:#bbb">No events found.</p>';
           return;
         }
-        const dataRows = rows.slice(1).filter((r) => r && r[0] && r[0].trim());
+
+        const events = data.slice(1).filter(r => r && r[0]);
         const container = document.getElementById('events');
         container.innerHTML = '';
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        let upcomingCount = 0;
-        dataRows.forEach((cols) => {
-          const name = clean(cols[0]);
-          const date = clean(cols[1]);
+        today.setHours(0,0,0,0);
+        let upcoming = 0;
+
+        events.forEach(cols => {
+          const n = clean(cols[0]);
+          const dt = clean(cols[1]);
           const time = clean(cols[2]);
           const loc = clean(cols[3]);
           const locLink = clean(cols[4]);
           const ticket = clean(cols[5]) || '#';
-          const image = clean(cols[6]) || fallback;
-          const eventDate = parseDate(date);
+          const imgURL = clean(cols[6]) || fallback;
+
+          const eventDate = parseDate(dt);
           if (!eventDate) return;
-          eventDate.setHours(0, 0, 0, 0);
+          eventDate.setHours(0,0,0,0);
           if (eventDate < today) return;
-          upcomingCount++;
+
+          upcoming++;
+
           const card = document.createElement('article');
           card.className = 'card';
-          // media section
+
+          // media
           const media = document.createElement('div');
           media.className = 'media';
           const img = document.createElement('img');
           img.loading = 'lazy';
-          img.src = image;
-          img.alt = name || 'Event image';
-          img.onerror = () => {
-            img.onerror = null;
-            img.src = fallback;
-          };
+          img.src = imgURL;
+          img.alt = n;
+          img.onerror = () => { img.src = fallback; };
           media.appendChild(img);
           card.appendChild(media);
-          // body section
+
+          // body
           const body = document.createElement('div');
           body.className = 'card-body';
-          const h = document.createElement('h3');
-          h.className = 'event-title';
-          h.textContent = name;
-          body.appendChild(h);
+
+          const title = document.createElement('h3');
+          title.className = 'event-title';
+          title.textContent = n;
+          body.appendChild(title);
+
           const meta = document.createElement('p');
           meta.className = 'meta';
-          meta.textContent = `${date}${date && time ? ' | ' : ''}${time}`;
+          meta.textContent = dt + (dt && time ? ' | ' : '') + time;
           body.appendChild(meta);
-          const locationEl = document.createElement('p');
-          locationEl.className = 'location';
+
           if (loc) {
+            const locationP = document.createElement('p');
+            locationP.className = 'location';
             const link = document.createElement('a');
             link.href = locLink || '#';
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
             link.textContent = loc;
-            locationEl.appendChild(link);
-            body.appendChild(locationEl);
+            locationP.appendChild(link);
+            body.appendChild(locationP);
           }
+
           // mobile info line
           const mobileInfo = document.createElement('p');
           mobileInfo.className = 'mobile-info';
-          if (loc) {
-            const linkMobile = document.createElement('a');
-            linkMobile.href = locLink || '#';
-            linkMobile.target = '_blank';
-            linkMobile.rel = 'noopener noreferrer';
-            linkMobile.textContent = loc;
-            mobileInfo.appendChild(linkMobile);
+          if(loc) {
+            const a = document.createElement('a');
+            a.href = locLink || '#';
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = loc;
+            mobileInfo.appendChild(a);
           }
-          if (loc && time) mobileInfo.appendChild(document.createTextNode(' | '));
-          if (time) mobileInfo.appendChild(document.createTextNode(time));
+          if(loc && time) mobileInfo.appendChild(document.createTextNode(' | '));
+          if(time) mobileInfo.appendChild(document.createTextNode(time));
           body.appendChild(mobileInfo);
+
           card.appendChild(body);
-          // date box
-          if (eventDate) {
+
+          // date box for mobile
+          if(eventDate) {
             const dateBox = document.createElement('div');
             dateBox.className = 'card-date';
-            const day = eventDate.getDate();
-            const month = eventDate.toLocaleString('en-US', { month: 'short' });
-            dateBox.innerHTML = `
-              <div class="day">${day < 10 ? '0' + day : day}</div>
-              <div class="month">${month}</div>
-              <div class="time"></div>
-            `;
+            dateBox.innerHTML = `<div class="day">${String(eventDate.getDate()).padStart(2,'0')}</div><div class="month">${eventDate.toLocaleString('en-US', {month:'short'})}</div><div class="time"></div>`;
             card.appendChild(dateBox);
           }
-          // footer with button
+
+          // footer
           const footer = document.createElement('div');
           footer.className = 'card-footer';
-          const bookBtn = document.createElement('a');
-          bookBtn.className = 'card-button';
-          bookBtn.href = ticket;
-          bookBtn.target = '_blank';
-          bookBtn.rel = 'noopener noreferrer';
-          bookBtn.textContent = 'Book Now';
-          footer.appendChild(bookBtn);
+          const btn = document.createElement('a');
+          btn.className = 'card-button';
+          btn.href = ticket;
+          btn.target = '_blank';
+          btn.rel = 'noopener noreferrer';
+          btn.textContent = 'Book Now';
+          footer.appendChild(btn);
           card.appendChild(footer);
 
-          // mobile tap handler to open ticket link
-          card.addEventListener('click', (e) => {
-            if (e.target.closest('a')) return;
-            if (window.innerWidth <= 768 && ticket && ticket !== '#') {
+          card.addEventListener('click', e => {
+            if(e.target.closest('a')) return;
+            if(window.innerWidth <= 768 && ticket && ticket !== '#') {
               window.open(ticket, '_blank');
             }
           });
 
           container.appendChild(card);
         });
-        if (upcomingCount === 0) {
-          container.innerHTML =
-            '<p style="color:#bbb">No upcoming events were found.</p>';
+
+        if(upcoming === 0) {
+          container.innerHTML = '<p style="color:#bbb">No events found.</p>';
         }
-      } catch (error) {
-        console.error(error);
-        document.getElementById('events').innerHTML =
-          '<p style="color:#f66">Error loading events. Please check back later.</p>';
+      } catch (e){
+        console.error(e);
+        document.getElementById('events').innerHTML = '<p style="color:#f66">Error loading events, please try again later.</p>';
       }
     })();
   </script>
