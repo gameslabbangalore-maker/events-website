@@ -8,470 +8,86 @@
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <!-- single PapaParse include -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
   <style>
-    :root {
-      --bg: #181818;
-      --card: #212121;
-      --muted: #d0d0d0;
-      --accent: #fce029;
-      --datebox: #303030;
-      --text-main: #fff;
-      --topbar-height-desktop: 58px;
-      --topbar-height-mobile: 48px;
-      --animated-height-desktop: 150px;
-      --animated-height-mobile: 80px;
-      --line-height-desktop: 1.4;
-      --line-height-mobile: 1.5;
+    :root{
+      --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
+      --topbar-height-desktop:58px; --topbar-height-mobile:48px;
+      --animated-height-desktop:150px; --animated-height-mobile:80px;
+      --line-height-desktop:1.4; --line-height-mobile:1.5;
+      --animated-font-size-max:1.6rem;
+    }
+    html,body{margin:0;height:100%;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-family:'Comfortaa',cursive;background:var(--bg);color:var(--text-main);}
+    .topbar-bleed{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(24,24,24,0.07);backdrop-filter:blur(10px);z-index:10002;pointer-events:none;}
+    .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));z-index:10003;background:rgba(24,24,24,0.07);backdrop-filter:blur(12px);transition:background .22s;}
+    .topbar-left{display:flex;align-items:center;height:100%}.logo{height:36px;width:36px;border-radius:8px;margin-right:12px;object-fit:cover}.brand{font-size:1.45rem;font-weight:700;letter-spacing:.5px;color:white}
+    @media (max-width:600px){ .topbar{padding-left:10px;height:calc(var(--topbar-height-mobile)+env(safe-area-inset-top,0px));} .logo{height:26px;width:26px;margin-right:8px} .brand{font-size:1rem} }
 
-      /* Reduced desktop max font size for animated text */
-      --animated-font-size-max: 1.6rem;
-      --animated-font-size-min: 1rem;
-      --card-height-mobile-base: 80px; /* base height for mobile card at 100% width */
-    }
-    body {
-      background: var(--bg);
-      color: var(--text-main);
-      font-family:'Comfortaa',cursive;
-    }
-    html,body{
-      margin:0; height:100%;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    /* TOPBAR BLEED (status area) */
-    .topbar-bleed {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: constant(safe-area-inset-top, 0px);
-      height: env(safe-area-inset-top, 0px);
-      background: rgba(24,24,24,0.07);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      z-index: 10002;
-      pointer-events: none;
-    }
-    /* Light theme overrides for topbar-bleed background */
-    @media (prefers-color-scheme: light) {
-      .topbar-bleed {
-        background: #fff !important;
-      }
-    }
-    /* TOPBAR */
-    .topbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      display: flex;
-      align-items: center;
-      padding-left: 24px;
-      padding-top: constant(safe-area-inset-top, 0px);
-      padding-top: env(safe-area-inset-top, 0px);
-      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
-      box-sizing: border-box;
-      z-index: 10003;
-      border-bottom: 1px solid transparent;
-      background: rgba(24,24,24,0.07); /* nearly invisible */
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: background 0.22s;
-    }
-    .topbar-left { display:flex; align-items:center; height:100%; }
-    .logo { height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover; }
-    .brand { font-size:1.45rem; font-weight:700; letter-spacing:.5px; color:white; }
-    @media (max-width:600px){
-      .topbar { padding-left:10px; height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
-      .logo { height:26px; width:26px; margin-right:8px; }
-      .brand { font-size:1rem; }
-    }
-    /* Spacer to offset content from fixed topbar */
-    .topbar-spacer { width:100%; height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px)); flex-shrink:0; }
-    @media (max-width:600px){ .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); } }
+    .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop)+env(safe-area-inset-top,0px));flex-shrink:0}
+    @media (max-width:600px){ .topbar-spacer{height:calc(var(--topbar-height-mobile)+env(safe-area-inset-top,0px));} }
 
-    /* Divider below topbar and above animated text */
-    .top-divider {
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
-      border-radius: 1px;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      margin-bottom: 12px;
-      position: relative; /* to keep stacking context */
-      z-index: 10;
-    }
+    .wrap{max-width:1200px;margin:0 auto;padding:20px 18px 80px;box-sizing:border-box}
+    @media (max-width:768px){ .wrap{padding:14px 12px 80px} }
+
+    .animated-wrapper{width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;padding:0 8px;height:var(--animated-height-desktop)}
+    @media (max-width:768px){ .animated-wrapper{height:var(--animated-height-mobile);margin-bottom:10px} }
+    .animated-text{width:100%;max-width:980px;font-weight:700;font-size:var(--animated-font-size-max);text-transform:uppercase;text-align:center;letter-spacing:2.1px;color:#fff;line-height:var(--line-height-desktop);user-select:none;display:flex;align-items:center;justify-content:center;height:100%;box-sizing:border-box;overflow-wrap:break-word}
+    @media (max-width:768px){ .animated-text{font-size:clamp(0.75rem,4vw,1.05rem);line-height:1.4;letter-spacing:1.4px;padding:0 6px;display:block;overflow:hidden} }
+
+    .top-divider, .divider{width:100%;height:1px;background:linear-gradient(90deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));box-shadow:0 1px 0 rgba(255,255,255,0.02) inset;border-radius:1px;backdrop-filter:blur(2px);margin-bottom:12px}
+    .divider{margin:28px 0 18px}
+
+    .title{text-align:center;margin-bottom:18px}.title h2{color:var(--accent);margin:0;font-size:1.9rem;letter-spacing:.2px}
+
+    .cards-row{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:flex-start}
+
+    /* Card (desktop) */
+    .card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .16s ease,box-shadow .16s ease;cursor:default;box-shadow:0 6px 22px rgba(0,0,0,0.8);backdrop-filter:blur(16px)}
+    .card:hover{transform:translateY(-6px);box-shadow:0 10px 28px rgba(0,0,0,0.9)}
+    .media{width:100%;padding-top:56.25%;position:relative;background:#111}
+    .media img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+    .card-body{padding:14px;display:flex;flex-direction:column;gap:6px}
+    .event-title{margin:0;font-size:17px;font-weight:700;color:#fff;line-height:1.18}
+    .meta{margin:0;font-size:13.5px;color:var(--muted)}
+    .location{margin:0;font-size:14px;color:var(--muted)}
+    .location a{color:var(--accent);text-decoration:none;font-weight:600}
+    .event-tagline{font-size:14.5px;color:var(--muted)}
+    .card-footer{padding:12px 14px 18px;display:flex;justify-content:center;box-sizing:border-box}
+    .book-btn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block}
+    .button-learn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block}
+    .book-btn:hover,.button-learn:hover{background:#ffe974}
+
+    /* mobile layout adjustments */
+    .mobile-info{display:none}.card-date{display:none}
     @media (max-width:768px){
-      .top-divider { margin-bottom: 10px; }
+      .card{width:90vw;max-width:400px;height:auto;display:flex;flex-direction:row;align-items:center;gap:8px;padding:calc(10px+1vw) calc(8px+1vw);border-radius:12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.8);backdrop-filter:blur(14px)}
+      .media{width:18vw;max-width:72px;aspect-ratio:1/1;height:auto;padding-top:0!important;border-radius:10px;overflow:hidden;flex-shrink:0}
+      .media img{position:static;width:100%;height:100%;object-fit:cover}
+      .card-body{padding:0;display:flex;flex-direction:column;gap:calc(4px+0.3vw);flex:1 1 auto}
+      .event-title{font-size:calc(14px+1.5vw)!important;font-weight:800!important;margin:0}
+      .meta,.location{display:none}
+      .mobile-info{display:block;font-size:calc(11px+0.7vw);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .card-footer{display:none}
+      .card-date{display:flex;width:18vw;max-width:72px;aspect-ratio:1/1;flex-direction:column;justify-content:center;align-items:center;border-radius:10px;background:var(--datebox);border:1.5px solid rgba(255,255,255,0.08);color:#fff;font-size:calc(11px+1vw);backdrop-filter:blur(9px)}
+      .card-date .day{font-weight:700;font-size:calc(22px+2vw);color:#fce029;line-height:1}
+      .card-date .month{font-size:calc(12px+1vw);color:#fff;line-height:1}
     }
 
-    .wrap { max-width:1200px; margin:0 auto; padding-left:18px; padding-right:18px; box-sizing:border-box; padding-top:20px; }
-    @media (min-width:769px){ .wrap { padding-top:12px; } }
-    @media (max-width:768px){
-      .wrap { padding-left:12px !important; padding-right:12px !important; padding-top:14px; }
-    }
-    /* Animated Section */
-    .animated-wrapper {
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-      margin-bottom:8px;
-      padding:0 8px;
-      height:var(--animated-height-desktop);
-      max-height: var(--animated-height-desktop);
-    }
-    @media (max-width:768px){
-      .animated-wrapper {
-        height: var(--animated-height-mobile);
-        margin-bottom:10px;
-        max-height: var(--animated-height-mobile);
-        /* To restrict text container */
-      }
-    }
-    .animated-text {
-      width:100%;
-      max-width:980px;
-      font-weight:700;
-      font-family:'Comfortaa', cursive;
-      font-size: var(--animated-font-size-max);
-      text-transform:uppercase;
-      text-align:center;
-      letter-spacing:2.1px;
-      color:#fff;
-      margin:0;
-      padding:0;
-      line-height:var(--line-height-desktop);
-      user-select:none;
-      white-space: pre-wrap;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      height:100%;
-      box-sizing:border-box;
-      transition: font-size 0.3s ease;
-      overflow-wrap: break-word;
-      word-break: break-word;
-    }
-    @media (max-width:768px){
-      .animated-text {
-        font-size: clamp(0.75rem, 4vw, 1.05rem); /* further reduced max to fit 3 lines */
-        line-height: 1.4;
-        letter-spacing:1.4px;
-        padding:0 6px;
-        max-height: var(--animated-height-mobile);
-        overflow: hidden;
-        display: block;
-      }
-    }
-    /* Divider (below animated text) */
-    .divider {
-      width:100%;
-      height:1px;
-      margin:8px 0 18px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
-      border-radius:1px;
-      backdrop-filter:blur(2px);
-      -webkit-backdrop-filter:blur(2px);
-    }
-    @media (max-width:768px){
-      .divider {
-        margin:10px 0 16px;
-      }
-    }
-    /* Title */
-    .title { text-align:center; margin-bottom:18px; }
-    .title h2 { color: var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.2px; }
-    /* Cards Row */
-    .cards-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:22px;
-      justify-content:center;
-      align-items:flex-start;
-    }
-    /* Desktop Card */
-    .card {
-      width:340px;
-      background: var(--card);
-      border-radius:12px;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
-      transition: transform 0.16s ease, box-shadow 0.16s ease;
-      cursor: default;
-      box-shadow: 0 6px 22px rgba(0,0,0,0.8); /* Darker shadow */
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 28px rgba(0,0,0,0.9);
-    }
-    .media {
-      width:100%;
-      padding-top:56.25%;
-      position:relative;
-      background:#111;
-    }
-    .media img {
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-    }
-    .card-body {
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-    .event-title {
-      margin:0;
-      font-size:17px;
-      font-weight:700;
-      color:#fff;
-      line-height:1.18;
-    }
-    .meta {
-      margin:0;
-      font-size:13.5px;
-      color:var(--muted);
-    }
-    .location {
-      margin:0;
-      font-size:14px;
-      color:var(--muted);
-    }
-    .location a {
-      color: var(--accent);
-      text-decoration:none;
-      font-weight:600;
-    }
-    .location a:hover {
-      text-decoration:underline;
-    }
-    .event-tagline {
-      font-size: 14.5px;
-      color: var(--muted, #d0d0d0);
-    }
-    .button-learn {
-      background: var(--accent, #fce029);
-      color: #000;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 1rem;
-      text-align: center;
-    }
-    .button-learn:hover {
-      background: #ffe974;
-    }
-    .title h2 {
-      color: var(--accent, #fce029);
-      margin: 0;
-      font-size: 1.9rem;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-    }
-    .divider {
-      width: 100%;
-      height: 1px;
-      margin: 28px 0 18px;
-      background: linear-gradient(90deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));
-      box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
-      border-radius: 1px;
-      backdrop-filter: blur(2px);
-    }
-    .card-footer {
-      padding:12px 14px 18px;
-      display:flex;
-      justify-content:center;
-      box-sizing:border-box;
-    }
-    .book-btn {
-      background: var(--accent);
-      color: #000; /* Dark theme: Black text */
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight:700;
-      text-decoration:none;
-      display:inline-block;
-    }
-    .book-btn:hover {
-      background:#ffe974;
-    }
-    /* Mobile Card Layout */
-    .mobile-info {
-      display: none;
-    }
-    .card-date {
-      display: none;
-    }
-    @media (max-width:768px){
-      body {
-        background:var(--bg);
-      }
-      .cards-row {
-        justify-content:center;
-      }
-      .card {
-        width: 90vw; /* width relative to viewport */
-        max-width: 400px; /* optional max width */
-        height: auto; /* allow height to adjust automatically based on content */
-        display:flex;
-        flex-direction: row;
-        align-items: center;
-        gap:8px;
-        padding: calc(10px + 1vw) calc(8px + 1vw); /* padding scales slightly */
-        border-radius:12px;
-        cursor: pointer;
-        background: var(--card);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.8);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        transition: height 0.3s ease;
-      }
-      .media {
-        width: 18vw;
-        max-width: 72px;
-        aspect-ratio: 1 / 1;  /* square aspect ratio */
-        height: auto;
-        padding-top: 0 !important;
-        border-radius: 10px;
-        overflow: hidden;
-        flex-shrink: 0;
-        background: #111;
-        position: relative;
-      }
-      .media img {
-        position: static;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      .card-body {
-        padding:0;
-        display:flex;
-        flex-direction: column;
-        gap: calc(4px + 0.3vw);
-        flex:1 1 auto;
-      }
-      .event-title {
-        font-size: calc(14px + 1.5vw) !important;
-        font-weight: 800 !important;
-        color:#fff;
-        margin:0;
-      }
-      .meta {
-        display:none;
-      }
-      .location {
-        display:none;
-      }
-      .mobile-info {
-        display:block;
-        font-size: calc(11px + 0.7vw);
-        color:var(--muted);
-        margin:0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 90vw;
-      }
-      .mobile-info a {
-        color: var(--accent);
-        text-decoration:none;
-        font-weight:600;
-      }
-      .mobile-info a:hover {
-        text-decoration:underline;
-      }
-      .card-footer {
-        display:none;
-      }
-      .card-date {
-        display:flex;
-        width: 18vw;
-        max-width: 72px;
-        height: auto;
-        aspect-ratio: 1 / 1;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-radius:10px;
-        background: var(--datebox);
-        border: 1.5px solid rgba(255,255,255,0.08);
-        color:#fff;
-        font-size: calc(11px + 1vw); /* Increased base font size for date */
-        box-sizing:border-box;
-        backdrop-filter: blur(9px);
-        -webkit-backdrop-filter: blur(9px);
-      }
-      .card-date .day {
-        font-weight:700;
-        font-size: calc(22px + 2vw); /* increased font size proportionally */
-        color: #fce029;
-        line-height:1;
-      }
-      .card-date .month {
-        font-size: calc(12px + 1vw); /* increased font size */
-        color: #fff;
-        line-height:1;
-      }
-      .card-date .time {
-        display:none;
-      }
-    }
-
-    /* Light Mode Adjustments */
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f5f5f5;
-        --card: #ffffff;
-        --muted: #444;
-        --accent: #0a75bc;
-        --datebox: #ececec;
-        --text-main: #181818;
-      }
-      body { background: var(--bg); color: var(--text-main); }
-      .animated-text { color: #000; } /* Black animated text */
-      .topbar, .topbar-bleed {
-        background: rgba(255,255,255,0.1);
-        color: #181818;
-      }
-      .card {
-        background: var(--card);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 6px 22px rgba(0,0,0,0.8);
-      }
-      .event-title { color: #000; } /* Black event title */
-      .card-date {
-        background: var(--datebox);
-        border: 1.5px solid rgba(0,0,0,0.03);
-        color: #181818;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-      }
-      .card-date .day {
-        color: #0a75bc;
-      }
-      .card-date .month {
-        color: #000; /* MMM in black */
-      }
-      /* Book Now button text becomes white in light theme */
-      .book-btn {
-        color: #fff;
-      }
-      .brand { color: #242424; }
+    /* Light mode */
+    @media (prefers-color-scheme: light){
+      :root{--bg:#f5f5f5;--card:#ffffff;--muted:#444;--accent:#0a75bc;--datebox:#ececec;--text-main:#181818}
+      body{background:var(--bg);color:var(--text-main)}
+      .animated-text{color:#000}
+      .topbar,.topbar-bleed{background:rgba(255,255,255,0.1)}
+      .card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+      .event-title{color:#000}
+      .card-date{background:var(--datebox);border:1.5px solid rgba(0,0,0,0.03);color:#181818}
+      .card-date .day{color:#0a75bc}
+      .card-date .month{color:#000}
+      .book-btn{color:#fff}
+      .brand{color:#242424}
     }
   </style>
 </head>
@@ -486,265 +102,243 @@
   <div class="topbar-spacer" aria-hidden="true"></div>
 
   <main class="wrap" role="main">
-    <!-- Divider below topbar -->
     <div class="top-divider" aria-hidden="true"></div>
 
     <div class="animated-wrapper" aria-live="polite">
       <div class="animated-text"></div>
     </div>
+
     <div class="divider" aria-hidden="true"></div>
+
     <div class="title"><h2>Upcoming Events</h2></div>
     <div id="events" class="cards-row" aria-live="polite"></div>
-    <div class="divider" style="margin-top: 40px;"></div>
+
+    <div class="divider" style="margin-top:40px;"></div>
+
     <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
     <div id="explore-cards" class="cards-row"></div>
+
     <div class="divider" style="margin-top:40px;"></div>
   </main>
 
   <script>
-  const lines = [
-    'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
-  ];
-  const msg = lines.join('\n');
-  const animatedTextElem = document.querySelector('.animated-text');
-  let charIndex = 0, isDeleting = false;
-  const delay = 55, pauseBetween = 2600;
-  function type() {
-    if (!isDeleting) {
-      animatedTextElem.textContent = msg.substring(0, charIndex + 1);
-      charIndex++;
-      if (charIndex === msg.length) {
-        isDeleting = true; setTimeout(type, pauseBetween); return;
+  /* Animated typing */
+  (function(){
+    const lines = ['IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'];
+    const msg = lines.join('\n');
+    const el = document.querySelector('.animated-text');
+    let idx = 0, del=false;
+    const d=55, pause=2600;
+    function tick(){
+      if(!del){
+        el.textContent = msg.substring(0, idx+1); idx++;
+        if(idx === msg.length){ del=true; setTimeout(tick, pause); return; }
+      } else {
+        el.textContent = msg.substring(0, idx-1); idx--;
+        if(idx === 0) del=false;
       }
-    } else {
-      animatedTextElem.textContent = msg.substring(0, charIndex - 1);
-      charIndex--;
-      if (charIndex === 0) isDeleting = false;
+      setTimeout(tick, del ? d/2 : d);
     }
-    setTimeout(type, isDeleting ? delay/2 : delay);
-  }
-  animatedTextElem.textContent = msg;
-  setTimeout(type, pauseBetween);
-  (async function(){
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-    const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
-    function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
-    function parseEventDate(str) {
-      if (!str) return null;
-      str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
-      str = str.replace(/’/g, "'").replace(/`/g,"'");
-      const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-      if (!parts) return null;
-      const [_, day, monthStr, yearStr] = parts;
-      const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
-      if (month === undefined) return null;
-      const year = 2000 + parseInt(yearStr, 10);
-      return new Date(year, month, parseInt(day, 10));
-    }
-    try {
-      const res = await fetch(csvUrl, {cache: "no-cache"});
-      if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
-      const csvText = await res.text();
-      const parsed = Papa.parse(csvText, {skipEmptyLines:true});
-      const rows = parsed.data || [];
-      if (rows.length < 2) {
-        document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
-        return;
-      }
-      const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
-      const container = document.getElementById("events");
-      container.innerHTML = "";
-      const today = new Date();
-      today.setHours(0,0,0,0);
-      let upcomingCount = 0;
-      dataRows.forEach(cols => {
-        const name = clean(cols[0]);
-        const date = clean(cols[1]);
-        const time = clean(cols[2]);
-        const locText = clean(cols[3]);
-        const locLink = clean(cols[4]);
-        const ticket = clean(cols[5]) || "#";
-        const image = clean(cols[6]) || fallbackImage;
-        const eventDateObj = parseEventDate(date);
-        if (!eventDateObj) return;
-        eventDateObj.setHours(0,0,0,0);
-        if (eventDateObj < today) return;
-        upcomingCount++;
-        const card = document.createElement("article");
-        card.className = "card";
-        // Media
-        const media = document.createElement("div");
-        media.className = "media";
-        const img = document.createElement("img");
-        img.loading = "lazy";
-        img.src = image;
-        img.alt = name || "Event image";
-        img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
-        media.appendChild(img);
-        card.appendChild(media);
-        // Body
-        const body = document.createElement("div");
-        body.className = "card-body";
-        const h = document.createElement("h3");
-        h.className = "event-title";
-        h.textContent = name || "Untitled Event";
-        body.appendChild(h);
-        // Desktop meta
-        const meta = document.createElement("p");
-        meta.className = "meta";
-        meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
-        body.appendChild(meta);
-        // Desktop location
-        if (locText || locLink) {
-          const locP = document.createElement("p");
-          locP.className = "location";
-          const a = document.createElement("a");
-          a.href = locLink || "#";
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          a.textContent = locText;
-          locP.appendChild(a);
-          body.appendChild(locP);
-        }
-        // Mobile Info Line
-        const mobileInfo = document.createElement("p");
-        mobileInfo.className = "mobile-info";
-        if (locText) {
-          const a2 = document.createElement("a");
-          a2.href = locLink || "#";
-          a2.target = "_blank";
-          a2.rel = "noopener noreferrer";
-          a2.textContent = locText;
-          mobileInfo.appendChild(a2);
-        }
-        if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
-        if (time) mobileInfo.appendChild(document.createTextNode(time));
-        body.appendChild(mobileInfo);
-        card.appendChild(body);
-        // Mobile date box
-        if (eventDateObj) {
-          const dayNum = eventDateObj.getDate();
-          const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
-          const dateBox = document.createElement("div");
-          dateBox.className = "card-date";
-          dateBox.innerHTML =
-            `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
-            `<div class="month">${monthShort}</div>` +
-            `<div class="time"></div>`;
-          card.appendChild(dateBox);
-        }
-        // Desktop Book Now
-        const footer = document.createElement("div");
-        footer.className = "card-footer";
-        const btn = document.createElement("a");
-        btn.className = "book-btn";
-        btn.href = ticket;
-        btn.target = "_blank";
-        btn.rel = "noopener noreferrer";
-        btn.textContent = "Book Now";
-        footer.appendChild(btn);
-        card.appendChild(footer);
-        card.addEventListener('click', function(e) {
-          if (e.target.closest('a')) return;
-          if (window.innerWidth <= 768) {
-            if (ticket && ticket !== "#") window.open(ticket, '_blank');
-          }
-        });
-        container.appendChild(card);
-      });
-      if (upcomingCount === 0)
-        container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
-    } catch (err) {
-      console.error(err);
-      document.getElementById("events").innerHTML =
-        '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
-    }
+    el.textContent = msg;
+    setTimeout(tick, pause);
   })();
   </script>
 
-  <!-- Consolidated Explore Events script: single implementation (non-clickable on desktop; clickable on mobile) -->
   <script>
-  (async function() {
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
-    const container = document.getElementById('explore-cards');
+  (async function loadAllEvents(){
+    // URLs (keep original values)
+    const upcomingCsv = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+    const exploreCsv  = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
     const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+
+    function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g,''); }
+
+    function parseEventDate(str){
+      if(!str) return null;
+      str = String(str).trim().replace(/^[A-Za-z]{3},?\s*/,'').replace(/’/g,"'").replace(/`/g,"'");
+      const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+      if(!parts) return null;
+      const [,day,mon,yr] = parts;
+      const map = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+      if(map[mon]===undefined) return null;
+      const year = 2000 + parseInt(yr,10);
+      return new Date(year, map[mon], parseInt(day,10));
+    }
+
+    // Utility to create element with class and attributes
+    function el(tag, cls, attrs = {}) {
+      const e = document.createElement(tag);
+      if (cls) e.className = cls;
+      for (const [k,v] of Object.entries(attrs)) { if (v != null) e.setAttribute(k, v); }
+      return e;
+    }
+
+    // 1) Load Upcoming Events (array CSV, first row header)
+    const eventsContainer = document.getElementById('events');
+    let upcomingNames = new Set();
     try {
-      const res = await fetch(csvUrl, { cache: "no-cache" });
-      if (!res.ok) throw new Error("Failed to fetch explore events");
-      const csvText = await res.text();
-      const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-      container.innerHTML = '';
-      parsed.data.forEach(event => {
-        if (!event) return;
-        if ((event['Scheduled'] || '').trim().toLowerCase() !== 'no') return;
+      const res = await fetch(upcomingCsv, {cache:"no-cache"});
+      if(!res.ok) throw new Error("CSV fetch failed: "+res.status);
+      const text = await res.text();
+      const parsed = Papa.parse(text, {skipEmptyLines:true});
+      const rows = parsed.data || [];
+      if(rows.length < 2) {
+        eventsContainer.innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+      } else {
+        const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+        eventsContainer.innerHTML = '';
+        const today = new Date(); today.setHours(0,0,0,0);
+        let count = 0;
+        for(const cols of dataRows){
+          const name = clean(cols[0]);
+          const date = clean(cols[1]);
+          const time = clean(cols[2]);
+          const locText = clean(cols[3]);
+          const locLink = clean(cols[4]);
+          const ticket = clean(cols[5]) || "#";
+          const image = clean(cols[6]) || fallbackImage;
 
-        const card = document.createElement('div');
-        card.className = 'card'; // desktop: not clickable (cursor: default); mobile CSS will make it clickable
+          const eventDateObj = parseEventDate(date);
+          if (!eventDateObj) continue;
+          eventDateObj.setHours(0,0,0,0);
+          if (eventDateObj < today) continue;
 
-        // Image section
-        const media = document.createElement('div');
-        media.className = 'media';
-        const img = document.createElement('img');
-        img.src = (event['Image Links'] || '').trim() || fallbackImage;
-        img.alt = (event['Event'] || '').trim();
-        img.loading = "lazy";
+          count++;
+          upcomingNames.add(name);
+
+          const card = el('article','card');
+
+          // media
+          const media = el('div','media');
+          const img = el('img',null,{alt: name || 'Event image', loading:'lazy', src:image});
+          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+          media.appendChild(img);
+          card.appendChild(media);
+
+          // body
+          const body = el('div','card-body');
+          const h = el('h3','event-title'); h.textContent = name || 'Untitled Event';
+          body.appendChild(h);
+
+          const meta = el('p','meta'); meta.textContent = (date ? date : '') + ((date && time) ? ' | ' : '') + (time ? time : '');
+          body.appendChild(meta);
+
+          if (locText || locLink) {
+            const locP = el('p','location');
+            const a = el('a',null,{href: locLink || '#', target:'_blank', rel:'noopener noreferrer'}); a.textContent = locText;
+            locP.appendChild(a);
+            body.appendChild(locP);
+          }
+
+          const mobileInfo = el('p','mobile-info');
+          if (locText) {
+            const a2 = el('a',null,{href: locLink || '#', target:'_blank', rel:'noopener noreferrer'}); a2.textContent = locText;
+            mobileInfo.appendChild(a2);
+          }
+          if (locText && time) mobileInfo.appendChild(document.createTextNode(' | '));
+          if (time) mobileInfo.appendChild(document.createTextNode(time));
+          body.appendChild(mobileInfo);
+
+          card.appendChild(body);
+
+          // mobile date box
+          if (eventDateObj) {
+            const dayNum = eventDateObj.getDate();
+            const monthShort = eventDateObj.toLocaleString('en-US', { month:'short' });
+            const dateBox = el('div','card-date');
+            dateBox.innerHTML = `<div class="day">${String(dayNum).padStart(2,'0')}</div><div class="month">${monthShort}</div><div class="time"></div>`;
+            card.appendChild(dateBox);
+          }
+
+          // footer book now (desktop)
+          const footer = el('div','card-footer');
+          const btn = el('a','book-btn',{href: ticket, target:'_blank', rel:'noopener noreferrer'}); btn.textContent = 'Book Now';
+          footer.appendChild(btn);
+          card.appendChild(footer);
+
+          // mobile click behavior: only open when clicking outside links and on small screens
+          card.addEventListener('click', function(e){
+            if (e.target.closest('a')) return;
+            if (window.innerWidth <= 768) {
+              if (ticket && ticket !== '#') window.open(ticket, '_blank');
+            }
+          });
+
+          eventsContainer.appendChild(card);
+        } // end for
+        if (count === 0) eventsContainer.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
+      }
+    } catch(err){
+      console.error(err);
+      eventsContainer.innerHTML = '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
+    }
+
+    // expose set for explore filtering
+    window.upcomingEventNames = upcomingNames;
+
+    // 2) Load Explore Events (header CSV expected)
+    const exploreContainer = document.getElementById('explore-cards');
+    try {
+      const res2 = await fetch(exploreCsv, {cache:'no-cache'});
+      if(!res2.ok) throw new Error('Failed fetching explore CSV: '+res2.status);
+      const txt2 = await res2.text();
+      const parsed2 = Papa.parse(txt2, {header:true, skipEmptyLines:true});
+      exploreContainer.innerHTML = '';
+      const items = parsed2.data || [];
+      for (const ev of items) {
+        if (!ev) continue;
+        const name = (ev['Event'] || ev['Event Name'] || '').trim();
+        const scheduled = ((ev['Scheduled'] || '').trim().toLowerCase());
+        if (scheduled !== 'no') continue;
+        if (window.upcomingEventNames && window.upcomingEventNames.has(name)) continue;
+
+        const card = el('div','card');
+
+        // media (use img for lazy load and aspect)
+        const media = el('div','media');
+        const src = (ev['Image Links'] || '').trim() || fallbackImage;
+        const img = el('img',null,{src, alt: name, loading:'lazy'});
         img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
         media.appendChild(img);
         card.appendChild(media);
 
-        // Body section
-        const body = document.createElement('div');
-        body.className = 'card-body';
-
-        // Event title
-        const title = document.createElement('div');
-        title.className = 'event-title';
-        title.textContent = (event['Event'] || '').trim();
+        // body
+        const body = el('div','card-body');
+        const title = el('div','event-title'); title.textContent = name;
         body.appendChild(title);
-
-        // Tagline
-        if (event['Tagline'] && String(event['Tagline']).trim() !== '') {
-          const tagline = document.createElement('div');
-          tagline.className = 'event-tagline';
-          tagline.textContent = String(event['Tagline']).trim();
+        if (ev['Tagline'] && String(ev['Tagline']).trim() !== '') {
+          const tagline = el('div','event-tagline'); tagline.textContent = String(ev['Tagline']).trim();
           body.appendChild(tagline);
         }
-
         card.appendChild(body);
 
-        // Footer (Learn More) — visible on desktop; hidden on mobile by existing CSS
-        const footer = document.createElement('div');
-        footer.className = 'card-footer';
-        const learn = document.createElement('a');
-        learn.className = 'button-learn';
-        learn.href = (event['Page Link'] || '#').trim();
-        learn.target = '_blank';
-        learn.rel = 'noopener noreferrer';
-        learn.textContent = 'Learn More';
-        footer.appendChild(learn);
+        // footer with Learn More (desktop visible; mobile hidden via CSS)
+        const footer = el('div','card-footer');
+        const link = el('a','button-learn',{href:(ev['Page Link']||'#').trim(), target:'_blank', rel:'noopener noreferrer'});
+        link.textContent = 'Learn More';
+        footer.appendChild(link);
         card.appendChild(footer);
 
-        // Make whole card clickable on mobile only (<=768px). Ignore clicks that happened on links.
-        card.addEventListener('click', function(e) {
-          if (e.target.closest('a')) return; // allow default link clicks
+        // mobile: make entire card clickable (ignore when clicking the button)
+        card.addEventListener('click', function(e){
+          if (e.target.closest('a')) return;
           if (window.innerWidth <= 768) {
-            const url = (event['Page Link'] || '').trim();
+            const url = (ev['Page Link'] || '').trim();
             if (url) window.open(url, '_blank');
           }
         });
 
-        container.appendChild(card);
-      });
-
-      if (!container.children.length) {
-        container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
+        exploreContainer.appendChild(card);
       }
-    } catch (err) {
-      console.error('Error loading explore events:', err);
-      container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
+
+      if (!exploreContainer.children.length) {
+        exploreContainer.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
+      }
+    } catch(err){
+      console.error(err);
+      exploreContainer.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
     }
   })();
   </script>
-
 </body>
 </html>
