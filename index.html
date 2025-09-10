@@ -496,7 +496,6 @@
     <div class="title"><h2>Upcoming Events</h2></div>
     <div id="events" class="cards-row" aria-live="polite"></div>
     <div class="divider" style="margin-top: 40px;"></div>
-    <div id="explore-section">
     <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
     <div id="explore-cards" class="cards-row"></div>
     <div class="divider" style="margin-top:40px;"></div>
@@ -785,8 +784,70 @@
   }
 })();
 </script>
+(async function() {
+  const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
+  const container = document.getElementById('explore-cards');
+  try {
+    const response = await fetch(csvUrl, {cache: 'no-cache'});
+    if(!response.ok) throw new Error('Failed to fetch explore events');
+    const csvText = await response.text();
+    const parsed = Papa.parse(csvText, {header: true, skipEmptyLines: true});
+    container.innerHTML = '';
+    parsed.data.forEach(event => {
+      if ((event['Scheduled'] || '').trim().toLowerCase() === 'no') {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.cursor = "pointer";
+
+        // Card click opens the event page
+        card.addEventListener('click', () => {
+          if (event['Page Link']) window.open(event['Page Link'], "_blank");
+        });
+
+        // Image section
+        const media = document.createElement('div');
+        media.className = 'media';
+        const img = document.createElement('img');
+        img.src = event['Image Links'];
+        img.alt = event['Event'] || '';
+        img.loading = "lazy";
+        media.appendChild(img);
+        card.appendChild(media);
+
+        // Body section
+        const body = document.createElement('div');
+        body.className = 'card-body';
+
+        // Event title (not a link)
+        const title = document.createElement('div');
+        title.className = 'event-title';
+        title.textContent = event['Event'] || '';
+        body.appendChild(title);
+
+        // Tagline
+        if (event['Tagline']) {
+          const tagline = document.createElement('div');
+          tagline.className = 'event-tagline';
+          tagline.textContent = event['Tagline'];
+          body.appendChild(tagline);
+        }
+
+        card.appendChild(body);
+        container.appendChild(card);
+      }
+    });
+    if (!container.children.length) {
+      container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
+    }
+  } catch(err) {
+    console.error(err);
+    container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
+  }
+})();
+
 </body>
 </html>
+
 
 
 
