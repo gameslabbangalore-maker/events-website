@@ -19,28 +19,24 @@
       --text-main: #fff;
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
-      --animated-height-desktop: 150px;
-      --animated-height-mobile: 80px;
       --line-height-desktop: 1.4;
       --line-height-mobile: 1.5;
-
-      /* Reduced desktop max font size for animated text */
-      --animated-font-size-max: 1.6rem;
-      --animated-font-size-min: 1rem;
-      --card-height-mobile-base: 80px;
     }
+
     body {
       background: var(--bg);
       color: var(--text-main);
-      font-family:'Comfortaa',cursive;
-    }
-    html,body{
-      margin:0; height:100%;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+      font-family: 'Comfortaa', cursive;
+      margin: 0;
     }
 
-    /* === TOPBAR BLEED (status area) === */
+    html, body {
+      height: 100%;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* === Topbar Bleed === */
     .topbar-bleed {
       position: fixed;
       top: 0;
@@ -53,14 +49,13 @@
       z-index: 10002;
       pointer-events: none;
     }
-    @media (prefers-color-scheme: light) {
-      .topbar-bleed { background: #fff !important; }
-    }
 
-    /* === TOPBAR === */
+    /* === Topbar === */
     .topbar {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       display: flex;
       align-items: center;
       padding-left: 24px;
@@ -73,91 +68,153 @@
       -webkit-backdrop-filter: blur(12px);
       transition: background 0.22s;
     }
-    .topbar-left { display:flex; align-items:center; height:100%; }
-    .logo { height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover; }
-    .brand { font-size:1.45rem; font-weight:700; letter-spacing:.5px; color:white; }
 
-    @media (max-width:600px){
-      .topbar { padding-left:10px; height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
-      .logo { height:26px; width:26px; margin-right:8px; }
-      .brand { font-size:1rem; }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      height: 100%;
     }
 
-    .topbar-spacer { width:100%; height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px)); flex-shrink:0; }
-    @media (max-width:600px){ .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); } }
+    .logo {
+      height: 36px;
+      width: 36px;
+      border-radius: 8px;
+      margin-right: 12px;
+      object-fit: cover;
+    }
 
-    /* Divider */
+    .brand {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .topbar-spacer {
+      width: 100%;
+      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
+      flex-shrink: 0;
+    }
+
+    /* === Divider === */
     .divider {
-      width:100%;
-      height:1px;
-      margin:20px 0;
+      width: 100%;
+      height: 1px;
+      margin: 30px 0;
       background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      border-radius:1px;
-      backdrop-filter:blur(2px);
-      -webkit-backdrop-filter:blur(2px);
+      border-radius: 1px;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
     }
 
-    .wrap { max-width:1200px; margin:0 auto; padding:0 18px; box-sizing:border-box; }
+    /* === Wrap === */
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 18px;
+      box-sizing: border-box;
+    }
 
     /* === Section Titles === */
-    .title { text-align:center; margin:20px 0; }
-    .title h2 { color: var(--accent); margin:0; font-size:1.9rem; }
+    .title {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .title h2 {
+      color: var(--accent);
+      margin: 0;
+      font-size: 1.9rem;
+    }
 
     /* === Cards Row === */
     .cards-row {
-      display:flex;
-      flex-wrap:wrap;
-      gap:22px;
-      justify-content:center;
-      align-items:flex-start;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      justify-content: center;
+      align-items: flex-start;
     }
 
     /* === Event Cards === */
     .card {
-      width:340px;
+      width: 340px;
       background: var(--card);
-      border-radius:12px;
-      overflow:hidden;
-      display:flex;
-      flex-direction:column;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
       box-shadow: 0 6px 22px rgba(0,0,0,0.8);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
+      transition: transform 0.3s ease;
     }
+
     .card:hover {
       transform: translateY(-6px);
       box-shadow: 0 10px 28px rgba(0,0,0,0.9);
     }
+
     .media {
-      width:100%;
-      padding-top:56.25%;
-      position:relative;
-      background:#111;
+      width: 100%;
+      padding-top: 56.25%;
+      position: relative;
+      background: #111;
     }
+
     .media img {
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
-    .card-body { padding:14px; display:flex; flex-direction:column; gap:6px; }
-    .event-title { font-size:17px; font-weight:700; color:#fff; }
-    .meta { font-size:13.5px; color:var(--muted); }
-    .location { font-size:14px; color:var(--muted); }
-    .location a { color: var(--accent); text-decoration:none; font-weight:600; }
-    .card-footer { padding:12px 14px 18px; display:flex; justify-content:center; }
+
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .event-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .meta {
+      font-size: 13.5px;
+      color: var(--muted);
+    }
+
+    .location {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .location a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .card-footer {
+      padding: 12px 14px 18px;
+      display: flex;
+      justify-content: center;
+    }
+
     .book-btn {
       background: var(--accent);
       color: #fff;
       padding: 10px 16px;
       border-radius: 8px;
-      font-weight:700;
-      text-decoration:none;
+      font-weight: 700;
+      text-decoration: none;
     }
 
-    /* Light Mode */
+    /* === Light Mode === */
     @media (prefers-color-scheme: light) {
       :root {
         --bg: #f5f5f5;
@@ -172,22 +229,26 @@
       .brand { color: #242424; }
     }
 
-    /* === Gallery === */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      padding: 0 10px;
-    }
-    .gallery-grid img {
+    /* === Gallery Carousel === */
+    .gallery-carousel {
+      position: relative;
+      overflow: hidden;
       width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px;
-      transition: transform 0.3s ease;
+      height: 220px;
+      border-radius: 12px;
     }
-    .gallery-grid img:hover {
-      transform: scale(1.05);
+
+    .gallery-track {
+      display: flex;
+      transition: transform 1s ease-in-out;
+      width: 100%;
+      height: 100%;
+    }
+
+    .gallery-track img {
+      min-width: 100%;
+      height: 220px;
+      object-fit: cover;
     }
 
     /* === About Us === */
@@ -197,10 +258,26 @@
       max-width: 800px;
       margin: 0 auto;
     }
+
     .about-us p {
       font-size: 1rem;
       line-height: 1.6;
       color: var(--muted);
+    }
+
+    /* === Contact Us === */
+    .contact-us {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .contact-links a {
+      display: inline-block;
+      margin: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
     }
   </style>
 </head>
@@ -224,17 +301,20 @@
 
     <!-- Explore Other Events -->
     <div class="title"><h2>Explore Other Events</h2></div>
-    <div id="explore-events" class="cards-row"></div>
+    <div id="explore-events" class="cards-row">
+      <!-- You'll manually add cards here for now -->
+    </div>
 
     <div class="divider"></div>
 
     <!-- Gallery -->
     <div class="title"><h2>Gallery</h2></div>
-    <div class="gallery-grid">
-      <img src="https://via.placeholder.com/400x300?text=Event+1" alt="Gallery Image 1">
-      <img src="https://via.placeholder.com/400x300?text=Event+2" alt="Gallery Image 2">
-      <img src="https://via.placeholder.com/400x300?text=Event+3" alt="Gallery Image 3">
-      <img src="https://via.placeholder.com/400x300?text=Event+4" alt="Gallery Image 4">
+    <div class="gallery-carousel">
+      <div class="gallery-track" id="gallery-track">
+        <img src="https://via.placeholder.com/1200x220?text=Event+1" alt="Gallery Image 1">
+        <img src="https://via.placeholder.com/1200x220?text=Event+2" alt="Gallery Image 2">
+        <img src="https://via.placeholder.com/1200x220?text=Event+3" alt="Gallery Image 3">
+      </div>
     </div>
 
     <div class="divider"></div>
@@ -248,9 +328,24 @@
         environment where everyone can enjoy games, meet like-minded individuals, and build lasting memories.
       </p>
     </div>
+
+    <div class="divider"></div>
+
+    <!-- Contact Us -->
+    <div class="title"><h2>Contact Us</h2></div>
+    <div class="contact-us">
+      <div class="contact-links">
+        <a href="mailto:info@gameslab.com">Email Us</a>
+        <a href="tel:+911234567890">Call Us</a>
+        <a href="https://instagram.com/gameslab" target="_blank">Instagram</a>
+        <a href="https://chat.whatsapp.com/community-link" target="_blank">Join WhatsApp Community</a>
+        <a href="https://wa.me/911234567890" target="_blank">WhatsApp Message</a>
+      </div>
+    </div>
   </main>
 
   <script>
+    // CSV Data Handling
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
     const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
 
@@ -287,7 +382,6 @@
       today.setHours(0,0,0,0);
 
       const upcoming = [];
-      const explore = [];
 
       dataRows.forEach(cols => {
         const obj = {
@@ -305,23 +399,22 @@
           const eventDate = new Date(`${dateParts[2]} ${dateParts[1]} ${new Date().getFullYear()}`);
           if(eventDate >= today) {
             upcoming.push(obj);
-          } else {
-            explore.push(obj);
           }
-        } else {
-          explore.push(obj);
         }
       });
 
-      // Render sections
       document.getElementById("events").innerHTML = upcoming.length
         ? upcoming.map(createCard).join("")
         : "<p style='color:#bbb'>No upcoming events.</p>";
-
-      document.getElementById("explore-events").innerHTML = explore.length
-        ? explore.map(createCard).join("")
-        : "<p style='color:#bbb'>No other events available.</p>";
     })();
+
+    // Gallery Carousel Auto-Slide
+    const track = document.getElementById('gallery-track');
+    let index = 0;
+    setInterval(() => {
+      index = (index + 1) % track.children.length;
+      track.style.transform = `translateX(-${index * 100}%)`;
+    }, 3000);
   </script>
 </body>
 </html>
