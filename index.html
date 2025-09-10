@@ -700,8 +700,40 @@
   }
 })();
 </script>
+  <script>
+  const lines = [
+    'IF "HOW TO HAVE A GOOD TIME ?"',
+    'IS THE QUESTION,',
+    'WE ARE THE ANSWER'
+  ];
+  const msg = lines.join('\n');
+  const animatedTextElem = document.querySelector('.animated-text');
+  let charIndex = 0, isDeleting = false;
+  const delay = 55, pauseBetween = 2600;
+
+  function type() {
+    if (!isDeleting) {
+      animatedTextElem.textContent = msg.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === msg.length) {
+        isDeleting = true;
+        setTimeout(type, pauseBetween);
+        return;
+      }
+    } else {
+      animatedTextElem.textContent = msg.substring(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) isDeleting = false;
+    }
+    setTimeout(type, isDeleting ? delay / 2 : delay);
+  }
+
+  animatedTextElem.textContent = msg;
+  setTimeout(type, pauseBetween);
+</script>
 </body>
 </html>
+
 
 
 
