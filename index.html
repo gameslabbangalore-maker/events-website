@@ -43,7 +43,7 @@
       top: 0; left: 0; right: 0;
       height: constant(safe-area-inset-top, 0px);
       height: env(safe-area-inset-top, 0px);
-      background: rgba(24,24,24,0.40);
+      background: rgba(24,24,24,0); /* invisible unless content scrolls under */
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 10002;
@@ -63,9 +63,10 @@
       box-sizing: border-box;
       z-index: 10003;
       border-bottom: 1px solid rgba(41,41,41,0.65);
-      background: rgba(24,24,24,0.35);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(24,24,24,0.05); /* almost invisible */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.3s ease;
     }
     .topbar-left { display:flex; align-items:center; height:100%; }
     .logo { height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover; }
@@ -116,7 +117,7 @@
 
     .card-body { padding:14px; display:flex; flex-direction:column; gap:6px; }
     .event-title { margin:0; font-size:17px; font-weight:700; color:#fff; line-height:1.18; }
-    .meta { margin:0; font-size:13.5px; color:var(--muted); }          /* full date/time on desktop */
+    .meta { margin:0; font-size:13.5px; color:var(--muted); }          
     .location { margin:0; font-size:14px; color:var(--muted); }
     .location a { color: var(--accent); text-decoration:none; font-weight:600; }
     .location a:hover { text-decoration:underline; }
@@ -140,16 +141,16 @@
         flex-direction: row;
         align-items: center;
         gap:12px;
-        padding:14px;
+        padding:12px; /* reduced padding for mobile */
         border-radius:12px;
         cursor: pointer;
-        min-height: 92px; /* ensures enough vertical space */
+        min-height: 96px; /* ensures enough vertical space */
       }
 
       /* larger thumbnail on left */
       .media {
-        width:72px;
-        height:72px;
+        width:74px;
+        height:74px;
         padding-top:0;
         border-radius:10px;
         overflow:hidden;
@@ -168,29 +169,30 @@
         flex:1 1 auto;
       }
 
-      .event-title { font-size:17px; font-weight:700; color:#fff; margin:0; } /* larger title on mobile */
-      .meta { display:none; }  /* hide desktop meta on mobile */
-      .location { display:none; } /* hide desktop location on mobile */
+      .event-title { font-size:18px; font-weight:700; color:#fff; margin:0; } /* larger title */
+      .meta { display:none; }  
+      .location { display:none; }
 
-      /* mobile-only info line: location | time (visible on mobile only) */
+      /* mobile-only info line */
       .mobile-info {
         display:block;
-        font-size:14px;
+        font-size:13px;
         color:var(--muted);
         margin:0;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
       }
       .mobile-info a { color: var(--accent); text-decoration:none; font-weight:600; }
       .mobile-info a:hover { text-decoration:underline; }
 
-      /* hide desktop Book Now on mobile */
       .card-footer { display:none; }
 
-      /* Date box on right (square) */
+      /* Date box */
       .card-date {
-        display:block;
-        width:72px;
-        height:72px; /* make square equal to thumbnail */
         display:flex;
+        width:74px;
+        height:74px;
         flex-direction:column;
         justify-content:center;
         align-items:center;
@@ -201,9 +203,9 @@
         font-size:12px;
         box-sizing:border-box;
       }
-      .card-date .day { font-weight:700; font-size:22px; line-height:1; }    /* bigger day */
-      .card-date .month { font-size:12px; color:#ddd; line-height:1; }       /* small month */
-      .card-date .time { display:none; }                                     /* hide time */
+      .card-date .day { font-weight:700; font-size:24px; color: var(--accent); line-height:1; }
+      .card-date .month { font-size:13px; color:#fff; line-height:1; font-weight:600; }
+      .card-date .time { display:none; } 
     }
 
   </style>
@@ -234,11 +236,11 @@
   <script>
     /* Animated typing */
     const lines = [
-      `IF "HOW TO HAVE A GOOD TIME ?"`,
-      `IS THE QUESTION,`,
+      `IF "HOW TO HAVE A GOOD TIME ?"` ,
+      `IS THE QUESTION,` ,
       `WE ARE THE ANSWER`
     ];
-    const msg = lines.join('\n');
+    const msg = lines.join('\\n');
     const animatedTextElem = document.querySelector('.animated-text');
     let charIndex = 0, isDeleting = false;
     const delay = 55, pauseBetween = 2600;
@@ -268,7 +270,7 @@
         if (!str) return null;
         str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
         str = str.replace(/’/g, "'").replace(/`/g,"'");
-        const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+        const parts = str.match(/^(\\d{1,2})\\s+([A-Za-z]{3})\\s+'(\\d{2})$/);
         if (!parts) return null;
         const [_, day, monthStr, yearStr] = parts;
         const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
@@ -296,8 +298,8 @@
 
         dataRows.forEach(cols => {
           const name = clean(cols[0]);
-          const date = clean(cols[1]); // e.g., "Fri, 12 Sep '25"
-          const time = clean(cols[2]); // e.g., "7:30 PM"
+          const date = clean(cols[1]); 
+          const time = clean(cols[2]); 
           const locText = clean(cols[3]);
           const locLink = clean(cols[4]);
           const ticket = clean(cols[5]) || "#";
@@ -331,13 +333,13 @@
           h.textContent = name || "Untitled Event";
           body.appendChild(h);
 
-          // Desktop meta (full date/time on desktop)
+          // Desktop meta
           const meta = document.createElement("p");
           meta.className = "meta";
           meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
           body.appendChild(meta);
 
-          // Desktop location (kept for desktop)
+          // Desktop location
           if (locText || locLink) {
             const locP = document.createElement("p");
             locP.className = "location";
@@ -350,7 +352,7 @@
             body.appendChild(locP);
           }
 
-          // Mobile-only info line (location | time) - hidden on desktop by CSS
+          // Mobile info line
           const mobileInfo = document.createElement("p");
           mobileInfo.className = "mobile-info";
           if (locText) {
@@ -367,7 +369,7 @@
 
           card.appendChild(body);
 
-          // mobile date box (only shows day + month)
+          // mobile date box
           if (eventDateObj) {
             const dayNum = eventDateObj.getDate();
             const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
@@ -377,7 +379,7 @@
             card.appendChild(dateBox);
           }
 
-          // footer (desktop Book Now)
+          // footer
           const footer = document.createElement("div");
           footer.className = "card-footer";
           const btn = document.createElement("a");
@@ -389,7 +391,7 @@
           footer.appendChild(btn);
           card.appendChild(footer);
 
-          // mobile tap opens ticket (but clicking links inside card still works)
+          // mobile tap opens ticket
           card.addEventListener('click', function(e) {
             if (e.target.closest('a')) return;
             if (window.innerWidth <= 768) {
