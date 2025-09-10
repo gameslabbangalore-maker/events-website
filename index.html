@@ -916,7 +916,7 @@
     const exploreParsed = Papa.parse(exploreText, {header:true, skipEmptyLines:true});
     exploreContainer.innerHTML = '';
 
-    exploreparsed.data.forEach(event => {
+    exploreParsed.data.forEach(event => {
   if ((event['Scheduled'] || '').trim().toLowerCase() === 'no' && !window.upcomingEventNames.has(event['Event'].trim())) {
     const card = document.createElement('div');
     card.className = 'card';
@@ -988,5 +988,6 @@
 </script>
 </body>
 </html>
+
 
 
