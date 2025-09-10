@@ -3,26 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <title>Games Lab</title>
-  <link rel="icon" href="Games Logo.png" type="image/png" />
+  <link rel="icon" href="Games Lab Logo.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.0/papaparse.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     :root {
-      --bg-dark: #181818;
-      --bg-light: #f5f5f5;
-      --card-dark: #212121;
-      --card-light: #ffffff;
-      --datebox-dark: #303030;
-      --datebox-light: #ececec;
-      --accent-dark: #fce029;
-      --accent-light: #0a75bc;
-      --text-dark: #fff;
-      --text-light: #000;
-      --shadow-dark: rgba(0, 0, 0, 0.5);
-      --shadow-light: rgba(0, 0, 0, 0.85);
+      --bg: #181818;
+      --card: #212121;
+      --muted: #d0d0d0;
+      --accent: #fce029;
+      --datebox: #303030;
+      --text-main: #fff;
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
       --animated-height-desktop: 150px;
@@ -30,556 +24,239 @@
       --line-height-desktop: 1.4;
       --line-height-mobile: 1.5;
     }
-
     body {
-      background: var(--bg-dark);
-      color: var(--text-dark);
-      font-family: 'Comfortaa', cursive;
-      margin: 0;
-      height: 100%;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family:'Comfortaa',cursive;
+    }
+    html,body{
+      margin:0; height:100%;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
     }
 
-    /* Safe area for status bar */
+    /* TOPBAR BLEED (status area) */
     .topbar-bleed {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      height: env(safe-area-inset-top);
-      background: rgba(24, 24, 24, 0.07);
+      height: constant(safe-area-inset-top, 0px);
+      height: env(safe-area-inset-top, 0px);
+      background: rgba(24,24,24,0.07);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 10002;
       pointer-events: none;
     }
 
-    /* Top bar */
+    /* TOPBAR */
     .topbar {
       position: fixed;
       top: 0; left: 0; right: 0;
       display: flex;
       align-items: center;
       padding-left: 24px;
-      padding-top: env(safe-area-inset-top);
-      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top));
+      padding-top: constant(safe-area-inset-top, 0px);
+      padding-top: env(safe-area-inset-top, 0px);
+      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
+      z-index: 10003;
       border-bottom: 1px solid transparent;
-      background: rgba(24, 24, 24, 0.04);
+      background: rgba(24,24,24,0.07); /* nearly invisible */
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      z-index: 10003;
-      transition: background 0.2s ease;
+      transition: background 0.22s;
+    }
+    .topbar-left { display:flex; align-items:center; height:100%; }
+    .logo { height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover; }
+    .brand { font-size:1.45rem; font-weight:700; letter-spacing:.5px; color:white; }
+
+    @media (max-width:600px){
+      .topbar { padding-left:10px; height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
+      .logo { height:26px; width:26px; margin-right:8px; }
+      .brand { font-size:1rem; }
     }
 
-    .topbar:hover {
-      background: rgba(24, 24, 24, 0.15);
-      border-bottom-color: rgba(41, 41, 41, 0.6);
+    .topbar-spacer { width:100%; height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px)); flex-shrink:0; }
+    @media (max-width:600px){ .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); } }
+
+    .wrap { max-width:1200px; margin:0 auto; padding-left:18px; padding-right:18px; box-sizing:border-box; padding-top:20px; }
+    @media (min-width:769px){ .wrap { padding-top:12px; } }
+    @media (max-width:768px){
+      .wrap { padding-left:12px !important; padding-right:12px !important; padding-top:14px; }
     }
 
-    .topbar #logo,
-    .topbar .brand {
-      user-select: none;
+    /* Animated Section */
+    .animated-wrapper { width:100%; display:flex; align-items:center; justify-content:center; overflow:hidden; margin-bottom:8px; padding:0 8px; height:var(--animated-height-desktop); }
+    @media (max-width:768px){
+      .animated-wrapper { height:var(--animated-height-mobile); margin-bottom:10px; }
     }
-
-    .topbar .brand {
-      color: var(--text-dark);
-      font-weight: 700;
-      font-size: 1.45rem;
-      letter-spacing: 0.5px;
-      margin-left: 12px;
-    }
-
-    .topbar img {
-      height: 36px;
-      width: 36px;
-      border-radius: 8px;
-      object-fit: cover;
-    }
-
-    @media (max-width: 600px) {
-      .topbar {
-        padding-left: 10px;
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top));
-      }
-
-      .topbar img {
-        height: 26px;
-        width: 26px;
-      }
-
-      .topbar .brand {
-        font-size: 1rem;
-      }
-    }
-
-    .topbar-spacer {
-      width: 100%;
-      height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top));
-      flex-shrink: 0;
-    }
-
-    @media (max-width: 600px) {
-      .topbar-spacer {
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top));
-      }
-    }
-
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding-left: 18px;
-      padding-right: 18px;
-      box-sizing: border-box;
-      padding-top: 20px;
-    }
-
-    @media (min-width: 769px) {
-      .wrap {
-        padding-top: 12px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .wrap {
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-        padding-top: 14px;
-      }
-    }
-
-    .animated-wrapper {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      margin-bottom: 8px;
-      padding: 0 8px;
-      height: var(--animated-height-desktop);
-    }
-
-    @media (max-width: 768px) {
-      .animated-wrapper {
-        height: var(--animated-height-mobile);
-        margin-bottom: 10px;
-      }
-    }
-
     .animated-text {
-      width: 100%;
-      max-width: 980px;
-      font-weight: 700;
-      font-family: 'Comfortaa', cursive;
-      font-size: 1.9rem;
-      text-transform: uppercase;
-      text-align: center;
-      letter-spacing: 2.1px;
-      color: var(--text-dark);
-      margin: 0;
-      padding: 0;
-      line-height: var(--line-height-desktop);
-      user-select: none;
-      white-space: pre-line;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-      height: 100%;
+      width:100%; max-width:980px; font-weight:700; font-family:'Comfortaa', cursive; font-size:1.9rem; text-transform:uppercase;
+      text-align:center; letter-spacing:2.1px; color:#fff; margin:0; padding:0; line-height:var(--line-height-desktop);
+      user-select:none; white-space:pre-line; display:flex; align-items:center; justify-content:center; height:100%; box-sizing:border-box;
+    }
+    @media (max-width:768px){
+      .animated-text { font-size:1rem; line-height:var(--line-height-mobile); letter-spacing:1.50px; padding:0 6px; }
     }
 
-    @media (max-width: 768px) {
-      .animated-text {
-        font-size: 1rem;
-        line-height: var(--line-height-mobile);
-        letter-spacing: 1.5px;
-        color: var(--text-light);
-        padding: 0 6px;
-      }
-    }
+    /* Divider */
+    .divider { width:100%; height:1px; margin:8px 0 18px; background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset; border-radius:1px; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px); }
+    @media (max-width:768px){ .divider { margin:10px 0 16px; } }
 
-    .divider {
-      width: 100%;
-      height: 1px;
-      margin: 8px 0 18px;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.06),
-        rgba(255, 255, 255, 0.02)
-      );
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
-      border-radius: 1px;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-    }
+    /* Title */
+    .title { text-align:center; margin-bottom:18px; }
+    .title h2 { color: var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.2px; }
 
-    @media (max-width: 768px) {
-      .divider {
-        margin: 10px 0 16px;
-      }
-    }
+    /* Cards Row */
+    .cards-row { display:flex; flex-wrap:wrap; gap:22px; justify-content:center; align-items:flex-start; }
 
-    .title {
-      text-align: center;
-      margin-bottom: 18px;
-      color: var(--accent-dark);
-    }
-
-    @media (prefers-color-scheme: light) {
-      .title {
-        color: var(--accent-light);
-      }
-    }
-
-    .cards-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 22px;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
+    /* Desktop Card */
     .card {
-      width: 340px;
-      background: var(--card-dark);
-      border-radius: 12px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 6px 22px var(--shadow-dark);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      width:340px;
+      background: var(--card);
+      border-radius:12px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
       transition: transform 0.16s ease, box-shadow 0.16s ease;
       cursor: default;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.8); /* Darker shadow */
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(0,0,0,0.9); }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 28px var(--shadow-dark);
-    }
+    .media { width:100%; padding-top:56.25%; position:relative; background:#111; }
+    .media img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
 
-    .media {
-      width: 100%;
-      padding-top: 56.25%;
-      position: relative;
-      background: #111;
-    }
+    .card-body { padding:14px; display:flex; flex-direction:column; gap:6px; }
+    .event-title { margin:0; font-size:17px; font-weight:700; color:#fff; line-height:1.18; }
+    .meta { margin:0; font-size:13.5px; color:var(--muted); }
+    .location { margin:0; font-size:14px; color:var(--muted); }
+    .location a { color: var(--accent); text-decoration:none; font-weight:600; }
+    .location a:hover { text-decoration:underline; }
 
-    .media img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    .card-footer { padding:12px 14px 18px; display:flex; justify-content:center; box-sizing:border-box; }
+    .book-btn { background: var(--accent); color: #000; padding: 10px 16px; border-radius: 8px; font-weight:700; text-decoration:none; display:inline-block; }
+    .book-btn:hover { background:#ffe974; }
 
-    .card-body {
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    /* Mobile Card Layout */
+    .mobile-info { display: none; }
+    .card-date { display: none; }
 
-    .event-title {
-      margin: 0;
-      font-weight: 700;
-      font-size: 17px;
-      color: var(--text-dark);
-      line-height: 1.18;
-    }
-
-    .meta {
-      margin: 0;
-      font-size: 13.5px;
-      color: var(--card-dark);
-      opacity: 0.7;
-    }
-
-    .location {
-      margin: 0;
-      font-size: 14px;
-      color: var(--card-dark);
-      opacity: 0.7;
-    }
-
-    .location a {
-      color: var(--accent-dark);
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    .location a:hover {
-      text-decoration: underline;
-    }
-
-    .card-date {
-      display: none;
-    }
-
-    .card-date .day {
-      font-weight: 700;
-      font-size: 28px;
-      color: var(--accent-dark);
-      line-height: 1;
-    }
-
-    .card-date .month {
-      font-size: 14px;
-      color: var(--text-dark);
-      line-height: 1;
-    }
-
-    .card-date {
-      border-radius: 10px;
-      background: var(--datebox-dark);
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: var(--text-dark);
-      width: 72px;
-      height: 72px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-
-    .card-date .day {
-      color: var(--accent-dark);
-    }
-
-    .card-date .month {
-      color: var(--text-dark);
-    }
-
-    .card-date .time {
-      display: none;
-    }
-
-    .card-date {
-      cursor: default;
-    }
-
-    /* Buttons */
-    .card-footer {
-      display: flex;
-      justify-content: center;
-      padding: 12px 14px 18px;
-      box-sizing: border-box;
-    }
-
-    .card-footer a {
-      text-decoration: none;
-      background: var(--accent-dark);
-      color: #000;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      display: inline-block;
-      user-select: none;
-      cursor: pointer;
-    }
-
-    .card-footer a:hover {
-      background: #ffc107;
-    }
-
-    /* Mobile */
-
-    @media (max-width: 768px) {
-      body {
-        background: var(--bg-dark);
-        color: var(--text-dark);
-      }
-
-      .wrap {
-        padding-left: 12px !important;
-        padding-right: 12px !important;
-        padding-top: calc(var(--topbar-height-mobile) + env(safe-area-inset-top) + 100px);
-      }
-
-      .cards-row {
-        justify-content: center;
-      }
-
+    @media (max-width:768px){
+      body   { background:var(--bg); }
+      .cards-row { justify-content:center; }
       .card {
         width: 100%;
-        display: flex;
+        display:flex;
         flex-direction: row;
         align-items: center;
-        gap: 10px;
-        padding: 10px 8px;
-        min-height: 80px;
-        border-radius: 12px;
+        gap:8px;
+        padding:10px 8px;
+        border-radius:12px;
         cursor: pointer;
-        background: var(--card-dark);
-        box-shadow: 0 6px 22px var(--shadow-dark);
+        min-height:80px;
+        background: var(--card);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.8); /* Darker shadow */
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        transition: box-shadow 0.3s ease;
       }
+      .media { width:72px; height:72px; padding-top:0; border-radius:10px; overflow:hidden; flex-shrink:0; background:#111; position:relative; }
+      .media img { position: static; width:100%; height:100%; object-fit:cover; }
 
-      .card:hover {
-        box-shadow: 0 10px 28px var(--shadow-dark);
-      }
-
-      .media {
-        width: 72px;
-        height: 72px;
-        border-radius: 10px;
-        overflow: hidden;
-        background: #111;
-        position: relative;
-        flex-shrink: 0;
-      }
-
-      .media img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .card-body {
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-        flex: 1 1 auto;
-      }
-
+      .card-body { padding:0; display:flex; flex-direction:column; gap:2px; flex:1 1 auto; }
       .event-title {
-        font-size: 19px !important;
-        font-weight: 800 !important;
-        color: var(--text-dark);
-        margin: 0;
+        font-size:19px !important;
+        font-weight:800 !important;
+        color:#fff;
+        margin:0;
       }
 
-      .meta {
-        display: none;
-      }
-
-      .location {
-        display: none;
-      }
+      .meta { display:none; }
+      .location { display:none; }
 
       .mobile-info {
-        display: block;
-        font-size: 13px;
-        color: var(--card-dark);
-        opacity: 0.7;
-        margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 75vw;
+        display:block;
+        font-size:13px;
+        color:var(--muted);
+        margin:0;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        max-width:98vw;
       }
+      .mobile-info a { color: var(--accent); text-decoration:none; font-weight:600; }
+      .mobile-info a:hover { text-decoration:underline; }
 
-      .mobile-info a {
-        color: var(--accent-dark);
-        font-weight: 600;
-        text-decoration: none;
-      }
-
-      .mobile-info a:hover {
-        text-decoration: underline;
-      }
+      .card-footer { display:none; }
 
       .card-date {
-        display: flex;
-        border-radius: 10px;
-        background: var(--datebox-dark);
-        border: 1.5px solid rgba(255, 255, 255, 0.08);
+        display:block;
+        width:72px;
+        height:72px;
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        border-radius:10px;
+        background: var(--datebox);
+        border: 1.5px solid rgba(255,255,255,0.08);
+        color:#fff;
+        font-size:12px;
+        box-sizing:border-box;
         backdrop-filter: blur(9px);
         -webkit-backdrop-filter: blur(9px);
-        color: var(--text-dark);
-        width: 72px;
-        height: 72px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
       }
-
       .card-date .day {
-        font-weight: 700;
-        font-size: 28px;
-        color: var(--accent-dark);
-        line-height: 1;
+        font-weight:700;
+        font-size:28px;
+        color: #fce029;
+        line-height:1;
       }
-
       .card-date .month {
-        font-size: 14px;
-        color: var(--text-dark);
-        line-height: 1;
+        font-size:14px;
+        color: #fff;
+        line-height:1;
       }
-
-      .card-date .time {
-        display: none;
-      }
-
-      .card-footer {
-        display: none;
-      }
+      .card-date .time { display:none; }
     }
 
-    /* Switch to Light theme */
-
+    /* Light Mode Adjustments */
     @media (prefers-color-scheme: light) {
       :root {
-        --bg-dark: var(--bg-light);
-        --card-dark: var(--card-light);
-        --datebox-dark: var(--datebox-light);
-        --accent-dark: var(--accent-light);
-        --text-dark: var(--text-light);
-        --shadow-dark: rgba(0, 0, 0, 0.85);
+        --bg: #f5f5f5;
+        --card: #ffffff;
+        --muted: #444;
+        --accent: #0a75bc; /* Light theme accent */
+        --datebox: #ececec;
+        --text-main: #181818;
       }
-
-      body {
-        background: var(--bg-dark);
-        color: var(--text-dark);
+      body { background: var(--bg); color: var(--text-main); }
+      .animated-text { color: #000; } /* Black animated text */
+      .topbar, .topbar-bleed {
+        background: rgba(255,255,255,0.1);
+        color: #181818;
       }
-
-      .topbar,
-      .topbar-bleed {
-        background: rgba(255, 255, 255, 0.1);
-        border-bottom-color: rgba(151, 151, 151, 0.2);
-        color: var(--text-dark);
-      }
-
       .card {
-        background: var(--card-dark);
-        box-shadow: 0 6px 22px var(--shadow-dark);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        background: var(--card);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 6px 22px rgba(0,0,0,0.8); /* Strong shadow */
       }
-
-      .card:hover {
-        box-shadow: 0 10px 28px var(--shadow-dark);
-      }
-
       .card-date {
-        background: var(--datebox-dark);
-        border: 1.5px solid rgba(0, 0, 0, 0.05);
+        background: var(--datebox);
+        border: 1.5px solid rgba(0,0,0,0.03);
+        color: #181818;
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
-        color: var(--text-dark);
       }
-
-      .animated-text {
-        color: var(--text-dark);
+      .card-date .day {
+        color: #0a75bc; /* Accent in light theme */
       }
-
-      .location a,
-      .mobile-info a {
-        color: var(--accent-dark);
-      }
-
-      .title {
-        color: var(--accent-dark);
-      }
+      .brand { color: #242424; }
     }
   </style>
 </head>
@@ -587,202 +264,189 @@
   <div class="topbar-bleed" aria-hidden="true"></div>
   <header class="topbar" role="banner">
     <div class="topbar-left">
-      <img src="Games Logo.png" alt="Games Logo" class="logo" />
+      <img src="https://1drv.ms/i/c/0cea9974c83dc73a/IQTn_Ym2XeH-Sqw0y4YSLmv_AYepVQgbOJe87hJKM47Wm7E" alt="Games Lab Logo" class="logo" />
       <span class="brand">Games Lab</span>
     </div>
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
   <main class="wrap" role="main">
-    <div class="animated-wrapper">
+    <div class="animated-wrapper" aria-hidden="false">
       <div class="animated-text" aria-live="polite"></div>
     </div>
-    <div class="divider"></div>
-    <div class="title">
-      <h2>Upcoming Events</h2>
-    </div>
-    <div id="events" class="cards-row"></div>
+    <div class="divider" aria-hidden="true"></div>
+    <div class="title"><h2>Upcoming Events</h2></div>
+    <div id="events" class="cards-row" aria-live="polite"></div>
   </main>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.0/papaparse.min.js"></script>
+
   <script>
-    const lines = ['IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'];
-    const msg = lines.join('\n');
-    const animatedElem = document.querySelector('.animated-text');
-    let index = 0, isDeleting = false;
-
-    const delay = 55;
-    const pause = 2600;
-
-    function typeWriter() {
-      if (!isDeleting) {
-        animatedElem.textContent = msg.substring(0, index + 1);
-        index++;
-        if (index === msg.length) {
-          isDeleting = true;
-          setTimeout(typeWriter, pause);
-          return;
-        }
-      } else {
-        animatedElem.textContent = msg.substring(0, index - 1);
-        index--;
-        if (index === 0) {
-          isDeleting = false;
-        }
+  const lines = [
+    'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
+  ];
+  const msg = lines.join('\n');
+  const animatedTextElem = document.querySelector('.animated-text');
+  let charIndex = 0, isDeleting = false;
+  const delay = 55, pauseBetween = 2600;
+  function type() {
+    if (!isDeleting) {
+      animatedTextElem.textContent = msg.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === msg.length) {
+        isDeleting = true; setTimeout(type, pauseBetween); return;
       }
-      setTimeout(typeWriter, isDeleting ? delay / 2 : delay);
+    } else {
+      animatedTextElem.textContent = msg.substring(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) isDeleting = false;
     }
+    setTimeout(type, isDeleting ? delay/2 : delay);
+  }
+  animatedTextElem.textContent = msg;
+  setTimeout(type, pauseBetween);
 
-    animatedElem.textContent = msg;
-    setTimeout(typeWriter, pause);
-
-    (async function(){
-      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSv7UEqmTnaJePZsldTDbvL6jpJ1R4GVi5H-Npt6wF09VuPYZWDbScqNrXmgYkpi7csEs-Cn9FJueLnL/pub?output=csv';
-      const fallback = 'https://via.placeholder.com/800x450?text=No+Image';
-
-      function clean(v) {
-        return v ? v.trim().replace(/^"|"$/g, '') : '';
+  (async function(){
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+    const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+    function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
+    function parseEventDate(str) {
+      if (!str) return null;
+      str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
+      str = str.replace(/’/g, "'").replace(/`/g,"'");
+      const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+      if (!parts) return null;
+      const [_, day, monthStr, yearStr] = parts;
+      const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+      if (month === undefined) return null;
+      const year = 2000 + parseInt(yearStr, 10);
+      return new Date(year, month, parseInt(day, 10));
+    }
+    try {
+      const res = await fetch(csvUrl, {cache: "no-cache"});
+      if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
+      const csvText = await res.text();
+      const parsed = Papa.parse(csvText, {skipEmptyLines:true});
+      const rows = parsed.data || [];
+      if (rows.length < 2) {
+        document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+        return;
       }
+      const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+      const container = document.getElementById("events");
+      container.innerHTML = "";
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      let upcomingCount = 0;
+      dataRows.forEach(cols => {
+        const name = clean(cols[0]);
+        const date = clean(cols[1]);
+        const time = clean(cols[2]);
+        const locText = clean(cols[3]);
+        const locLink = clean(cols[4]);
+        const ticket = clean(cols[5]) || "#";
+        const image = clean(cols[6]) || fallbackImage;
+        const eventDateObj = parseEventDate(date);
+        if (!eventDateObj) return;
+        eventDateObj.setHours(0,0,0,0);
+        if (eventDateObj < today) return;
+        upcomingCount++;
+        const card = document.createElement("article");
+        card.className = "card";
 
-      function parseDate(d) {
-        if (!d) return null;
-        d = d.trim().replace(/^[A-Za-z]{3},?\s*/, '');
-        d = d.replace(/’/g, "'").replace(/`/g,"'");
-        const parts = d.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-        if (!parts) return null;
-        const [, day, month, year] = parts;
-        const months = {'Jan':0,'Feb':1,'Mar':2,'Apr':3,'May':4,'Jun':5,'Jul':6,'Aug':7,'Sep':8,'Oct':9,'Nov':10,'Dec':11};
-        if (!(month in months)) return null;
-        return new Date(2000 + parseInt(year,10), months[month], parseInt(day,10));
-      }
+        // Media
+        const media = document.createElement("div");
+        media.className = "media";
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.src = image;
+        img.alt = name || "Event image";
+        img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+        media.appendChild(img);
+        card.appendChild(media);
 
-      try {
-        const res = await fetch(csvUrl, {cache: 'no-cache'});
-        if (!res.ok) throw new Error('Failed to fetch events');
-        const text = await res.text();
-        const parsed = Papa.parse(text, {skipEmptyLines: true});
-        const data = parsed.data || [];
-        if (data.length < 2) {
-          document.getElementById('events').innerHTML = '<p style="color:#bbb">No events found.</p>';
-          return;
+        // Body
+        const body = document.createElement("div");
+        body.className = "card-body";
+        const h = document.createElement("h3");
+        h.className = "event-title";
+        h.textContent = name || "Untitled Event";
+        body.appendChild(h);
+
+        // Desktop meta
+        const meta = document.createElement("p");
+        meta.className = "meta";
+        meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+        body.appendChild(meta);
+
+        // Desktop location
+        if (locText || locLink) {
+          const locP = document.createElement("p");
+          locP.className = "location";
+          const a = document.createElement("a");
+          a.href = locLink || "#";
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = locText;
+          locP.appendChild(a);
+          body.appendChild(locP);
         }
 
-        const events = data.slice(1).filter(r => r && r[0]);
-        const container = document.getElementById('events');
-        container.innerHTML = '';
-        const today = new Date();
-        today.setHours(0,0,0,0);
-        let upcoming = 0;
+        // Mobile Info Line
+        const mobileInfo = document.createElement("p");
+        mobileInfo.className = "mobile-info";
+        if (locText) {
+          const a2 = document.createElement("a");
+          a2.href = locLink || "#";
+          a2.target = "_blank";
+          a2.rel = "noopener noreferrer";
+          a2.textContent = locText;
+          mobileInfo.appendChild(a2);
+        }
+        if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
+        if (time) mobileInfo.appendChild(document.createTextNode(time));
+        body.appendChild(mobileInfo);
+        card.appendChild(body);
 
-        events.forEach(cols => {
-          const n = clean(cols[0]);
-          const dt = clean(cols[1]);
-          const time = clean(cols[2]);
-          const loc = clean(cols[3]);
-          const locLink = clean(cols[4]);
-          const ticket = clean(cols[5]) || '#';
-          const imgURL = clean(cols[6]) || fallback;
+        // Mobile date box
+        if (eventDateObj) {
+          const dayNum = eventDateObj.getDate();
+          const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
+          const dateBox = document.createElement("div");
+          dateBox.className = "card-date";
+          dateBox.innerHTML =
+            `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
+            `<div class="month">${monthShort}</div>` +
+            `<div class="time"></div>`;
+          card.appendChild(dateBox);
+        }
 
-          const eventDate = parseDate(dt);
-          if (!eventDate) return;
-          eventDate.setHours(0,0,0,0);
-          if (eventDate < today) return;
+        // Desktop Book Now
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+        const btn = document.createElement("a");
+        btn.className = "book-btn";
+        btn.href = ticket;
+        btn.target = "_blank";
+        btn.rel = "noopener noreferrer";
+        btn.textContent = "Book Now";
+        footer.appendChild(btn);
+        card.appendChild(footer);
 
-          upcoming++;
-
-          const card = document.createElement('article');
-          card.className = 'card';
-
-          // media
-          const media = document.createElement('div');
-          media.className = 'media';
-          const img = document.createElement('img');
-          img.loading = 'lazy';
-          img.src = imgURL;
-          img.alt = n;
-          img.onerror = () => { img.src = fallback; };
-          media.appendChild(img);
-          card.appendChild(media);
-
-          // body
-          const body = document.createElement('div');
-          body.className = 'card-body';
-
-          const title = document.createElement('h3');
-          title.className = 'event-title';
-          title.textContent = n;
-          body.appendChild(title);
-
-          const meta = document.createElement('p');
-          meta.className = 'meta';
-          meta.textContent = dt + (dt && time ? ' | ' : '') + time;
-          body.appendChild(meta);
-
-          if (loc) {
-            const locationP = document.createElement('p');
-            locationP.className = 'location';
-            const link = document.createElement('a');
-            link.href = locLink || '#';
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.textContent = loc;
-            locationP.appendChild(link);
-            body.appendChild(locationP);
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return;
+          if (window.innerWidth <= 768) {
+            if (ticket && ticket !== "#") window.open(ticket, '_blank');
           }
-
-          // mobile info line
-          const mobileInfo = document.createElement('p');
-          mobileInfo.className = 'mobile-info';
-          if(loc) {
-            const a = document.createElement('a');
-            a.href = locLink || '#';
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.textContent = loc;
-            mobileInfo.appendChild(a);
-          }
-          if(loc && time) mobileInfo.appendChild(document.createTextNode(' | '));
-          if(time) mobileInfo.appendChild(document.createTextNode(time));
-          body.appendChild(mobileInfo);
-
-          card.appendChild(body);
-
-          // date box for mobile
-          if(eventDate) {
-            const dateBox = document.createElement('div');
-            dateBox.className = 'card-date';
-            dateBox.innerHTML = `<div class="day">${String(eventDate.getDate()).padStart(2,'0')}</div><div class="month">${eventDate.toLocaleString('en-US', {month:'short'})}</div><div class="time"></div>`;
-            card.appendChild(dateBox);
-          }
-
-          // footer
-          const footer = document.createElement('div');
-          footer.className = 'card-footer';
-          const btn = document.createElement('a');
-          btn.className = 'card-button';
-          btn.href = ticket;
-          btn.target = '_blank';
-          btn.rel = 'noopener noreferrer';
-          btn.textContent = 'Book Now';
-          footer.appendChild(btn);
-          card.appendChild(footer);
-
-          card.addEventListener('click', e => {
-            if(e.target.closest('a')) return;
-            if(window.innerWidth <= 768 && ticket && ticket !== '#') {
-              window.open(ticket, '_blank');
-            }
-          });
-
-          container.appendChild(card);
         });
+        container.appendChild(card);
+      });
 
-        if(upcoming === 0) {
-          container.innerHTML = '<p style="color:#bbb">No events found.</p>';
-        }
-      } catch (e){
-        console.error(e);
-        document.getElementById('events').innerHTML = '<p style="color:#f66">Error loading events, please try again later.</p>';
-      }
-    })();
+      if (upcomingCount === 0)
+        container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
+    } catch (err) {
+      console.error(err);
+      document.getElementById("events").innerHTML =
+        '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
+    }
+  })();
   </script>
 </body>
 </html>
