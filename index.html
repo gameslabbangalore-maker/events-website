@@ -11,11 +11,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     :root{
-      --bg: #000000;
-      --card: #1a1a1a;
+      --bg: #181818;
+      --card: #212121;
       --muted: #d0d0d0;
       --accent: #fce029;
-      --link: #4dabf7;
+      --datebox: #303030;
+      --text-main: #fff;
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
       --animated-height-desktop: 150px;
@@ -23,12 +24,13 @@
       --line-height-desktop: 1.4;
       --line-height-mobile: 1.5;
     }
-    html,body{
-      margin:0;
-      height:100%;
-      font-family:'Comfortaa', cursive;
+    body {
       background: var(--bg);
-      color: #fff;
+      color: var(--text-main);
+      font-family:'Comfortaa',cursive;
+    }
+    html,body{
+      margin:0; height:100%;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
@@ -40,12 +42,13 @@
       right: 0;
       height: constant(safe-area-inset-top, 0px);
       height: env(safe-area-inset-top, 0px);
-      background: rgba(24,24,24,0.40);
+      background: rgba(24,24,24,0.07); /* more translucent */
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       z-index: 10002;
       pointer-events: none;
     }
+
     /* TOPBAR */
     .topbar {
       position: fixed;
@@ -59,22 +62,14 @@
       box-sizing: border-box;
       z-index: 10003;
       border-bottom: 1px solid transparent;
-      background: rgba(24,24,24,0.02); /* ultra translucent */
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      transition: background 0.2s;
+      background: rgba(24,24,24,0.07); /* nearly invisible */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.22s;
     }
-    .topbar-left {
-      display:flex;
-      align-items:center;
-      height:100%;
-    }
-    .logo {
-      height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover;
-    }
-    .brand {
-      font-size:1.45rem; font-weight:700; letter-spacing:.5px; color:white;
-    }
+    .topbar-left { display:flex; align-items:center; height:100%; }
+    .logo { height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover; }
+    .brand { font-size:1.45rem; font-weight:700; letter-spacing:.5px; color:white; }
     @media (max-width:600px){
       .topbar { padding-left:10px; height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
       .logo { height:26px; width:26px; margin-right:8px; }
@@ -104,9 +99,20 @@
     .title { text-align:center; margin-bottom:18px; }
     .title h2 { color: var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.2px; }
     .cards-row { display:flex; flex-wrap:wrap; gap:22px; justify-content:center; align-items:flex-start; }
-    /* Desktop card (unchanged) */
-    .card { width:340px; background: var(--card); border-radius:12px; overflow:hidden; display:flex; flex-direction:column;
-      transition: transform 0.16s ease, box-shadow 0.16s ease; cursor: default; }
+    /* Desktop card */
+    .card {
+      width:340px;
+      background: var(--card);
+      border-radius:12px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+      cursor: default;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.20);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
     .card:hover { transform: translateY(-6px); box-shadow: 0 10px 28px rgba(252,224,41,0.18); }
     .media { width:100%; padding-top:56.25%; position:relative; background:#111; }
     .media img { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
@@ -123,6 +129,7 @@
     .card-date { display: none; }
     /* MOBILE card layout */
     @media (max-width:768px){
+      body   { background:var(--bg); }
       .cards-row { justify-content:center; }
       .card {
         width: 100%;
@@ -130,10 +137,14 @@
         flex-direction: row;
         align-items: center;
         gap:8px;
-        padding:10px 8px; /* less top/bottom, same left/right */
+        padding:10px 8px;
         border-radius:12px;
         cursor: pointer;
-        min-height:80px; /* slightly less for compactness */
+        min-height:80px;
+        background: var(--card); /* lighter than main bg */
+        box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
       }
       .media { width:72px; height:72px; padding-top:0; border-radius:10px; overflow:hidden; flex-shrink:0; background:#111; position:relative; }
       .media img { position: static; width:100%; height:100%; object-fit:cover; }
@@ -168,17 +179,19 @@
         justify-content:center;
         align-items:center;
         border-radius:10px;
-        background: rgba(255,255,255,0.02);
-        border: 1px solid rgba(255,255,255,0.04);
+        background: var(--datebox);
+        border: 1.5px solid rgba(255,255,255,0.08);
         color:#fff;
         font-size:12px;
         box-sizing:border-box;
+        backdrop-filter: blur(9px);
+        -webkit-backdrop-filter: blur(9px);
       }
       .card-date .day {
         font-weight:700;
         font-size:28px;
-        line-height:1;
         color: #fce029;
+        line-height:1;
       }
       .card-date .month {
         font-size:14px;
@@ -186,6 +199,36 @@
         line-height:1;
       }
       .card-date .time { display:none; }
+    }
+    /* Light mode auto theme */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f5f5f5;
+        --card: #ffffff;
+        --muted: #444;
+        --accent: #bb9408;
+        --datebox: #ececec;
+        --text-main: #181818;
+      }
+      body { background: var(--bg); color: var(--text-main); }
+      .topbar, .topbar-bleed {
+        background: rgba(255,255,255,0.1);
+        color: #181818;
+      }
+      .card {
+        background: var(--card);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 6px 22px rgba(0,0,0,0.09);
+      }
+      .card-date {
+        background: var(--datebox);
+        border: 1.5px solid rgba(0,0,0,0.03);
+        color: #181818;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      .brand { color: #242424; }
     }
   </style>
 </head>
@@ -370,5 +413,3 @@
   </script>
 </body>
 </html>
-
-
