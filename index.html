@@ -916,43 +916,64 @@
     const exploreParsed = Papa.parse(exploreText, {header:true, skipEmptyLines:true});
     exploreContainer.innerHTML = '';
 
-    exploreParsed.data.forEach(event => {
-      if ((event['Scheduled'] || '').trim().toLowerCase() === 'no' && !window.upcomingEventNames.has(event['Event'].trim())) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.style.cursor = 'pointer';
-        card.addEventListener('click', () => {
-          if(event['Page Link']) window.open(event['Page Link'], '_blank');
-        });
+    exploreparsed.data.forEach(event => {
+  if ((event['Scheduled'] || '').trim().toLowerCase() === 'no' && !window.upcomingEventNames.has(event['Event'].trim())) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.cursor = window.innerWidth <= 768 ? 'pointer' : 'default';
 
-        const media = document.createElement('div');
-        media.className = 'media';
-        const img = document.createElement('img');
-        img.src = event['Image Links'] || fallbackImage;
-        img.alt = event['Event'] || '';
-        img.loading = 'lazy';
-        media.appendChild(img);
-        card.appendChild(media);
+    // Add click handler only for mobile
+    if(window.innerWidth <= 768){
+      card.addEventListener('click', () => {
+        if (event['Page Link']) window.open(event['Page Link'], '_blank');
+      });
+    }
 
-        const body = document.createElement('div');
-        body.className = 'card-body';
-        const title = document.createElement('div');
-        title.className = 'event-title';
-        title.textContent = event['Event'] || '';
-        body.appendChild(title);
+    // Media section
+    const media = document.createElement('div');
+    media.className = 'media';
+    const img = document.createElement('img');
+    img.src = event['Image Links'] || fallbackImage;
+    img.alt = event['Event'] || '';
+    img.loading = 'lazy';
+    media.appendChild(img);
+    card.appendChild(media);
 
-        if(event['Tagline']) {
-          const tagline = document.createElement('div');
-          tagline.className = 'event-tagline';
-          tagline.textContent = event['Tagline'];
-          body.appendChild(tagline);
-        }
+    // Body section
+    const body = document.createElement('div');
+    body.className = 'card-body';
 
-        card.appendChild(body);
+    const title = document.createElement('div');
+    title.className = 'event-title';
+    title.textContent = event['Event'] || '';
+    body.appendChild(title);
 
-        exploreContainer.appendChild(card);
-      }
-    });
+    if (event['Tagline']) {
+      const tagline = document.createElement('div');
+      tagline.className = 'event-tagline';
+      tagline.textContent = event['Tagline'];
+      body.appendChild(tagline);
+    }
+    card.appendChild(body);
+
+    // Footer/button only shown on desktop
+    if(window.innerWidth > 768) {
+      const footer = document.createElement('div');
+      footer.className = 'card-footer';
+      const btn = document.createElement('a');
+      btn.className = 'button-learn';
+      btn.href = event['Page Link'];
+      btn.target = "_blank";
+      btn.rel = "noopener noreferrer";
+      btn.textContent = 'Learn More';
+      footer.appendChild(btn);
+      card.appendChild(footer);
+    }
+
+    exploreContainer.appendChild(card);
+  }
+});
+
 
     if(!exploreContainer.children.length)
       exploreContainer.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
@@ -967,4 +988,5 @@
 </script>
 </body>
 </html>
+
 
