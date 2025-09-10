@@ -23,10 +23,9 @@
       --animated-height-mobile: 80px;
       --line-height-desktop: 1.4;
       --line-height-mobile: 1.5;
-      /* Reduced desktop max font size for animated text */
       --animated-font-size-max: 1.6rem;
       --animated-font-size-min: 1rem;
-      --card-height-mobile-base: 80px; /* base height for mobile card at 100% width */
+      --card-height-mobile-base: 80px;
     }
     body {
       background: var(--bg);
@@ -52,7 +51,6 @@
       z-index: 10002;
       pointer-events: none;
     }
-    /* Light theme overrides for topbar-bleed background */
     @media (prefers-color-scheme: light) {
       .topbar-bleed {
         background: #fff !important;
@@ -71,7 +69,7 @@
       box-sizing: border-box;
       z-index: 10003;
       border-bottom: 1px solid transparent;
-      background: rgba(24,24,24,0.07); /* nearly invisible */
+      background: rgba(24,24,24,0.07);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       transition: background 0.22s;
@@ -84,10 +82,8 @@
       .logo { height:26px; width:26px; margin-right:8px; }
       .brand { font-size:1rem; }
     }
-    /* Spacer to offset content from fixed topbar */
     .topbar-spacer { width:100%; height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px)); flex-shrink:0; }
     @media (max-width:600px){ .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); } }
-    /* Divider below topbar and above animated text */
     .top-divider {
       width: 100%;
       height: 1px;
@@ -97,7 +93,7 @@
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       margin-bottom: 12px;
-      position: relative; /* to keep stacking context */
+      position: relative;
       z-index: 10;
     }
     @media (max-width:768px){
@@ -108,7 +104,6 @@
     @media (max-width:768px){
       .wrap { padding-left:12px !important; padding-right:12px !important; padding-top:14px; }
     }
-    /* Animated Section */
     .animated-wrapper {
       width:100%;
       display:flex;
@@ -125,7 +120,6 @@
         height: var(--animated-height-mobile);
         margin-bottom:10px;
         max-height: var(--animated-height-mobile);
-        /* To restrict text container */
       }
     }
     .animated-text {
@@ -154,7 +148,7 @@
     }
     @media (max-width:768px){
       .animated-text {
-        font-size: clamp(0.75rem, 4vw, 1.05rem); /* further reduced max to fit 3 lines */
+        font-size: clamp(0.75rem, 4vw, 1.05rem);
         line-height: 1.4;
         letter-spacing:1.4px;
         padding:0 6px;
@@ -163,7 +157,6 @@
         display: block;
       }
     }
-    /* Divider (below animated text) */
     .divider {
       width:100%;
       height:1px;
@@ -179,10 +172,8 @@
         margin:10px 0 16px;
       }
     }
-    /* Title */
     .title { text-align:center; margin-bottom:18px; }
-    .title h2 { color: var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.2px; }
-    /* Cards Row */
+    .title.h2 { color: var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.2px; }
     .cards-row {
       display:flex;
       flex-wrap:wrap;
@@ -190,7 +181,6 @@
       justify-content:center;
       align-items:flex-start;
     }
-    /* Desktop Card */
     .card {
       width:340px;
       background: var(--card);
@@ -200,7 +190,7 @@
       flex-direction:column;
       transition: transform 0.16s ease, box-shadow 0.16s ease;
       cursor: default;
-      box-shadow: 0 6px 22px rgba(0,0,0,0.8); /* Darker shadow */
+      box-shadow: 0 6px 22px rgba(0,0,0,0.8);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
@@ -261,7 +251,7 @@
     }
     .book-btn {
       background: var(--accent);
-      color: #000; /* Dark theme: Black text */
+      color: #000;
       padding: 10px 16px;
       border-radius: 8px;
       font-weight:700;
@@ -271,29 +261,22 @@
     .book-btn:hover {
       background:#ffe974;
     }
-    /* Mobile Card Layout */
-    .mobile-info {
-      display: none;
-    }
-    .card-date {
-      display: none;
-    }
     @media (max-width:768px){
       body {
-        background:var(--bg);
+        background: var(--bg);
       }
       .cards-row {
         justify-content:center;
       }
       .card {
-        width: 90vw; /* width relative to viewport */
-        max-width: 400px; /* optional max width */
-        height: auto; /* allow height to adjust automatically based on content */
+        width: 90vw;
+        max-width: 400px;
+        height: auto;
         display:flex;
         flex-direction: row;
         align-items: center;
         gap:8px;
-        padding: calc(10px + 1vw) calc(8px + 1vw); /* padding scales slightly */
+        padding: calc(10px + 1vw) calc(8px + 1vw);
         border-radius:12px;
         cursor: pointer;
         background: var(--card);
@@ -305,7 +288,7 @@
       .media {
         width: 18vw;
         max-width: 72px;
-        aspect-ratio: 1 / 1;  /* square aspect ratio */
+        aspect-ratio: 1 / 1;
         height: auto;
         padding-top: 0 !important;
         border-radius: 10px;
@@ -373,19 +356,19 @@
         background: var(--datebox);
         border: 1.5px solid rgba(255,255,255,0.08);
         color:#fff;
-        font-size: calc(11px + 1vw); /* Increased base font size for date */
+        font-size: calc(11px + 1vw);
         box-sizing:border-box;
         backdrop-filter: blur(9px);
         -webkit-backdrop-filter: blur(9px);
       }
       .card-date .day {
         font-weight:700;
-        font-size: calc(22px + 2vw); /* increased font size proportionally */
+        font-size: calc(22px + 2vw);
         color: #fce029;
         line-height:1;
       }
       .card-date .month {
-        font-size: calc(12px + 1vw); /* increased font size */
+        font-size: calc(12px + 1vw);
         color: #fff;
         line-height:1;
       }
@@ -393,7 +376,6 @@
         display:none;
       }
     }
-    /* Light Mode Adjustments */
     @media (prefers-color-scheme: light) {
       :root {
         --bg: #f5f5f5;
@@ -404,7 +386,7 @@
         --text-main: #181818;
       }
       body { background: var(--bg); color: var(--text-main); }
-      .animated-text { color: #000; } /* Black animated text */
+      .animated-text { color: #000; }
       .topbar, .topbar-bleed {
         background: rgba(255,255,255,0.1);
         color: #181818;
@@ -415,7 +397,7 @@
         -webkit-backdrop-filter: blur(10px);
         box-shadow: 0 6px 22px rgba(0,0,0,0.8);
       }
-      .event-title { color: #000; } /* Black event title */
+      .event-title { color: #000; }
       .card-date {
         background: var(--datebox);
         border: 1.5px solid rgba(0,0,0,0.03);
@@ -427,23 +409,21 @@
         color: #0a75bc;
       }
       .card-date .month {
-        color: #000; /* MMM in black */
+        color: #000;
       }
-      /* Book Now button text becomes white in light theme */
       .book-btn {
         color: #fff;
       }
       .brand { color: #242424; }
     }
-
     /* New Sections Styling */
     #explore-events {
       margin-top: 32px;
       margin-bottom: 32px;
     }
     #gallery {
-      margin-top: 32px;
-      margin-bottom: 32px;
+      margin: 32px 0 24px 0;
+      position: relative;
     }
     #about-us {
       margin-top: 32px;
@@ -458,31 +438,44 @@
       margin-top: 32px;
       margin-bottom: 48px;
       color: var(--text-main);
-      text-align: center;
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
+      padding: 16px;
+      background: #2a2a2a;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(252, 224, 41, 0.4);
+    }
+    #contact-us .title {
+      margin-bottom: 24px;
+    }
+    #contact-us p {
+      margin: 10px 0;
+      line-height: 1.4;
     }
     #contact-us a {
       color: var(--accent);
       text-decoration: none;
       font-weight: 700;
-      margin: 0 8px;
+      margin: 0 12px;
+      display: inline-block;
+      word-break: break-word;
     }
     #contact-us a:hover {
       text-decoration: underline;
     }
-    /* Gallery carousel styling */
+    /* Gallery carousel */
     .gallery-carousel {
       display: flex;
-      overflow-x: auto;
+      overflow-x: scroll;
       gap: 12px;
       scroll-behavior: smooth;
       padding: 0 8px;
-      scrollbar-width: none; /* Firefox */
+      scrollbar-width: none;
+      animation: scroll-left 30s linear infinite;
     }
     .gallery-carousel::-webkit-scrollbar {
-      display: none; /* Safari and Chrome */
+      display: none;
     }
     .gallery-carousel img {
       width: 200px;
@@ -497,6 +490,11 @@
     .gallery-carousel img:hover {
       transform: scale(1.05);
     }
+    /* Scroll animation - moves left continuously */
+    @keyframes scroll-left {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-200px * 4)); } /* 4 images at 200px each */
+    }
 
   </style>
 </head>
@@ -510,35 +508,28 @@
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
   <main class="wrap" role="main">
-    <!-- Divider below topbar -->
     <div class="top-divider" aria-hidden="true"></div>
-
     <div class="animated-wrapper" aria-live="polite">
       <div class="animated-text"></div>
     </div>
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- Upcoming Events Section (height dynamic by content, unchanged container) -->
-    <div class="title"><h2>Upcoming Events</h2></div>
+    <div class="title" style="margin-bottom: 24px;"><h2>Upcoming Events</h2></div> <!-- Added margin bottom for gap -->
     <div id="events" class="cards-row" aria-live="polite"></div>
 
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- Explore Other Events Section (placeholder for dynamic cards, empty for now) -->
     <div id="explore-events" aria-live="polite">
       <div class="title"><h2>Explore Other Events</h2></div>
-      <div class="cards-row" id="explore-cards-row">
-        <!-- Placeholder for explore other event cards -->
-      </div>
+      <div class="cards-row" id="explore-cards-row"></div>
     </div>
 
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- Gallery Section (self-playing carousel placeholder) -->
     <div id="gallery" aria-label="Gallery Carousel">
       <div class="title"><h2>Gallery</h2></div>
       <div class="gallery-carousel" id="gallery-carousel">
-        <!-- Sample placeholder images, replace with real gallery images -->
+        <!-- Replace with your actual images -->
         <img src="https://via.placeholder.com/400x240?text=Gallery+Image+1" alt="Gallery Image 1" />
         <img src="https://via.placeholder.com/400x240?text=Gallery+Image+2" alt="Gallery Image 2" />
         <img src="https://via.placeholder.com/400x240?text=Gallery+Image+3" alt="Gallery Image 3" />
@@ -546,7 +537,8 @@
       </div>
     </div>
 
-    <!-- About Us Section -->
+    <div class="divider" aria-hidden="true"></div>
+
     <div id="about-us">
       <div class="title"><h2>About Us</h2></div>
       <p>Games Lab is a group of fun loving people organizing fun events throughout the year. We aim to make life happier and lighter for all who join us. We strive for unique experiences, memorable time, and widest smiles.<br/><br/>
@@ -557,182 +549,191 @@
 
     <div class="divider" aria-hidden="true"></div>
 
-    <!-- Contact Us Section -->
     <div id="contact-us">
       <div class="title"><h2>Contact Us</h2></div>
       <p>Reach out to us anytime via email, phone, or social media.</p>
       <p>
-        Email: <a href="gameslab.bangalore@gmail.com">gameslab.bangalore@gmail.com</a> |
-        Phone: <a href="tel:+917676099857">+917676099857</a><br/>
+        Email: <a href="mailto:gameslab.bangalore@gmail.com">gameslab.bangalore@gmail.com</a> |
+        Phone: <a href="tel:+917676099857">+917676099857</a>
+      </p>
+      <p>
         Instagram: <a href="https://instagram.com/games._.lab/" target="_blank" rel="noopener noreferrer">@games._.lab</a> |
         WhatsApp Community: <a href="https://chat.whatsapp.com/BDglWOECbIiGLaCRVmzAaj" target="_blank" rel="noopener noreferrer">Join Here</a> |
         WhatsApp Message: <a href="https://wa.me/+917676099857" target="_blank" rel="noopener noreferrer">Send Message</a>
       </p>
     </div>
   </main>
-
   <script>
-  const lines = [
-    'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
-  ];
-  const msg = lines.join('\n');
-  const animatedTextElem = document.querySelector('.animated-text');
-  let charIndex = 0, isDeleting = false;
-  const delay = 55, pauseBetween = 2600;
-  function type() {
-    if (!isDeleting) {
-      animatedTextElem.textContent = msg.substring(0, charIndex + 1);
-      charIndex++;
-      if (charIndex === msg.length) {
-        isDeleting = true; setTimeout(type, pauseBetween); return;
+    // Animated text script (unchanged)
+    const lines = [
+      'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
+    ];
+    const msg = lines.join('\n');
+    const animatedTextElem = document.querySelector('.animated-text');
+    let charIndex = 0, isDeleting = false;
+    const delay = 55, pauseBetween = 2600;
+    function type() {
+      if (!isDeleting) {
+        animatedTextElem.textContent = msg.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === msg.length) {
+          isDeleting = true; setTimeout(type, pauseBetween); return;
+        }
+      } else {
+        animatedTextElem.textContent = msg.substring(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) isDeleting = false;
       }
-    } else {
-      animatedTextElem.textContent = msg.substring(0, charIndex - 1);
-      charIndex--;
-      if (charIndex === 0) isDeleting = false;
+      setTimeout(type, isDeleting ? delay/2 : delay);
     }
-    setTimeout(type, isDeleting ? delay/2 : delay);
-  }
-  animatedTextElem.textContent = msg;
-  setTimeout(type, pauseBetween);
+    animatedTextElem.textContent = msg;
+    setTimeout(type, pauseBetween);
 
-  (async function(){
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-    const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
-    function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
-    function parseEventDate(str) {
-      if (!str) return null;
-      str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
-      str = str.replace(/’/g, "'").replace(/`/g,"'");
-      const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-      if (!parts) return null;
-      const [_, day, monthStr, yearStr] = parts;
-      const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
-      if (month === undefined) return null;
-      const year = 2000 + parseInt(yearStr, 10);
-      return new Date(year, month, parseInt(day, 10));
-    }
-    try {
-      const res = await fetch(csvUrl, {cache: "no-cache"});
-      if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
-      const csvText = await res.text();
-      const parsed = Papa.parse(csvText, {skipEmptyLines:true});
-      const rows = parsed.data || [];
-      if (rows.length < 2) {
-        document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
-        return;
+    (async function(){
+      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+      const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+      function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
+      function parseEventDate(str) {
+        if (!str) return null;
+        str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
+        str = str.replace(/’/g, "'").replace(/`/g,"'");
+        const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+        if (!parts) return null;
+        const [_, day, monthStr, yearStr] = parts;
+        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+        if (month === undefined) return null;
+        const year = 2000 + parseInt(yearStr, 10);
+        return new Date(year, month, parseInt(day, 10));
       }
-      const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
-      const container = document.getElementById("events");
-      container.innerHTML = "";
-      const today = new Date();
-      today.setHours(0,0,0,0);
-      let upcomingCount = 0;
-      dataRows.forEach(cols => {
-        const name = clean(cols[0]);
-        const date = clean(cols[1]);
-        const time = clean(cols[2]);
-        const locText = clean(cols[3]);
-        const locLink = clean(cols[4]);
-        const ticket = clean(cols[5]) || "#";
-        const image = clean(cols[6]) || fallbackImage;
-        const eventDateObj = parseEventDate(date);
-        if (!eventDateObj) return;
-        eventDateObj.setHours(0,0,0,0);
-        if (eventDateObj < today) return;
-        upcomingCount++;
-        const card = document.createElement("article");
-        card.className = "card";
-        // Media
-        const media = document.createElement("div");
-        media.className = "media";
-        const img = document.createElement("img");
-        img.loading = "lazy";
-        img.src = image;
-        img.alt = name || "Event image";
-        img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
-        media.appendChild(img);
-        card.appendChild(media);
-        // Body
-        const body = document.createElement("div");
-        body.className = "card-body";
-        const h = document.createElement("h3");
-        h.className = "event-title";
-        h.textContent = name || "Untitled Event";
-        body.appendChild(h);
-        // Desktop meta
-        const meta = document.createElement("p");
-        meta.className = "meta";
-        meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
-        body.appendChild(meta);
-        // Desktop location
-        if (locText || locLink) {
-          const locP = document.createElement("p");
-          locP.className = "location";
-          const a = document.createElement("a");
-          a.href = locLink || "#";
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          a.textContent = locText;
-          locP.appendChild(a);
-          body.appendChild(locP);
+      try {
+        const res = await fetch(csvUrl, {cache: "no-cache"});
+        if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
+        const csvText = await res.text();
+        const parsed = Papa.parse(csvText, {skipEmptyLines:true});
+        const rows = parsed.data || [];
+        if (rows.length < 2) {
+          document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+          return;
         }
-        // Mobile Info Line
-        const mobileInfo = document.createElement("p");
-        mobileInfo.className = "mobile-info";
-        if (locText) {
-          const a2 = document.createElement("a");
-          a2.href = locLink || "#";
-          a2.target = "_blank";
-          a2.rel = "noopener noreferrer";
-          a2.textContent = locText;
-          mobileInfo.appendChild(a2);
-        }
-        if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
-        if (time) mobileInfo.appendChild(document.createTextNode(time));
-        body.appendChild(mobileInfo);
-        card.appendChild(body);
-        // Mobile date box
-        if (eventDateObj) {
-          const dayNum = eventDateObj.getDate();
-          const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
-          const dateBox = document.createElement("div");
-          dateBox.className = "card-date";
-          dateBox.innerHTML =
-            `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
-            `<div class="month">${monthShort}</div>` +
-            `<div class="time"></div>`;
-          card.appendChild(dateBox);
-        }
-        // Desktop Book Now
-        const footer = document.createElement("div");
-        footer.className = "card-footer";
-        const btn = document.createElement("a");
-        btn.className = "book-btn";
-        btn.href = ticket;
-        btn.target = "_blank";
-        btn.rel = "noopener noreferrer";
-        btn.textContent = "Book Now";
-        footer.appendChild(btn);
-        card.appendChild(footer);
-        card.addEventListener('click', function(e) {
-          if (e.target.closest('a')) return;
-          if (window.innerWidth <= 768) {
-            if (ticket && ticket !== "#") window.open(ticket, '_blank');
+        const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+        const container = document.getElementById("events");
+        container.innerHTML = "";
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        let upcomingCount = 0;
+        dataRows.forEach(cols => {
+          const name = clean(cols[0]);
+          const date = clean(cols[1]);
+          const time = clean(cols[2]);
+          const locText = clean(cols[3]);
+          const locLink = clean(cols[4]);
+          const ticket = clean(cols[5]) || "#";
+          const image = clean(cols[6]) || fallbackImage;
+          const eventDateObj = parseEventDate(date);
+          if (!eventDateObj) return;
+          eventDateObj.setHours(0,0,0,0);
+          if (eventDateObj < today) return;
+          upcomingCount++;
+          const card = document.createElement("article");
+          card.className = "card";
+          const media = document.createElement("div");
+          media.className = "media";
+          const img = document.createElement("img");
+          img.loading = "lazy";
+          img.src = image;
+          img.alt = name || "Event image";
+          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+          media.appendChild(img);
+          card.appendChild(media);
+          const body = document.createElement("div");
+          body.className = "card-body";
+          const h = document.createElement("h3");
+          h.className = "event-title";
+          h.textContent = name || "Untitled Event";
+          body.appendChild(h);
+          const meta = document.createElement("p");
+          meta.className = "meta";
+          meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+          body.appendChild(meta);
+          if (locText || locLink) {
+            const locP = document.createElement("p");
+            locP.className = "location";
+            const a = document.createElement("a");
+            a.href = locLink || "#";
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = locText;
+            locP.appendChild(a);
+            body.appendChild(locP);
           }
+          const mobileInfo = document.createElement("p");
+          mobileInfo.className = "mobile-info";
+          if (locText) {
+            const a2 = document.createElement("a");
+            a2.href = locLink || "#";
+            a2.target = "_blank";
+            a2.rel = "noopener noreferrer";
+            a2.textContent = locText;
+            mobileInfo.appendChild(a2);
+          }
+          if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
+          if (time) mobileInfo.appendChild(document.createTextNode(time));
+          body.appendChild(mobileInfo);
+          card.appendChild(body);
+          if (eventDateObj) {
+            const dayNum = eventDateObj.getDate();
+            const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
+            const dateBox = document.createElement("div");
+            dateBox.className = "card-date";
+            dateBox.innerHTML =
+              `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
+              `<div class="month">${monthShort}</div>` +
+              `<div class="time"></div>`;
+            card.appendChild(dateBox);
+          }
+          const footer = document.createElement("div");
+          footer.className = "card-footer";
+          const btn = document.createElement("a");
+          btn.className = "book-btn";
+          btn.href = ticket;
+          btn.target = "_blank";
+          btn.rel = "noopener noreferrer";
+          btn.textContent = "Book Now";
+          footer.appendChild(btn);
+          card.appendChild(footer);
+          card.addEventListener('click', function(e) {
+            if (e.target.closest('a')) return;
+            if (window.innerWidth <= 768) {
+              if (ticket && ticket !== "#") window.open(ticket, '_blank');
+            }
+          });
+          container.appendChild(card);
         });
-        container.appendChild(card);
-      });
-      if (upcomingCount === 0)
-        container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
-    } catch (err) {
-      console.error(err);
-      document.getElementById("events").innerHTML =
-        '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
+        if (upcomingCount === 0)
+          container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
+      } catch (err) {
+        console.error(err);
+        document.getElementById("events").innerHTML =
+          '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
+      }
+    })();
+
+    // Gallery autoplay logic
+    const gallery = document.getElementById('gallery-carousel');
+    let scrollAmount = 0;
+    const scrollStep = 1;
+    const scrollInterval = 20; // milliseconds
+
+    function autoScrollGallery(){
+      scrollAmount += scrollStep;
+      if(scrollAmount >= gallery.scrollWidth - gallery.clientWidth){
+        scrollAmount = 0; //reset scroll
+      }
+      gallery.scrollLeft = scrollAmount;
+      requestAnimationFrame(autoScrollGallery);
     }
-  })();
+    requestAnimationFrame(autoScrollGallery);
+
   </script>
 </body>
 </html>
-
-
