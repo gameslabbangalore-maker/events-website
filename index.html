@@ -17,31 +17,34 @@
       --accent: #fce029;
       --datebox: #303030;
       --text-main: #fff;
-      --heading-color: #fce029;
       --topbar-height-desktop: 58px;
       --topbar-height-mobile: 48px;
       --animated-height-desktop: 150px;
       --animated-height-mobile: 80px;
       --line-height-desktop: 1.4;
       --line-height-mobile: 1.5;
+
+      /* Reduced desktop max font size for animated text */
       --animated-font-size-max: 1.6rem;
       --animated-font-size-min: 1rem;
-      --card-height-mobile-base: 80px;
+      --card-height-mobile-base: 80px; /* base height for mobile card at 100% width */
     }
     body {
       background: var(--bg);
       color: var(--text-main);
       font-family:'Comfortaa',cursive;
     }
-    html,body {
+    html,body{
       margin:0; height:100%;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
     }
-    /* TOPBAR BLEED */
+    /* TOPBAR BLEED (status area) */
     .topbar-bleed {
       position: fixed;
-      top:0; left:0; right:0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: constant(safe-area-inset-top, 0px);
       height: env(safe-area-inset-top, 0px);
       background: rgba(24,24,24,0.07);
@@ -50,6 +53,7 @@
       z-index: 10002;
       pointer-events: none;
     }
+    /* Light theme overrides for topbar-bleed background */
     @media (prefers-color-scheme: light) {
       .topbar-bleed {
         background: #fff !important;
@@ -57,35 +61,35 @@
     }
     /* TOPBAR */
     .topbar {
-      position: fixed; top:0; left:0; right:0;
-      display: flex; align-items: center;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
       padding-left: 24px;
-      padding-top: constant(safe-area-inset-top,0px);
-      padding-top: env(safe-area-inset-top,0px);
+      padding-top: constant(safe-area-inset-top, 0px);
+      padding-top: env(safe-area-inset-top, 0px);
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
-      z-index:10003;
+      z-index: 10003;
       border-bottom: 1px solid transparent;
-      background: rgba(24,24,24,0.07);
+      background: rgba(24,24,24,0.07); /* nearly invisible */
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       transition: background 0.22s;
     }
-    .topbar-left { display:flex; align-items:center; height: 100%; }
+    .topbar-left { display:flex; align-items:center; height:100%; }
     .logo { height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover; }
     .brand { font-size:1.45rem; font-weight:700; letter-spacing:.5px; color:white; }
     @media (max-width:600px){
-      .topbar {
-        padding-left:10px;
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px));
-      }
+      .topbar { padding-left:10px; height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
       .logo { height:26px; width:26px; margin-right:8px; }
       .brand { font-size:1rem; }
     }
-    .topbar-spacer { width:100%; height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px)); flex-shrink: 0; }
-    @media (max-width:600px) {
-      .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); }
-    }
+    /* Spacer to offset content from fixed topbar */
+    .topbar-spacer { width:100%; height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px)); flex-shrink:0; }
+    @media (max-width:600px){ .topbar-spacer { height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top, 0px)); } }
+
+    /* Divider below topbar and above animated text */
     .top-divider {
       width: 100%;
       height: 1px;
@@ -95,27 +99,17 @@
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
       margin-bottom: 12px;
-      position: relative;
-      z-index:10;
+      position: relative; /* to keep stacking context */
+      z-index: 10;
     }
-    @media (max-width:768px) {
+    @media (max-width:768px){
       .top-divider { margin-bottom: 10px; }
     }
-    .wrap {
-      max-width:1200px; margin: 0 auto;
-      padding-left:18px; padding-right:18px;
-      box-sizing: border-box;
-      padding-top:20px;
-    }
-    @media (min-width:769px) {
-      .wrap { padding-top:12px; }
-    }
-    @media (max-width:768px) {
-      .wrap {
-        padding-left:12px !important;
-        padding-right:12px !important;
-        padding-top:14px;
-      }
+
+    .wrap { max-width:1200px; margin:0 auto; padding-left:18px; padding-right:18px; box-sizing:border-box; padding-top:20px; }
+    @media (min-width:769px){ .wrap { padding-top:12px; } }
+    @media (max-width:768px){
+      .wrap { padding-left:12px !important; padding-right:12px !important; padding-top:14px; }
     }
     /* Animated Section */
     .animated-wrapper {
@@ -129,40 +123,41 @@
       height:var(--animated-height-desktop);
       max-height: var(--animated-height-desktop);
     }
-    @media (max-width:768px) {
+    @media (max-width:768px){
       .animated-wrapper {
         height: var(--animated-height-mobile);
         margin-bottom:10px;
         max-height: var(--animated-height-mobile);
+        /* To restrict text container */
       }
     }
     .animated-text {
       width:100%;
-      max-width: 980px;
+      max-width:980px;
       font-weight:700;
       font-family:'Comfortaa', cursive;
       font-size: var(--animated-font-size-max);
-      text-transform: uppercase;
-      text-align: center;
-      letter-spacing: 2.1px;
+      text-transform:uppercase;
+      text-align:center;
+      letter-spacing:2.1px;
       color:#fff;
       margin:0;
       padding:0;
-      line-height: var(--line-height-desktop);
+      line-height:var(--line-height-desktop);
       user-select:none;
       white-space: pre-wrap;
       display:flex;
       align-items:center;
       justify-content:center;
-      height: 100%;
-      box-sizing: border-box;
+      height:100%;
+      box-sizing:border-box;
       transition: font-size 0.3s ease;
       overflow-wrap: break-word;
       word-break: break-word;
     }
-    @media (max-width:768px) {
+    @media (max-width:768px){
       .animated-text {
-        font-size: clamp(0.75rem, 4vw, 1.05rem);
+        font-size: clamp(0.75rem, 4vw, 1.05rem); /* further reduced max to fit 3 lines */
         line-height: 1.4;
         letter-spacing:1.4px;
         padding:0 6px;
@@ -171,85 +166,87 @@
         display: block;
       }
     }
-    /* Dividers */
+    /* Divider (below animated text) */
     .divider {
-      width: 100%;
-      height: 1px;
-      margin: 8px 0 18px;
+      width:100%;
+      height:1px;
+      margin:8px 0 18px;
       background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
       box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset;
-      border-radius: 1px;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      border-radius:1px;
+      backdrop-filter:blur(2px);
+      -webkit-backdrop-filter:blur(2px);
     }
-    @media (max-width:768px) {
+    @media (max-width:768px){
       .divider {
-        margin: 10px 0 16px;
+        margin:10px 0 16px;
       }
     }
-    /* Headings */
-    .title {
-      text-align: center;
-      margin-bottom: 18px;
-      color: var(--accent);
-      font-weight: 700;
-    }
+    /* Title */
+    .title { text-align:center; margin-bottom:18px; }
+    .title h2 { color: var(--accent); margin:0; font-size:1.9rem; letter-spacing:0.2px; }
     /* Cards Row */
     .cards-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 22px;
-      justify-content: center;
-      align-items: flex-start;
+      display:flex;
+      flex-wrap:wrap;
+      gap:22px;
+      justify-content:center;
+      align-items:flex-start;
     }
     /* Desktop Card */
     .card {
-      width: 340px;
+      width:340px;
       background: var(--card);
-      border-radius: 12px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      border-radius:12px;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
       transition: transform 0.16s ease, box-shadow 0.16s ease;
       cursor: default;
-      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 6px 22px rgba(0,0,0,0.8); /* Darker shadow */
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
     .card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.9);
     }
     .media {
-      width: 100%;
-      padding-top: 56.25%;
-      position: relative;
-      background: #111;
+      width:100%;
+      padding-top:56.25%;
+      position:relative;
+      background:#111;
     }
     .media img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
     }
     .card-body {
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
     }
     .event-title {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.18;
+      margin:0;
+      font-size:17px;
+      font-weight:700;
+      color:#fff;
+      line-height:1.18;
     }
-    /* Hide meta & location on desktop */
-    .meta, .location {
-      display: none;
+    .meta {
+      margin:0;
+      font-size:13.5px;
+      color:var(--muted);
+    }
+    .location {
+      margin:0;
+      font-size:14px;
+      color:var(--muted);
     }
     .location a {
       color: var(--accent);
@@ -257,47 +254,53 @@
       font-weight:600;
     }
     .location a:hover {
-      text-decoration: underline;
+      text-decoration:underline;
     }
     .card-footer {
-      padding: 12px 14px 18px;
-      display: flex;
+      padding:12px 14px 18px;
+      display:flex;
       justify-content:center;
-      box-sizing: border-box;
+      box-sizing:border-box;
     }
     .book-btn {
       background: var(--accent);
-      color: #000;
+      color: #000; /* Dark theme: Black text */
       padding: 10px 16px;
       border-radius: 8px;
-      font-weight: 700;
+      font-weight:700;
       text-decoration:none;
       display:inline-block;
     }
     .book-btn:hover {
-      background: #ffe974;
+      background:#ffe974;
     }
     /* Mobile Card Layout */
+    .mobile-info {
+      display: none;
+    }
+    .card-date {
+      display: none;
+    }
     @media (max-width:768px){
       body {
-        background: var(--bg);
+        background:var(--bg);
       }
       .cards-row {
-        justify-content: center;
+        justify-content:center;
       }
       .card {
-        width: 90vw;
-        max-width: 400px;
-        height: auto;
-        display: flex;
+        width: 90vw; /* width relative to viewport */
+        max-width: 400px; /* optional max width */
+        height: auto; /* allow height to adjust automatically based on content */
+        display:flex;
         flex-direction: row;
         align-items: center;
-        gap: 8px;
-        padding: calc(10px + 1vw) calc(8px + 1vw);
-        border-radius: 12px;
+        gap:8px;
+        padding: calc(10px + 1vw) calc(8px + 1vw); /* padding scales slightly */
+        border-radius:12px;
         cursor: pointer;
         background: var(--card);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.8);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
         transition: height 0.3s ease;
@@ -305,7 +308,7 @@
       .media {
         width: 18vw;
         max-width: 72px;
-        aspect-ratio: 1 / 1;
+        aspect-ratio: 1 / 1;  /* square aspect ratio */
         height: auto;
         padding-top: 0 !important;
         border-radius: 10px;
@@ -321,27 +324,29 @@
         object-fit: cover;
       }
       .card-body {
-        padding: 0;
-        display: flex;
+        padding:0;
+        display:flex;
         flex-direction: column;
         gap: calc(4px + 0.3vw);
-        flex: 1 1 auto;
+        flex:1 1 auto;
       }
       .event-title {
         font-size: calc(14px + 1.5vw) !important;
         font-weight: 800 !important;
-        color: #fff;
-        margin: 0;
+        color:#fff;
+        margin:0;
       }
-      /* Show meta & location on mobile */
-      .meta, .location {
-        display: block;
+      .meta {
+        display:none;
+      }
+      .location {
+        display:none;
       }
       .mobile-info {
-        display: block;
+        display:block;
         font-size: calc(11px + 0.7vw);
-        color: var(--muted);
-        margin: 0;
+        color:var(--muted);
+        margin:0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -350,16 +355,16 @@
       .mobile-info a {
         color: var(--accent);
         text-decoration:none;
-        font-weight: 600;
+        font-weight:600;
       }
       .mobile-info a:hover {
-        text-decoration: underline;
+        text-decoration:underline;
       }
       .card-footer {
         display:none;
       }
       .card-date {
-        display: flex;
+        display:flex;
         width: 18vw;
         max-width: 72px;
         height: auto;
@@ -367,30 +372,32 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-radius: 10px;
+        border-radius:10px;
         background: var(--datebox);
         border: 1.5px solid rgba(255,255,255,0.08);
-        color: #fff;
-        font-size: calc(11px + 1vw);
-        box-sizing: border-box;
+        color:#fff;
+        font-size: calc(11px + 1vw); /* Increased base font size for date */
+        box-sizing:border-box;
         backdrop-filter: blur(9px);
         -webkit-backdrop-filter: blur(9px);
       }
       .card-date .day {
-        font-weight: 700;
-        font-size: calc(22px + 2vw);
+        font-weight:700;
+        font-size: calc(22px + 2vw); /* increased font size proportionally */
         color: #fce029;
-        line-height: 1;
+        line-height:1;
       }
       .card-date .month {
-        font-size: calc(12px + 1vw);
+        font-size: calc(12px + 1vw); /* increased font size */
         color: #fff;
-        line-height: 1;
+        line-height:1;
       }
       .card-date .time {
-        display: none;
+        display:none;
       }
     }
+
+    /* Light Mode Adjustments */
     @media (prefers-color-scheme: light) {
       :root {
         --bg: #f5f5f5;
@@ -399,10 +406,9 @@
         --accent: #0a75bc;
         --datebox: #ececec;
         --text-main: #181818;
-        --heading-color: #0a75bc;
       }
       body { background: var(--bg); color: var(--text-main); }
-      .animated-text { color: #000; }
+      .animated-text { color: #000; } /* Black animated text */
       .topbar, .topbar-bleed {
         background: rgba(255,255,255,0.1);
         color: #181818;
@@ -413,7 +419,7 @@
         -webkit-backdrop-filter: blur(10px);
         box-shadow: 0 6px 22px rgba(0,0,0,0.8);
       }
-      .event-title { color: #000; }
+      .event-title { color: #000; } /* Black event title */
       .card-date {
         background: var(--datebox);
         border: 1.5px solid rgba(0,0,0,0.03);
@@ -425,103 +431,13 @@
         color: #0a75bc;
       }
       .card-date .month {
-        color: #000;
+        color: #000; /* MMM in black */
       }
+      /* Book Now button text becomes white in light theme */
       .book-btn {
         color: #fff;
       }
       .brand { color: #242424; }
-      .title {
-        color: var(--heading-color);
-      }
-    }
-    /* New Sections Styling */
-    #explore-events {
-      margin-top: 32px;
-      margin-bottom: 32px;
-    }
-    #gallery {
-      margin: 32px 0 24px 0;
-      position: relative;
-    }
-    #about-us {
-      margin-top: 32px;
-      margin-bottom: 32px;
-      color: var(--text-main);
-      text-align: center;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    /* Contact Us layout similar to provided image */
-    #contact-us {
-      margin-top: 32px;
-      margin-bottom: 48px;
-      color: var(--text-main);
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px 48px;
-      font-weight: 600;
-    }
-    #contact-us div {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-size: 1.05rem;
-      color: var(--accent);
-      cursor: default;
-      word-break: break-word;
-    }
-    #contact-us a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    #contact-us a:hover {
-      text-decoration: underline;
-    }
-    #contact-us .icon {
-      width: 26px;
-      height: 26px;
-      flex-shrink: 0;
-      display: inline-block;
-      stroke: var(--accent);
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    /* Gallery carousel */
-    .gallery-carousel {
-      display: flex;
-      overflow-x: scroll;
-      gap: 12px;
-      scroll-behavior: smooth;
-      padding: 0 8px;
-      scrollbar-width: none;
-      animation: scroll-left 30s linear infinite;
-    }
-    .gallery-carousel::-webkit-scrollbar {
-      display: none;
-    }
-    .gallery-carousel img {
-      width: 200px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 12px;
-      flex-shrink: 0;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.7);
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-    .gallery-carousel img:hover {
-      transform: scale(1.05);
-    }
-    @keyframes scroll-left {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(calc(-200px * 4)); }
     }
   </style>
 </head>
@@ -534,248 +450,178 @@
     </div>
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
+
   <main class="wrap" role="main">
+    <!-- Divider below topbar -->
     <div class="top-divider" aria-hidden="true"></div>
+
     <div class="animated-wrapper" aria-live="polite">
       <div class="animated-text"></div>
     </div>
     <div class="divider" aria-hidden="true"></div>
-
-    <div class="title" style="margin-bottom: 36px;"><h2>Upcoming Events</h2></div> <!-- doubled gap -->
-
+    <div class="title"><h2>Upcoming Events</h2></div>
     <div id="events" class="cards-row" aria-live="polite"></div>
-
-    <div class="divider" aria-hidden="true"></div>
-
-    <div id="explore-events" aria-live="polite">
-      <div class="title"><h2>Explore Other Events</h2></div>
-      <div class="cards-row" id="explore-cards-row">
-        <!-- placeholder for explore cards -->
-      </div>
-    </div>
-
-    <div class="divider" aria-hidden="true"></div>
-
-    <div id="gallery" aria-label="Gallery Carousel">
-      <div class="title"><h2>Gallery</h2></div>
-      <div class="gallery-carousel" id="gallery-carousel">
-        <img src="https://via.placeholder.com/400x240?text=Gallery+Image+1" alt="Gallery Image 1" />
-        <img src="https://via.placeholder.com/400x240?text=Gallery+Image+2" alt="Gallery Image 2" />
-        <img src="https://via.placeholder.com/400x240?text=Gallery+Image+3" alt="Gallery Image 3" />
-        <img src="https://via.placeholder.com/400x240?text=Gallery+Image+4" alt="Gallery Image 4" />
-      </div>
-    </div>
-
-    <div class="divider" aria-hidden="true"></div>
-
-    <div id="about-us">
-      <div class="title"><h2>About Us</h2></div>
-      <p>Games Lab is a group of fun loving people organizing fun events throughout the year. We aim to make life happier and lighter for all who join us. We strive for unique experiences, memorable time, and widest smiles.<br/><br/>
-         Games Lab uses innovative ideas and curates the best social experiences for people. We give unique twists to world renowned games and help people stay happening.<br/><br/>
-         Instead of the typical alcohol-focused gatherings, we bring people together through the joy of fun events and workshops. Whether it’s Mafia, Game Night, Interactive Challenges or Workshops, this community creates a fun and inclusive environment where everyone can relax and connect.<br/><br/>
-         Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly competition. At our events discover a refreshing alternative to traditional socializing, where friendships take center stage and lasting memories are made.</p>
-    </div>
-
-    <div class="divider" aria-hidden="true"></div>
-
-    <div id="contact-us">
-      <div class="title"><h2>Contact Us</h2></div>
-      <div class="contact-grid">
-        <div class="contact-item">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="10" r="3"></circle><path d="M12 2c4.418 0 8 3.582 8 8c0 5.25 -8 12 -8 12s-8 -6.75 -8 -12c0 -4.418 3.582 -8 8 -8z"></path></svg>
-          <span>Bangalore</span>
-        </div>
-        <div class="contact-item">
-          <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="6"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>
-          <a href="https://instagram.com/games._.lab/" target="_blank" rel="noopener noreferrer">@games._.lab</a>
-        </div>
-        <div class="contact-item">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92V19a2 2 0 0 1 -2.18 2C4.41 19.44 2 4.62 4 2.18A2 2 0 0 1 6 2h2.09"></path><rect x="14" y="2" width="8" height="8" rx="2"></rect></svg>
-          <a href="tel:+917676099857">+917676099857</a>
-        </div>
-        <div class="contact-item">
-          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11"></circle><path d="M17 13.5a4 4 0 0 1-5-5h0a4 4 0 0 0 5 5z"></path></svg>
-          <a href="https://wa.me/+917676099857" target="_blank" rel="noopener noreferrer">+917676099857</a>
-        </div>
-        <div class="contact-item">
-          <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"></rect><polyline points="3 7 12 13 21 7"></polyline></svg>
-          <a href="mailto:gameslab.bangalore@gmail.com">gameslab.bangalore@gmail.com</a>
-        </div>
-      </div>
-    </div>
   </main>
 
   <script>
-    const lines = [
-      'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
-    ];
-    const msg = lines.join('\n');
-    const animatedTextElem = document.querySelector('.animated-text');
-    let charIndex = 0, isDeleting = false;
-    const delay = 55, pauseBetween = 2600;
-    function type() {
-      if (!isDeleting) {
-        animatedTextElem.textContent = msg.substring(0, charIndex + 1);
-        charIndex++;
-        if (charIndex === msg.length) {
-          isDeleting = true; setTimeout(type, pauseBetween); return;
-        }
-      } else {
-        animatedTextElem.textContent = msg.substring(0, charIndex - 1);
-        charIndex--;
-        if (charIndex === 0) isDeleting = false;
+  const lines = [
+    'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
+  ];
+  const msg = lines.join('\n');
+  const animatedTextElem = document.querySelector('.animated-text');
+  let charIndex = 0, isDeleting = false;
+  const delay = 55, pauseBetween = 2600;
+  function type() {
+    if (!isDeleting) {
+      animatedTextElem.textContent = msg.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === msg.length) {
+        isDeleting = true; setTimeout(type, pauseBetween); return;
       }
-      setTimeout(type, isDeleting ? delay/2 : delay);
+    } else {
+      animatedTextElem.textContent = msg.substring(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) isDeleting = false;
     }
-    animatedTextElem.textContent = msg;
-    setTimeout(type, pauseBetween);
-
-    (async function(){
-      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-      const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
-      function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
-      function parseEventDate(str) {
-        if (!str) return null;
-        str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
-        str = str.replace(/’/g, "'").replace(/`/g,"'");
-        const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-        if (!parts) return null;
-        const [_, day, monthStr, yearStr] = parts;
-        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
-        if (month === undefined) return null;
-        const year = 2000 + parseInt(yearStr, 10);
-        return new Date(year, month, parseInt(day, 10));
+    setTimeout(type, isDeleting ? delay/2 : delay);
+  }
+  animatedTextElem.textContent = msg;
+  setTimeout(type, pauseBetween);
+  (async function(){
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+    const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+    function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^"|"$/g, ''); }
+    function parseEventDate(str) {
+      if (!str) return null;
+      str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '');
+      str = str.replace(/’/g, "'").replace(/`/g,"'");
+      const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+      if (!parts) return null;
+      const [_, day, monthStr, yearStr] = parts;
+      const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+      if (month === undefined) return null;
+      const year = 2000 + parseInt(yearStr, 10);
+      return new Date(year, month, parseInt(day, 10));
+    }
+    try {
+      const res = await fetch(csvUrl, {cache: "no-cache"});
+      if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
+      const csvText = await res.text();
+      const parsed = Papa.parse(csvText, {skipEmptyLines:true});
+      const rows = parsed.data || [];
+      if (rows.length < 2) {
+        document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+        return;
       }
-      try {
-        const res = await fetch(csvUrl, {cache: "no-cache"});
-        if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
-        const csvText = await res.text();
-        const parsed = Papa.parse(csvText, {skipEmptyLines:true});
-        const rows = parsed.data || [];
-        if (rows.length < 2) {
-          document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
-          return;
+      const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+      const container = document.getElementById("events");
+      container.innerHTML = "";
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      let upcomingCount = 0;
+      dataRows.forEach(cols => {
+        const name = clean(cols[0]);
+        const date = clean(cols[1]);
+        const time = clean(cols[2]);
+        const locText = clean(cols[3]);
+        const locLink = clean(cols[4]);
+        const ticket = clean(cols[5]) || "#";
+        const image = clean(cols[6]) || fallbackImage;
+        const eventDateObj = parseEventDate(date);
+        if (!eventDateObj) return;
+        eventDateObj.setHours(0,0,0,0);
+        if (eventDateObj < today) return;
+        upcomingCount++;
+        const card = document.createElement("article");
+        card.className = "card";
+        // Media
+        const media = document.createElement("div");
+        media.className = "media";
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.src = image;
+        img.alt = name || "Event image";
+        img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+        media.appendChild(img);
+        card.appendChild(media);
+        // Body
+        const body = document.createElement("div");
+        body.className = "card-body";
+        const h = document.createElement("h3");
+        h.className = "event-title";
+        h.textContent = name || "Untitled Event";
+        body.appendChild(h);
+        // Desktop meta
+        const meta = document.createElement("p");
+        meta.className = "meta";
+        meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+        body.appendChild(meta);
+        // Desktop location
+        if (locText || locLink) {
+          const locP = document.createElement("p");
+          locP.className = "location";
+          const a = document.createElement("a");
+          a.href = locLink || "#";
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = locText;
+          locP.appendChild(a);
+          body.appendChild(locP);
         }
-        const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
-        const container = document.getElementById("events");
-        container.innerHTML = "";
-        const today = new Date();
-        today.setHours(0,0,0,0);
-        let upcomingCount = 0;
-        dataRows.forEach(cols => {
-          const name = clean(cols[0]);
-          const date = clean(cols[1]);
-          const time = clean(cols[2]);
-          const locText = clean(cols[3]);
-          const locLink = clean(cols[4]);
-          const ticket = clean(cols[5]) || "#";
-          const image = clean(cols[6]) || fallbackImage;
-          const eventDateObj = parseEventDate(date);
-          if (!eventDateObj) return;
-          eventDateObj.setHours(0,0,0,0);
-          if (eventDateObj < today) return;
-          upcomingCount++;
-          const card = document.createElement("article");
-          card.className = "card";
-          const media = document.createElement("div");
-          media.className = "media";
-          const img = document.createElement("img");
-          img.loading = "lazy";
-          img.src = image;
-          img.alt = name || "Event image";
-          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
-          media.appendChild(img);
-          card.appendChild(media);
-          const body = document.createElement("div");
-          body.className = "card-body";
-          const h = document.createElement("h3");
-          h.className = "event-title";
-          h.textContent = name || "Untitled Event";
-          body.appendChild(h);
-          // Removed meta and location on desktop
-          /*const meta = document.createElement("p");
-          meta.className = "meta";
-          meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
-          body.appendChild(meta);
-          if (locText || locLink) {
-            const locP = document.createElement("p");
-            locP.className = "location";
-            const a = document.createElement("a");
-            a.href = locLink || "#";
-            a.target = "_blank";
-            a.rel = "noopener noreferrer";
-            a.textContent = locText;
-            locP.appendChild(a);
-            body.appendChild(locP);
-          }*/
-          const mobileInfo = document.createElement("p");
-          mobileInfo.className = "mobile-info";
-          if (locText) {
-            const a2 = document.createElement("a");
-            a2.href = locLink || "#";
-            a2.target = "_blank";
-            a2.rel = "noopener noreferrer";
-            a2.textContent = locText;
-            mobileInfo.appendChild(a2);
+        // Mobile Info Line
+        const mobileInfo = document.createElement("p");
+        mobileInfo.className = "mobile-info";
+        if (locText) {
+          const a2 = document.createElement("a");
+          a2.href = locLink || "#";
+          a2.target = "_blank";
+          a2.rel = "noopener noreferrer";
+          a2.textContent = locText;
+          mobileInfo.appendChild(a2);
+        }
+        if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
+        if (time) mobileInfo.appendChild(document.createTextNode(time));
+        body.appendChild(mobileInfo);
+        card.appendChild(body);
+        // Mobile date box
+        if (eventDateObj) {
+          const dayNum = eventDateObj.getDate();
+          const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
+          const dateBox = document.createElement("div");
+          dateBox.className = "card-date";
+          dateBox.innerHTML =
+            `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
+            `<div class="month">${monthShort}</div>` +
+            `<div class="time"></div>`;
+          card.appendChild(dateBox);
+        }
+        // Desktop Book Now
+        const footer = document.createElement("div");
+        footer.className = "card-footer";
+        const btn = document.createElement("a");
+        btn.className = "book-btn";
+        btn.href = ticket;
+        btn.target = "_blank";
+        btn.rel = "noopener noreferrer";
+        btn.textContent = "Book Now";
+        footer.appendChild(btn);
+        card.appendChild(footer);
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return;
+          if (window.innerWidth <= 768) {
+            if (ticket && ticket !== "#") window.open(ticket, '_blank');
           }
-          if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
-          if (time) mobileInfo.appendChild(document.createTextNode(time));
-          body.appendChild(mobileInfo);
-          card.appendChild(body);
-          if (eventDateObj) {
-            const dayNum = eventDateObj.getDate();
-            const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
-            const dateBox = document.createElement("div");
-            dateBox.className = "card-date";
-            dateBox.innerHTML =
-              `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
-              `<div class="month">${monthShort}</div>` +
-              `<div class="time"></div>`;
-            card.appendChild(dateBox);
-          }
-          const footer = document.createElement("div");
-          footer.className = "card-footer";
-          const btn = document.createElement("a");
-          btn.className = "book-btn";
-          btn.href = ticket;
-          btn.target = "_blank";
-          btn.rel = "noopener noreferrer";
-          btn.textContent = "Book Now";
-          footer.appendChild(btn);
-          card.appendChild(footer);
-          card.addEventListener('click', function(e) {
-            if (e.target.closest('a')) return;
-            if (window.innerWidth <= 768) {
-              if (ticket && ticket !== "#") window.open(ticket, '_blank');
-            }
-          });
-          container.appendChild(card);
         });
-        if (upcomingCount === 0)
-          container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
-      } catch (err) {
-        console.error(err);
-        document.getElementById("events").innerHTML =
-          '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
-      }
-    })();
-
-    // Gallery autoplay logic
-    const gallery = document.getElementById('gallery-carousel');
-    let scrollAmount = 0;
-    const scrollStep = 1;
-    const scrollInterval = 20;
-
-    function autoScrollGallery(){
-      scrollAmount += scrollStep;
-      if(scrollAmount >= gallery.scrollWidth - gallery.clientWidth){
-        scrollAmount = 0;
-      }
-      gallery.scrollLeft = scrollAmount;
-      requestAnimationFrame(autoScrollGallery);
+        container.appendChild(card);
+      });
+      if (upcomingCount === 0)
+        container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
+    } catch (err) {
+      console.error(err);
+      document.getElementById("events").innerHTML =
+        '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
     }
-    requestAnimationFrame(autoScrollGallery);
-
+  })();
   </script>
 </body>
 </html>
