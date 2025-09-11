@@ -484,20 +484,50 @@
       .fade-section.visible {
         opacity: 1;
         transform: translateY(0);
-      }
-      .skeleton {
-        background: #212121;
+      .skeleton-card {
+        background: #2a2a2a;
         border-radius: 12px;
-        flex: 1 1 300px;   /* grows, shrinks, minimum width 300px */
-        height: 200px;     /* adjust based on desktop card height */
-        animation: pulse 1.2s infinite ease-in-out;
+        flex: 0 0 calc(33.333% - 1rem); /* 3 per row on desktop */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        animation: pulse 1.5s infinite ease-in-out;
       }
       
-      /* Mobile adjustments */
-      @media (max-width:768px) {
-        .skeleton {
-          flex: 1 1 90%;   /* nearly full width on mobile */
-          height: 120px;   /* smaller height for mobile */
+      .skeleton-image {
+        background: #3a3a3a;
+        height: 180px; /* same as your event card image height */
+        width: 100%;
+      }
+      
+      .skeleton-content {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      
+      .skeleton-line {
+        background: #3a3a3a;
+        height: 14px;
+        border-radius: 6px;
+      }
+      
+      .skeleton-line.short { width: 60%; }
+      .skeleton-line.medium { width: 80%; }
+      .skeleton-line.long { width: 100%; }
+      
+      .skeleton-button {
+        background: #3a3a3a;
+        height: 36px;
+        border-radius: 8px;
+        margin-top: auto;
+        width: 120px;
+      }
+      /* Mobile: 1 per row */
+      @media (max-width: 600px) {
+        .skeleton-card {
+          flex: 0 0 100%;
         }
       }
   
@@ -529,16 +559,41 @@
     </div>
     <div class="divider" aria-hidden="true"></div>
     <div class="title"><h2>Upcoming Events</h2></div>
-    <div id="events" class="cards-row" aria-live="polite"></div>
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>
+    <div id="events" class="cards-row" aria-live="polite">
+  <div class="skeleton-card">
+    <div class="skeleton-image"></div>
+    <div class="skeleton-content">
+      <div class="skeleton-line long"></div>
+      <div class="skeleton-line medium"></div>
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-button"></div>
+    </div>
+  </div>
+
+  <div class="skeleton-card">
+    <div class="skeleton-image"></div>
+    <div class="skeleton-content">
+      <div class="skeleton-line long"></div>
+      <div class="skeleton-line medium"></div>
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-button"></div>
+    </div>
+  </div>
+
+  <div class="skeleton-card">
+    <div class="skeleton-image"></div>
+    <div class="skeleton-content">
+      <div class="skeleton-line long"></div>
+      <div class="skeleton-line medium"></div>
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-button"></div>
+    </div>
+  </div>
+</div>
+
     <div class="divider" style="margin-top: 40px;"></div>
     <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
     <div id="explore-cards" class="cards-row"></div>
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>
     <div class="divider" style="margin-top:40px;"></div>
     <div class="title fade-section" style="margin-top:40px;">
       <h2>About Us</h2>
@@ -819,6 +874,7 @@
 </script>
 </body>
 </html>
+
 
 
 
