@@ -770,25 +770,40 @@
       container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
     }
   })();
-  </script>
-<script>
+  </script><script>
   document.addEventListener("DOMContentLoaded", function () {
-    const fadeSections = document.querySelectorAll(".fade-section");
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
         }
       });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.2 }); // Trigger when 20% is visible
 
-    fadeSections.forEach(section => {
-      observer.observe(section);
+    // Function to attach observer to elements
+    function observeFadeSections() {
+      const fadeSections = document.querySelectorAll(".fade-section:not(.visible)");
+      fadeSections.forEach(section => observer.observe(section));
+    }
+
+    // Initial call for all static content
+    observeFadeSections();
+
+    // **NEW**: Re-run when new content is added dynamically
+    const targetNodes = [document.getElementById("upcoming-cards"), document.getElementById("explore-cards")];
+
+    targetNodes.forEach(node => {
+      if (!node) return;
+      const mutationObserver = new MutationObserver(() => {
+        // Wait a tiny bit for content to fully render
+        setTimeout(() => observeFadeSections(), 50);
+      });
+      mutationObserver.observe(node, { childList: true, subtree: true });
     });
   });
 </script>
 </body>
 </html>
+
 
 
