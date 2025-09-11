@@ -484,8 +484,11 @@
         opacity: 1;
         transform: translateY(0);
       }
-      .cards-row.fade-section {
-        transition-delay: 1.0s; /* Cards start animating half a second later */
+      .cards-row.fade-section.upcoming-cards {
+        transition-delay: 0.8s; /* fade in after heading */
+      }
+      .cards-row.fade-section.explore-cards {
+        transition-delay: 0.8s; /* fade in after its heading */
       }
   </style>
 </head>
@@ -795,6 +798,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
 
