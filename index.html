@@ -770,40 +770,48 @@
       container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
     }
   })();
-  </script><script>
+  </script>
+  <script>
   document.addEventListener("DOMContentLoaded", function () {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
+          observer.unobserve(entry.target); // Animate once per element
         }
       });
-    }, { threshold: 0.2 }); // Trigger when 20% is visible
+    }, { threshold: 0.2 });
 
-    // Function to attach observer to elements
+    // Observe any elements that are not yet visible
     function observeFadeSections() {
       const fadeSections = document.querySelectorAll(".fade-section:not(.visible)");
       fadeSections.forEach(section => observer.observe(section));
     }
 
-    // Initial call for all static content
+    // Run once for static content like "About Us"
     observeFadeSections();
 
-    // **NEW**: Re-run when new content is added dynamically
-    const targetNodes = [document.getElementById("upcoming-cards"), document.getElementById("explore-cards")];
+    // Watch for dynamically loaded cards in these containers
+    const targetNodes = [
+      document.getElementById("upcoming-cards"),
+      document.getElementById("explore-cards")
+    ];
 
     targetNodes.forEach(node => {
       if (!node) return;
+
       const mutationObserver = new MutationObserver(() => {
-        // Wait a tiny bit for content to fully render
+        // Slight delay to ensure DOM finishes updating
         setTimeout(() => observeFadeSections(), 50);
       });
+
       mutationObserver.observe(node, { childList: true, subtree: true });
     });
   });
 </script>
 </body>
 </html>
+
 
 
 
