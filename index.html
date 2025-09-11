@@ -485,24 +485,22 @@
         opacity: 1;
         transform: translateY(0);
       }
-    /* Skeleton loader for cards */
       .skeleton {
-        background: #212121; /* same as card background */
+        background: #212121;
         border-radius: 12px;
-        width: 340px;
-        height: 200px; /* approximate card height for desktop */
+        flex: 1 1 300px;   /* grows, shrinks, minimum width 300px */
+        height: 200px;     /* adjust based on desktop card height */
         animation: pulse 1.2s infinite ease-in-out;
-        flex-shrink: 0;
       }
       
       /* Mobile adjustments */
       @media (max-width:768px) {
         .skeleton {
-          width: 90vw; /* same as mobile cards */
-          height: 100px; /* approximate height for mobile card */
+          flex: 1 1 90%;   /* nearly full width on mobile */
+          height: 120px;   /* smaller height for mobile */
         }
       }
-      
+  
       /* Pulse animation */
       @keyframes pulse {
         0% { opacity: 0.6; }
@@ -815,5 +813,6 @@
 </script>
 </body>
 </html>
+
 
 
