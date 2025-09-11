@@ -476,11 +476,10 @@
       /* Initial hidden state */
       .fade-section {
         opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.8s ease, transform 0.8s ease;
+        transform: translateY(40px); /* Start lower for better visual effect */
+        transition: opacity 1s ease-out, transform 1s ease-out; /* Slower animation */
       }
       
-      /* When the element is visible */
       .fade-section.visible {
         opacity: 1;
         transform: translateY(0);
@@ -772,46 +771,29 @@
   })();
   </script>
   <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target); // Animate once per element
-        }
-      });
-    }, { threshold: 0.2 });
+document.addEventListener("DOMContentLoaded", function () {
+  const fadeSections = document.querySelectorAll('.fade-section');
 
-    // Observe any elements that are not yet visible
-    function observeFadeSections() {
-      const fadeSections = document.querySelectorAll(".fade-section:not(.visible)");
-      fadeSections.forEach(section => observer.observe(section));
-    }
-
-    // Run once for static content like "About Us"
-    observeFadeSections();
-
-    // Watch for dynamically loaded cards in these containers
-    const targetNodes = [
-      document.getElementById("upcoming-cards"),
-      document.getElementById("explore-cards")
-    ];
-
-    targetNodes.forEach(node => {
-      if (!node) return;
-
-      const mutationObserver = new MutationObserver(() => {
-        // Slight delay to ensure DOM finishes updating
-        setTimeout(() => observeFadeSections(), 50);
-      });
-
-      mutationObserver.observe(node, { childList: true, subtree: true });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
     });
+  }, {
+    threshold: 0.15 // triggers when 15% of the element is visible
   });
+
+  fadeSections.forEach(section => observer.observe(section));
+
+  // Initial check for elements visible right away
+  fadeSections.forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom >= 0) {
+      section.classList.add('visible');
+    }
+  });
+});
 </script>
 </body>
 </html>
-
-
-
-
