@@ -485,6 +485,31 @@
         opacity: 1;
         transform: translateY(0);
       }
+    /* Skeleton loader for cards */
+      .skeleton {
+        background: #212121; /* same as card background */
+        border-radius: 12px;
+        width: 340px;
+        height: 200px; /* approximate card height for desktop */
+        animation: pulse 1.2s infinite ease-in-out;
+        flex-shrink: 0;
+      }
+      
+      /* Mobile adjustments */
+      @media (max-width:768px) {
+        .skeleton {
+          width: 90vw; /* same as mobile cards */
+          height: 100px; /* approximate height for mobile card */
+        }
+      }
+      
+      /* Pulse animation */
+      @keyframes pulse {
+        0% { opacity: 0.6; }
+        50% { opacity: 0.3; }
+        100% { opacity: 0.6; }
+      }
+
   </style>
 </head>
 <body>
@@ -506,10 +531,10 @@
     </div>
     <div class="divider" aria-hidden="true"></div>
     <div class="title"><h2>Upcoming Events</h2></div>
-    <div id="events" class="cards-row" aria-live="polite"></div>
+    <div id="events" class="cards-row skeleton" aria-live="polite"></div>
     <div class="divider" style="margin-top: 40px;"></div>
     <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
-    <div id="explore-cards" class="cards-row"></div>
+    <div id="explore-cards" class="cards-row skeleton"></div>
     <div class="divider" style="margin-top:40px;"></div>
     <div class="title fade-section" style="margin-top:40px;">
       <h2>About Us</h2>
@@ -790,4 +815,5 @@
 </script>
 </body>
 </html>
+
 
