@@ -476,10 +476,11 @@
       /* Initial hidden state */
       .fade-section {
         opacity: 0;
-        transform: translateY(40px); /* Start lower for better visual effect */
-        transition: opacity 1s ease-out, transform 1s ease-out; /* Slower animation */
+        transform: translateY(30px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
       }
       
+      /* When the element is visible */
       .fade-section.visible {
         opacity: 1;
         transform: translateY(0);
@@ -503,13 +504,13 @@
     <div class="animated-wrapper" aria-live="polite">
       <div class="animated-text"></div>
     </div>
-    <div class="divider fade-section" aria-hidden="true"></div>
-    <div class="title fade-section upcoming-heading"><h2>Upcoming Events</h2></div>
-    <div id="events" class="cards-row fade-section upcoming-cards" aria-live="polite"></div>
-    <div class="divider fade-section first" style="margin-top: 40px;"></div>
-    <div class="title fade-section other-heading" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
-    <div id="explore-cards" class="cards-row fade-section other-cards"></div>
-    <div class="divider fade-section second" style="margin-top:40px;"></div>
+    <div class="divider" aria-hidden="true"></div>
+    <div class="title"><h2>Upcoming Events</h2></div>
+    <div id="events" class="cards-row" aria-live="polite"></div>
+    <div class="divider" style="margin-top: 40px;"></div>
+    <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
+    <div id="explore-cards" class="cards-row"></div>
+    <div class="divider fade-section" style="margin-top:40px;"></div>
     <div class="title fade-section" style="margin-top:40px;">
       <h2>About Us</h2>
     </div>
@@ -770,32 +771,22 @@
     }
   })();
   </script>
-  <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const fadeSections = document.querySelectorAll(".fade-section");
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const fadeSections = document.querySelectorAll(".fade-section");
 
-  const observer = new IntersectionObserver(
-    (entries, observer) => {
-      entries.forEach((entry) => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
-          observer.unobserve(entry.target); // Animate only once
         }
       });
-    },
-    { threshold: 0.2 }
-  );
+    }, { threshold: 0.2 });
 
-  fadeSections.forEach((section) => observer.observe(section));
-});
+    fadeSections.forEach(section => {
+      observer.observe(section);
+    });
+  });
 </script>
-
 </body>
 </html>
-
-
-
-
-
-
-
