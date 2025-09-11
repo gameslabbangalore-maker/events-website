@@ -662,8 +662,29 @@
         return;
       }
       const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
-      const container = document.getElementById("events");
-      container.innerHTML = "";
+      fetch("/events.json")
+  .then(res => res.json())
+  .then(events => {
+    const container = document.getElementById("events");
+    container.innerHTML = ""; // ✅ remove skeletons only now
+
+    events.forEach(ev => {
+      // build real event card here
+      const card = document.createElement("div");
+      card.className = "event-card";
+      card.innerHTML = `
+        <img src="${ev.image}" alt="${ev.title}">
+        <div class="event-details">
+          <h3>${ev.title}</h3>
+          <p>${ev.date}</p>
+          <p><strong>${ev.location}</strong></p>
+          <a href="${ev.link}" class="btn">Book Now</a>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  });
+
       const today = new Date();
       today.setHours(0,0,0,0);
       let upcomingCount = 0;
@@ -874,6 +895,7 @@
 </script>
 </body>
 </html>
+
 
 
 
