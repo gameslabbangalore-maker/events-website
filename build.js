@@ -1,53 +1,76 @@
 const fs = require("fs");
-const https = require("https");
 
-// Replace this with your real Google Sheets JSON URL
-const SHEET_URL = "https://your-sheet-json-link-here";
+// Path to your index.html
+const indexFile = "index.html";
 
-// Simple fetch function
-function fetchJSON(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      let data = "";
-      res.on("data", (chunk) => (data += chunk));
-      res.on("end", () => resolve(JSON.parse(data)));
-    }).on("error", (err) => reject(err));
-  });
+// For now, we’ll use sample events.
+// Later this will be replaced by your Google Sheet JSON fetch.
+const upcomingEvents = [
+  {
+    eventname: "Trivia Takedown",
+    date: "Fri, 12 Sep '25",
+    time: "7:00 PM",
+    location: "Games Lab HQ",
+    link: "#"
+  },
+  {
+    eventname: "Night of Mafia",
+    date: "Sat, 20 Sep '25",
+    time: "8:00 PM",
+    location: "Downtown Arena",
+    link: "#"
+  }
+];
+
+const otherEvents = [
+  {
+    eventname: "Harry Potter Quiz",
+    date: "Sat, 27 Sep '25",
+    time: "6:30 PM",
+    location: "City Library",
+    link: "#"
+  },
+  {
+    eventname: "Game Night Marathon",
+    date: "Fri, 3 Oct '25",
+    time: "9:00 PM",
+    location: "Games Lab Lounge",
+    link: "#"
+  }
+];
+
+// Generate HTML for event cards
+function renderCards(events) {
+  return events
+    .map(
+      (ev) => `
+    <div class="event-card">
+      <h3>${ev.eventname}</h3>
+      <p>${ev.date} • ${ev.time}</p>
+      <p>${ev.location}</p>
+      <a class="button" href="${ev.link}">Book Now</a>
+    </div>
+  `
+    )
+    .join("\n");
 }
 
-(async () => {
-  try {
-    // 1. Fetch events from Google Sheets JSON
-    const events = await fetchJSON(SHEET_URL);
+// Read index.html
+let html = fs.readFileSync(indexFile, "utf8");
 
-    // 2. Build event cards
-    let cardsHTML = "";
-    events.forEach((event) => {
-      cardsHTML += `
-        <div class="event-card">
-          <h3>${event.eventname || "Untitled Event"}</h3>
-          <p>${event.date || ""}</p>
-          <p>${event.location || ""}</p>
-          <a href="${event.link || "#"}" class="book-btn">Book Now</a>
-        </div>
-      `;
-    });
+// Replace Upcoming Events placeholder
+html = html.replace(
+  /<!--EVENTS-->[\s\S]*?<!--END EVENTS-->/,
+  `<!--EVENTS-->\n${renderCards(upcomingEvents)}\n<!--END EVENTS-->`
+);
 
-    // 3. Read existing index.html
-    let html = fs.readFileSync("index.html", "utf8");
+// Replace Other Events placeholder
+html = html.replace(
+  /<!--OTHER-EVENTS-->[\s\S]*?<!--END OTHER-EVENTS-->/,
+  `<!--OTHER-EVENTS-->\n${renderCards(otherEvents)}\n<!--END OTHER-EVENTS-->`
+);
 
-    // 4. Replace placeholder <!--EVENTS-->
-    html = html.replace(
-      /<!--EVENTS-->[\s\S]*<!--END EVENTS-->/,
-      `<!--EVENTS-->\n${cardsHTML}\n<!--END EVENTS-->`
-    );
+// Write updated file
+fs.writeFileSync(indexFile, html, "utf8");
 
-    // 5. Write back to index.html
-    fs.writeFileSync("index.html", html);
-
-    console.log("✅ index.html updated with pre-rendered events.");
-  } catch (err) {
-    console.error("❌ Error building HTML:", err);
-    process.exit(1);
-  }
-})();
+console.log("✅ Events injected into index.html");
