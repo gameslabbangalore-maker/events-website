@@ -1,33 +1,43 @@
 name: Build and Deploy HTML
 
+# Trigger workflow hourly and manually
 on:
   schedule:
-    - cron: "0 * * * *"   # Runs every hour
-  workflow_dispatch:       # Lets you trigger manually
+    - cron: "0 * * * *"   # Every hour
+  workflow_dispatch:       # Manual trigger
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      # Step 1: Checkout the repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Step 2: Setup Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      # Step 3: Install dependencies (if you have any)
       - name: Install dependencies
-        run: npm install
+        run: npm install || echo "No dependencies to install"
 
+      # Step 4: Run your build.js script
       - name: Run build script
         run: node build.js
 
+      # Step 5: Commit and push only if changes occurred
       - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add index.html
-          git commit -m "Update pre-rendered HTML"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update pre-rendered HTML"
+            git push
+          fi
