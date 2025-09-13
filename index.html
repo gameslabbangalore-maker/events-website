@@ -71,11 +71,17 @@
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
       z-index: 10003;
-      border-bottom: 1px solid transparent;
+      border-bottom: 2px solid #ffffff;
       background: rgba(24,24,24,0.07); /* nearly invisible */
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       transition: background 0.22s;
+    }
+    /* Light mode: black border */
+    @media (prefers-color-scheme: light) {
+      .topbar {
+        border-bottom: 2px solid #000000;
+      }
     }
     .topbar-left { display:flex; align-items:center; height:100%; }
     .logo { height:36px; width:36px; border-radius:8px; margin-right:12px; object-fit:cover; }
@@ -242,9 +248,6 @@
       margin:0;
       font-size:13.5px;
       color:var(--muted);
-    }
-    .top-bar {
-      border-bottom: 2px solid #ffffff; /* Adjust thickness and color */
     }
     .location {
       margin:0;
@@ -761,6 +764,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
 </body>
 </html>
+
 
 
 
