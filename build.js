@@ -1,5 +1,6 @@
 const fs = require('fs');
-const fetch = require('node-fetch');  // if using Node 18+, fetch is global
+// No import needed, fetch is global in Node 18+
+const response = await fetch("https://...");
 const Papa = require('papaparse');
 
 const templatePath = './index.template.html'; // Your template with placeholders
