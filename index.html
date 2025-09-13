@@ -582,7 +582,15 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       const today = new Date();
       today.setHours(0,0,0,0);
       let upcomingCount = 0;
-      dataRows.forEach(cols => {
+      dataRows
+        .sort((a, b) => {
+          const dateA = parseEventDate(clean(a[1]));
+          const dateB = parseEventDate(clean(b[1]));
+          if (!dateA) return 1;  // put invalid dates at the end
+          if (!dateB) return -1;
+          return dateA - dateB;   // earliest first
+        })
+        .forEach(cols => {
         const name = clean(cols[0]);
         const date = clean(cols[1]);
         const time = clean(cols[2]);
@@ -773,6 +781,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
 </body>
 </html>
+
 
 
 
