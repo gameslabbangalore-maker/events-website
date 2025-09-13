@@ -71,7 +71,7 @@
       height: calc(var(--topbar-height-desktop) + env(safe-area-inset-top, 0px));
       box-sizing: border-box;
       z-index: 10003;
-      border-bottom: 2px solid #ffffff;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
       background: rgba(24,24,24,0.07); /* nearly invisible */
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -80,7 +80,7 @@
     /* Light mode: black border */
     @media (prefers-color-scheme: light) {
       .topbar {
-        border-bottom: 2px solid #000000;
+        border-bottom: 1px solid rgba(0,0,0,0.3);
       }
     }
     .topbar-left { display:flex; align-items:center; height:100%; }
@@ -764,6 +764,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
 </body>
 </html>
+
 
 
 
