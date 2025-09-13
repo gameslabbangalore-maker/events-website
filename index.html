@@ -567,16 +567,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
         document.getElementById("events").innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
         return;
       }
-      const dataRows = rows.slice(1)
-        .filter(r => r && r[0] && String(r[0]).trim() !== "")
-        .map(r => {
-          const dateStr = clean(r[1]);
-          const dateObj = parseEventDate(dateStr);
-          if (dateObj) dateObj.setHours(0,0,0,0);
-          return { row: r, dateObj };
-        })
-        .filter(e => e.dateObj && e.dateObj >= new Date(new Date().setHours(0,0,0,0))) // only upcoming
-        .sort((a, b) => a.dateObj - b.dateObj); // earliest first
+      const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
       const container = document.getElementById("events");
       container.innerHTML = "";
       const today = new Date();
@@ -781,6 +772,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
 </body>
 </html>
+
 
 
 
