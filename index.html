@@ -92,8 +92,6 @@
     .media img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
     .card-body{padding:14px;display:flex;flex-direction:column;gap:6px}
     .event-title{margin:0;font-size:17px;font-weight:700;color:#fff;line-height:1.18}
-    .event-title a{color:inherit;text-decoration:none}
-    .event-title a:hover{text-decoration:underline}
     .meta{margin:0;font-size:13.5px;color:var(--muted)}
     .location{margin:0;font-size:14px;color:var(--muted)}
     .location a{color:var(--accent);text-decoration:none;font-weight:600}
@@ -131,6 +129,28 @@
       .mobile-info a:hover{text-decoration:underline}
       .card-footer{display:none}
       .sk-footer{display:none} /* mirror real card on mobile */
+
+      /* --- MOBILE DATE BOX: ensure visible + typography --- */
+      .card-date{
+        display:flex;
+        width:18vw; max-width:72px;
+        height:auto; aspect-ratio:1/1;
+        flex-direction:column; justify-content:center; align-items:center;
+        border-radius:10px; background:var(--datebox);
+        border:1.5px solid rgba(255,255,255,.08);
+        color:#fff;
+      }
+      .card-date .day{
+        font-weight:800;               /* Bigger + bold */
+        font-size:calc(22px + 2vw);    /* larger number */
+        line-height:1;
+        color:var(--accent);
+      }
+      .card-date .month{
+        font-size:calc(12px + 1vw);    /* smaller month (unchanged size) */
+        line-height:1;
+        color:#fff;
+      }
 
       /* --- MOBILE SKELETON SIZE POLISH --- */
       .sk-line{height:8px;margin:4px 0}
@@ -254,7 +274,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
       const container = document.getElementById("events");
 
-      // show a small default immediately (keeps page from flashing empty)
+      // show a small default immediately
       setSkeletons(container, 3);
 
       function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^\"|\"$/g, ''); }
@@ -331,14 +351,8 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
           const h = document.createElement("h3");
           h.className = "event-title";
-          if (pageLink) {
-            const tLink = document.createElement("a");
-            tLink.href = pageLink; tLink.target = "_blank"; tLink.rel = "noopener noreferrer";
-            tLink.textContent = name || "Untitled Event";
-            h.appendChild(tLink);
-          } else {
-            h.textContent = name || "Untitled Event";
-          }
+          /* Title is plain text now (no link) */
+          h.textContent = name || "Untitled Event";
           body.appendChild(h);
 
           const meta = document.createElement("p");
@@ -384,7 +398,6 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
           const footer = document.createElement("div");
           footer.className = "card-footer";
-
           if (ticket && ticket !== "#") {
             const btn = document.createElement("a");
             btn.className = "book-btn";
@@ -415,14 +428,13 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     })();
   </script>
 
-  <!-- Explore (Learn More styled as Book Now; exact-match skeletons) -->
+  <!-- Explore (unchanged, titles already plain text) -->
   <script>
     (async function() {
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
       const container = document.getElementById('explore-cards');
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
 
-      // default placeholders immediately
       setSkeletons(container, 3);
 
       try {
