@@ -263,6 +263,49 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       else container.appendChild(cardEl);
     }
   </script>
+  <script>
+    /* Auto-shrink event titles on mobile so they fit in 1 line (no ellipsis). */
+    (function () {
+      function fitTitleToOneLine(el, minPx = 13) {
+        if (!el || window.innerWidth > 768) return;
+    
+        // Reset to stylesheet size first, then measure & shrink if needed
+        el.style.removeProperty('font-size');
+    
+        // Force single line for measurement
+        el.style.whiteSpace = 'nowrap';
+        el.style.overflow = 'hidden';
+        el.style.textOverflow = 'clip';
+    
+        // If width is 0 (not yet laid out), try next frame
+        if (el.clientWidth === 0) {
+          requestAnimationFrame(() => fitTitleToOneLine(el, minPx));
+          return;
+        }
+    
+        const cs = getComputedStyle(el);
+        let size = parseFloat(cs.fontSize) || 16;
+        const min = minPx;
+        let guard = 0;
+    
+        // Shrink in tiny steps until it fits or we hit the minimum
+        while (el.scrollWidth > el.clientWidth && size > min && guard < 80) {
+          size -= 0.5;
+          el.style.setProperty('font-size', size + 'px', 'important'); // override any !important in CSS
+          guard++;
+        }
+      }
+
+  // Refit all visible titles on resize/orientation (mobile only)
+  function refitAllTitles() {
+    if (window.innerWidth > 768) return;
+    document.querySelectorAll('.event-title').forEach(el => fitTitleToOneLine(el));
+  }
+
+  window.fitTitleToOneLine = fitTitleToOneLine; // expose for use after each card renders
+  window.addEventListener('resize', () => requestAnimationFrame(refitAllTitles));
+})();
+</script>
 
   <!-- Upcoming Events -->
   <script>
@@ -413,6 +456,11 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
           });
 
           replaceSkeletonWithCard(container, idx, card);
+          if (window.innerWidth <= 768) {
+          const t = card.querySelector('.event-title');
+          if (t) window.fitTitleToOneLine(t, 13);
+        }
+
         });
 
         if (items.length === 0) {
@@ -497,6 +545,11 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
           });
 
           replaceSkeletonWithCard(container, idx, card);
+          if (window.innerWidth <= 768) {
+          const t = card.querySelector('.event-title');
+          if (t) window.fitTitleToOneLine(t, 13);
+        }
+
         });
 
         if (!items.length) {
@@ -519,6 +572,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 </script>
 </body>
 </html>
+
 
 
 
