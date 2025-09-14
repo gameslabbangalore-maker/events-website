@@ -15,14 +15,16 @@
 
   <!-- Security policy (✅ #8). If anything breaks, loosen carefully. -->
   <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self';
-                 img-src 'self' https://ik.imagekit.io https://via.placeholder.com data:;
-                 script-src 'self' https://cdnjs.cloudflare.com;
-                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-                 font-src https://fonts.gstatic.com;
-                 connect-src https://docs.google.com;
-                 frame-ancestors 'none';
-                 base-uri 'self';">
+  content="
+    default-src 'self';
+    img-src 'self' https://ik.imagekit.io https://via.placeholder.com data:;
+    script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src https://fonts.gstatic.com data:;
+    connect-src https://docs.google.com;
+    frame-ancestors 'none';
+    base-uri 'self';
+  ">
 
   <!-- SEO & social (✅ #6) -->
   <meta name="description" content="Games Lab hosts fun, alcohol-free social events and workshops—Mafia nights, game nights, and more." />
@@ -572,3 +574,4 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
   </script>
 </body>
 </html>
+
