@@ -4,28 +4,28 @@
   <meta charset="utf-8" />
   <title>Games Lab — Events & Experiences</title>
 
-  <!-- Favicon set (you can replace these with your own paths) -->
   <link rel="icon" href="Games Lab Logo.png" type="image/png" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-  <!-- Viewport & theme -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+  <!-- Content Security Policy: allows inline scripts, PapaParse, and Google CSV (fixes stuck skeletons) -->
   <meta http-equiv="Content-Security-Policy"
-  content="
-    default-src 'self';
-    img-src 'self' https://ik.imagekit.io https://via.placeholder.com data:;
-    script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
-    style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src   https://fonts.gstatic.com data:;
-    connect-src https://docs.google.com https://*.googleusercontent.com;
-    frame-ancestors 'none';
-    base-uri 'self';
-  ">
+        content="
+          default-src 'self';
+          img-src 'self' https://ik.imagekit.io https://via.placeholder.com data:;
+          script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
+          style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
+          font-src   https://fonts.gstatic.com data:;
+          connect-src https://docs.google.com https://*.googleusercontent.com;
+          object-src 'none';
+          frame-ancestors 'none';
+          base-uri 'self';
+        ">
 
-  <!-- SEO & social (✅ #6) -->
+  <!-- SEO / social -->
   <meta name="description" content="Games Lab hosts fun, alcohol-free social events and workshops—Mafia nights, game nights, and more." />
   <link rel="canonical" href="https://your-domain.example/" />
   <meta property="og:title" content="Games Lab — Upcoming Events" />
@@ -34,7 +34,7 @@
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Fonts & CDNs (✅ #7 preconnect) -->
+  <!-- Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
@@ -43,59 +43,48 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
-    :root{
-      --bg:#181818;--card:#212121;--muted:#d0d0d0;--accent:#fce029;--datebox:#303030;--text-main:#fff;
-      --topbar-height-desktop:58px;--topbar-height-mobile:48px;--animated-height-desktop:150px;--animated-height-mobile:80px;
-      --line-height-desktop:1.4;--line-height-mobile:1.5;--animated-font-size-max:1.6rem;--animated-font-size-min:1rem;
-      --card-height-mobile-base:80px
+    :root {
+      --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
+      --topbar-height-desktop:58px; --topbar-height-mobile:48px;
+      --animated-height-desktop:150px; --animated-height-mobile:80px;
+      --line-height-desktop:1.4; --line-height-mobile:1.5;
+      --animated-font-size-max:1.6rem;
     }
     html,body{margin:0;height:100%}
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
-    /* TOPBAR BLEED */
     .topbar-bleed{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10002;pointer-events:none}
     @media (prefers-color-scheme: light){.topbar-bleed{background:#fff !important}}
 
-    /* TOPBAR */
-    .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));box-sizing:border-box;z-index:10003;border-bottom:1px solid rgba(255,255,255,.3);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:background .22s}
+    .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));box-sizing:border-box;z-index:10003;border-bottom:1px solid rgba(255,255,255,.3);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
     @media (prefers-color-scheme: light){.topbar{border-bottom:1px solid rgba(0,0,0,.3)}}
     .topbar-left{display:flex;align-items:center;height:100%}
     .logo{height:36px;width:36px;border-radius:8px;margin-right:12px;object-fit:cover}
     .brand{font-size:1.45rem;font-weight:700;letter-spacing:.5px;color:#fff}
     @media (max-width:600px){.topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}.logo{height:26px;width:26px;margin-right:8px}.brand{font-size:1rem}}
-    .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));flex-shrink:0}
+    .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
     @media (max-width:600px){.topbar-spacer{height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}}
 
-    .top-divider{width:100%;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow:0 1px 0 rgba(255,255,255,.02) inset;border-radius:1px;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);margin-bottom:12px;position:relative;z-index:10}
-    @media (max-width:768px){.top-divider{margin-bottom:10px}}
-
-    .wrap{max-width:1200px;margin:0 auto;padding:20px 18px 0;box-sizing:border-box}
+    .wrap{max-width:1200px;margin:0 auto;padding:20px 18px 0}
     @media (min-width:769px){.wrap{padding-top:12px}}
     @media (max-width:768px){.wrap{padding-left:12px !important;padding-right:12px !important;padding-top:14px}}
 
-    /* Animated Section */
     .animated-wrapper{width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;padding:0 8px;height:var(--animated-height-desktop);max-height:var(--animated-height-desktop)}
     @media (max-width:768px){.animated-wrapper{height:var(--animated-height-mobile);margin-bottom:10px;max-height:var(--animated-height-mobile)}}
-    .animated-text{width:100%;max-width:980px;font-weight:700;font-family:'Comfortaa',cursive;font-size:var(--animated-font-size-max);text-transform:uppercase;text-align:center;letter-spacing:2.1px;color:#fff;margin:0;padding:0;line-height:var(--line-height-desktop);user-select:none;white-space:pre-wrap;display:flex;align-items:center;justify-content:center;height:100%;box-sizing:border-box;transition:font-size .3s ease;overflow-wrap:break-word;word-break:break-word}
-    @media (max-width:768px){.animated-text{font-size:clamp(.75rem,4vw,1.05rem);line-height:1.4;letter-spacing:1.4px;padding:0 6px;max-height:var(--animated-height-mobile);overflow:hidden;display:block}}
+    .animated-text{width:100%;max-width:980px;font-weight:700;font-family:'Comfortaa',cursive;font-size:var(--animated-font-size-max);text-transform:uppercase;text-align:center;letter-spacing:2.1px;color:#fff;margin:0;white-space:pre-wrap;line-height:var(--line-height-desktop)}
+    @media (max-width:768px){.animated-text{font-size:clamp(.75rem,4vw,1.05rem);line-height:1.4;letter-spacing:1.4px;padding:0 6px}}
 
-    /* Respect reduced motion (✅ #1) */
-    @media (prefers-reduced-motion: reduce){
-      .animated-text{animation:none !important}
-    }
+    /* Reduced motion -> no typing */
+    @media (prefers-reduced-motion: reduce){ .animated-text{animation:none !important} }
 
-    /* Divider (single definition) (✅ #9 DRY) */
     .divider{width:100%;height:1px;margin:28px 0 18px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow:0 1px 0 rgba(255,255,255,.02) inset;border-radius:1px;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
     @media (max-width:768px){.divider{margin:10px 0 16px}}
 
-    /* Titles (single definition) (✅ #9) */
     .title{text-align:center;margin-bottom:18px}
     .title h2{color:var(--accent);margin:0;font-size:1.9rem;font-weight:700;letter-spacing:.2px}
 
-    /* Accessibility helper (✅ #3) */
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
-    /* Cards */
     .cards-row{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:flex-start}
     .card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .16s ease, box-shadow .16s ease;cursor:default;box-shadow:0 6px 22px rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
     .card:hover{transform:translateY(-6px);box-shadow:0 10px 28px rgba(0,0,0,.9)}
@@ -110,26 +99,23 @@
     .location a{color:var(--accent);text-decoration:none;font-weight:600}
     .location a:hover{text-decoration:underline}
     .event-tagline{font-size:14.5px;color:var(--muted)}
-    .button-learn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block;font-size:1rem;text-align:center}
-    .button-learn:hover{background:#ffe974}
-    .card-footer{padding:12px 14px 18px;display:flex;gap:10px;justify-content:center;box-sizing:border-box;flex-wrap:wrap}
-    .book-btn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block}
+    .card-footer{padding:12px 14px 18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .book-btn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none}
     .book-btn:hover{background:#ffe974}
-    .addcal-btn{background:transparent;border:1px solid rgba(255,255,255,.2);color:#fff;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block}
+    .addcal-btn{background:transparent;border:1px solid rgba(255,255,255,.2);color:#fff;padding:10px 16px;border-radius:8px;font-weight:700}
     .addcal-btn:hover{border-color:rgba(255,255,255,.35)}
 
-    /* Skeletons (✅ #7) */
+    /* Desktop skeletons */
     .skeleton{height:260px;width:340px;border-radius:12px;background:linear-gradient(90deg,#2a2a2a 25%,#333 37%,#2a2a2a 63%);background-size:400% 100%;animation:shimmer 1.2s infinite;box-shadow:0 2px 8px rgba(0,0,0,.8)}
     @keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
 
     /* Mobile layout */
     .mobile-info{display:none}
     .card-date{display:none}
-
     @media (max-width:768px){
       .cards-row{justify-content:center}
-      .card{width:90vw;max-width:400px;height:auto;display:flex;flex-direction:row;align-items:center;gap:8px;padding:calc(10px + 1vw) calc(8px + 1vw);border-radius:12px;cursor:pointer;background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:height .3s ease}
-      .media{width:18vw;max-width:72px;aspect-ratio:1/1;height:auto;padding-top:0 !important;border-radius:10px;overflow:hidden;flex-shrink:0;background:#111;position:relative}
+      .card{width:90vw;max-width:400px;height:auto;display:flex;flex-direction:row;align-items:center;gap:8px;padding:calc(10px + 1vw) calc(8px + 1vw);border-radius:12px;cursor:pointer;background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+      .media{width:18vw;max-width:72px;aspect-ratio:1/1;height:auto;padding-top:0 !important;border-radius:10px;overflow:hidden;flex-shrink:0;background:#111}
       .media img{position:static;width:100%;height:100%;object-fit:cover}
       .card-body{padding:0;display:flex;flex-direction:column;gap:calc(4px + .3vw);flex:1 1 auto}
       .event-title{font-size:calc(14px + 1.5vw) !important;font-weight:800 !important;color:#fff;margin:0}
@@ -138,13 +124,16 @@
       .mobile-info a{color:var(--accent);text-decoration:none;font-weight:600}
       .mobile-info a:hover{text-decoration:underline}
       .card-footer{display:none}
-      .card-date{display:flex;width:18vw;max-width:72px;height:auto;aspect-ratio:1/1;flex-direction:column;justify-content:center;align-items:center;border-radius:10px;background:var(--datebox);border:1.5px solid rgba(255,255,255,.08);color:#fff;font-size:calc(11px + 1vw);box-sizing:border-box;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
-      .card-date .day{font-weight:700;font-size:calc(22px + 2vw);color:#fce029;line-height:1}
-      .card-date .month{font-size:calc(12px + 1vw);color:#fff;line-height:1}
-      .card-date .time{display:none}
+      .card-date{display:flex;width:18vw;max-width:72px;height:auto;aspect-ratio:1/1;flex-direction:column;justify-content:center;align-items:center;border-radius:10px;background:var(--datebox);border:1.5px solid rgba(255,255,255,.08);color:#fff;font-size:calc(11px + 1vw)}
+
+      /* Mobile skeletons that match card size (row layout) */
+      .skeleton{
+        width:90vw;max-width:400px;
+        height:calc(88px + 2vw); /* approximates row height */
+        border-radius:12px;
+      }
     }
 
-    /* Light mode */
     @media (prefers-color-scheme: light){
       :root{--bg:#f5f5f5;--card:#fff;--muted:#444;--accent:#0a75bc;--datebox:#ececec;--text-main:#181818}
       body{background:var(--bg);color:var(--text-main)}
@@ -152,7 +141,7 @@
       .topbar,.topbar-bleed{background:rgba(255,255,255,.1);color:#181818}
       .card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 6px 22px rgba(0,0,0,.8)}
       .event-title{color:#000}
-      .card-date{background:var(--datebox);border:1.5px solid rgba(0,0,0,.03);color:#181818;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+      .card-date{background:var(--datebox);border:1.5px solid rgba(0,0,0,.03);color:#181818}
       .card-date .day{color:#0a75bc}
       .card-date .month{color:#000}
       .book-btn{color:#fff}
@@ -172,10 +161,9 @@
   <div class="topbar-spacer" aria-hidden="true"></div>
 
   <main class="wrap" role="main">
-    <!-- Invisible main heading for screen readers (✅ #3) -->
     <h1 class="sr-only">Games Lab — Events & Experiences</h1>
 
-    <!-- Animated strapline (✅ #1 respects reduced motion) -->
+    <!-- Animated headline (one-time typing; preserves line breaks) -->
     <div class="animated-wrapper" aria-live="polite">
       <div class="animated-text"></div>
     </div>
@@ -183,14 +171,14 @@
     <div class="divider" aria-hidden="true"></div>
     <div class="title"><h2>Upcoming Events</h2></div>
 
-    <!-- Skeletons while loading (✅ #7) -->
+    <!-- Skeletons (will be cleared on success OR error) -->
     <div id="events" class="cards-row" aria-live="polite">
       <div class="skeleton" aria-hidden="true"></div>
       <div class="skeleton" aria-hidden="true"></div>
       <div class="skeleton" aria-hidden="true"></div>
     </div>
 
-    <div class="divider" style="margin-top: 40px;"></div>
+    <div class="divider" style="margin-top:40px;"></div>
     <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
     <div id="explore-cards" class="cards-row">
       <div class="skeleton" aria-hidden="true"></div>
@@ -212,366 +200,363 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     <div class="divider" style="margin-top:40px;"></div>
   </main>
 
+  <!-- One-time typing animation (keeps line breaks exactly like original) -->
   <script>
-  /***** CONFIG (for analytics) — optional (✅ #11)
-   * If you have a tiny endpoint to collect clicks, set:
-   *   window.GAMESLAB_ANALYTICS_ENDPOINT = '/analytics';
-   * Otherwise, leave it undefined and nothing will be sent.
-   */
-  // window.GAMESLAB_ANALYTICS_ENDPOINT = '/analytics';
+    (function(){
+      const lines = [
+        'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
+      ];
+      const msg = lines.join('\n');
+      const el = document.querySelector('.animated-text');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function track(evt, data){
-    try{
-      if (!window.GAMESLAB_ANALYTICS_ENDPOINT) return;
-      if (navigator.doNotTrack === '1') return;
-      const blob = new Blob([JSON.stringify({evt, ...data, ts: Date.now()})], {type: 'application/json'});
-      navigator.sendBeacon(window.GAMESLAB_ANALYTICS_ENDPOINT, blob);
-    }catch(e){ /* no-op */ }
-  }
+      // Always ensure the text is visible (fallback)
+      el.textContent = msg;
 
-  /* Typing headline (✅ #1 respects reduced motion) */
-  const lines=['IF "HOW TO HAVE A GOOD TIME ?"'<br/>'IS THE QUESTION,'<br/>,'WE ARE THE ANSWER'];
-  const msg=lines.join('\\n');
-  const animatedTextElem=document.querySelector('.animated-text');
-  let charIndex=0,isDeleting=false;
-  const delay=55,pauseBetween=2600;
-  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  function type(){
-    if(!isDeleting){ animatedTextElem.textContent=msg.substring(0,charIndex+1); charIndex++;
-      if(charIndex===msg.length){ isDeleting=true; setTimeout(type,pauseBetween); return; }
-    } else { animatedTextElem.textContent=msg.substring(0,charIndex-1); charIndex--; if(charIndex===0) isDeleting=false; }
-    setTimeout(type,isDeleting?delay/2:delay);
-  }
-  animatedTextElem.textContent = msg;
-  if(!reduceMotion){ setTimeout(type,pauseBetween); }
+      if (reduceMotion) return; // no animation for reduced motion
 
-  /* Helpers for Add to Calendar (works for Google & Apple/iOS via .ics) */
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function toCalDateTime(dateStr, timeStr){
-    // Date format stays as your current sheet format (no change per your note) (❌ #4 skipped by request)
-    // We’ll parse simple forms like "3 Aug '25" and "7:30 PM"
-    const m = String(dateStr).trim().match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-    if(!m) return null;
-    const [_, d, mon, yy] = m;
-    const monthMap={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
-    const year=2000+parseInt(yy,10);
-    const month=monthMap[mon];
-    const day=parseInt(d,10);
+      // One-shot typing (no delete, no loop)
+      let i = 0;
+      const delay = 55;
+      el.textContent = ''; // start empty for the effect
+      (function typeOnce(){
+        if (i <= msg.length) {
+          el.textContent = msg.substring(0, i);
+          i++;
+          setTimeout(typeOnce, delay);
+        }
+      })();
+    })();
+  </script>
 
-    let hh=9, mm=0; // default 9:00 if time missing
-    if(timeStr){
-      const t=String(timeStr).trim().match(/^(\d{1,2}):?(\d{2})?\s*(AM|PM)?$/i);
-      if(t){
-        let H=parseInt(t[1],10);
-        let M=t[2]?parseInt(t[2],10):0;
-        const ap=t[3]?t[3].toUpperCase():null;
-        if(ap==='PM' && H<12) H+=12;
-        if(ap==='AM' && H===12) H=0;
-        hh=H; mm=M;
-      }
-    }
-    // Build a Date in IST (+05:30)
-    const date = new Date(Date.UTC(year, month, day, hh-5, mm-30)); // crude shift to keep local wall time as IST
-    return date;
-  }
-  function formatICSDate(dt){
-    // ICS requires UTC in YYYYMMDDTHHMMSSZ
-    const y=dt.getUTCFullYear(), m=pad(dt.getUTCMonth()+1), d=pad(dt.getUTCDate());
-    const H=pad(dt.getUTCHours()), M=pad(dt.getUTCMinutes()), S=pad(dt.getUTCSeconds());
-    return `${y}${m}${d}T${H}${M}${S}Z`;
-  }
-  function buildICS({title, description, location, start, end}){
-    const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@gameslab`;
-    const lines=[
-      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Games Lab//EN',
-      'CALSCALE:GREGORIAN','METHOD:PUBLISH',
-      'BEGIN:VEVENT',
-      `UID:${uid}`,
-      `DTSTAMP:${formatICSDate(new Date())}`,
-      `DTSTART:${formatICSDate(start)}`,
-      `DTEND:${formatICSDate(end)}`,
-      `SUMMARY:${(title||'Event').replace(/\n/g,' ')}`,
-      `DESCRIPTION:${(description||'').replace(/\n/g,' ')}`,
-      `LOCATION:${(location||'').replace(/\n/g,' ')}`,
-      'END:VEVENT','END:VCALENDAR'
-    ];
-    return lines.join('\\r\\n');
-  }
-  function makeICSDownload(filename, icsText){
-    const blob = new Blob([icsText], {type:'text/calendar'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
-  }
-  function googleCalUrl({title, details, location, start, end}){
-    // Google wants UTC in ISO-ish format without separators, Z suffix
-    const fmt=(d)=>formatICSDate(d).replace(/[-:]/g,'');
-    const params = new URLSearchParams({
-      action:'TEMPLATE',
-      text:title||'Event',
-      dates:`${fmt(start)}/${fmt(end)}`,
-      details:details||'',
-      location:location||''
-    });
-    return `https://www.google.com/calendar/render?${params.toString()}`;
-  }
+  <!-- Upcoming Events -->
+  <script>
+    (async function(){
+      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+      const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+      const container = document.getElementById("events");
 
-  /* Events loader (keeps your column order & date format by design) */
-  (async function(){
-    const csvUrl="https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-    const fallbackImage="https://via.placeholder.com/800x450?text=Event+Image";
-    function clean(v){ if(v===undefined||v===null) return ""; return String(v).trim().replace(/^"|"$/g,''); }
-    function parseEventDate(str){
-      if(!str) return null;
-      str=str.trim().replace(/^[A-Za-z]{3},?\\s*/,'').replace(/’/g,"'").replace(/`/g,"'");
-      const parts=str.match(/^(\\d{1,2})\\s+([A-Za-z]{3})\\s+'(\\d{2})$/);
-      if(!parts) return null;
-      const [_, day, monthStr, yearStr]=parts;
-      const month={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}[monthStr];
-      if(month===undefined) return null;
-      const year=2000+parseInt(yearStr,10);
-      return new Date(year, month, parseInt(day,10));
-    }
-
-    try{
-      const res=await fetch(csvUrl,{cache:"no-cache"});
-      if(!res.ok) throw new Error("CSV fetch failed: "+res.status);
-      const csvText=await res.text();
-      const parsed=Papa.parse(csvText,{skipEmptyLines:true});
-      const rows=parsed.data||[];
-      const container=document.getElementById("events");
-      container.innerHTML=""; // clear skeletons
-
-      if(rows.length<2){
-        container.innerHTML='<p style="color:#bbb">No events found in the sheet.</p>';
-        return;
+      function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^\"|\"$/g, ''); }
+      function parseEventDate(str) {
+        if (!str) return null;
+        str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '').replace(/’/g,"'").replace(/`/g,"'");
+        const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+        if (!parts) return null;
+        const [_, day, monthStr, yearStr] = parts;
+        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+        if (month === undefined) return null;
+        const year = 2000 + parseInt(yearStr, 10);
+        return new Date(year, month, parseInt(day, 10));
       }
 
-      const dataRows=rows.slice(1).filter(r=>r && r[0] && String(r[0]).trim()!=="");
-      const today=new Date(); today.setHours(0,0,0,0);
-      let upcomingCount=0;
+      // Add to Calendar helpers
+      function pad(n){ return String(n).padStart(2,'0'); }
+      function toCalDateTime(dateStr, timeStr){
+        const m = String(dateStr).trim().match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+        if(!m) return null;
+        const [_, d, mon, yy] = m;
+        const monthMap={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+        const year=2000+parseInt(yy,10);
+        const month=monthMap[mon];
+        const day=parseInt(d,10);
+        let hh=9, mm=0;
+        if(timeStr){
+          const t=String(timeStr).trim().match(/^(\d{1,2}):?(\d{2})?\s*(AM|PM)?$/i);
+          if(t){
+            let H=parseInt(t[1],10);
+            let M=t[2]?parseInt(t[2],10):0;
+            const ap=t[3]?t[3].toUpperCase():null;
+            if(ap==='PM' && H<12) H+=12;
+            if(ap==='AM' && H===12) H=0;
+            hh=H; mm=M;
+          }
+        }
+        // Convert IST local time to UTC Date object quickly
+        return new Date(Date.UTC(year, month, day, hh-5, mm-30));
+      }
+      function formatICSDate(dt){
+        const y=dt.getUTCFullYear(), m=pad(dt.getUTCMonth()+1), d=pad(dt.getUTCDate());
+        const H=pad(dt.getUTCHours()), M=pad(dt.getUTCMinutes()), S=pad(dt.getUTCSeconds());
+        return `${y}${m}${d}T${H}${M}${S}Z`;
+      }
+      function buildICS({title, description, location, start, end}){
+        const uid = `${Date.now()}-${Math.random().toString(36).slice(2)}@gameslab`;
+        return [
+          'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Games Lab//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH',
+          'BEGIN:VEVENT',
+          `UID:${uid}`,
+          `DTSTAMP:${formatICSDate(new Date())}`,
+          `DTSTART:${formatICSDate(start)}`,
+          `DTEND:${formatICSDate(end)}`,
+          `SUMMARY:${(title||'Event').replace(/\n/g,' ')}`,
+          `DESCRIPTION:${(description||'').replace(/\n/g,' ')}`,
+          `LOCATION:${(location||'').replace(/\n/g,' ')}`,
+          'END:VEVENT','END:VCALENDAR'
+        ].join('\r\n');
+      }
+      function makeICSDownload(filename, icsText){
+        const blob = new Blob([icsText], {type:'text/calendar'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename;
+        document.body.appendChild(a); a.click();
+        setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 0);
+      }
+      function googleCalUrl({title, details, location, start, end}){
+        const fmt=(d)=>formatICSDate(d).replace(/[-:]/g,'');
+        const params = new URLSearchParams({
+          action:'TEMPLATE',
+          text:title||'Event',
+          dates:`${fmt(start)}/${fmt(end)}`,
+          details:details||'',
+          location:location||''
+        });
+        return `https://www.google.com/calendar/render?${params.toString()}`;
+      }
 
-      dataRows
-        .sort((a,b)=>{
-          const dateA=parseEventDate(clean(a[1]));
-          const dateB=parseEventDate(clean(b[1]));
-          if(!dateA) return 1;
-          if(!dateB) return -1;
-          return dateA - dateB;
-        })
-        .forEach(cols=>{
-          // By position: 0 Name, 1 Date, 2 Time, 3 Location Text, 4 Location Link, 5 Ticket Link, 6 Image, 7 (optional) Page Link
-          const name=clean(cols[0]);
-          const date=clean(cols[1]);
-          const time=clean(cols[2]);
-          const locText=clean(cols[3]);
-          const locLink=clean(cols[4]);
-          const ticket=clean(cols[5])||"#";
-          const image=clean(cols[6])||fallbackImage;
-          const pageLink=(cols[7]!==undefined)?clean(cols[7]):""; // optional event page (your preference)
-          const eventDateObj=parseEventDate(date);
-          if(!eventDateObj) return;
-          eventDateObj.setHours(0,0,0,0);
-          if(eventDateObj < today) return;
-          upcomingCount++;
+      try{
+        const res = await fetch(csvUrl, {cache: "no-cache"});
+        if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
+        const csvText = await res.text();
 
-          const card=document.createElement("article");
-          card.className="card";
-          // Media
-          const media=document.createElement("div");
-          media.className="media";
-          const img=document.createElement("img");
-          img.loading="lazy";
-          img.src=image;
-          img.alt=name||"Event image";
-          /* ✅ #5 — help prevent layout shift with width/height */
-          img.width=800; img.height=450;
-          img.onerror=function(){ this.onerror=null; this.src=fallbackImage; };
+        // Clear skeletons before rendering
+        container.innerHTML = "";
+
+        const parsed = Papa.parse(csvText, {skipEmptyLines:true});
+        const rows = parsed.data || [];
+        if (rows.length < 2) {
+          container.innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+          return;
+        }
+
+        const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+        const today = new Date(); today.setHours(0,0,0,0);
+        let upcomingCount = 0;
+
+        dataRows
+          .sort((a, b) => {
+            const dateA = parseEventDate(clean(a[1]));
+            const dateB = parseEventDate(clean(b[1]));
+            if (!dateA) return 1;
+            if (!dateB) return -1;
+            return dateA - dateB;
+          })
+          .forEach(cols => {
+            const name = clean(cols[0]);
+            const date = clean(cols[1]);
+            const time = clean(cols[2]);
+            const locText = clean(cols[3]);
+            const locLink = clean(cols[4]);
+            const ticket = clean(cols[5]) || "#";
+            const image = clean(cols[6]) || fallbackImage;
+            const pageLink = (cols[7]!==undefined)?clean(cols[7]):"";
+
+            const eventDateObj = parseEventDate(date);
+            if (!eventDateObj) return;
+            eventDateObj.setHours(0,0,0,0);
+            if (eventDateObj < today) return;
+
+            upcomingCount++;
+
+            const card = document.createElement("article");
+            card.className = "card";
+
+            const media = document.createElement("div");
+            media.className = "media";
+            const img = document.createElement("img");
+            img.loading = "lazy";
+            img.src = image;
+            img.alt = name || "Event image";
+            img.width = 800; img.height = 450; /* helps CLS */
+            img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+            media.appendChild(img);
+            card.appendChild(media);
+
+            const body = document.createElement("div");
+            body.className = "card-body";
+
+            const h = document.createElement("h3");
+            h.className = "event-title";
+            if (pageLink) {
+              const tLink = document.createElement("a");
+              tLink.href = pageLink; tLink.target = "_blank"; tLink.rel = "noopener noreferrer";
+              tLink.textContent = name || "Untitled Event";
+              h.appendChild(tLink);
+            } else {
+              h.textContent = name || "Untitled Event";
+            }
+            body.appendChild(h);
+
+            const meta = document.createElement("p");
+            meta.className = "meta";
+            meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+            body.appendChild(meta);
+
+            if (locText || locLink) {
+              const locP = document.createElement("p");
+              locP.className = "location";
+              const a = document.createElement("a");
+              a.href = locLink || "#"; a.target = "_blank"; a.rel = "noopener noreferrer";
+              a.textContent = locText;
+              locP.appendChild(a);
+              body.appendChild(locP);
+            }
+
+            const mobileInfo = document.createElement("p");
+            mobileInfo.className = "mobile-info";
+            if (locText) {
+              const a2 = document.createElement("a");
+              a2.href = locLink || "#"; a2.target = "_blank"; a2.rel = "noopener noreferrer";
+              a2.textContent = locText;
+              mobileInfo.appendChild(a2);
+            }
+            if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
+            if (time) mobileInfo.appendChild(document.createTextNode(time));
+            body.appendChild(mobileInfo);
+
+            card.appendChild(body);
+
+            if (eventDateObj) {
+              const dayNum = eventDateObj.getDate();
+              const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
+              const dateBox = document.createElement("div");
+              dateBox.className = "card-date";
+              dateBox.innerHTML =
+                `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
+                `<div class="month">${monthShort}</div>` +
+                `<div class="time"></div>`;
+              card.appendChild(dateBox);
+            }
+
+            const footer = document.createElement("div");
+            footer.className = "card-footer";
+
+            // Add to Calendar
+            const addBtn = document.createElement("button");
+            addBtn.className = "addcal-btn";
+            addBtn.type = "button";
+            addBtn.textContent = "Add to Calendar";
+            addBtn.addEventListener('click', ()=>{
+              const start = toCalDateTime(date, time) || new Date();
+              const end = new Date(start.getTime() + 2*60*60*1000);
+              const details = `${name}${locText?` — ${locText}`:''}`;
+              const gUrl = googleCalUrl({title:name, details, location:locText, start, end});
+              window.open(gUrl, '_blank');
+              const ics = buildICS({title:name, description:details, location:locText, start, end});
+              makeICSDownload((name||'event').replace(/\s+/g,'-').toLowerCase()+'.ics', ics);
+            });
+            footer.appendChild(addBtn);
+
+            // Book Now if available
+            if (ticket && ticket !== "#") {
+              const btn = document.createElement("a");
+              btn.className = "book-btn";
+              btn.href = ticket; btn.target = "_blank"; btn.rel = "noopener noreferrer";
+              btn.textContent = "Book Now";
+              footer.appendChild(btn);
+            }
+
+            card.appendChild(footer);
+
+            // Mobile full-card tap -> ticket (if present)
+            card.addEventListener('click', function(e) {
+              if (e.target.closest('a,button')) return;
+              if (window.innerWidth <= 768) {
+                if (ticket && ticket !== "#") window.open(ticket, '_blank');
+              }
+            });
+
+            container.appendChild(card);
+          });
+
+        if (upcomingCount === 0) {
+          container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
+        }
+      } catch (err) {
+        console.error('Upcoming events error:', err);
+        // Clear skeletons and show error message
+        container.innerHTML = '<p style="color:#f66">Could not load events — check the CSV publish link and CSP settings.</p>';
+      }
+    })();
+  </script>
+
+  <!-- Explore (unchanged logic; also clears skeletons on load/error) -->
+  <script>
+    (async function() {
+      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
+      const container = document.getElementById('explore-cards');
+      const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+      try {
+        const res = await fetch(csvUrl, { cache: "no-cache" });
+        if (!res.ok) throw new Error("Failed to fetch explore events");
+        const csvText = await res.text();
+        container.innerHTML = ''; // clear skeletons
+        const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+
+        parsed.data.forEach(event => {
+          if (!event) return;
+          if ((event['Scheduled'] || '').trim().toLowerCase() !== 'no') return;
+
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const media = document.createElement('div');
+          media.className = 'media';
+          const img = document.createElement('img');
+          img.src = (event['Image Links'] || '').trim() || fallbackImage;
+          img.alt = (event['Event'] || '').trim();
+          img.loading = "lazy"; img.width = 800; img.height = 450;
+          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
           media.appendChild(img);
           card.appendChild(media);
 
-          // Body
-          const body=document.createElement("div");
-          body.className="card-body";
+          const body = document.createElement('div');
+          body.className = 'card-body';
 
-          // Title — link to event page if provided; never to Book Now (your rule)
-          const h=document.createElement("h3");
-          h.className="event-title";
-          if(pageLink){
-            const tLink=document.createElement("a");
-            tLink.href=pageLink; tLink.target="_blank"; tLink.rel="noopener noreferrer";
-            tLink.textContent=name||"Untitled Event";
-            h.appendChild(tLink);
-          } else {
-            h.textContent=name||"Untitled Event";
+          const title = document.createElement('div');
+          title.className = 'event-title';
+          title.textContent = (event['Event'] || '').trim();
+          body.appendChild(title);
+
+          if (event['Tagline'] && String(event['Tagline']).trim() !== '') {
+            const tagline = document.createElement('div');
+            tagline.className = 'event-tagline';
+            tagline.textContent = String(event['Tagline']).trim();
+            body.appendChild(tagline);
           }
-          body.appendChild(h);
-
-          // Meta & Location (desktop)
-          const meta=document.createElement("p");
-          meta.className="meta";
-          meta.textContent=(date?date:"")+((date&&time)?" | ":"")+(time?time:"");
-          body.appendChild(meta);
-
-          if(locText||locLink){
-            const locP=document.createElement("p");
-            locP.className="location";
-            const a=document.createElement("a");
-            a.href=locLink||"#"; a.target="_blank"; a.rel="noopener noreferrer"; a.textContent=locText;
-            locP.appendChild(a);
-            body.appendChild(locP);
-          }
-
-          // Mobile info line
-          const mobileInfo=document.createElement("p");
-          mobileInfo.className="mobile-info";
-          if(locText){
-            const a2=document.createElement("a");
-            a2.href=locLink||"#"; a2.target="_blank"; a2.rel="noopener noreferrer"; a2.textContent=locText;
-            mobileInfo.appendChild(a2);
-          }
-          if(locText&&time) mobileInfo.appendChild(document.createTextNode(" | "));
-          if(time) mobileInfo.appendChild(document.createTextNode(time));
-          body.appendChild(mobileInfo);
 
           card.appendChild(body);
 
-          // Mobile date badge
-          if(eventDateObj){
-            const dayNum=eventDateObj.getDate();
-            const monthShort=eventDateObj.toLocaleString('en-US',{month:'short'});
-            const dateBox=document.createElement("div");
-            dateBox.className="card-date";
-            dateBox.innerHTML=
-              `<div class="day">${String(dayNum).padStart(2,'0')}</div>`+
-              `<div class="month">${monthShort}</div>`+
-              `<div class="time"></div>`;
-            card.appendChild(dateBox);
-          }
-
-          // Footer (desktop): Book Now (if scheduled) + Add to Calendar (always)
-          const footer=document.createElement("div"); footer.className="card-footer";
-
-          // Add to Calendar (✅ feature)
-          const addBtn=document.createElement("button");
-          addBtn.className="addcal-btn";
-          addBtn.type="button";
-          addBtn.textContent="Add to Calendar";
-          addBtn.addEventListener('click', ()=>{
-            // Build start/end assuming 2 hours if time exists (simple, can tune later)
-            const start=toCalDateTime(date, time) || new Date();
-            const end=new Date(start.getTime() + 2*60*60*1000);
-            const details=`${name}${locText?` — ${locText}`:''}`;
-            // Offer two options: Google Calendar (Android/web) and .ics (Apple/iOS)
-            const gUrl=googleCalUrl({title:name, details, location:locText, start, end});
-            // Simple chooser: new tab Google; also download ICS automatically
-            window.open(gUrl, '_blank');
-            const ics=buildICS({title:name, description:details, location:locText, start, end});
-            makeICSDownload((name||'event').replace(/\\s+/g,'-').toLowerCase()+'.ics', ics);
-          });
-          footer.appendChild(addBtn);
-
-          // Book Now (only if link present)
-          if(ticket && ticket !== "#"){
-            const btn=document.createElement("a");
-            btn.className="book-btn";
-            btn.href=ticket; btn.target="_blank"; btn.rel="noopener noreferrer";
-            btn.textContent="Book Now";
-            btn.addEventListener('click', ()=>track('book_click',{event:name}));
-            footer.appendChild(btn);
-          }
-
+          const footer = document.createElement('div');
+          footer.className = 'card-footer';
+          const learn = document.createElement('a');
+          learn.className = 'button-learn';
+          learn.href = (event['Page Link'] || '#').trim();
+          learn.target = '_blank';
+          learn.rel = 'noopener noreferrer';
+          learn.textContent = 'Learn More';
+          footer.appendChild(learn);
           card.appendChild(footer);
 
-          // Mobile: entire card opens ticket (unchanged), but not if clicking a link
-          card.addEventListener('click', function(e){
-            if(e.target.closest('a,button')) return;
-            if(window.innerWidth<=768){
-              if(ticket && ticket !== "#") window.open(ticket, '_blank');
+          card.addEventListener('click', function(e) {
+            if (e.target.closest('a')) return;
+            if (window.innerWidth <= 768) {
+              const url = (event['Page Link'] || '').trim();
+              if (url) window.open(url, '_blank');
             }
           });
 
           container.appendChild(card);
         });
 
-      if(upcomingCount===0){
-        container.innerHTML='<p style="color:#bbb">No upcoming events.</p>';
-      }
-    }catch(err){
-      console.error(err);
-      document.getElementById("events").innerHTML =
-        '<p style="color:#f66">Could not load events — check CSV link visibility and console for details.</p>';
-    }
-  })();
-  </script>
-
-  <!-- Explore (unchanged behavior, with skeleton cleared) -->
-  <script>
-  (async function(){
-    const csvUrl="https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
-    const container=document.getElementById('explore-cards');
-    const fallbackImage="https://via.placeholder.com/800x450?text=Event+Image";
-    try{
-      const res=await fetch(csvUrl,{cache:"no-cache"});
-      if(!res.ok) throw new Error("Failed to fetch explore events");
-      const csvText=await res.text();
-      const parsed=Papa.parse(csvText,{header:true,skipEmptyLines:true});
-      container.innerHTML=''; // clear skeletons
-
-      parsed.data.forEach(event=>{
-        if(!event) return;
-        if((event['Scheduled']||'').trim().toLowerCase()!=='no') return;
-
-        const card=document.createElement('div'); card.className='card';
-
-        const media=document.createElement('div'); media.className='media';
-        const img=document.createElement('img');
-        img.src=(event['Image Links']||'').trim()||fallbackImage;
-        img.alt=(event['Event']||'').trim();
-        img.loading="lazy"; img.width=800; img.height=450; /* ✅ #5 CLS help */
-        img.onerror=function(){ this.onerror=null; this.src=fallbackImage; };
-        media.appendChild(img); card.appendChild(media);
-
-        const body=document.createElement('div'); body.className='card-body';
-        const title=document.createElement('div'); title.className='event-title'; title.textContent=(event['Event']||'').trim();
-        body.appendChild(title);
-
-        if(event['Tagline'] && String(event['Tagline']).trim()!==''){
-          const tagline=document.createElement('div'); tagline.className='event-tagline';
-          tagline.textContent=String(event['Tagline']).trim(); body.appendChild(tagline);
+        if (!container.children.length) {
+          container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
         }
-        card.appendChild(body);
-
-        const footer=document.createElement('div'); footer.className='card-footer';
-        const learn=document.createElement('a'); learn.className='button-learn';
-        learn.href=(event['Page Link']||'#').trim(); learn.target='_blank'; learn.rel='noopener noreferrer'; learn.textContent='Learn More';
-        footer.appendChild(learn); card.appendChild(footer);
-
-        card.addEventListener('click', function(e){
-          if(e.target.closest('a')) return;
-          if(window.innerWidth<=768){
-            const url=(event['Page Link']||'').trim();
-            if(url) window.open(url,'_blank');
-          }
-        });
-
-        container.appendChild(card);
-      });
-
-      if(!container.children.length){
-        container.innerHTML='<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
+      } catch (err) {
+        console.error('Error loading explore events:', err);
+        container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
       }
-    }catch(err){
-      console.error('Error loading explore events:',err);
-      container.innerHTML='<div style="color:#f66;text-align:center;">Could not load other events.</div>';
-    }
-  })();
+    })();
   </script>
 </body>
 </html>
-
-
