@@ -73,8 +73,6 @@
     @media (max-width:768px){.animated-wrapper{height:var(--animated-height-mobile);margin-bottom:10px;max-height:var(--animated-height-mobile)}}
     .animated-text{width:100%;max-width:980px;font-weight:700;font-family:'Comfortaa',cursive;font-size:var(--animated-font-size-max);text-transform:uppercase;text-align:center;letter-spacing:2.1px;color:#fff;margin:0;white-space:pre-wrap;line-height:var(--line-height-desktop)}
     @media (max-width:768px){.animated-text{font-size:clamp(.75rem,4vw,1.05rem);line-height:1.4;letter-spacing:1.4px;padding:0 6px}}
-
-    /* Reduced motion -> no typing */
     @media (prefers-reduced-motion: reduce){ .animated-text{animation:none !important} }
 
     .divider{width:100%;height:1px;margin:28px 0 18px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow:0 1px 0 rgba(255,255,255,.02) inset;border-radius:1px;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
@@ -86,6 +84,8 @@
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
     .cards-row{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:flex-start}
+
+    /* Real cards */
     .card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .16s ease, box-shadow .16s ease;cursor:default;box-shadow:0 6px 22px rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
     .card:hover{transform:translateY(-6px);box-shadow:0 10px 28px rgba(0,0,0,.9)}
     .media{width:100%;padding-top:56.25%;position:relative;background:#111}
@@ -103,39 +103,36 @@
     .book-btn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block}
     .book-btn:hover{background:#ffe974}
 
-    /* Skeletons — card-sized */
-    .skeleton-card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:0 6px 22px rgba(0,0,0,.8)}
-    .skeleton-media{width:100%;padding-top:56.25%}
-    .skeleton-body{padding:14px}
-    .skeleton-line{height:12px;margin:8px 0;border-radius:6px;background:linear-gradient(90deg,#2a2a2a 25%,#333 37%,#2a2a2a 63%);background-size:400% 100%;animation:shimmer 1.2s infinite}
-    .skeleton-line.w-70{width:70%}
-    .skeleton-line.w-55{width:55%}
-    .skeleton-line.w-40{width:40%}
-    @keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+    /* SKELETONS — identical layout & responsive behavior */
+    .sk-card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 22px rgba(0,0,0,.8)}
+    .sk-media{width:100%;padding-top:56.25%;position:relative;overflow:hidden}
+    .sk-body{padding:14px}
+    .sk-footer{padding:12px 14px 18px;display:flex;justify-content:center}
+    .sk-line,
+    .sk-box{border-radius:10px;background:linear-gradient(90deg,#2a2a2a 25%,#333 37%,#2a2a2a 63%);background-size:400% 100%;animation:skshimmer 1.2s infinite}
+    .sk-line{height:12px;margin:8px 0}
+    .sk-line.w-80{width:80%}.sk-line.w-60{width:60%}.sk-line.w-40{width:40%}
+    .sk-btn{width:130px;height:42px}
 
-    /* Mobile layout */
+    @keyframes skshimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+
+    /* Mobile layout (real cards & skeletons) */
     .mobile-info{display:none}
     .card-date{display:none}
     @media (max-width:768px){
       .cards-row{justify-content:center}
-      .card{width:90vw;max-width:400px;height:auto;display:flex;flex-direction:row;align-items:center;gap:8px;padding:calc(10px + 1vw) calc(8px + 1vw);border-radius:12px;cursor:pointer;background:var(--card);box-shadow:0 2px 8px rgba(0,0,0,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-      .media{width:18vw;max-width:72px;aspect-ratio:1/1;height:auto;padding-top:0 !important;border-radius:10px;overflow:hidden;flex-shrink:0;background:#111}
-      .media img{position:static;width:100%;height:100%;object-fit:cover}
-      .card-body{padding:0;display:flex;flex-direction:column;gap:calc(4px + .3vw);flex:1 1 auto}
+      .card,.sk-card{width:90vw;max-width:400px;height:auto;flex-direction:row;align-items:center;gap:8px;padding:calc(10px + 1vw) calc(8px + 1vw);border-radius:12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+      .media,.sk-media{width:18vw;max-width:72px;aspect-ratio:1/1;height:auto;padding-top:0;border-radius:10px;overflow:hidden;flex-shrink:0;background:#111}
+      .media img{position:static}
+      .card-body,.sk-body{padding:0;display:flex;flex-direction:column;gap:calc(4px + .3vw);flex:1 1 auto}
       .event-title{font-size:calc(14px + 1.5vw) !important;font-weight:800 !important;color:#fff;margin:0}
       .meta,.location{display:none}
       .mobile-info{display:block;font-size:calc(11px + .7vw);color:var(--muted);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw}
       .mobile-info a{color:var(--accent);text-decoration:none;font-weight:600}
       .mobile-info a:hover{text-decoration:underline}
       .card-footer{display:none}
+      .sk-footer{display:none} /* skeleton footer hidden on mobile same as real card */
       .card-date{display:flex;width:18vw;max-width:72px;height:auto;aspect-ratio:1/1;flex-direction:column;justify-content:center;align-items:center;border-radius:10px;background:var(--datebox);border:1.5px solid rgba(255,255,255,.08);color:#fff;font-size:calc(11px + 1vw)}
-
-      /* Mobile skeletons that match row layout */
-      .skeleton-card{width:90vw;max-width:400px;display:flex;flex-direction:row;align-items:center;gap:8px;padding:calc(10px + 1vw) calc(8px + 1vw)}
-      .skeleton-media{width:18vw;max-width:72px;aspect-ratio:1/1;padding-top:0;border-radius:10px;flex-shrink:0;
-        background:linear-gradient(90deg,#2a2a2a 25%,#333 37%,#2a2a2a 63%);background-size:400% 100%;animation:shimmer 1.2s infinite}
-      .skeleton-body{flex:1 1 auto;padding:0}
-      .skeleton-line{height:12px;margin:6px 0}
     }
 
     @media (prefers-color-scheme: light){
@@ -174,60 +171,11 @@
     <div class="divider" aria-hidden="true"></div>
     <div class="title"><h2>Upcoming Events</h2></div>
 
-    <!-- Skeletons (card-sized) -->
-    <div id="events" class="cards-row" aria-live="polite">
-      <div class="skeleton-card" aria-hidden="true">
-        <div class="skeleton-media"></div>
-        <div class="skeleton-body">
-          <div class="skeleton-line w-70"></div>
-          <div class="skeleton-line w-40"></div>
-          <div class="skeleton-line w-55"></div>
-        </div>
-      </div>
-      <div class="skeleton-card" aria-hidden="true">
-        <div class="skeleton-media"></div>
-        <div class="skeleton-body">
-          <div class="skeleton-line w-70"></div>
-          <div class="skeleton-line w-40"></div>
-          <div class="skeleton-line w-55"></div>
-        </div>
-      </div>
-      <div class="skeleton-card" aria-hidden="true">
-        <div class="skeleton-media"></div>
-        <div class="skeleton-body">
-          <div class="skeleton-line w-70"></div>
-          <div class="skeleton-line w-40"></div>
-          <div class="skeleton-line w-55"></div>
-        </div>
-      </div>
-    </div>
+    <div id="events" class="cards-row" aria-live="polite"></div>
 
     <div class="divider" style="margin-top:40px;"></div>
     <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
-
-    <div id="explore-cards" class="cards-row">
-      <div class="skeleton-card" aria-hidden="true">
-        <div class="skeleton-media"></div>
-        <div class="skeleton-body">
-          <div class="skeleton-line w-70"></div>
-          <div class="skeleton-line w-40"></div>
-        </div>
-      </div>
-      <div class="skeleton-card" aria-hidden="true">
-        <div class="skeleton-media"></div>
-        <div class="skeleton-body">
-          <div class="skeleton-line w-70"></div>
-          <div class="skeleton-line w-40"></div>
-        </div>
-      </div>
-      <div class="skeleton-card" aria-hidden="true">
-        <div class="skeleton-media"></div>
-        <div class="skeleton-body">
-          <div class="skeleton-line w-70"></div>
-          <div class="skeleton-line w-40"></div>
-        </div>
-      </div>
-    </div>
+    <div id="explore-cards" class="cards-row"></div>
 
     <div class="divider" style="margin-top:40px;"></div>
     <div class="title" style="margin-top:40px;"><h2>About Us</h2></div>
@@ -252,16 +200,13 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       const msg = lines.join('\n');
       const el = document.querySelector('.animated-text');
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // Fallback: always visible text
-      el.textContent = msg;
-
+      el.textContent = msg;          // fallback visible
       if (reduceMotion) return;
 
-      // One-shot typing (no loop)
+      // one-shot typing
       let i = 0;
       const delay = 55;
-      el.textContent = ''; // start empty for effect
+      el.textContent = '';
       (function typeOnce(){
         if (i <= msg.length) {
           el.textContent = msg.substring(0, i);
@@ -272,12 +217,44 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     })();
   </script>
 
+  <script>
+    // ------- reusable skeleton helpers (dynamic count, matching layout) -------
+    function createSkeletonCard(){
+      const sk = document.createElement('div');
+      sk.className = 'sk-card';
+      sk.innerHTML = `
+        <div class="sk-media"></div>
+        <div class="sk-body">
+          <div class="sk-line w-80"></div>
+          <div class="sk-line w-60"></div>
+          <div class="sk-line w-40"></div>
+        </div>
+        <div class="sk-footer">
+          <div class="sk-box sk-btn"></div>
+        </div>
+      `;
+      return sk;
+    }
+    function setSkeletons(container, count){
+      container.innerHTML = '';
+      for(let i=0;i<count;i++) container.appendChild(createSkeletonCard());
+    }
+    function replaceSkeletonWithCard(container, index, cardEl){
+      const sk = container.children[index];
+      if (sk) container.replaceChild(cardEl, sk);
+      else container.appendChild(cardEl);
+    }
+  </script>
+
   <!-- Upcoming Events -->
   <script>
     (async function(){
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
       const container = document.getElementById("events");
+
+      // show a few skeletons immediately
+      setSkeletons(container, 3);
 
       function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^\"|\"$/g, ''); }
       function parseEventDate(str) {
@@ -297,9 +274,6 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
         if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
         const csvText = await res.text();
 
-        // Clear skeletons before rendering
-        container.innerHTML = "";
-
         const parsed = Papa.parse(csvText, {skipEmptyLines:true});
         const rows = parsed.data || [];
         if (rows.length < 2) {
@@ -309,156 +283,160 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
         const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
         const today = new Date(); today.setHours(0,0,0,0);
-        let upcomingCount = 0;
 
-        dataRows
-          .sort((a, b) => {
-            const dateA = parseEventDate(clean(a[1]));
-            const dateB = parseEventDate(clean(b[1]));
-            if (!dateA) return 1;
-            if (!dateB) return -1;
-            return dateA - dateB;
-          })
-          .forEach(cols => {
-            const name = clean(cols[0]);
-            const date = clean(cols[1]);
-            const time = clean(cols[2]);
-            const locText = clean(cols[3]);
-            const locLink = clean(cols[4]);
-            const ticket = clean(cols[5]) || "#";
-            const image = clean(cols[6]) || fallbackImage;
-            const pageLink = (cols[7]!==undefined)?clean(cols[7]):"";
+        // build the list first so we know how many skeletons we need
+        const items = [];
+        dataRows.sort((a,b)=>{
+          const da = parseEventDate(clean(a[1]));
+          const db = parseEventDate(clean(b[1]));
+          if(!da) return 1; if(!db) return -1; return da - db;
+        }).forEach(cols=>{
+          const dateObj = parseEventDate(clean(cols[1]));
+          if(!dateObj) return;
+          dateObj.setHours(0,0,0,0);
+          if(dateObj < today) return;
+          items.push(cols);
+        });
 
-            const eventDateObj = parseEventDate(date);
-            if (!eventDateObj) return;
-            eventDateObj.setHours(0,0,0,0);
-            if (eventDateObj < today) return;
+        // set skeletons to exact count (fallback to 3 if none to avoid flicker)
+        if (items.length > 0) setSkeletons(container, items.length);
 
-            upcomingCount++;
+        // render and swap skeletons one-by-one
+        items.forEach((cols, idx)=>{
+          const name = clean(cols[0]);
+          const date = clean(cols[1]);
+          const time = clean(cols[2]);
+          const locText = clean(cols[3]);
+          const locLink = clean(cols[4]);
+          const ticket = clean(cols[5]) || "#";
+          const image = clean(cols[6]) || fallbackImage;
+          const pageLink = (cols[7]!==undefined)?clean(cols[7]):"";
+          const eventDateObj = parseEventDate(date);
 
-            const card = document.createElement("article");
-            card.className = "card";
+          const card = document.createElement("article");
+          card.className = "card";
 
-            const media = document.createElement("div");
-            media.className = "media";
-            const img = document.createElement("img");
-            img.loading = "lazy";
-            img.src = image;
-            img.alt = name || "Event image";
-            img.width = 800; img.height = 450; /* helps CLS */
-            img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
-            media.appendChild(img);
-            card.appendChild(media);
+          const media = document.createElement("div");
+          media.className = "media";
+          const img = document.createElement("img");
+          img.loading = "lazy"; img.src = image; img.alt = name || "Event image";
+          img.width = 800; img.height = 450;
+          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+          media.appendChild(img);
+          card.appendChild(media);
 
-            const body = document.createElement("div");
-            body.className = "card-body";
+          const body = document.createElement("div");
+          body.className = "card-body";
 
-            const h = document.createElement("h3");
-            h.className = "event-title";
-            if (pageLink) {
-              const tLink = document.createElement("a");
-              tLink.href = pageLink; tLink.target = "_blank"; tLink.rel = "noopener noreferrer";
-              tLink.textContent = name || "Untitled Event";
-              h.appendChild(tLink);
-            } else {
-              h.textContent = name || "Untitled Event";
+          const h = document.createElement("h3");
+          h.className = "event-title";
+          if (pageLink) {
+            const tLink = document.createElement("a");
+            tLink.href = pageLink; tLink.target = "_blank"; tLink.rel = "noopener noreferrer";
+            tLink.textContent = name || "Untitled Event";
+            h.appendChild(tLink);
+          } else {
+            h.textContent = name || "Untitled Event";
+          }
+          body.appendChild(h);
+
+          const meta = document.createElement("p");
+          meta.className = "meta";
+          meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+          body.appendChild(meta);
+
+          if (locText || locLink) {
+            const locP = document.createElement("p");
+            locP.className = "location";
+            const a = document.createElement("a");
+            a.href = locLink || "#"; a.target = "_blank"; a.rel = "noopener noreferrer";
+            a.textContent = locText;
+            locP.appendChild(a);
+            body.appendChild(locP);
+          }
+
+          const mobileInfo = document.createElement("p");
+          mobileInfo.className = "mobile-info";
+          if (locText) {
+            const a2 = document.createElement("a");
+            a2.href = locLink || "#"; a2.target = "_blank"; a2.rel = "noopener noreferrer";
+            a2.textContent = locText;
+            mobileInfo.appendChild(a2);
+          }
+          if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
+          if (time) mobileInfo.appendChild(document.createTextNode(time));
+          body.appendChild(mobileInfo);
+
+          card.appendChild(body);
+
+          if (eventDateObj) {
+            const dayNum = eventDateObj.getDate();
+            const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
+            const dateBox = document.createElement("div");
+            dateBox.className = "card-date";
+            dateBox.innerHTML =
+              `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
+              `<div class="month">${monthShort}</div>` +
+              `<div class="time"></div>`;
+            card.appendChild(dateBox);
+          }
+
+          const footer = document.createElement("div");
+          footer.className = "card-footer";
+
+          if (ticket && ticket !== "#") {
+            const btn = document.createElement("a");
+            btn.className = "book-btn";
+            btn.href = ticket; btn.target = "_blank"; btn.rel = "noopener noreferrer";
+            btn.textContent = "Book Now";
+            footer.appendChild(btn);
+          }
+          card.appendChild(footer);
+
+          // Mobile full-card tap -> ticket (if present)
+          card.addEventListener('click', function(e) {
+            if (e.target.closest('a,button')) return;
+            if (window.innerWidth <= 768) {
+              if (ticket && ticket !== "#") window.open(ticket, '_blank');
             }
-            body.appendChild(h);
-
-            const meta = document.createElement("p");
-            meta.className = "meta";
-            meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
-            body.appendChild(meta);
-
-            if (locText || locLink) {
-              const locP = document.createElement("p");
-              locP.className = "location";
-              const a = document.createElement("a");
-              a.href = locLink || "#"; a.target = "_blank"; a.rel = "noopener noreferrer";
-              a.textContent = locText;
-              locP.appendChild(a);
-              body.appendChild(locP);
-            }
-
-            const mobileInfo = document.createElement("p");
-            mobileInfo.className = "mobile-info";
-            if (locText) {
-              const a2 = document.createElement("a");
-              a2.href = locLink || "#"; a2.target = "_blank"; a2.rel = "noopener noreferrer";
-              a2.textContent = locText;
-              mobileInfo.appendChild(a2);
-            }
-            if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
-            if (time) mobileInfo.appendChild(document.createTextNode(time));
-            body.appendChild(mobileInfo);
-
-            card.appendChild(body);
-
-            if (eventDateObj) {
-              const dayNum = eventDateObj.getDate();
-              const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
-              const dateBox = document.createElement("div");
-              dateBox.className = "card-date";
-              dateBox.innerHTML =
-                `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
-                `<div class="month">${monthShort}</div>` +
-                `<div class="time"></div>`;
-              card.appendChild(dateBox);
-            }
-
-            const footer = document.createElement("div");
-            footer.className = "card-footer";
-
-            // Book Now if available (desktop)
-            if (ticket && ticket !== "#") {
-              const btn = document.createElement("a");
-              btn.className = "book-btn";
-              btn.href = ticket; btn.target = "_blank"; btn.rel = "noopener noreferrer";
-              btn.textContent = "Book Now";
-              footer.appendChild(btn);
-            }
-
-            card.appendChild(footer);
-
-            // Mobile full-card tap -> ticket (if present)
-            card.addEventListener('click', function(e) {
-              if (e.target.closest('a,button')) return;
-              if (window.innerWidth <= 768) {
-                if (ticket && ticket !== "#") window.open(ticket, '_blank');
-              }
-            });
-
-            container.appendChild(card);
           });
 
-        if (upcomingCount === 0) {
+          replaceSkeletonWithCard(container, idx, card);
+        });
+
+        if (items.length === 0) {
           container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
         }
       } catch (err) {
         console.error('Upcoming events error:', err);
-        // Clear skeletons and show error message
         container.innerHTML = '<p style="color:#f66">Could not load events — check the CSV publish link and CSP settings.</p>';
       }
     })();
   </script>
 
-  <!-- Explore (Learn More styled like Book Now) -->
+  <!-- Explore (Learn More styled as Book Now; dynamic skeletons) -->
   <script>
     (async function() {
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
       const container = document.getElementById('explore-cards');
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+
+      // show a few skeletons immediately
+      setSkeletons(container, 3);
+
       try {
         const res = await fetch(csvUrl, { cache: "no-cache" });
         if (!res.ok) throw new Error("Failed to fetch explore events");
         const csvText = await res.text();
-        container.innerHTML = ''; // clear skeletons
         const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
 
-        parsed.data.forEach(event => {
-          if (!event) return;
-          if ((event['Scheduled'] || '').trim().toLowerCase() !== 'no') return;
+        const items = parsed.data.filter(event =>
+          event && (event['Scheduled'] || '').trim().toLowerCase() === 'no'
+        );
 
+        if (items.length > 0) setSkeletons(container, items.length);
+
+        items.forEach((event, idx) => {
           const card = document.createElement('div');
           card.className = 'card';
 
@@ -492,7 +470,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
           const footer = document.createElement('div');
           footer.className = 'card-footer';
           const learn = document.createElement('a');
-          learn.className = 'book-btn';                 // same styling as Book Now
+          learn.className = 'book-btn';  // same styling
           learn.href = (event['Page Link'] || '#').trim();
           learn.target = '_blank';
           learn.rel = 'noopener noreferrer';
@@ -508,10 +486,10 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
             }
           });
 
-          container.appendChild(card);
+          replaceSkeletonWithCard(container, idx, card);
         });
 
-        if (!container.children.length) {
+        if (!items.length) {
           container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
         }
       } catch (err) {
