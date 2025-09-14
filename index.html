@@ -11,7 +11,7 @@
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- CSP: allows inline scripts, PapaParse, and Google CSV -->
+  <!-- CSP: allow inline scripts, PapaParse, Google CSV (incl. redirects) -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self';
@@ -103,9 +103,9 @@
     .book-btn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block}
     .book-btn:hover{background:#ffe974}
 
-    /* SKELETONS — identical layout & responsive behavior */
+    /* Skeletons — identical structure to cards */
     .sk-card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 22px rgba(0,0,0,.8)}
-    .sk-media{width:100%;padding-top:56.25%;position:relative;overflow:hidden}
+    .sk-media{width:100%;padding-top:56.25%;position:relative;overflow:hidden;background:#111}
     .sk-body{padding:14px}
     .sk-footer{padding:12px 14px 18px;display:flex;justify-content:center}
     .sk-line,
@@ -113,7 +113,6 @@
     .sk-line{height:12px;margin:8px 0}
     .sk-line.w-80{width:80%}.sk-line.w-60{width:60%}.sk-line.w-40{width:40%}
     .sk-btn{width:130px;height:42px}
-
     @keyframes skshimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
 
     /* Mobile layout (real cards & skeletons) */
@@ -131,8 +130,10 @@
       .mobile-info a{color:var(--accent);text-decoration:none;font-weight:600}
       .mobile-info a:hover{text-decoration:underline}
       .card-footer{display:none}
-      .sk-footer{display:none} /* skeleton footer hidden on mobile same as real card */
-      .card-date{display:flex;width:18vw;max-width:72px;height:auto;aspect-ratio:1/1;flex-direction:column;justify-content:center;align-items:center;border-radius:10px;background:var(--datebox);border:1.5px solid rgba(255,255,255,.08);color:#fff;font-size:calc(11px + 1vw)}
+      .sk-footer{display:none} /* mirror real card on mobile */
+
+      /* --- MOBILE SKELETON SIZE POLISH --- */
+      .sk-line{height:8px;margin:4px 0}
     }
 
     @media (prefers-color-scheme: light){
@@ -218,7 +219,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
   </script>
 
   <script>
-    // ------- reusable skeleton helpers (dynamic count, matching layout) -------
+    // ------- reusable skeleton helpers (dynamic exact-match, matching layout) -------
     function createSkeletonCard(){
       const sk = document.createElement('div');
       sk.className = 'sk-card';
@@ -253,7 +254,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
       const container = document.getElementById("events");
 
-      // show a few skeletons immediately
+      // show a small default immediately (keeps page from flashing empty)
       setSkeletons(container, 3);
 
       function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^\"|\"$/g, ''); }
@@ -284,7 +285,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
         const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
         const today = new Date(); today.setHours(0,0,0,0);
 
-        // build the list first so we know how many skeletons we need
+        // Build list first so we know the exact count
         const items = [];
         dataRows.sort((a,b)=>{
           const da = parseEventDate(clean(a[1]));
@@ -298,10 +299,10 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
           items.push(cols);
         });
 
-        // set skeletons to exact count (fallback to 3 if none to avoid flicker)
+        // Set skeletons to the exact count now
         if (items.length > 0) setSkeletons(container, items.length);
 
-        // render and swap skeletons one-by-one
+        // Render and swap each skeleton for its card
         items.forEach((cols, idx)=>{
           const name = clean(cols[0]);
           const date = clean(cols[1]);
@@ -414,14 +415,14 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     })();
   </script>
 
-  <!-- Explore (Learn More styled as Book Now; dynamic skeletons) -->
+  <!-- Explore (Learn More styled as Book Now; exact-match skeletons) -->
   <script>
     (async function() {
       const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
       const container = document.getElementById('explore-cards');
       const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
 
-      // show a few skeletons immediately
+      // default placeholders immediately
       setSkeletons(container, 3);
 
       try {
@@ -470,7 +471,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
           const footer = document.createElement('div');
           footer.className = 'card-footer';
           const learn = document.createElement('a');
-          learn.className = 'book-btn';  // same styling
+          learn.className = 'book-btn';  // same styling as Book Now
           learn.href = (event['Page Link'] || '#').trim();
           learn.target = '_blank';
           learn.rel = 'noopener noreferrer';
