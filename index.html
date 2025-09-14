@@ -13,15 +13,14 @@
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- Security policy (✅ #8). If anything breaks, loosen carefully. -->
   <meta http-equiv="Content-Security-Policy"
   content="
     default-src 'self';
     img-src 'self' https://ik.imagekit.io https://via.placeholder.com data:;
     script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    font-src https://fonts.gstatic.com data:;
-    connect-src https://docs.google.com;
+    style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src   https://fonts.gstatic.com data:;
+    connect-src https://docs.google.com https://*.googleusercontent.com;
     frame-ancestors 'none';
     base-uri 'self';
   ">
@@ -231,7 +230,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
   }
 
   /* Typing headline (✅ #1 respects reduced motion) */
-  const lines=['IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'];
+  const lines=['IF "HOW TO HAVE A GOOD TIME ?"'<br/>'IS THE QUESTION,'<br/>,'WE ARE THE ANSWER'];
   const msg=lines.join('\\n');
   const animatedTextElem=document.querySelector('.animated-text');
   let charIndex=0,isDeleting=false;
@@ -574,4 +573,5 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
   </script>
 </body>
 </html>
+
 
