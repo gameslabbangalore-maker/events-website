@@ -8,9 +8,6 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <!-- Theme color matches device theme on load -->
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#181818">
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f5f5">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <!-- CSP: allow inline scripts, PapaParse, Google CSV (incl. redirects) -->
@@ -45,6 +42,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
+    :root { color-scheme: light dark; }
     :root { --bleed-bg: rgba(24,24,24,0.07); }  /* dark */
     :root {
       --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
@@ -511,22 +509,17 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     })();
   </script>
       <script>
-    (function () {
-      var isIOS = /iP(hone|od|ad)/.test(navigator.platform) || 
-                  (navigator.userAgent.includes('Mac') && 'ontouchend' in document);
-      if (!isIOS || !window.matchMedia) return;
-    
-      var mq = window.matchMedia('(prefers-color-scheme: dark)');
-      function handleChange() {
-        // Reload so Safari re-reads the theme-color meta
-        location.reload();
-      }
-      if (mq.addEventListener) mq.addEventListener('change', handleChange);
-      else if (mq.addListener) mq.addListener(handleChange); // older iOS
-    })();
-    </script>
+  (function () {
+    var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.content = dark ? '#181818' : '#f5f5f5';
+    document.head.appendChild(meta);
+  })();
+</script>
 </body>
 </html>
+
 
 
 
