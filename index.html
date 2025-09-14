@@ -44,6 +44,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
+    :root { --bleed-bg: rgba(24,24,24,0.07); }  /* dark */
+    @media (prefers-color-scheme: light){
+      :root { --bleed-bg: rgba(255,255,255,0.12); } /* light */
+    }
     :root {
       --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
       --topbar-height-desktop:58px; --topbar-height-mobile:48px;
@@ -54,11 +58,15 @@
     html,body{margin:0;height:100%}
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
-    .topbar-bleed{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10002;pointer-events:none}
-    @media (prefers-color-scheme: light) {
-      .topbar-bleed {
-        background: rgba(255, 255, 255, 0.12); /* translucent like the topbar */
-      }
+    .topbar-bleed {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: env(safe-area-inset-top, 0px);
+      background: var(--bleed-bg);            /* <-- change this line */
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 10002;
+      pointer-events: none;
     }
 
 
@@ -206,7 +214,7 @@
 
     <div class="divider" style="margin-top:40px;"></div>
     <div class="title" style="margin-top:40px;"><h2>About Us</h2></div>
-    <div style="max-width:800px;margin:0 auto;text-align:justify;white-space:pre-line;line-height:1.6;font-size:1rem;color:#fff;padding:0 10px;">
+    <div style="max-width:800px;margin:0 auto;text-align:justify;white-space:pre-line;line-height:1.6;font-size:1rem;color: var(--text-main);padding:0 10px;">
 Games Lab is a group of fun loving people organizing fun events throughout the year. We aim to make life happier and lighter for all who join us. We strive for unique experiences, memorable time, and widest smiles.
 
 Games Lab uses innovative ideas and curates the best social experiences for people. We give unique twists to world renowned games and help people stay happening.
@@ -519,4 +527,5 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
   </script>
 </body>
 </html>
+
 
