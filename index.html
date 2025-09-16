@@ -217,6 +217,15 @@
     }
     /* ===== /Gallery styles ===== */
 
+    /* Gallery: cap width on larger screens (mobile stays full width) */
+@media (min-width: 992px){
+  .gallery-wrap { max-width: 900px; }   /* adjust 800–1000 to taste */
+}
+@media (min-width: 1440px){
+  .gallery-wrap { max-width: 1000px; }  /* optional bump on very wide screens */
+}
+
+
   </style>
 </head>
 <body>
@@ -618,30 +627,48 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
   function hasIKTransform(url){ try { return new URL(url).pathname.includes('/tr:'); } catch(e){ return url.includes('/tr:'); } }
   function withIK(url, transform) {
+  // Ensure transform includes f-auto so HEIC/PNG/etc. become WebP/JPEG automatically
+  function ensureFAuto(t) {
+    return t.includes('f-auto') ? t : (t + (t.endsWith(',') ? '' : ',') + 'f-auto');
+  }
+  const needed = ensureFAuto(transform);
+
   try {
     const u = new URL(url);
-    if (u.pathname.includes('/tr:')) return url; // already transformed
 
-    // Split path: ["", "gameslab", "folder", "file.jpg"]
-    const parts = u.pathname.split('/');
+    // If a transform already exists, append f-auto if missing
+    const trMatch = u.pathname.match(/\/tr:([^/]+)/);
+    if (trMatch) {
+      const current = trMatch[1];
+      if (!/(\b|,)f-auto(\b|,)/.test(current)) {
+        u.pathname = u.pathname.replace('/tr:' + current, '/tr:' + current + ',f-auto');
+      }
+      return u.toString();
+    }
+
+    // Insert transform AFTER the endpoint segment (e.g., /gameslab/…)
+    const parts = u.pathname.split('/'); // ["", "gameslab", "folder", "file.jpg"]
     if (parts.length >= 3) {
-      // insert 'tr:<...>' AFTER the endpoint segment (index 1)
-      parts.splice(2, 0, 'tr:' + transform);
+      parts.splice(2, 0, 'tr:' + needed);
       u.pathname = parts.join('/');
       return u.toString();
     } else {
-      // fallback: append transform before the rest of the path
-      u.pathname = u.pathname.replace(/\/?$/, '/') + 'tr:' + transform;
+      // Fallback: append safely
+      u.pathname = u.pathname.replace(/\/?$/, '/') + 'tr:' + needed;
       return u.toString();
     }
   } catch (e) {
-    // Very rare fallback without URL()
-    if (url.includes('/tr:')) return url;
-    // Insert after first path segment
+    // Fallback without URL()
+    if (url.includes('/tr:')) {
+      // If tr: exists but not f-auto, append it
+      return url.replace(/(\/tr:[^/]+)/, (m) =>
+        m.includes('f-auto') ? m : m + ',f-auto'
+      );
+    }
     const m = url.match(/^(https?:\/\/[^/]+)\/([^/]+)(\/.*)?$/);
     if (!m) return url;
     const origin = m[1], endpoint = m[2], rest = m[3] || '';
-    return `${origin}/${endpoint}/tr:${transform}${rest}`;
+    return `${origin}/${endpoint}/tr:${needed}${rest}`;
   }
 }
 
@@ -661,6 +688,13 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     img.loading = 'lazy';
     img.decoding = 'async';
     img.src = withIK(obj.Image, slideTransform());
+
+    img.onerror = function () {
+  if (!img.dataset.retry) {
+    img.dataset.retry = '1';
+    img.src = withIK(obj.Image, slideTransform().replace('f-auto', 'f-jpg'));
+  }
+};
 
     img.addEventListener('load', () => {
       const portrait = img.naturalHeight > img.naturalWidth;
@@ -891,5 +925,6 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
   
 </body>
 </html>
+
 
 
