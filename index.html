@@ -217,13 +217,19 @@
     }
     /* ===== /Gallery styles ===== */
 
-    /* Gallery: cap width on larger screens (mobile stays full width) */
-@media (min-width: 992px){
-  .gallery-wrap { max-width: 900px; }   /* adjust 800–1000 to taste */
-}
-@media (min-width: 1440px){
-  .gallery-wrap { max-width: 1000px; }  /* optional bump on very wide screens */
-}
+    /* Gallery: cap width on larger screens (Option 2 smaller) */
+    @media (min-width: 992px){
+      .gallery-wrap { max-width: 780px; }
+    }
+    @media (min-width: 1440px){
+      .gallery-wrap { max-width: 880px; }
+    }
+
+    /* Gallery skeletons: 3-up on desktop, capped to 3 items */
+    @media (min-width: 992px){
+      .gallery-skeletons { grid-template-columns: repeat(3, 1fr); }
+      .gallery-skeletons .gal-skel:nth-child(n+4){ display:none; }
+    }
 
 
   </style>
@@ -363,6 +369,28 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       else container.appendChild(cardEl);
     }
   </script>
+
+  <script>
+/* Mobile title autoshrink: keep titles to 1 line without ellipsis */
+(function () {
+  function fitTitleToOneLine(el, minPx = 13) {
+    if (!el || window.innerWidth > 768) return;
+    el.style.removeProperty('font-size');
+    el.style.whiteSpace = 'nowrap';
+    el.style.overflow = 'hidden';
+    el.style.textOverflow = 'clip';
+    if (el.clientWidth === 0) { requestAnimationFrame(()=>fitTitleToOneLine(el,minPx)); return; }
+    const cs = getComputedStyle(el);
+    let size = parseFloat(cs.fontSize) || 16, guard = 0;
+    while (el.scrollWidth > el.clientWidth && size > minPx && guard < 80) {
+      size -= 0.5; el.style.setProperty('font-size', size + 'px', 'important'); guard++;
+    }
+  }
+  function refitAll(){ if (window.innerWidth <= 768) document.querySelectorAll('.event-title').forEach(el=>fitTitleToOneLine(el)); }
+  window.fitTitleToOneLine = fitTitleToOneLine;
+  window.addEventListener('resize', ()=>requestAnimationFrame(refitAll));
+})();
+</script>
 
   <!-- Upcoming Events -->
   <script>
@@ -515,6 +543,12 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
           replaceSkeletonWithCard(container, idx, card);
         });
 
+        if (window.innerWidth <= 768) {
+        const t = card.querySelector('.event-title');
+        if (t) window.fitTitleToOneLine(t, 13);
+      }
+
+
         if (items.length === 0) {
           container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
         }
@@ -599,6 +633,12 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
           replaceSkeletonWithCard(container, idx, card);
         });
 
+        if (window.innerWidth <= 768) {
+        const t = card.querySelector('.event-title');
+        if (t) window.fitTitleToOneLine(t, 13);
+      }
+
+
         if (!items.length) {
           container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
         }
@@ -616,67 +656,55 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
   const wrap = document.getElementById('gallery');
   const track = document.getElementById('gallery-track');
-  const skel = document.getElementById('gallery-skeletons');
+  const skel  = document.getElementById('gallery-skeletons');
   if (!wrap || !track || !skel) return;
 
-  // Helpers
+  // ---------- helpers ----------
   const isMobile = () => window.innerWidth <= 768;
-  const slideTransform = () => isMobile() ? 'w-720,q-80,f-auto' : 'w-1200,q-80,f-auto';
+  const isDesktop3 = () => window.innerWidth >= 992;   // 3-up desktop
+  const slidesPerView = () => (isDesktop3() ? 3 : 1);
+  const stepPct = () => 100 / slidesPerView();
+
   const lightboxTransform = () => 'w-1600,q-80,f-auto';
-  const blurTransform = 'w-40,q-10,bl-6,f-auto';
+  const blurTransform     = 'w-40,q-10,bl-6,f-auto';
+  const slideTransform    = () => (isMobile() ? 'w-720,q-80,f-auto' : 'w-1200,q-80,f-auto');
 
-  function hasIKTransform(url){ try { return new URL(url).pathname.includes('/tr:'); } catch(e){ return url.includes('/tr:'); } }
+  // Ensure transform is inserted after endpoint and always has f-auto
   function withIK(url, transform) {
-  // Ensure transform includes f-auto so HEIC/PNG/etc. become WebP/JPEG automatically
-  function ensureFAuto(t) {
-    return t.includes('f-auto') ? t : (t + (t.endsWith(',') ? '' : ',') + 'f-auto');
-  }
-  const needed = ensureFAuto(transform);
-
-  try {
-    const u = new URL(url);
-
-    // If a transform already exists, append f-auto if missing
-    const trMatch = u.pathname.match(/\/tr:([^/]+)/);
-    if (trMatch) {
-      const current = trMatch[1];
-      if (!/(\b|,)f-auto(\b|,)/.test(current)) {
-        u.pathname = u.pathname.replace('/tr:' + current, '/tr:' + current + ',f-auto');
+    function ensureFAuto(t){ return t.includes('f-auto') ? t : (t + (t.endsWith(',') ? '' : ',') + 'f-auto'); }
+    const needed = ensureFAuto(transform);
+    try {
+      const u = new URL(url);
+      const trMatch = u.pathname.match(/\/tr:([^/]+)/);
+      if (trMatch) { // already has /tr:
+        const current = trMatch[1];
+        if (!/(\b|,)f-auto(\b|,)/.test(current)) {
+          u.pathname = u.pathname.replace('/tr:' + current, '/tr:' + current + ',f-auto');
+        }
+        return u.toString();
       }
-      return u.toString();
+      const parts = u.pathname.split('/'); // ["", "gameslab", "folder", "file.jpg"]
+      if (parts.length >= 3) {
+        parts.splice(2, 0, 'tr:' + needed);
+        u.pathname = parts.join('/');
+        return u.toString();
+      } else {
+        u.pathname = u.pathname.replace(/\/?$/, '/') + 'tr:' + needed;
+        return u.toString();
+      }
+    } catch(e) {
+      if (url.includes('/tr:')) return url.replace(/(\/tr:[^/]+)/, m => m.includes('f-auto') ? m : m + ',f-auto');
+      const m = url.match(/^(https?:\/\/[^/]+)\/([^/]+)(\/.*)?$/);
+      if (!m) return url;
+      const origin = m[1], endpoint = m[2], rest = m[3] || '';
+      return `${origin}/${endpoint}/tr:${needed}${rest}`;
     }
-
-    // Insert transform AFTER the endpoint segment (e.g., /gameslab/…)
-    const parts = u.pathname.split('/'); // ["", "gameslab", "folder", "file.jpg"]
-    if (parts.length >= 3) {
-      parts.splice(2, 0, 'tr:' + needed);
-      u.pathname = parts.join('/');
-      return u.toString();
-    } else {
-      // Fallback: append safely
-      u.pathname = u.pathname.replace(/\/?$/, '/') + 'tr:' + needed;
-      return u.toString();
-    }
-  } catch (e) {
-    // Fallback without URL()
-    if (url.includes('/tr:')) {
-      // If tr: exists but not f-auto, append it
-      return url.replace(/(\/tr:[^/]+)/, (m) =>
-        m.includes('f-auto') ? m : m + ',f-auto'
-      );
-    }
-    const m = url.match(/^(https?:\/\/[^/]+)\/([^/]+)(\/.*)?$/);
-    if (!m) return url;
-    const origin = m[1], endpoint = m[2], rest = m[3] || '';
-    return `${origin}/${endpoint}/tr:${needed}${rest}`;
   }
-}
-
 
   function createSlide(obj){
     const slide = document.createElement('div');
     slide.className = 'gal-slide';
-    // blurred backdrop (helps portrait letterboxing look polished)
+
     const bg = document.createElement('div');
     bg.className = 'gal-bg';
     bg.style.backgroundImage = `url("${withIK(obj.Image, blurTransform)}")`;
@@ -688,43 +716,37 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     img.loading = 'lazy';
     img.decoding = 'async';
     img.src = withIK(obj.Image, slideTransform());
-
     img.onerror = function () {
-  if (!img.dataset.retry) {
-    img.dataset.retry = '1';
-    img.src = withIK(obj.Image, slideTransform().replace('f-auto', 'f-jpg'));
-  }
-};
+      if (!img.dataset.retry) {
+        img.dataset.retry = '1';
+        img.src = withIK(obj.Image, slideTransform().replace('f-auto', 'f-jpg'));
+      }
+    };
+    img.addEventListener('load', ()=>{
+      if (img.naturalHeight > img.naturalWidth) slide.classList.add('portrait');
+    }, { once:true });
 
-    img.addEventListener('load', () => {
-      const portrait = img.naturalHeight > img.naturalWidth;
-      if (portrait) slide.classList.add('portrait');
-    }, { once: true });
-
-    // Lightbox open
     slide.addEventListener('click', () => openLightbox(realIndexFromSlide(slide)));
-
     slide.appendChild(img);
     return slide;
   }
 
-  // Parse CSV then build
+  // ---------- fetch & build ----------
   fetch(CSV_URL, { cache: 'no-cache' })
     .then(r => r.text())
-    .then(text => Papa.parse(text, { header: true, skipEmptyLines: true }).data)
+    .then(text => Papa.parse(text, { header:true, skipEmptyLines:true }).data)
     .then(rows => {
-      // Filter Show=yes; normalize; sort by Order (asc), then original order
       const items = rows
-        .map((r,i) => ({
-          _i: i,
-          Image: String(r['Image']||'').trim(),
-          Alt: String(r['Alt']||'').trim(),
-          Caption: String(r['Caption']||'').trim(),
-          Show: String(r['Show']||'').trim().toLowerCase(),
-          Order: (r['Order']!==undefined && r['Order']!=='') ? Number(r['Order']) : null
+        .map((r,i)=>({
+          _i:i,
+          Image:String(r['Image']||'').trim(),
+          Alt:String(r['Alt']||'').trim(),
+          Caption:String(r['Caption']||'').trim(),
+          Show:String(r['Show']||'').trim().toLowerCase(),
+          Order:(r['Order']!==undefined && r['Order']!=='') ? Number(r['Order']) : null
         }))
-        .filter(r => r.Image && (r.Show === 'yes' || r.Show === 'y' || r.Show === 'true'))
-        .sort((a,b) => {
+        .filter(r => r.Image && (r.Show==='yes' || r.Show==='y' || r.Show==='true'))
+        .sort((a,b)=>{
           if (a.Order!=null && b.Order!=null) return a.Order - b.Order;
           if (a.Order!=null) return -1;
           if (b.Order!=null) return 1;
@@ -736,51 +758,52 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
         return;
       }
 
-      // Cap skeletons so loading doesn't look endless
+      // cap skeletons visually
       while (skel.children.length > Math.min(items.length, MAX_SKELETONS)) {
         skel.removeChild(skel.lastElementChild);
       }
 
-      // Build slides + clones for looping
-      const slides = items.map(createSlide);
-      const firstClone = createSlide(items[0]);
-      const lastClone = createSlide(items[items.length - 1]);
-      firstClone.dataset.clone = 'first';
-      lastClone.dataset.clone = 'last';
+      let slides = items.map(createSlide);
+      let pos = 0; // will be set in buildTrack
+      let spv = slidesPerView();
 
-      track.innerHTML = '';
-      track.appendChild(lastClone);
-      slides.forEach(s => track.appendChild(s));
-      track.appendChild(firstClone);
+      function buildTrack() {
+        spv = slidesPerView();
+        track.innerHTML = '';
 
-      // Hide skeletons
-      skel.style.display = 'none';
+        // clones for looping: spv on each side
+        const headClones = [];
+        const tailClones = [];
+        for (let i=0;i<spv;i++){
+          const hc = createSlide(items[i]); hc.dataset.clone='head'; headClones.push(hc);
+          const idx = items.length - spv + i;
+          const tc = createSlide(items[idx]); tc.dataset.clone='tail'; tailClones.push(tc);
+        }
 
-      // Slider state
-      let pos = 1; // we start on the first real slide (after lastClone)
-      let sliding = false;
-      const viewport = wrap.querySelector('.gallery-viewport');
-      const prevBtn = wrap.querySelector('.gal-prev');
-      const nextBtn = wrap.querySelector('.gal-next');
+        track.append(...tailClones);
+        slides.forEach(s => track.appendChild(s));
+        track.append(...headClones);
+
+        // start at first real slide index = spv
+        pos = spv;
+        setTransform(false);
+        skel.style.display = 'none';
+        preloadAround(pos);
+      }
 
       function setTransform(withAnim=true){
-        if (withAnim && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          track.style.transition = 'transform .35s ease';
-        } else {
-          track.style.transition = 'none';
-        }
-        track.style.transform = `translate3d(-${pos*100}%,0,0)`;
-        // Preload neighbors
-        preloadAround(pos);
+        const step = stepPct();
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        track.style.transition = (withAnim && !reduce) ? 'transform .35s ease' : 'none';
+        track.style.transform = `translate3d(-${pos*step}%,0,0)`;
       }
 
       function realIndexFromPos(p){
         const n = items.length;
-        return ( (p - 1 + n) % n );
+        return ((p - spv + n) % n);
       }
       function realIndexFromSlide(slide){
-        const all = Array.from(track.children);
-        const idx = all.indexOf(slide);
+        const idx = Array.from(track.children).indexOf(slide);
         return realIndexFromPos(idx);
       }
 
@@ -789,13 +812,14 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
         sliding = true;
         pos += delta;
         setTransform(true);
-        // after transition, handle loop jump
-        setTimeout(() => {
-          if (pos === 0){ // hit lastClone
-            pos = items.length;
+        setTimeout(()=>{
+          const total = items.length;
+          // jump when we hit the clones
+          if (pos < spv) {
+            pos += total;
             setTransform(false);
-          } else if (pos === items.length + 1){ // hit firstClone
-            pos = 1;
+          } else if (pos > total + spv - 1) {
+            pos -= total;
             setTransform(false);
           }
           sliding = false;
@@ -803,52 +827,52 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       }
 
       function preloadAround(p){
-        const need = [p-1, p, p+1];
-        need.forEach(k=>{
+        [p-1,p,p+1].forEach(k=>{
           const el = track.children[k];
-          if (!el) return;
+          if(!el) return;
           const img = el.querySelector('img.gal-img');
-          if (img && img.dataset.src){
-            img.src = img.dataset.src;
-            delete img.dataset.src;
-          }
+          if (img && img.dataset.src){ img.src = img.dataset.src; delete img.dataset.src; }
         });
       }
 
-      // Init position
-      setTransform(false);
+      buildTrack();
 
-      // Arrow controls (desktop only; hidden on mobile)
-      prevBtn.addEventListener('click', () => go(-1));
-      nextBtn.addEventListener('click', () => go(1));
+      // arrows (desktop only; hidden via CSS on mobile)
+      const prevBtn = wrap.querySelector('.gal-prev');
+      const nextBtn = wrap.querySelector('.gal-next');
+      prevBtn.addEventListener('click', ()=>go(-1));
+      nextBtn.addEventListener('click', ()=>go(1));
 
-      // Swipe / drag
-      let startX=0, startPos=pos, dragging=false;
+      // swipe / drag
+      const viewport = wrap.querySelector('.gallery-viewport');
+      let startX=0, startPos=pos, dragging=false, sliding=false;
+
       const W = () => viewport.clientWidth;
-
       function onDown(e){
-        if (sliding) return;
         dragging = true;
         track.style.transition = 'none';
         startX = (e.touches ? e.touches[0].clientX : e.clientX);
         startPos = pos;
+        pauseAuto();
       }
       function onMove(e){
         if (!dragging) return;
         const x = (e.touches ? e.touches[0].clientX : e.clientX);
         const dx = x - startX;
-        const pct = dx / W() * 100;
-        track.style.transform = `translate3d(-${startPos*100 - pct}%,0,0)`;
+        const pct = dx / W() * 100; // dx equal to one slide (W/spv) = stepPct
+        const step = stepPct();
+        track.style.transform = `translate3d(-${startPos*step - pct}%,0,0)`;
       }
       function onUp(e){
         if (!dragging) return;
         dragging = false;
         const x = (e.changedTouches ? e.changedTouches[0].clientX : e.clientX);
         const dx = x - startX;
-        const threshold = Math.max(50, W()*0.15);
+        const threshold = Math.max(40, (W()/slidesPerView())*0.2); // 20% of one slide
         if (dx > threshold) go(-1);
         else if (dx < -threshold) go(1);
         else setTransform(true);
+        resumeAutoSoon();
       }
 
       viewport.addEventListener('mousedown', onDown);
@@ -858,53 +882,32 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       viewport.addEventListener('touchmove', onMove, { passive:true });
       viewport.addEventListener('touchend', onUp);
 
-      // LIGHTBOX
-      const lb = document.getElementById('gal-lightbox');
-      const lbImg = document.getElementById('gal-lightbox-img');
-      const lbCap = document.getElementById('gal-lightbox-cap');
-      const lbClose = lb.querySelector('.gal-lightbox-close');
-      const lbPrev = lb.querySelector('.gal-lightbox-prev');
-      const lbNext = lb.querySelector('.gal-lightbox-next');
+      // autoplay (pause on hover/touch; respect reduced motion)
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let timer = null, paused = false;
+      function tick(){ if (!paused) go(1); }
+      function startAuto(){ if (!reduce && !timer) timer = setInterval(tick, 3500); }
+      function stopAuto(){ if (timer){ clearInterval(timer); timer = null; } }
+      function pauseAuto(){ paused = true; stopAuto(); }
+      function resumeAuto(){ paused = false; startAuto(); }
+      function resumeAutoSoon(){ setTimeout(()=>!dragging && resumeAuto(), 1200); }
 
-      function openLightbox(realIdx){
-        // update to current real index
-        currentReal = realIdx;
-        updateLightbox();
-        lb.hidden = false;
-      }
-      function closeLightbox(){ lb.hidden = true; }
-      function updateLightbox(){
-        const item = items[currentReal];
-        lbImg.src = withIK(item.Image, lightboxTransform());
-        lbImg.alt = item.Alt || '';
-        lbCap.textContent = item.Caption ? item.Caption : '';
-        lbCap.style.display = item.Caption ? 'block' : 'none';
-      }
-      function lbGo(delta){
-        currentReal = (currentReal + delta + items.length) % items.length;
-        updateLightbox();
-      }
+      if (!reduce) startAuto();
+      viewport.addEventListener('mouseenter', pauseAuto);
+      viewport.addEventListener('mouseleave', resumeAuto);
+      viewport.addEventListener('touchstart', pauseAuto, {passive:true});
+      viewport.addEventListener('touchend', resumeAutoSoon);
 
-      let currentReal = realIndexFromPos(pos);
-      lbClose.addEventListener('click', closeLightbox);
-      lbPrev.addEventListener('click', ()=>lbGo(-1));
-      lbNext.addEventListener('click', ()=>lbGo(1));
-      lb.addEventListener('click', (e)=>{ if (e.target === lb) closeLightbox(); });
-
-      // Lightbox swipe (mobile)
-      let lStart=0, lDragging=false;
-      lb.addEventListener('touchstart',(e)=>{ lDragging=true; lStart=e.touches[0].clientX; }, {passive:true});
-      lb.addEventListener('touchend',(e)=>{
-        if(!lDragging) return; lDragging=false;
-        const dx=(e.changedTouches[0].clientX - lStart);
-        const thr=50;
-        if (dx > thr) lbGo(-1);
-        else if (dx < -thr) lbGo(1);
-      });
-
-      // Handle resize: reload slide transform for newly created slides only (keep it simple)
-      window.addEventListener('resize', () => {
-        // update current, prev, next image sizes on breakpoint change
+      // handle resize: rebuild if slidesPerView changes; otherwise refresh sizes for current/adjacent
+      let lastSPV = slidesPerView();
+      window.addEventListener('resize', ()=>{
+        const now = slidesPerView();
+        if (now !== lastSPV){
+          lastSPV = now;
+          buildTrack();
+          return;
+        }
+        // update current/neighbor image sizes on breakpoint changes
         [pos-1,pos,pos+1].forEach(k=>{
           const el = track.children[k];
           if(!el) return;
@@ -914,6 +917,56 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
           img.src = withIK(raw, slideTransform());
         });
       });
+
+      // LIGHTBOX
+      const lb = document.getElementById('gal-lightbox');
+      const lbImg = document.getElementById('gal-lightbox-img');
+      const lbCap = document.getElementById('gal-lightbox-cap');
+      const lbClose = lb.querySelector('.gal-lightbox-close');
+      const lbPrev = lb.querySelector('.gal-lightbox-prev');
+      const lbNext = lb.querySelector('.gal-lightbox-next');
+
+      let currentReal = realIndexFromPos(pos);
+      function openLightbox(realIdx){
+        currentReal = realIdx;
+        updateLightbox();
+        lb.hidden = false;
+        pauseAuto();
+      }
+      function closeLightbox(){ lb.hidden = true; resumeAutoSoon(); }
+      function updateLightbox(){
+        const item = items[currentReal];
+        lbImg.src = withIK(item.Image, lightboxTransform());
+        lbImg.alt = item.Alt || '';
+        lbImg.onerror = function () {
+          if (!lbImg.dataset.retry) {
+            lbImg.dataset.retry = '1';
+            lbImg.src = withIK(item.Image, lightboxTransform().replace('f-auto','f-jpg'));
+          }
+        };
+        lbCap.textContent = item.Caption ? item.Caption : '';
+        lbCap.style.display = item.Caption ? 'block' : 'none';
+      }
+      function lbGo(delta){
+        currentReal = (currentReal + delta + items.length) % items.length;
+        updateLightbox();
+      }
+
+      lbClose.addEventListener('click', closeLightbox);
+      lbPrev.addEventListener('click', ()=>lbGo(-1));
+      lbNext.addEventListener('click', ()=>lbGo(1));
+      lb.addEventListener('click', (e)=>{ if (e.target === lb) closeLightbox(); });
+
+      // swipe in lightbox
+      let lStart=0, lDrag=false;
+      lb.addEventListener('touchstart', e=>{ lDrag=true; lStart=e.touches[0].clientX; }, {passive:true});
+      lb.addEventListener('touchend', e=>{
+        if(!lDrag) return; lDrag=false;
+        const dx = e.changedTouches[0].clientX - lStart;
+        const thr = 50;
+        if (dx > thr) lbGo(-1);
+        else if (dx < -thr) lbGo(1);
+      });
     })
     .catch(err => {
       console.error('Gallery load error:', err);
@@ -921,10 +974,10 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     });
 })();
 </script>
-
-  
+ 
 </body>
 </html>
+
 
 
 
