@@ -618,17 +618,33 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 
   function hasIKTransform(url){ try { return new URL(url).pathname.includes('/tr:'); } catch(e){ return url.includes('/tr:'); } }
   function withIK(url, transform) {
-    try {
-      const u = new URL(url);
-      if (u.pathname.includes('/tr:')) return url; // already has transform
-      return u.origin + '/tr:' + transform + u.pathname + u.search;
-    } catch(e) { // fallback (very rare)
-      if (url.includes('/tr:')) return url;
-      const m = url.match(/^https?:\/\/[^/]+/);
-      if (!m) return url;
-      return m[0] + '/tr:' + transform + url.slice(m[0].length);
+  try {
+    const u = new URL(url);
+    if (u.pathname.includes('/tr:')) return url; // already transformed
+
+    // Split path: ["", "gameslab", "folder", "file.jpg"]
+    const parts = u.pathname.split('/');
+    if (parts.length >= 3) {
+      // insert 'tr:<...>' AFTER the endpoint segment (index 1)
+      parts.splice(2, 0, 'tr:' + transform);
+      u.pathname = parts.join('/');
+      return u.toString();
+    } else {
+      // fallback: append transform before the rest of the path
+      u.pathname = u.pathname.replace(/\/?$/, '/') + 'tr:' + transform;
+      return u.toString();
     }
+  } catch (e) {
+    // Very rare fallback without URL()
+    if (url.includes('/tr:')) return url;
+    // Insert after first path segment
+    const m = url.match(/^(https?:\/\/[^/]+)\/([^/]+)(\/.*)?$/);
+    if (!m) return url;
+    const origin = m[1], endpoint = m[2], rest = m[3] || '';
+    return `${origin}/${endpoint}/tr:${transform}${rest}`;
   }
+}
+
 
   function createSlide(obj){
     const slide = document.createElement('div');
@@ -875,4 +891,5 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
   
 </body>
 </html>
+
 
