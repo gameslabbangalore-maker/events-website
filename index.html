@@ -254,91 +254,89 @@ content="
 
   </style>
   <style>
-  /* === Extra polish for dark mode (Elfsight Google Reviews) === */
+/* Elfsight Google Reviews — DARK MODE (one clean block) */
 @media (prefers-color-scheme: dark) {
-  /* scope alias to shorten selectors */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd { /* noop container */ }
+  /* scope to your widget instance */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [data-app="eapps-google-reviews"]{
+    background: transparent !important;
+    color: #eaeaea !important;
+  }
 
-  /* 1) Keep the header CTA button blue */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [data-app="eapps-google-reviews"] [class*="Button"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [data-app="eapps-google-reviews"] a[class*="button"] {
-    background-color: #1a73e8 !important; /* Google blue */
+  /* HEADER / SUMMARY BAR */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Header"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Summary"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Top"]{
+    background-color: #222222 !important;
+    color: #f0f0f0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Keep CTA button BLUE */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Button"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd a[class*="button"]{
+    background-color: #1a73e8 !important;
     color: #fff !important;
     border: none !important;
     box-shadow: none !important;
   }
 
-  /* 2) Rating number (e.g., 5.0) + stats text should be light */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="SupplierAndStats"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Stats"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="score"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="value"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="rating"] {
+  /* REVIEW CARDS / BUBBLES */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Classic__ClassicContainer"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Review"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Card"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Bubble"]{
+    background-color: #222222 !important;
     color: #eaeaea !important;
-  }
-
-  /* 3) Strip inner borders/frames inside the review cards & footer row */
-  /* review body boxes */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Inner"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Content"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Body"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="TextContainer"] {
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
     box-shadow: none !important;
   }
 
-  /* footer/author row (“Posted on Google”, name strip, etc.) */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Footer"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Author"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Posted"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Bottom"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Meta"] {
-    background: transparent !important;
-    border: none !important;
-    outline: none !important;
-    box-shadow: none !important;
-    color: #eaeaea !important;
-  }
-
-  /* make the little bubble “tail” match the card (already done, but keep here) */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Bubble"]::after,
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    [data-app="eapps-google-reviews"]
-    [class*="Review"]::after {
+  /* bubble tails */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Bubble"]::after,
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Review"]::after{
     background-color: #222222 !important;
     border-color: #222222 !important;
+  }
+
+  /* Strip inner frames/boxes (review body + footer row) */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Inner"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Content"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Body"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="TextContainer"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Footer"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Author"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Posted"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Bottom"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Meta"]{
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #eaeaea !important;
+  }
+
+  /* Rating number (e.g., 5.0) + stats text -> light */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="SupplierAndStats"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Stats"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="score"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="value"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="rating"]{
+    color: #eaeaea !important;
+  }
+
+  /* Keep links readable (use your site accent if set) */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd a,
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="more"]{
+    color: var(--accent, #fce029) !important;
+  }
+
+  /* Nuke inline white bg and black text if present */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background:#fff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color:#fff"]{
+    background-color: #222222 !important;
+  }
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color:#000"]{
+    color: #eaeaea !important;
   }
 }
 </style>
@@ -1055,6 +1053,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
