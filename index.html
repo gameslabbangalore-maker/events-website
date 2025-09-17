@@ -13,18 +13,18 @@
 
   <!-- CSP: allow inline scripts, PapaParse, Google CSV (incl. redirects) -->
   <meta http-equiv="Content-Security-Policy"
-  content="
-      default-src 'self';
-      img-src 'self' https://ik.imagekit.io https://via.placeholder.com data:;
-      script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline';
-      style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
-      font-src   https://fonts.gstatic.com data:;
-      connect-src https://docs.google.com https://*.googleusercontent.com;
-      object-src 'none';
-      frame-ancestors 'none';
-      base-uri 'self';
-    ">
-
+content="
+  default-src 'self';
+  img-src 'self' https://ik.imagekit.io https://via.placeholder.com https://lh3.googleusercontent.com data:;
+  script-src 'self' https://cdnjs.cloudflare.com https://elfsightcdn.com 'unsafe-inline';
+  style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src   https://fonts.gstatic.com data:;
+  connect-src https://docs.google.com https://*.googleusercontent.com https://elfsightcdn.com https://apps.elfsight.com https://static.elfsight.com;
+  frame-src https://apps.elfsight.com https://static.elfsight.com;
+  object-src 'none';
+  frame-ancestors 'none';
+  base-uri 'self';
+">
 
   <!-- SEO / social -->
   <meta name="description" content="Games Lab hosts fun, alcohol-free social events and workshops—Mafia nights, game nights, and more." />
@@ -317,7 +317,6 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     </div>
     <div class="divider" style="margin-top:40px;"></div>
     <!-- Elfsight Google Reviews | Games Lab reviews -->
-  <script src="https://elfsightcdn.com/platform.js" async></script>
   <div class="elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd" data-elfsight-app-lazy></div>
   <div class="divider" style="margin-top:40px;"></div>
   </main>
@@ -946,9 +945,10 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     });
 })();
 </script>
- 
+ <script src="https://elfsightcdn.com/platform.js" async></script>
 </body>
 </html>
+
 
 
 
