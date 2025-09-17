@@ -253,78 +253,88 @@ content="
     }
 
   </style>
-  <style>
-/* Elfsight Google Reviews (Card layout) — DARK MODE */
+ <style>
+/* Elfsight Google Reviews (Card layout) — FORCE DARK in OS dark mode */
 @media (prefers-color-scheme: dark) {
   /* Scope to your widget instance */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [data-app="eapps-google-reviews"]{
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
+    --gl-card-bg: #222222;
+    --gl-text: #eaeaea;
+  }
+
+  /* Header / top summary bar */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd :is([class*="Header"], [class*="Top"], [class*="Summary"]) {
+    background: var(--gl-card-bg) !important;
+    color: var(--gl-text) !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Keep CTA button blue */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd :is([class*="Button"], a[class*="button"]) {
+    background: #1a73e8 !important;
+    color: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Cards (and anything card-like) */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd :is([class*="Card"], [class*="Review"], [class*="Item"], [class*="Container"]) {
+    background: var(--gl-card-bg) !important;
+    color: var(--gl-text) !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove inner frames */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd :is([class*="Inner"], [class*="Body"], [class*="Content"], [class*="Footer"], [class*="Meta"]) {
     background: transparent !important;
-    color:#eaeaea !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: var(--gl-text) !important;
   }
 
-  /* Header/Summary bar */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Header"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Summary"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Top"]{
-    background:#222222 !important;
-    color:#f0f0f0 !important;
-    border:none !important;
-    box-shadow:none !important;
+  /* AI summary card */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd :is([class*="Generated"], [class*="SummaryCard"]) {
+    background: var(--gl-card-bg) !important;
+    color: var(--gl-text) !important;
   }
 
-  /* Keep CTA blue */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Button"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd a[class*="button"]{
-    background:#1a73e8 !important;
-    color:#fff !important;
-    border:none !important;
-    box-shadow:none !important;
-  }
-
-  /* Cards */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Card"]{
-    background:#222222 !important;
-    color:#eaeaea !important;
-    border:1px solid rgba(255,255,255,.08) !important;
-    box-shadow:none !important;
-  }
-
-  /* Inner frames off */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Inner"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Content"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Body"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Footer"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Meta"]{
-    background:transparent !important;
-    border:none !important;
-    box-shadow:none !important;
-  }
-
-  /* AI-generated summary block */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Generated"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="SummaryCard"]{
-    background:#222222 !important;
-    color:#eaeaea !important;
-  }
-
-  /* Stars + names + links */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Stars"]{ color:#ffcc00 !important; }
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Author"]{ color:#fce029 !important; }
+  /* Stars, names, links */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Stars"] { color: #ffcc00 !important; }
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Author"] { color: #fce029 !important; }
   .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd a,
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="more"]{ color:var(--accent,#fce029) !important; }
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="more"] { color: var(--accent, #fce029) !important; }
 
   /* Rating number (e.g., 5.0) + stats */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="SupplierAndStats"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Stats"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="value"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="rating"]{
-    color:#ffffff !important;
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd :is([class*="SupplierAndStats"], [class*="Stats"], [class*="value"], [class*="rating"]) {
+    color: #ffffff !important;
   }
 
-  /* Kill any inline white backgrounds / black text Elfsight injects */
+  /* ******** HARD OVERRIDES FOR INLINE WHITE BACKGROUNDS ******** */
+  /* Catch common inline whites Elfsight injects */
   .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background:#fff"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color:#fff"]{ background:#222222 !important; }
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color:#000"]{ color:#eaeaea !important; }
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background: #fff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background:#ffffff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background: #ffffff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color:#fff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color: #fff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color:#ffffff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color: #ffffff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="rgb(255,255,255)"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="rgb(255, 255, 255)"] {
+    background: var(--gl-card-bg) !important;
+  }
+
+  /* Elfsight sometimes forces black text inline */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color:#000"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color: #000"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color:#000000"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color: #000000"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color:rgb(0,0,0)"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color: rgb(0, 0, 0)"] {
+    color: var(--gl-text) !important;
+  }
 }
 </style>
 </head>
@@ -1040,6 +1050,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
