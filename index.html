@@ -254,58 +254,72 @@ content="
 
   </style>
   <style>
-/* Auto dark-mode for Elfsight Google Reviews — scoped to your widget */
+/* Dark-mode tune for Elfsight Google Reviews: header + bubbles = #222222 */
 @media (prefers-color-scheme: dark) {
-  /* scope to your widget container so nothing else is affected */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
-    /* optional: make the whole section follow your page bg/text */
-    background: var(--bg);
-    color: var(--text-main);
-  }
-
-  /* MAIN WRAPPER */
+  /* Scope to your widget instance */
   .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [data-app="eapps-google-reviews"] {
-    background-color: #181818 !important;
+    background: transparent !important; /* let your page bg show */
     color: #eaeaea !important;
   }
 
-  /* SUMMARY BAR / HEADER */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="summary"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="header"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="top"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="badge"] {
-    background-color: #212121 !important;
+  /* ==== HEADER / SUMMARY BAR ==== */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Header"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Summary"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Top"] {
+    background-color: #222222 !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #f0f0f0 !important;
+  }
+
+  /* ==== REVIEW BUBBLES (outer card) ==== */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Classic__ClassicContainer"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Review"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Card"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Bubble"] {
+    background-color: #222222 !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: none !important;
     color: #eaeaea !important;
+  }
+
+  /* Speech-bubble tails */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Bubble"]::after,
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Review"]::after {
+    background-color: #222222 !important;
+    border-color: #222222 !important;
+  }
+
+  /* ==== INNER FRAMES/BOXES INSIDE THE CARD (make them transparent + no borders) ==== */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Inner"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Content"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="Body"] {
+    background: transparent !important;
     border: none !important;
     box-shadow: none !important;
   }
 
-  /* REVIEW CARDS / BUBBLES */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="review"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="card"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="item"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="inner"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="content"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="bubble"] {
-    background-color: #2a2a2a !important;
-    color: #eaeaea !important;
-    border: 1px solid rgba(255,255,255,.12) !important;
-    box-shadow: none !important;
-  }
-
-  /* SPEECH-BUBBLE TAILS */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="bubble"]::after,
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="review"]::after {
-    background-color: #2a2a2a !important;
-    border-color: #2a2a2a !important;
-  }
-
-  /* TEXT / LINKS */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="title"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="name"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="text"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="date"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="rating"] {
+  /* Text + links */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="title"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="name"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="text"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [class*="date"] {
     color: #eaeaea !important;
   }
   .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd a,
@@ -313,24 +327,12 @@ content="
     color: var(--accent, #fce029) !important;
   }
 
-  /* BUTTONS */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="button"] {
-    background: #3a3a3a !important;
-    color: #fff !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
-  /* KILL ANY INLINE WHITE BACKGROUNDS */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background:#fff"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background: #fff"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color:#fff"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color: #fff"] {
-    background-color: #2a2a2a !important;
-  }
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color:#000"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color: #000"] {
-    color: #eaeaea !important;
+  /* Nuke any inline white backgrounds that sneak in */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [style*="background:#fff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    [style*="background-color:#fff"] {
+    background-color: #222222 !important;
   }
 }
 </style>
@@ -414,6 +416,7 @@ Instead of the typical alcohol-focused gatherings, we bring people together thro
 Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly competition. At our events discover a refreshing alternative to traditional socializing, where friendships take center stage and lasting memories are made.
     </div>
     <div class="divider" style="margin-top:40px;"></div>
+    <div class="title" style="margin-top:40px;"><h3>What Our Attendees Say</h3></div>
     <!-- Elfsight Google Reviews | Games Lab reviews -->
   <div class="elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd"></div>
   <div class="divider" style="margin-top:40px;"></div>
@@ -1046,6 +1049,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
