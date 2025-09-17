@@ -392,6 +392,69 @@ content="
   }
 }
 </style>
+  <style>
+/* Elfsight (Card layout) — extra clean-up for dark mode */
+@media (prefers-color-scheme: dark) {
+  /* repeat the widget id to raise specificity a notch */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
+
+    /* Nuclear option for inner strips/frames (incl. pseudo-elements) */
+    *::before,
+    *::after {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    /* Anything with inline background/border/shadow -> neutralize */
+    [style*="background"],
+    [style*="border"],
+    [style*="box-shadow"] {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    /* Generic “frame/row/line/panel” catch-alls */
+    :is([class*="Frame"], [class*="Panel"], [class*="Wrap"], [class*="Row"], [class*="Line"], [class*="Section"]) {
+      background: transparent !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+
+    /* Keep only a subtle outline on the outer card itself */
+    :is([class*="Card"], [class*="Item"]) {
+      background: #222 !important;
+      border: 1px solid rgba(255,255,255,0.12) !important;
+      box-shadow: none !important;
+    }
+
+    /* Title/content text contrast */
+    :is([class*="Title"], [class*="Content"], [class*="Text"], h1, h2, h3, h4, h5, h6) {
+      color: #eee !important;
+    }
+
+    /* Stars & names */
+    [class*="Stars"] { color: #ffcc00 !important; }
+    [class*="Author"] { color: #fce029 !important; }
+
+    /* Carousel arrows */
+    :is([class*="Nav"] [class*="Button"], [class*="Arrow"], [class*="Control"] [class*="Button"]) {
+      background: #333 !important;
+      color: #fff !important;
+      border: 1px solid rgba(255,255,255,.18) !important;
+      box-shadow: none !important;
+    }
+    :is([class*="Nav"] [class*="Button"], [class*="Arrow"]):hover {
+      background: #444 !important;
+    }
+
+    /* (Optional) hide the Elfsight badge — may violate free-plan terms */
+    [class*="WidgetBadge"], [class*="Showcase"] { display: none !important; }
+  }
+}
+</style>
+
 </head>
 <body>
   <div class="topbar-bleed" aria-hidden="true"></div>
@@ -1105,6 +1168,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
