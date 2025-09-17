@@ -337,6 +337,61 @@ content="
   }
 }
 </style>
+  <style>
+/* --- Extras to clean up the Card layout (dark) --- */
+@media (prefers-color-scheme: dark) {
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
+
+    /* 1) Remove those inner borders/frames/shadows inside each card */
+    /* (title strip, avatar panel, meta rows, etc.) */
+    [class*="Card"] *[class*="Frame"],
+    [class*="Card"] *[class*="Panel"],
+    [class*="Card"] *[class*="Wrap"],
+    [class*="Card"] *[class*="Row"],
+    [class*="Card"] *[class*="Section"],
+    [class*="Card"] *[class*="Line"] {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Keep only a subtle outer border on the whole card */
+    [class*="Card"] {
+      border: 1px solid rgba(255,255,255,0.10) !important;
+      box-shadow: none !important;
+    }
+
+    /* 2) Make review text/headers a touch brighter for contrast */
+    [class*="Card"] :is(h1,h2,h3,h4,h5,h6),
+    [class*="Card"] [class*="Title"],
+    [class*="Card"] [class*="Text"],
+    [class*="Card"] [class*="Content"] {
+      color: #eee !important;
+    }
+
+    /* 3) Style the carousel arrows (next/prev) to match dark theme */
+    [class*="Nav"] [class*="Button"],
+    [class*="Arrow"],
+    [class*="Control"] [class*="Button"] {
+      background: #333 !important;
+      color: #fff !important;
+      border: 1px solid rgba(255,255,255,0.18) !important;
+      box-shadow: none !important;
+    }
+    [class*="Nav"] [class*="Button"]:hover,
+    [class*="Arrow"]:hover {
+      background: #444 !important;
+    }
+
+    /* 4) (Optional) Mask Elfsight’s floating badge at the bottom */
+    /* NOTE: Hiding branding may violate their free-plan terms. */
+    [class*="WidgetBadge"],
+    [class*="Showcase"] {
+      display: none !important;
+    }
+  }
+}
+</style>
 </head>
 <body>
   <div class="topbar-bleed" aria-hidden="true"></div>
@@ -1050,6 +1105,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
