@@ -397,7 +397,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       }
 
       try{
-        const res = await fetch(csvUrl, {cache: "no-cache"});
+        const res = await fetch(csvUrl + '&cb=' + Date.now(), { cache: "no-store" });
         if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
         const csvText = await res.text();
 
@@ -544,7 +544,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
       setSkeletons(container, 3);
 
       try {
-        const res = await fetch(csvUrl, { cache: "no-cache" });
+        const res = await fetch(csvUrl + '&cb=' + Date.now(), { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to fetch explore events");
         const csvText = await res.text();
         const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
@@ -945,6 +945,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
  
 </body>
 </html>
+
 
 
 
