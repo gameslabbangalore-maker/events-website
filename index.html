@@ -16,11 +16,11 @@
 content="
   default-src 'self';
   img-src 'self' https://ik.imagekit.io https://via.placeholder.com https://lh3.googleusercontent.com data:;
-  script-src 'self' https://cdnjs.cloudflare.com https://elfsightcdn.com 'unsafe-inline';
+  script-src 'self' https://cdnjs.cloudflare.com https://static.elfsight.com https://apps.elfsight.com https://elfsightcdn.com 'unsafe-inline';
   style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src   https://fonts.gstatic.com data:;
-  connect-src https://docs.google.com https://*.googleusercontent.com https://elfsightcdn.com https://apps.elfsight.com https://static.elfsight.com;
-  frame-src https://apps.elfsight.com https://static.elfsight.com;
+  connect-src https://docs.google.com https://*.googleusercontent.com https://static.elfsight.com https://apps.elfsight.com https://elfsightcdn.com;
+  frame-src https://static.elfsight.com https://apps.elfsight.com;
   object-src 'none';
   frame-ancestors 'none';
   base-uri 'self';
@@ -39,6 +39,9 @@ content="
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
+  <link rel="preconnect" href="https://static.elfsight.com" crossorigin>
+  <link rel="preconnect" href="https://apps.elfsight.com" crossorigin>
+
 
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -945,22 +948,6 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
     });
 })();
 </script>
- <script src="https://elfsightcdn.com/platform.js" async></script>
+<script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
