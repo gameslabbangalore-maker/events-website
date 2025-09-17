@@ -251,48 +251,56 @@ content="
     .gallery-skeletons .gal-skel:not(:first-child){
       display: none;
     }
-  <style>
-    /* ---------- Defaults = LIGHT THEME ---------- */
-:root{
-  --gl-txt: #1a1a1a;        /* main text */
-  --gl-txt-strong: #111111; /* titles / names / score */
-  --gl-txt-muted: #555555;  /* metadata, captions */
+  </style>
+
+<style>
+/* ---------- Elfsight Google Reviews (TEXT ONLY theming) ---------- */
+/* Scope: your widget instance */
+.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
+  /* Light defaults */
+  --gl-text: #1a1a1a;        /* main text */
+  --gl-strong: #111111;      /* titles / names / big rating */
+  --gl-muted: #555555;       /* meta: dates, "Posted on", captions */
 }
 
-/* ---------- Dark mode overrides ---------- */
+/* Dark-mode text palette (auto via device theme) */
 @media (prefers-color-scheme: dark){
-  :root{
-    --gl-txt: #f2f2f2;
-    --gl-txt-strong: #ffffff;
-    --gl-txt-muted: #cccccc;
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd{
+    --gl-text: #f2f2f2;
+    --gl-strong: #ffffff;
+    --gl-muted: #cccccc;
   }
 }
 
-/* Apply to Elfsight widget (keeps your blue buttons/stars untouched) */
-.elfsight-app, .elfsight-app *:not([class*="button"]){
-  color: var(--gl-txt) !important;
+/* Apply to common TEXT elements only.
+   Excludes buttons and SVGs (so blue CTA & star icons stay as-is). */
+.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+  :is(h1,h2,h3,h4,h5,h6,p,span,a,small,time,div,li,strong,em)
+  :not([class*="Button"]):not(button):not([role="button"]) {
+  color: var(--gl-text) !important;
 }
 
-/* Strong headlines: reviewer names, titles, big rating number */
-.elfsight-app [class*="title"],
-.elfsight-app [class*="name"],
-.elfsight-app [class*="rating"],
-.elfsight-app [class*="score"],
-.elfsight-app [class*="average"]{
-  color: var(--gl-txt-strong) !important;
+/* Stronger headings: reviewer names, titles, big rating values */
+.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+  :is([class*="title"], [class*="name"], [class*="rating"], [class*="score"], [class*="average"]) {
+  color: var(--gl-strong) !important;
   font-weight: 600 !important;
 }
 
-/* Muted bits: dates, “Posted on”, captions */
-.elfsight-app [class*="subtitle"],
-.elfsight-app [class*="meta"],
-.elfsight-app [class*="caption"],
-.elfsight-app [class*="description"]{
-  color: var(--gl-txt-muted) !important;
+/* Muted metadata: dates, "Posted on Google", captions, summaries */
+.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+  :is([class*="subtitle"], [class*="meta"], [class*="caption"], [class*="description"], [class*="summary"], [class*="posted"], [class*="date"]) {
+  color: var(--gl-muted) !important;
 }
 
-  </style>
-  </style>
+/* Fix inline-forced black text from Elfsight (don’t touch background) */
+.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+  :is([style*="color:#000"], [style*="color: #000"], [style*="color:#000000"], [style*="color: #000000"], [style*="color:rgb(0,0,0)"], [style*="color: rgb(0, 0, 0)"]) {
+  color: var(--gl-text) !important;
+}
+</style>
+
+  
 </head>
 <body>
   <div class="topbar-bleed" aria-hidden="true"></div>
@@ -1006,6 +1014,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
