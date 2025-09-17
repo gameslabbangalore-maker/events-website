@@ -254,43 +254,77 @@ content="
 
   </style>
   <style>
+/* Elfsight Google Reviews (Card layout) — DARK MODE */
 @media (prefers-color-scheme: dark) {
-  /* Force all review cards dark */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Card"] {
-    background: #222222 !important;
-    color: #eaeaea !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: none !important;
+  /* Scope to your widget instance */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [data-app="eapps-google-reviews"]{
+    background: transparent !important;
+    color:#eaeaea !important;
   }
 
-  /* Fix summary / AI-generated block */
+  /* Header/Summary bar */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Header"],
   .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Summary"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Generated"] {
-    background: #222222 !important;
-    color: #eaeaea !important;
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Top"]{
+    background:#222222 !important;
+    color:#f0f0f0 !important;
+    border:none !important;
+    box-shadow:none !important;
   }
 
-  /* Reviewer names */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Author"] {
-    color: #fce029 !important; /* accent */
+  /* Keep CTA blue */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Button"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd a[class*="button"]{
+    background:#1a73e8 !important;
+    color:#fff !important;
+    border:none !important;
+    box-shadow:none !important;
   }
 
-  /* Stars stay gold */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Stars"] {
-    color: #ffcc00 !important;
+  /* Cards */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Card"]{
+    background:#222222 !important;
+    color:#eaeaea !important;
+    border:1px solid rgba(255,255,255,.08) !important;
+    box-shadow:none !important;
   }
 
-  /* Review text readability */
+  /* Inner frames off */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Inner"],
   .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Content"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Text"] {
-    color: #eaeaea !important;
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Body"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Footer"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Meta"]{
+    background:transparent !important;
+    border:none !important;
+    box-shadow:none !important;
   }
 
-  /* Rating numbers (e.g. 5.0) */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="rating"],
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="value"] {
-    color: #ffffff !important;
+  /* AI-generated summary block */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Generated"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="SummaryCard"]{
+    background:#222222 !important;
+    color:#eaeaea !important;
   }
+
+  /* Stars + names + links */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Stars"]{ color:#ffcc00 !important; }
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Author"]{ color:#fce029 !important; }
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd a,
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="more"]{ color:var(--accent,#fce029) !important; }
+
+  /* Rating number (e.g., 5.0) + stats */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="SupplierAndStats"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="Stats"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="value"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [class*="rating"]{
+    color:#ffffff !important;
+  }
+
+  /* Kill any inline white backgrounds / black text Elfsight injects */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background:#fff"],
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="background-color:#fff"]{ background:#222222 !important; }
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd [style*="color:#000"]{ color:#eaeaea !important; }
 }
 </style>
 </head>
@@ -1006,6 +1040,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
