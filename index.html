@@ -15,15 +15,24 @@
   <meta http-equiv="Content-Security-Policy"
 content="
   default-src 'self';
-  img-src 'self' https://ik.imagekit.io https://via.placeholder.com https://lh3.googleusercontent.com data:;
-  script-src 'self' https://cdnjs.cloudflare.com https://static.elfsight.com https://apps.elfsight.com https://elfsightcdn.com https://universe-static.elfsightcdn.com 'unsafe-inline';
+  img-src 'self'
+           https://ik.imagekit.io
+           https://via.placeholder.com
+           https://*.googleusercontent.com
+           https://*.elfsightcdn.com
+           data:;
+  script-src 'self'
+             https://cdnjs.cloudflare.com
+             https://*.elfsight.com
+             https://*.elfsightcdn.com
+             'unsafe-inline';
   style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src   https://fonts.gstatic.com data:;
-  connect-src https://docs.google.com https://*.googleusercontent.com
-               https://static.elfsight.com https://apps.elfsight.com https://elfsightcdn.com
-               https://core.service.elfsight.com https://universe-static.elfsightcdn.com
-               https://service-reviews-ultimate.elfsight.com;
-  frame-src https://static.elfsight.com https://apps.elfsight.com;
+  connect-src https://docs.google.com
+              https://*.googleusercontent.com
+              https://*.elfsight.com
+              https://*.elfsightcdn.com;
+  frame-src   https://*.elfsight.com https://*.elfsightcdn.com;
   object-src 'none';
   base-uri 'self';
 ">
@@ -31,11 +40,12 @@ content="
   <!-- SEO / social -->
   <meta name="description" content="Games Lab hosts fun, alcohol-free social events and workshops—Mafia nights, game nights, and more." />
   <link rel="canonical" href="https://gameslab.co.in/" />
-  <meta property="og:title" content="Games Lab — Upcoming Events" />
+  <meta property="og:title" content="Games Lab — Events & Experiences" />
   <meta property="og:description" content="Discover unique, friendly events & workshops near you." />
   <meta property="og:image" content="https://ik.imagekit.io/gameslab/tr:w-1200,h-630,f-auto/og-cover.png" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://phosphor.utils.elfsightcdn.com" crossorigin>
 
   <!-- Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -955,6 +965,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
