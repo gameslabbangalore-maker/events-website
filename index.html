@@ -251,7 +251,47 @@ content="
     .gallery-skeletons .gal-skel:not(:first-child){
       display: none;
     }
+  <style>
+    /* ---------- Defaults = LIGHT THEME ---------- */
+:root{
+  --gl-txt: #1a1a1a;        /* main text */
+  --gl-txt-strong: #111111; /* titles / names / score */
+  --gl-txt-muted: #555555;  /* metadata, captions */
+}
 
+/* ---------- Dark mode overrides ---------- */
+@media (prefers-color-scheme: dark){
+  :root{
+    --gl-txt: #f2f2f2;
+    --gl-txt-strong: #ffffff;
+    --gl-txt-muted: #cccccc;
+  }
+}
+
+/* Apply to Elfsight widget (keeps your blue buttons/stars untouched) */
+.elfsight-app, .elfsight-app *:not([class*="button"]){
+  color: var(--gl-txt) !important;
+}
+
+/* Strong headlines: reviewer names, titles, big rating number */
+.elfsight-app [class*="title"],
+.elfsight-app [class*="name"],
+.elfsight-app [class*="rating"],
+.elfsight-app [class*="score"],
+.elfsight-app [class*="average"]{
+  color: var(--gl-txt-strong) !important;
+  font-weight: 600 !important;
+}
+
+/* Muted bits: dates, “Posted on”, captions */
+.elfsight-app [class*="subtitle"],
+.elfsight-app [class*="meta"],
+.elfsight-app [class*="caption"],
+.elfsight-app [class*="description"]{
+  color: var(--gl-txt-muted) !important;
+}
+
+  </style>
   </style>
 </head>
 <body>
@@ -966,6 +1006,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
 </body>
 </html>
+
 
 
 
