@@ -51,9 +51,6 @@ content="
     :root {
       --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
       --topbar-height-desktop:58px; --topbar-height-mobile:48px;
-      --animated-height-desktop:150px; --animated-height-mobile:80px;
-      --line-height-desktop:1.4; --line-height-mobile:1.5;
-      --animated-font-size-max:1.6rem;
     }
     html,body{margin:0;height:100%}
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
@@ -98,7 +95,7 @@ content="
     }
   </style>
 
-  <!-- ===== EVENT PAGE LAYOUT (updated) ===== -->
+  <!-- ===== EVENT PAGE LAYOUT (refined) ===== -->
   <style>
     .wrap{max-width:1200px;margin:0 auto;padding:20px 18px 0}
     @media (min-width:769px){.wrap{padding-top:12px}}
@@ -109,7 +106,7 @@ content="
       .divider{background:linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,.06));box-shadow:0 1px 0 rgba(0,0,0,.06) inset;}
     }
 
-    /* ===== Page grid: banner + side facts on first row ===== */
+    /* Page grid: banner + side facts in the first row */
     .page-grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -134,30 +131,30 @@ content="
       }
     }
 
-    /* Banner (sits left of side card on desktop) */
+    /* Banner (taller per request) */
     .banner{grid-area: banner; border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
-    .banner img{width:100%;height: clamp(220px, 44vh, 460px);object-fit: cover;object-position:center}
+    .banner img{width:100%;height: clamp(280px, 56vh, 600px);object-fit: cover;object-position:center}
 
-    /* Event title + tagline */
-    .title{grid-area:title;font-size: clamp(28px, 3.6vw, 46px); line-height:1.12; margin: 6px 0 0}
-    .tagline{grid-area:tagline;color:var(--muted);margin: 2px 0 6px}
+    /* Headings to mirror homepage (title h2 styles) */
+    .heading { color: var(--accent); font-size: 1.9rem; font-weight: 700; letter-spacing: .2px; margin: 0; }
 
-    /* Mobile Highlights — clean inline list (no card/box) */
-    .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin: 4px 0 8px}
+    /* Event title row (with inline share on mobile) */
+    .title-row{grid-area:title; display:flex; align-items:center; gap:10px}
+    .tagline{grid-area:tagline;color:var(--muted);margin: 2px 0 18px} /* extra bottom space before 'About the event' */
+
+    /* Mobile Highlights — clean inline list (no box) */
+    .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin: 2px 0 8px}
     .highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .h-item{font-size:13.5px;display:flex;flex-direction:column;gap:2px}
     .h-label{color:var(--muted);font-weight:700;letter-spacing:.3px}
     .h-value{font-weight:800}
     @media (min-width:960px){ .highlights-mobile{display:none !important} }
 
-    /* Section titles — mirror homepage theming */
-    .section-title{font-size:1.4rem;margin:0 0 6px;color:var(--accent);font-weight:700;letter-spacing:.2px}
-
     /* Article content */
     .content{grid-area:content}
-    .kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-    .prose{font-size:1.02rem}
-    .prose p{margin:0 0 10px}
+    .kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+    .prose{font-size:1.04rem; line-height:1.6}
+    .prose p{margin:0 0 14px}
 
     /* Videos — portrait, compact */
     .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden}
@@ -182,7 +179,13 @@ content="
       .fact .label{color:var(--muted)}
     }
 
-    /* MOBILE microbar — matches Top Bar visuals */
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer}
+    .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer}
+    @media (min-width:960px){ .share-inline{display:none} } /* inline share only on mobile */
+
+    /* MOBILE microbar — matches Top Bar visuals; bold content */
     .mobile-info-bar{
       position:fixed;left:0;right:0;
       top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
@@ -197,10 +200,8 @@ content="
     }
     .mobile-info-bar.show{translate:0 0}
     .mobile-info-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto}
-    .mobile-info{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-weight:700}
-    .mobile-info strong{color:var(--text-main)}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer}
-    .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .mobile-info{display:flex;gap:10px;flex-wrap:wrap;color:var(--text-main);font-weight:800} /* bold */
+    .mobile-info strong{font-weight:900}
     @media (min-width:601px){
       .mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
     }
@@ -241,9 +242,9 @@ content="
         <img src="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" alt="Night of Mafias ! event banner">
       </figure>
 
-      <aside class="side-card" aria-label="Key facts">
+      <aside class="side-card" aria-label="Highlights">
         <div class="info-card" role="complementary">
-          <h3>Key facts</h3>
+          <h3>Highlights</h3>
           <div class="facts">
             <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
             <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
@@ -256,8 +257,14 @@ content="
         </div>
       </aside>
 
-      <!-- Row 2: Title + Tagline -->
-      <h1 class="title">Night of Mafias !</h1>
+      <!-- Row 2: Title + inline share (mobile only) -->
+      <div class="title-row">
+        <h2 class="heading" id="eventTitle">Night of Mafias !</h2>
+        <button class="icon-btn share-inline" id="shareNearTitle" aria-label="Share this event" title="Share">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
+        </button>
+      </div>
+
       <p class="tagline">SPEND YOUR FRIDAY NIGHT SOLVING A UNIQUE MURDER MYSTERY.</p>
 
       <!-- Row 3 (mobile only): clean highlights (no box) -->
@@ -275,8 +282,7 @@ content="
       <!-- Row 4+: Content -->
       <article class="content">
         <section id="details" aria-labelledby="about">
-          <span class="kicker">About the event</span>
-          <h2 id="about" class="section-title">Night of Mafias !</h2>
+          <h2 id="about" class="heading" style="margin-bottom:8px;">About the event</h2>
           <div class="prose">
             <p><strong>Who Killed the Villagers ?</strong><br/>Everyone is a Suspect !<br/>We need you Detective .</p>
             <p>Find yourself identifying the hidden Mafia killers or be the cunning force yourself.</p>
@@ -287,11 +293,10 @@ content="
 
         <div class="divider" aria-hidden="true"></div>
 
-        <section id="about-video" aria-labelledby="how">
-          <span class="kicker">Watch</span>
-          <h2 id="how" class="section-title">How it works</h2>
+        <section id="about-video" aria-labelledby="about-nom">
+          <h2 id="about-nom" class="heading" style="margin-bottom:8px;">About Night of Mafias</h2>
           <div class="video-portrait">
-            <iframe loading="lazy" allowfullscreen title="How Night of Mafias works (portrait)"
+            <iframe loading="lazy" allowfullscreen title="About Night of Mafias (portrait)"
               src="https://www.youtube.com/embed/p232ZZCCJKA?rel=0"></iframe>
           </div>
         </section>
@@ -299,8 +304,8 @@ content="
         <div class="divider" aria-hidden="true"></div>
 
         <section id="recaps" aria-labelledby="recaps-title">
-          <span class="kicker">Highlights</span>
-          <h2 id="recaps-title" class="section-title">Event recaps</h2>
+          <p class="contact-sub" style="margin:0 0 6px;">CATCH THE VIBE OF THE EVENT WITH THESE VIDEOS</p>
+          <h2 id="recaps-title" class="heading" style="margin-bottom:8px;">Event recaps</h2>
           <div class="recap-grid-portrait">
             <div class="video-portrait">
               <iframe loading="lazy" allowfullscreen title="Recap 1" src="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0"></iframe>
@@ -317,7 +322,9 @@ content="
     </div>
 
     <div class="divider" style="margin-top:40px;"></div>
-    <div class="title" style="text-align:center;margin-bottom:18px;"><h2 style="color:var(--accent);margin:0;">Contact Us</h2></div>
+    <div class="title" style="text-align:center;margin-bottom:18px;">
+      <h2 class="heading" style="margin:0;">Contact Us</h2>
+    </div>
 
     <!-- Contact (unchanged from Home) -->
     <section class="contact-wrap" aria-labelledby="contact-title">
@@ -360,10 +367,11 @@ content="
 
   <!-- ===== Scripts ===== -->
   <script>
-    // Mobile microbar visibility (mobile-only + highlights presence guard)
+    // Mobile microbar visibility (mobile-only) + hide inline title share when microbar shows
     (function(){
       const microbar   = document.getElementById('mobileInfoBar');
       const highlights = document.getElementById('highlightsMobile');
+      const shareNear  = document.getElementById('shareNearTitle');
       if (!microbar) return;
 
       const mq = window.matchMedia('(min-width: 960px)');
@@ -371,19 +379,19 @@ content="
       function teardownIO(){ if(io){ io.disconnect(); io = null; } }
 
       function applyState(){
-        // Desktop or no highlights -> keep hidden
         if (mq.matches || !highlights || highlights.offsetHeight === 0) {
           teardownIO();
           microbar.classList.remove('show');
           microbar.setAttribute('aria-hidden','true');
+          if (shareNear) shareNear.style.visibility = ''; // show inline share on desktop
           return;
         }
-        // Mobile: observe when highlights scroll out
         teardownIO();
         io = new IntersectionObserver(([entry])=>{
           const show = !entry.isIntersecting;
           microbar.classList.toggle('show', show);
           microbar.setAttribute('aria-hidden', show ? 'false' : 'true');
+          if (shareNear) shareNear.style.visibility = show ? 'hidden' : '';
         }, { threshold: 0, rootMargin: '-8% 0px 0px 0px' });
         io.observe(highlights);
       }
@@ -408,6 +416,7 @@ content="
       }
       document.getElementById('shareBtnTop')?.addEventListener('click', sharePage);
       document.getElementById('shareBtnSide')?.addEventListener('click', sharePage);
+      document.getElementById('shareNearTitle')?.addEventListener('click', sharePage);
     })();
 
     // Contact phone chooser (same as Home)
