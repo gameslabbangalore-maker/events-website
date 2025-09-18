@@ -326,6 +326,27 @@ content="
   .row{ gap: 10px; }
   .contact-head{ justify-content: center; }
 }
+/* Mobile-only: left align the SOCIAL list */
+@media (max-width: 1099px){
+  .social-list{
+    display: grid;                 /* stack nicely */
+    justify-content: flex-start !important;
+    align-items: start;
+  }
+  .social-list .row{
+    justify-content: flex-start;   /* keep icon + text flush left */
+  }
+}
+
+/* Desktop+: keep your centered layout */
+@media (min-width: 1100px){
+  .social-list{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px 28px;
+  }
+}
 
   </style>
 
@@ -1187,5 +1208,6 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 </script>
 </body>
 </html>
+
 
 
