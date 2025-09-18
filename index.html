@@ -296,7 +296,37 @@ content="
     .contact-head .logo-lg{border:1px solid rgba(0,0,0,.06);}
     .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
   }
-   
+   /* Force menu link color + remove blue default */
+.phone-menu a{
+  color: var(--text-main) !important;   /* white in dark mode */
+  text-decoration: none;
+}
+.phone-menu a:hover{ color: var(--accent) !important; }  /* yellow on hover */
+
+    /* Center lists on all screens */
+.info-list, .social-list{
+  justify-content: center;  /* was grid by default; safe for flex at desktop */
+}
+
+/* Desktop+ : center everything and lay out in one row if there's room */
+@media (min-width: 1100px){
+  .contact-grid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px 40px;
+    flex-wrap: wrap;       /* keeps it tidy if it doesn't fit in one line */
+  }
+  .info-list, .social-list{
+    display: flex;         /* horizontal rows instead of stacked items */
+    flex-wrap: wrap;
+    gap: 24px 28px;
+    align-items: center;
+  }
+  .row{ gap: 10px; }
+  .contact-head{ justify-content: center; }
+}
+
   </style>
 
 <style>
@@ -1157,4 +1187,5 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 </script>
 </body>
 </html>
+
 
