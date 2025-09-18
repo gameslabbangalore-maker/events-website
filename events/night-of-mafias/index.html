@@ -133,10 +133,12 @@ content="
     /* Banner: desktop tall, mobile shorter; mobile full-bleed to increase visual width */
     .banner{grid-area: banner; border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
     .banner img{width:100%;height: clamp(360px, 64vh, 720px);object-fit: cover;object-position:center}
+    /* NEW (slightly wider than content, not full-bleed) */
     @media (max-width:768px){
       .banner{
-        margin-left:-12px; margin-right:-12px;  /* full-bleed on mobile */
-        border-radius:0;
+        margin-left:-8px;   /* make wider by 8px on each side */
+        margin-right:-8px;
+        border-radius:12px; /* keep rounded corners like desktop */
       }
       .banner img{height: clamp(220px, 40vh, 420px);} /* reduced only on mobile */
     }
