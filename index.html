@@ -327,11 +327,22 @@ content="
       .contact-head{ justify-content: center; }
     }
 
-      /* Mobile: align Instagram/WhatsApp with Phone/Email rail */
+      /* Mobile: make every contact row a 2-column grid so text aligns perfectly */
     @media (max-width: 768px){
-      /* shift the whole social block right to match the info block */
-      .social-list{
-        margin-left: 56px;   /* ≈ icon (28px) + gap (12px) + a little breathing room */
+      .row{
+        display: grid !important;
+        grid-template-columns: 28px 1fr;  /* icon box, then text */
+        column-gap: 12px;                 /* same gap used visually */
+        align-items: center;
+      }
+      .icon{
+        width: 28px; height: 28px;        /* lock icon size for both lists */
+        flex: initial;                     /* ignore any flex sizing */
+      }
+      /* ensure no list has sneaky padding/margins pushing it around */
+      .info-list, .social-list{
+        padding-left: 0;
+        margin-left: 0;
       }
     }
   </style>
@@ -1192,6 +1203,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 </script>
 </body>
 </html>
+
 
 
 
