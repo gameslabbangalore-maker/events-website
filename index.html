@@ -254,8 +254,8 @@ content="
 
      /* ===== Contact (header stays as-is) ===== */
     .contact-wrap{max-width:1200px;margin:0 auto;padding:0 12px;}
-    .contact-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
-    .contact-head .logo-lg{width:44px;height:44px;border-radius:10px;object-fit:cover;border:1px solid rgba(255,255,255,.08);}
+    .contact-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;justify-content:center;}
+    .contact-head .logo-lg{width:44px;height:44px;border-radius:10px;object-fit:cover;}
     .contact-sub{margin:0;font-weight:700;letter-spacing:.6px;color:var(--muted);}
     
     /* Unified list for Phone, Email, Instagram, WhatsApp */
@@ -281,12 +281,11 @@ content="
     @media (min-width:1100px){
       .contact-list{display:flex;justify-content:center;flex-wrap:wrap;gap:24px 32px;}
       .row{display:flex;gap:12px;}
-      .contact-head{justify-content:center;}
     }
     
     /* Light theme tweaks via variables */
     @media (prefers-color-scheme: light){
-      .contact-head .logo-lg{border:1px solid rgba(0,0,0,.06);}
+      .contact-head .logo-lg{}
       .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
     }
   </style>
@@ -1133,3 +1132,4 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 </script>
 </body>
 </html>
+
