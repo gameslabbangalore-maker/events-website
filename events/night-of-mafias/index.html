@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Night of Mafias ! — Games Lab</title>
+  <meta name="description" content="A social deduction experience at Games Lab. Bluff, deduce, and bond with fellow players. Beginner‑friendly." />
+  <meta name="theme-color" content="#181818" />
+  <meta property="og:title" content="Night of Mafias ! — Games Lab" />
+  <meta property="og:description" content="Bluff, deduce, and bond in our beginner‑friendly social deduction experience." />
+  <meta property="og:image" content="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" />
+  <meta property="og:type" content="website" />
+
+  <style>
+    :root{
+      --bg: #f7f7f8;
+      --fg: #0f1115;
+      --muted: #5d6470;
+      --card: #ffffff;
+      --primary: #2f6df6;           /* light: blue */
+      --primary-contrast: #ffffff;
+      --border: rgba(0,0,0,.12);
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+      --topbar-h: 64px;
+      --radius: 16px;
+      --space: clamp(14px, 1.6vw, 22px);
+      --safe-l: max(env(safe-area-inset-left), var(--space));
+      --safe-r: max(env(safe-area-inset-right), var(--space));
+      --safe-b: env(safe-area-inset-bottom);
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg: #0f1115;
+        --fg: #e9eef6;
+        --muted: #a3acbb;
+        --card: #181c24;
+        --primary: #ffd84d;       /* dark: yellow */
+        --primary-contrast: #111318;
+        --border: rgba(255,255,255,.14);
+        --shadow: 0 8px 24px rgba(0,0,0,.5);
+      }
+    }
+
+    html,body{height:100%}
+    body{margin:0; background:var(--bg); color:var(--fg); font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial}
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+    .container{max-width:1200px; margin:0 auto; padding: 0 var(--space)}
+    .visually-hidden{position:absolute!important; width:1px; height:1px; margin:-1px; overflow:hidden; clip:rect(0 0 0 0)}
+
+    /* Top Bar (shared) */
+    .topbar{position:sticky; top:0; z-index:70; height:var(--topbar-h); backdrop-filter:saturate(1.1) blur(10px); background: color-mix(in oklab, var(--bg), transparent 25%); border-bottom:1px solid var(--border)}
+    .topbar .inner{height:100%; display:flex; align-items:center; gap:12px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700}
+    .brand img{height:28px; width:28px; border-radius:8px}
+
+    main{padding: calc(var(--space) * 1.25) 0 var(--space)}
+
+    /* Title + tagline after banner */
+    .title{font-size: clamp(28px, 3.6vw, 46px); line-height:1.12; margin: 10px 0 4px}
+    .tagline{color:var(--muted); margin: 0 0 calc(var(--space) - 6px)}
+
+    /* Banner */
+    .banner{border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow); background:var(--card); margin-bottom: calc(var(--space) * 1.1)}
+    .banner img{width:100%; height: clamp(220px, 46vh, 520px); object-fit: cover}
+
+    /* Grid: content + (optional) desktop side card */
+    .grid{display:grid; grid-template-columns: 1fr; gap: calc(var(--space) * 1.15)}
+    @media (min-width: 960px){ .grid{grid-template-columns: minmax(0,1fr) 320px} }
+
+    section{background: transparent}
+    .kicker{display:inline-block; font-size:12px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--muted); margin-bottom:8px}
+    .prose{font-size:1.06rem}
+    .prose p{margin: 0 0 10px}
+    .divider{height:1px; background: var(--border); border:none; margin: calc(var(--space) * 1.1) 0}
+
+    /* Portrait video — compact card */
+    .video-portrait{aspect-ratio: 9 / 16; width: 100%; max-width: clamp(240px, 48vw, 360px); margin: 6px auto; border-radius: var(--radius); box-shadow: var(--shadow); background:#000; overflow:hidden}
+    .video-portrait iframe{width:100%; height:100%; border:0}
+    .recap-grid-portrait{display:grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); justify-items:center}
+    .recap-grid-portrait .video-portrait{max-width: clamp(160px, 28vw, 220px)}
+
+    /* Buttons (only for share) */
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; padding: 10px 12px; border-radius: 12px; border:1px solid var(--border); background: var(--card); cursor:pointer; font-weight: 600; transition: transform .08s ease, filter .15s ease}
+    .btn:active{transform: translateY(1px)}
+    .btn:focus-visible{outline: 2px solid var(--primary); outline-offset: 2px}
+
+    /* MOBILE-ONLY HIGHLIGHTS (under tagline) */
+    .highlights-mobile{display: grid; gap: 10px; margin-top: 6px}
+    .highlights-card{border:1px solid var(--border); background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px}
+    .highlights-grid{display:grid; grid-template-columns: 1fr 1fr; gap: 10px}
+    .h-item{font-size: 13px}
+    .h-label{color: var(--muted); font-weight: 600; letter-spacing:.3px}
+    .h-value{font-weight: 700}
+
+    /* Sticky microbar (mobile): Title + Group size + Difficulty + Share */
+    .mobile-info-bar{position: fixed; left:0; right:0; top: var(--topbar-h); z-index: 65; padding: 8px var(--safe-l) 8px var(--safe-r); background: color-mix(in oklab, var(--bg), transparent 8%); border-bottom:1px solid var(--border); backdrop-filter: blur(10px); translate: 0 -100%; transition: translate .2s ease}
+    .mobile-info-inner{display:flex; align-items:center; justify-content:space-between; gap:10px}
+    .mobile-info{display:flex; gap:10px; flex-wrap:wrap; color: var(--muted); font-weight:600}
+    .mobile-info strong{color: var(--fg)}
+    .mobile-info-bar.show{translate: 0 0}
+
+    /* Floating bottom actions (none now) */
+
+    /* Desktop side card (pure info + share) */
+    .side-card{display:none}
+    @media (min-width: 960px){
+      .side-card{display:block}
+      .info-card{position: sticky; top: calc(var(--topbar-h) + 16px); border:1px solid var(--border); background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: calc(var(--space) * 1.1)}
+      .info-card h3{margin:0 0 8px; font-size: 13px; letter-spacing:.4px; text-transform: uppercase; color:var(--muted)}
+      .facts{display:grid; gap:8px; margin: 8px 0 12px}
+      .fact{display:flex; justify-content:space-between; gap:10px; font-size:14px}
+      .fact .label{color:var(--muted)}
+    }
+
+    /* Visibility: highlights & microbar only on mobile */
+    @media (min-width: 960px){ .highlights-mobile, .mobile-info-bar{ display:none } }
+
+    /* Contact Us placeholder */
+    footer.contact{margin-top: calc(var(--space) * 2); padding: calc(var(--space) * 1.5) 0; border-top:1px solid var(--border)}
+  </style>
+</head>
+<body>
+  <!-- Top Bar (shared) -->
+  <header class="topbar">
+    <div class="container inner">
+      <a class="brand" href="/" aria-label="Go to Games Lab homepage">
+        <img src="/Games Lab Logo.png" alt="Games Lab" />
+        <span>Games Lab</span>
+      </a>
+      <span class="visually-hidden">Event page</span>
+    </div>
+  </header>
+
+  <!-- Sticky microbar (mobile only) -->
+  <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
+    <div class="container mobile-info-inner">
+      <div class="mobile-info">
+        <strong>Night of Mafias !</strong>
+        <span>• 8–18 players</span>
+        <span>• Beginner‑friendly</span>
+      </div>
+      <button class="btn" id="shareBtnTop" aria-label="Share this event" title="Share">
+        <!-- Share icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <main class="container" id="main">
+    <!-- Banner first -->
+    <figure class="banner">
+      <img src="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" alt="Night of Mafias event banner" loading="eager" />
+    </figure>
+
+    <!-- Then Title + Tagline -->
+    <h1 class="title" id="title">Night of Mafias !</h1>
+    <p class="tagline">SPEND YOUR FRIDAY NIGHT SOLVING A UNIQUE MURDER MYSTERY.</p>
+
+    <!-- Mobile-only highlights (no venue; includes price) -->
+    <div class="highlights-mobile" id="highlightsMobile">
+      <div class="highlights-card" aria-label="Event highlights">
+        <div class="highlights-grid">
+          <div class="h-item"><div class="h-label">Format</div><div class="h-value">Social deduction</div></div>
+          <div class="h-item"><div class="h-label">Duration</div><div class="h-value">2–3 hours</div></div>
+          <div class="h-item"><div class="h-label">Group size</div><div class="h-value">8–18 players</div></div>
+          <div class="h-item"><div class="h-label">Difficulty</div><div class="h-value">Beginner‑friendly</div></div>
+          <div class="h-item"><div class="h-label">Age</div><div class="h-value">14+</div></div>
+          <div class="h-item"><div class="h-label">Price</div><div class="h-value">₹ 350/-</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content + Desktop side card -->
+    <div class="grid">
+      <article class="content">
+        <section id="details" aria-labelledby="about">
+          <span class="kicker">About the event</span>
+          <h2 id="about">Night of Mafias !</h2>
+          <div class="prose">
+            <p><strong>Who Killed the Villagers ?</strong><br/>Everyone is a Suspect !<br/>We need you Detective .</p>
+            <p>Find yourself identifying the hidden Mafia killers or be the cunning force yourself.</p>
+            <p>Indulge in a super interactive game of MAFIA in a unique setting and watch the drama unfold with a chance to meet and bond with people from all walks of life. Socialize and make new friends all the while playing a superlative game.</p>
+            <p>Don't worry if you haven't played before — rules will be explained to you. This game is suitable for all poker‑faced adults and requires no prior experience.</p>
+          </div>
+        </section>
+
+        <hr class="divider" aria-hidden="true" />
+
+        <!-- Portrait About Video (compact) -->
+        <section id="about-video" aria-labelledby="how">
+          <span class="kicker">Watch</span>
+          <h2 id="how">How it works</h2>
+          <div class="video-portrait">
+            <iframe loading="lazy" allowfullscreen title="How Night of Mafias works (portrait)"
+                    src="https://www.youtube.com/embed/p232ZZCCJKA?rel=0"></iframe>
+          </div>
+        </section>
+
+        <hr class="divider" aria-hidden="true" />
+
+        <!-- Portrait Recaps Grid -->
+        <section id="recaps" aria-labelledby="recaps-title">
+          <span class="kicker">Highlights</span>
+          <h2 id="recaps-title">Event recaps</h2>
+          <div class="recap-grid-portrait">
+            <div class="video-portrait">
+              <iframe loading="lazy" allowfullscreen title="Recap 1" src="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0"></iframe>
+            </div>
+            <div class="video-portrait">
+              <iframe loading="lazy" allowfullscreen title="Recap 2" src="https://www.youtube.com/embed/KwDyHylu-Ik?rel=0"></iframe>
+            </div>
+            <div class="video-portrait">
+              <iframe loading="lazy" allowfullscreen title="Recap 3" src="https://www.youtube.com/embed/IsGh10mGWbM?rel=0"></iframe>
+            </div>
+          </div>
+        </section>
+      </article>
+
+      <!-- Desktop side card: Key facts + Share (no CTAs) -->
+      <aside class="side-card" aria-label="Key facts">
+        <div class="info-card" role="complementary">
+          <h3>Key facts</h3>
+          <div class="facts">
+            <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
+            <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
+            <div class="fact"><span class="label">Group size</span><span>8–18 players</span></div>
+            <div class="fact"><span class="label">Difficulty</span><span>Beginner‑friendly</span></div>
+            <div class="fact"><span class="label">Age</span><span>14+</span></div>
+            <div class="fact"><span class="label">Price</span><span>₹ 350/-</span></div>
+          </div>
+          <button class="btn" id="shareBtnSide" aria-label="Share this event">Share this page</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Contact Us (drop in your existing block to keep it identical) -->
+  <footer class="contact container" id="contact">
+    <!-- Replace this placeholder with your existing Contact Us component to keep styling consistent site‑wide. -->
+    <p style="color:var(--muted); margin:0">Contact Us block placeholder — paste your site’s existing component here.</p>
+  </footer>
+
+  <!-- Minimal JS: microbar show/hide + share buttons -->
+  <script>
+    // Show microbar when highlights scroll out of view
+    const highlights = document.getElementById('highlightsMobile');
+    const microbar = document.getElementById('mobileInfoBar');
+    if (highlights && microbar) {
+      const io = new IntersectionObserver(([entry]) => {
+        microbar.classList.toggle('show', !entry.isIntersecting);
+        microbar.setAttribute('aria-hidden', entry.isIntersecting ? 'true' : 'false');
+      }, { threshold: 0, rootMargin: '-8% 0px 0px 0px' });
+      io.observe(highlights);
+    }
+
+    // Web Share API (with clipboard fallback)
+    async function sharePage(){
+      const data = {
+        title: document.title,
+        text: 'Check out Night of Mafias ! at Games Lab',
+        url: window.location.href
+      };
+      try {
+        if (navigator.share) { await navigator.share(data); }
+        else { await navigator.clipboard.writeText(data.url); alert('Link copied to clipboard'); }
+      } catch(e) { /* user cancelled */ }
+    }
+
+    document.getElementById('shareBtnTop')?.addEventListener('click', sharePage);
+    document.getElementById('shareBtnSide')?.addEventListener('click', sharePage);
+  </script>
+</body>
+</html>
