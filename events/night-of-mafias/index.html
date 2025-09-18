@@ -125,7 +125,7 @@ content="
     .prose{font-size:1.02rem}
     .prose p{margin:0 0 10px}
 
-    /* Mobile Highlights */
+    /* Mobile Highlights — only mobile */
     .highlights-mobile{display:grid;gap:10px;margin-top:6px}
     .highlights-card{background:var(--card);border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);padding:12px;border:1.5px solid rgba(255,255,255,.08)}
     @media (prefers-color-scheme: light){.highlights-card{border-color:rgba(0,0,0,.06)}}
@@ -133,16 +133,26 @@ content="
     .h-item{font-size:13px}
     .h-label{color:var(--muted);font-weight:700;letter-spacing:.3px}
     .h-value{font-weight:800}
+    @media (min-width:960px){
+      .highlights-mobile{display:none !important;}
+    }
 
-    /* Sticky microbar (mobile only) */
+    /* Sticky microbar (mobile only) — matches Top Bar visuals */
     .mobile-info-bar{
       position:fixed; left:0; right:0;
       top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
       z-index:10001;
-      padding:8px 12px; background:rgba(24,24,24,.6);
-      border-bottom:1px solid rgba(255,255,255,.2);
+      padding:8px 12px;
+      background:rgba(24,24,24,.07); /* match topbar */
+      border-bottom:1px solid rgba(255,255,255,.3); /* match topbar */
       backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
       translate:0 -100%; transition:translate .2s ease;
+    }
+    @media (prefers-color-scheme: light){
+      .mobile-info-bar{
+        background:rgba(255,255,255,.1); /* match light topbar */
+        border-bottom:1px solid rgba(0,0,0,.3);
+      }
     }
     .mobile-info-bar.show{translate:0 0}
     .mobile-info-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto}
@@ -153,7 +163,9 @@ content="
     @media (min-width:601px){
       .mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
     }
-    @media (min-width:960px){ .mobile-info-bar{display:none} }
+    @media (min-width:960px){
+      .mobile-info-bar{display:none !important;} /* hard guard on desktop */
+    }
 
     /* Videos — portrait, compact */
     .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:6px auto;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden}
@@ -176,18 +188,12 @@ content="
     /* Section titles */
     .section-title{font-size:1.4rem;margin:0 0 6px}
   </style>
-  <style>
-@media (min-width:960px){
-  .mobile-info-bar{ display:none !important; }
-}
-</style>
 </head>
 <body>
   <!-- ===== Top bar (shared) ===== -->
   <div class="topbar-bleed" aria-hidden="true"></div>
   <header class="topbar" role="banner">
     <div class="topbar-left">
-      <!-- Keep component identical; if you want this to be a link, wrap with <a href="/"> ... </a> -->
       <img src="https://ik.imagekit.io/gameslab/tr:w-36,q-100,f-auto/Games_Lab_Logo.png" alt="Games Lab Logo" class="logo" width="36" height="36"/>
       <span class="brand">Games Lab</span>
     </div>
@@ -342,39 +348,81 @@ content="
 
   <!-- ===== Scripts ===== -->
   <script>
-(function(){
-  const microbar   = document.getElementById('mobileInfoBar');
-  const highlights = document.getElementById('highlightsMobile');
-  if (!microbar) return;
+    // Mobile microbar visibility (mobile-only + highlights presence guard)
+    (function(){
+      const microbar   = document.getElementById('mobileInfoBar');
+      const highlights = document.getElementById('highlightsMobile');
+      if (!microbar) return;
 
-  const mq = window.matchMedia('(min-width: 960px)');
+      const mq = window.matchMedia('(min-width: 960px)');
+      let io = null;
+      function teardownIO(){ if(io){ io.disconnect(); io = null; } }
 
-  let io = null;
-  function teardownIO(){ if(io){ io.disconnect(); io = null; } }
+      function applyState(){
+        // Desktop or no highlights -> keep hidden
+        if (mq.matches || !highlights || highlights.offsetHeight === 0) {
+          teardownIO();
+          microbar.classList.remove('show');
+          microbar.setAttribute('aria-hidden','true');
+          return;
+        }
+        // Mobile: observe when highlights scroll out
+        teardownIO();
+        io = new IntersectionObserver(([entry])=>{
+          const show = !entry.isIntersecting;
+          microbar.classList.toggle('show', show);
+          microbar.setAttribute('aria-hidden', show ? 'false' : 'true');
+        }, { threshold: 0, rootMargin: '-8% 0px 0px 0px' });
+        io.observe(highlights);
+      }
 
-  function applyState(){
-    // Desktop or no highlights available -> keep hidden
-    if (mq.matches || !highlights || highlights.offsetHeight === 0) {
-      teardownIO();
-      microbar.classList.remove('show');
-      microbar.setAttribute('aria-hidden','true');
-      return;
-    }
-    // Mobile: observe when highlights scroll out
-    teardownIO();
-    io = new IntersectionObserver(([entry])=>{
-      const show = !entry.isIntersecting;
-      microbar.classList.toggle('show', show);
-      microbar.setAttribute('aria-hidden', show ? 'false' : 'true');
-    }, { threshold: 0, rootMargin: '-8% 0px 0px 0px' });
-    io.observe(highlights);
-  }
+      applyState();
+      mq.addEventListener('change', applyState);
+      window.addEventListener('load', applyState);
+    })();
 
-  applyState();
-  mq.addEventListener('change', applyState);
-  // In case fonts/async content change layout:
-  window.addEventListener('load', applyState);
-})();
-</script>
+    // Share (Web Share API + clipboard fallback)
+    (function(){
+      async function sharePage(){
+        const data = {
+          title: document.title,
+          text: 'Check out Night of Mafias ! at Games Lab',
+          url: window.location.href
+        };
+        try{
+          if (navigator.share) { await navigator.share(data); }
+          else { await navigator.clipboard.writeText(data.url); alert('Link copied to clipboard'); }
+        }catch(e){ /* user cancelled */ }
+      }
+      document.getElementById('shareBtnTop')?.addEventListener('click', sharePage);
+      document.getElementById('shareBtnSide')?.addEventListener('click', sharePage);
+    })();
+
+    // Contact phone chooser (identical behavior to Home)
+    (function(){
+      const phone = document.getElementById('phone-link');
+      const menu  = document.getElementById('phone-menu');
+      const waBtn = document.getElementById('wa-now');
+      if (!phone || !menu || !waBtn) return;
+
+      const tel = (phone.dataset.tel || '').replace(/[^\d]/g,'');
+      const msg = encodeURIComponent("Hi! I'd like to know more about Games Lab events.");
+      waBtn.href = `https://wa.me/${tel}?text=${msg}`;
+
+      function openMenu(){
+        if (!menu.hidden){ menu.hidden = true; return; }
+        menu.hidden = false;
+        const onAway = (e)=>{ if (!menu.contains(e.target) && e.target !== phone){ menu.hidden = true; cleanup(); } };
+        const onEsc  = (e)=>{ if (e.key === 'Escape'){ menu.hidden = true; cleanup(); } };
+        function cleanup(){
+          document.removeEventListener('click', onAway, true);
+          document.removeEventListener('keydown', onEsc, true);
+        }
+        document.addEventListener('click', onAway, true);
+        document.addEventListener('keydown', onEsc, true);
+      }
+      phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
+    })();
+  </script>
 </body>
 </html>
