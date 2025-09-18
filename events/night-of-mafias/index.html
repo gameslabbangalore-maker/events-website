@@ -17,7 +17,7 @@
   <meta property="og:image" content="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" />
   <meta property="og:type" content="website" />
 
-  <!-- CSP aligned with Home + YouTube/Vimeo for embeds -->
+  <!-- CSP aligned with Home + YouTube for embeds -->
   <meta http-equiv="Content-Security-Policy"
 content="
   default-src 'self';
@@ -103,7 +103,7 @@ content="
       .divider{background:linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,.06));box-shadow:0 1px 0 rgba(0,0,0,.06) inset;}
     }
 
-    /* replace your .page-grid templates with these */
+    /* Page grid: banner + side facts in the first row */
     .page-grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -112,7 +112,7 @@ content="
         "title"
         "tagline"
         "highlights"
-        "divider"   /* NEW: divider row lives between highlights and content */
+        "divider"
         "content";
       gap: 12px;
     }
@@ -123,34 +123,37 @@ content="
           "banner   side"
           "title    side"
           "tagline  side"
-          "divider  side"  /* divider stays above content on desktop too */
+          "divider  side"    /* divider sits above content, left column only */
           "content  side";
         column-gap: 18px;
         row-gap: 12px;
       }
     }
-    
-    /* map the divider into that row and span both columns */
-    .page-grid > .divider{
-      grid-area: divider;
-      grid-column: 1 / -1;
-    }
 
-    /* Banner (taller) */
+    /* Banner: desktop tall, mobile shorter (for wider crop) */
     .banner{grid-area: banner; border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
     .banner img{width:100%;height: clamp(360px, 64vh, 720px);object-fit: cover;object-position:center}
+    @media (max-width:768px){
+      .banner img{height: clamp(220px, 40vh, 420px);} /* reduced only on mobile */
+    }
 
-    /* Headings match homepage (the yellow section titles) */
+    /* Headings match homepage yellow section titles */
     .heading { color: var(--accent); font-size: 1.9rem; font-weight: 700; letter-spacing: .2px; margin: 0 0 18px; }
+    @media (max-width:959px){ .heading{ text-align:center; } }
 
-    /* Event title row (with inline share on mobile) */
-    .title-row{grid-area:title; display:flex; align-items:center; gap:10px; margin-bottom: 6px}
-    /* Tagline matches 'REACH OUT TO US!' */
+    /* Event title row (inline share on mobile) */
+    .title-row{grid-area:title; display:flex; align-items:baseline; gap:10px; margin-bottom:4px}
+    @media (max-width:959px){ .title-row{ justify-content:center; } }
+    .title-row .heading{ margin:0; line-height:1.1; }
+
+    /* Tagline like 'REACH OUT TO US!' + tighter gap */
     .tagline{
       grid-area:tagline;
-      margin: 0 0 10px;
-      font-weight:700; letter-spacing:.6px; color:var(--muted); /* mirrors .contact-sub */
+      margin: 0 0 10px;                /* slightly reduced gap to next block */
+      font-weight:700; letter-spacing:.6px; color:var(--muted);
+      text-align:left;
     }
+    @media (max-width:959px){ .tagline{ text-align:center; } }
 
     /* Mobile Highlights — clean inline list (no box) */
     .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin: 0 0 8px}
@@ -160,12 +163,12 @@ content="
     .h-value{font-weight:800}
     @media (min-width:960px){ .highlights-mobile{display:none !important} }
 
+    /* Divider row: sits between highlights/tagline and content; left column only on desktop */
+    .page-grid > .divider{ grid-area: divider; margin:12px 0 12px; }  /* uniform, tighter gap */
+
     .content{grid-area:content}
     .prose{font-size:1.04rem; line-height:1.6}
     .prose p{margin:0 0 14px}
-
-    /* add to your EVENT PAGE CSS */
-    .page-grid > .divider { grid-column: 1 / -1; }
 
     /* Videos — portrait, compact */
     .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden}
@@ -173,7 +176,7 @@ content="
     .recap-grid-portrait{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));justify-items:center}
     .recap-grid-portrait .video-portrait{max-width:clamp(160px,28vw,220px)}
 
-    /* Right info card (desktop) — aligned with banner + centered header/button */
+    /* Right info card (desktop) — centered header + button */
     .side-card{grid-area:side; display:none}
     @media (min-width:960px){
       .side-card{display:block}
@@ -186,41 +189,16 @@ content="
       }
       @media (prefers-color-scheme: light){.info-card{border-color:rgba(0,0,0,.06)}}
       .info-card h3{margin:0 0 12px;font-size:13px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
-      .facts{display:grid;gap:8px;margin:8px 0 14px;text-align:left} /* keep facts readable */
+      .facts{display:grid;gap:8px;margin:8px 0 14px;text-align:left}
       .fact{display:flex;justify-content:space-between;gap:10px;font-size:14px}
       .fact .label{color:var(--muted)}
       .info-card .btn{margin:0 auto}
     }
 
-    /* title/share row tweaks */
-    .title-row{
-      display:flex;
-      align-items: baseline;   /* align by text baseline */
-      gap:10px;
-      margin-bottom: 4px;      /* slightly reduced gap to tagline */
-    }
-    
-    /* remove global bottom margin on this specific title */
-    .title-row .heading{
-      margin: 0;
-      line-height: 1.1;
-    }
-    
-    /* smaller, baseline-aligned icon button on mobile */
-    .share-inline{
-      width:32px; height:32px; /* was 36 */
-      padding:6px;
-      border-radius:8px;
-      align-self: baseline;    /* honor the baseline alignment */
-      position: relative;
-      top: 2px;                /* tiny optical nudge */
-    }
-
-    
     /* Buttons */
     .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer}
     .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer}
+    .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer;align-self:baseline;position:relative;top:2px}
     @media (min-width:960px){ .share-inline{display:none} } /* inline share only on mobile */
 
     /* MOBILE microbar — matches Top Bar visuals; bold content */
@@ -262,7 +240,7 @@ content="
     <div class="mobile-info-inner">
       <div class="mobile-info">
         <strong>Night of Mafias !</strong>
-        <span>• 8–25 players</span>
+        <span>• 8–18 players</span>
         <span>• Beginner-friendly</span>
       </div>
       <button class="btn" id="shareBtnTop" aria-label="Share this event" title="Share">
@@ -303,10 +281,10 @@ content="
         </button>
       </div>
 
-      <!-- Tagline (styled like 'REACH OUT TO US!') + divider below -->
+      <!-- Tagline -->
       <p class="tagline">SPEND YOUR FRIDAY NIGHT SOLVING A UNIQUE MURDER MYSTERY.</p>
 
-      <!-- Row 3 (mobile only): clean highlights (no box) -->
+      <!-- Mobile highlights -->
       <div class="highlights-mobile" id="highlightsMobile">
         <div class="highlights-grid" aria-label="Event highlights">
           <div class="h-item"><div class="h-label">Format</div><div class="h-value">Social deduction</div></div>
@@ -318,9 +296,10 @@ content="
         </div>
       </div>
 
+      <!-- Divider row (sits above content; left-only on desktop) -->
       <div class="divider" aria-hidden="true"></div>
 
-      <!-- Row 4+: Content -->
+      <!-- Content -->
       <article class="content">
         <section id="details" aria-labelledby="about">
           <h2 id="about" class="heading">About the event</h2>
@@ -346,7 +325,7 @@ content="
 
         <section id="recaps" aria-labelledby="recaps-title">
           <h2 id="recaps-title" class="heading">Event recaps</h2>
-          <p class="contact-sub" style="margin:0 0 18px;">CATCH THE VIBE OF THE EVENT WITH THESE VIDEOS</p>
+          <p class="contact-sub" style="margin:0 0 18px; text-align:left;">CATCH THE VIBE OF THE EVENT WITH THESE VIDEOS</p>
           <div class="recap-grid-portrait">
             <div class="video-portrait">
               <iframe loading="lazy" allowfullscreen title="Recap 1" src="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0"></iframe>
@@ -360,7 +339,10 @@ content="
           </div>
         </section>
       </article>
-    </div>
+    </div> <!-- /.page-grid -->
+
+    <!-- Single divider restored above Contact Us -->
+    <div class="divider" style="margin-top:40px;"></div>
 
     <div class="title" style="text-align:center;margin-bottom:18px;">
       <h2 class="heading" style="margin:0;">Contact Us</h2>
@@ -391,7 +373,7 @@ content="
         </li>
 
         <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.25-2.75a.75.75 0 1 1-.75.75.75.75 0 0 1 .75-.75Z"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1 5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.25-2.75a.75.75 0 1 1-.75.75.75.75 0 0 1 .75-.75Z"/></svg>
           <a class="link" href="https://www.instagram.com/games._.lab/" target="_blank" rel="noopener">Follow Us</a>
         </li>
 
@@ -407,38 +389,33 @@ content="
 
   <!-- ===== Scripts ===== -->
   <script>
-    // Mobile microbar visibility + hide inline title share when microbar shows
+    // Microbar: show only after user scrolls past the top of the highlights (mobile only)
     (function(){
       const microbar   = document.getElementById('mobileInfoBar');
       const highlights = document.getElementById('highlightsMobile');
-      const shareNear  = document.getElementById('shareNearTitle');
       if (!microbar) return;
 
-      const mq = window.matchMedia('(min-width: 960px)');
-      let io = null;
-      function teardownIO(){ if(io){ io.disconnect(); io = null; } }
+      function isDesktop(){ return window.innerWidth >= 960; }
 
-      function applyState(){
-        if (mq.matches || !highlights || highlights.offsetHeight === 0) {
-          teardownIO();
+      function update(){
+        if (isDesktop() || !highlights) {
           microbar.classList.remove('show');
           microbar.setAttribute('aria-hidden','true');
-          if (shareNear) shareNear.style.visibility = ''; // show inline share on desktop / when visible
           return;
         }
-        teardownIO();
-        io = new IntersectionObserver(([entry])=>{
-          const show = !entry.isIntersecting;
-          microbar.classList.toggle('show', show);
-          microbar.setAttribute('aria-hidden', show ? 'false' : 'true');
-          if (shareNear) shareNear.style.visibility = show ? 'hidden' : '';
-        }, { threshold: 0, rootMargin: '-8% 0px 0px 0px' });
-        io.observe(highlights);
+        const topbar = document.querySelector('.topbar');
+        const topbarH = topbar ? topbar.offsetHeight : 56;
+
+        const triggerY = highlights.getBoundingClientRect().top + window.scrollY; // highlights' top in doc
+        const shouldShow = window.scrollY >= (triggerY - topbarH);
+        microbar.classList.toggle('show', shouldShow);
+        microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
       }
 
-      applyState();
-      mq.addEventListener('change', applyState);
-      window.addEventListener('load', applyState);
+      // Initial + on scroll/resize
+      window.addEventListener('load', update, { passive:true });
+      window.addEventListener('scroll', update, { passive:true });
+      window.addEventListener('resize', update);
     })();
 
     // Share (Web Share API + clipboard fallback)
