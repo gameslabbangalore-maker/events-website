@@ -252,159 +252,143 @@ content="
       display: none;
     }
 
-   /* ===== Contact (no card) ===== */
-  .contact-wrap{max-width:1200px;margin:0 auto;padding:0 12px;}
-  .contact-head{
-    display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:18px;
-  }
-  .contact-head .logo-lg{
-    width:44px; height:44px; border-radius:10px; object-fit:cover;
-    border:1px solid rgba(255,255,255,.08);
-  }
-  .contact-sub{margin:0; font-weight:700; letter-spacing:.6px; color:var(--muted);}
-  
-  .contact-grid{display:grid; gap:22px;}
-  @media (min-width:900px){ .contact-grid{grid-template-columns:1fr 1fr;} }
-  
-  .info-list,.social-list{list-style:none; margin:0; padding:0; display:grid; gap:16px;}
-  .row{display:flex; align-items:center; gap:12px;}
-  .icon{width:28px; height:28px; flex:0 0 28px; color:var(--accent);}   /* bigger icons */
-  .link{color:var(--text-main); text-decoration:none; font-weight:700;}
-  .link:hover{color:var(--accent);}
-  
-  /* email: never overflow */
-  .email-text{
-    overflow-wrap:anywhere; word-break:break-word; line-break:anywhere;
-  }
-  
-  /* tiny inline chooser for phone */
-  .phone-wrap{position:relative;}
-  .phone-menu{
-    position:absolute; top:100%; left:40px; margin-top:6px;
-    background:var(--card); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.4);
-    padding:8px; display:flex; gap:6px; z-index:5;
-  }
-  .phone-menu[hidden]{display:none;}
-  .phone-menu a{
-    display:inline-block; padding:8px 10px; border-radius:8px; text-decoration:none; font-weight:700;
-    background:rgba(255,255,255,.06);
-  }
-  .phone-menu a:hover{background:rgba(255,255,255,.12);}
-  
-  /* light tweaks inherit via variables */
-  @media (prefers-color-scheme: light){
-    .contact-head .logo-lg{border:1px solid rgba(0,0,0,.06);}
-    .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
-  }
-   /* Force menu link color + remove blue default */
-.phone-menu a{
-  color: var(--text-main) !important;   /* white in dark mode */
-  text-decoration: none;
-}
-.phone-menu a:hover{ color: var(--accent) !important; }  /* yellow on hover */
+     /* ===== Contact (no card) ===== */
+    .contact-wrap{max-width:1200px;margin:0 auto;padding:0 12px;}
+    .contact-head{
+      display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:18px;
+    }
+    .contact-head .logo-lg{
+      width:44px; height:44px; border-radius:10px; object-fit:cover;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .contact-sub{margin:0; font-weight:700; letter-spacing:.6px; color:var(--muted);}
+    
+    .contact-grid{display:grid; gap:22px;}
+    @media (min-width:900px){ .contact-grid{grid-template-columns:1fr 1fr;} }
+    
+    .info-list,.social-list{list-style:none; margin:0; padding:0; display:grid; gap:16px;}
+    .row{display:flex; align-items:center; gap:12px;}
+    .icon{width:28px; height:28px; flex:0 0 28px; color:var(--accent);}   /* bigger icons */
+    .link{color:var(--text-main); text-decoration:none; font-weight:700;}
+    .link:hover{color:var(--accent);}
+    
+    /* email: never overflow */
+    .email-text{
+      overflow-wrap:anywhere; word-break:break-word; line-break:anywhere;
+    }
+    
+    /* tiny inline chooser for phone */
+    .phone-wrap{position:relative;}
+    .phone-menu{
+      position:absolute; top:100%; left:40px; margin-top:6px;
+      background:var(--card); border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,.4);
+      padding:8px; display:flex; gap:6px; z-index:5;
+    }
+    .phone-menu[hidden]{display:none;}
+    .phone-menu a{
+      display:inline-block; padding:8px 10px; border-radius:8px; text-decoration:none; font-weight:700;
+      background:rgba(255,255,255,.06);
+    }
+    .phone-menu a:hover{background:rgba(255,255,255,.12);}
+    
+    /* light tweaks inherit via variables */
+    @media (prefers-color-scheme: light){
+      .contact-head .logo-lg{border:1px solid rgba(0,0,0,.06);}
+      .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
+    }
+       /* Force menu link color + remove blue default */
+    .phone-menu a{
+      color: var(--text-main) !important;   /* white in dark mode */
+      text-decoration: none;
+    }
+    .phone-menu a:hover{ color: var(--accent) !important; }  /* yellow on hover */
+    
+        /* Center lists on all screens */
+    .info-list, .social-list{
+      justify-content: center;  /* was grid by default; safe for flex at desktop */
+    }
+    
+    /* Desktop+ : center everything and lay out in one row if there's room */
+    @media (min-width: 1100px){
+      .contact-grid{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 32px 40px;
+        flex-wrap: wrap;       /* keeps it tidy if it doesn't fit in one line */
+      }
+      .info-list, .social-list{
+        display: flex;         /* horizontal rows instead of stacked items */
+        flex-wrap: wrap;
+        gap: 24px 28px;
+        align-items: center;
+      }
+      .row{ gap: 10px; }
+      .contact-head{ justify-content: center; }
+    }
 
-    /* Center lists on all screens */
-.info-list, .social-list{
-  justify-content: center;  /* was grid by default; safe for flex at desktop */
-}
-
-/* Desktop+ : center everything and lay out in one row if there's room */
-@media (min-width: 1100px){
-  .contact-grid{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 32px 40px;
-    flex-wrap: wrap;       /* keeps it tidy if it doesn't fit in one line */
-  }
-  .info-list, .social-list{
-    display: flex;         /* horizontal rows instead of stacked items */
-    flex-wrap: wrap;
-    gap: 24px 28px;
-    align-items: center;
-  }
-  .row{ gap: 10px; }
-  .contact-head{ justify-content: center; }
-}
-/* Mobile-only: left align the SOCIAL list */
-@media (max-width: 1099px){
-  .social-list{
-    display: grid;                 /* stack nicely */
-    justify-content: flex-start !important;
-    align-items: start;
-  }
-  .social-list .row{
-    justify-content: flex-start;   /* keep icon + text flush left */
-  }
-}
-
-/* Desktop+: keep your centered layout */
-@media (min-width: 1100px){
-  .social-list{
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 24px 28px;
-  }
-}
-
+      /* Mobile: align Instagram/WhatsApp with Phone/Email rail */
+    @media (max-width: 768px){
+      /* shift the whole social block right to match the info block */
+      .social-list{
+        margin-left: 56px;   /* ≈ icon (28px) + gap (12px) + a little breathing room */
+      }
+    }
   </style>
-
-<style>
-/* ---------- Elfsight Google Reviews (TEXT ONLY theming) ---------- */
-/* Scope: your widget instance */
-.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
-  /* Light defaults */
-  --gl-text: #1a1a1a;        /* main text */
-  --gl-strong: #111111;      /* titles / names / big rating */
-  --gl-muted: #555555;       /* meta: dates, "Posted on", captions */
-}
-
-/* Dark-mode text palette (auto via device theme) */
-@media (prefers-color-scheme: dark){
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd{
-    --gl-text: #f2f2f2;
-    --gl-strong: #ffffff;
-    --gl-muted: #cccccc;
+  <style>
+  /* ---------- Elfsight Google Reviews (TEXT ONLY theming) ---------- */
+  /* Scope: your widget instance */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
+    /* Light defaults */
+    --gl-text: #1a1a1a;        /* main text */
+    --gl-strong: #111111;      /* titles / names / big rating */
+    --gl-muted: #555555;       /* meta: dates, "Posted on", captions */
   }
-}
-
-/* Apply to common TEXT elements only.
-   Excludes buttons and SVGs (so blue CTA & star icons stay as-is). */
-.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-  :is(h1,h2,h3,h4,h5,h6,p,span,a,small,time,div,li,strong,em)
-  :not([class*="Button"]):not(button):not([role="button"]) {
-  color: var(--gl-text) !important;
-}
-
-/* Stronger headings: reviewer names, titles, big rating values */
-.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-  :is([class*="title"], [class*="name"], [class*="rating"], [class*="score"], [class*="average"]) {
-  color: var(--gl-strong) !important;
-  font-weight: 600 !important;
-}
-
-/* Muted metadata: dates, "Posted on Google", captions, summaries */
-.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-  :is([class*="subtitle"], [class*="meta"], [class*="caption"], [class*="description"], [class*="summary"], [class*="posted"], [class*="date"]) {
-  color: var(--gl-muted) !important;
-}
-
-/* Fix inline-forced black text from Elfsight (don’t touch background) */
-.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-  :is([style*="color:#000"], [style*="color: #000"], [style*="color:#000000"], [style*="color: #000000"], [style*="color:rgb(0,0,0)"], [style*="color: rgb(0, 0, 0)"]) {
-  color: var(--gl-text) !important;
-}
-</style>
-<style>
-@media (prefers-color-scheme: light){
-  .divider{
-    background: linear-gradient(90deg, rgba(0,0,0,.12), rgba(0,0,0,.06)) !important;
-    box-shadow: 0 1px 0 rgba(0,0,0,.06) inset !important;
-  }
-}
-</style>
   
+  /* Dark-mode text palette (auto via device theme) */
+  @media (prefers-color-scheme: dark){
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd{
+      --gl-text: #f2f2f2;
+      --gl-strong: #ffffff;
+      --gl-muted: #cccccc;
+    }
+  }
+  
+  /* Apply to common TEXT elements only.
+     Excludes buttons and SVGs (so blue CTA & star icons stay as-is). */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    :is(h1,h2,h3,h4,h5,h6,p,span,a,small,time,div,li,strong,em)
+    :not([class*="Button"]):not(button):not([role="button"]) {
+    color: var(--gl-text) !important;
+  }
+  
+  /* Stronger headings: reviewer names, titles, big rating values */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    :is([class*="title"], [class*="name"], [class*="rating"], [class*="score"], [class*="average"]) {
+    color: var(--gl-strong) !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Muted metadata: dates, "Posted on Google", captions, summaries */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    :is([class*="subtitle"], [class*="meta"], [class*="caption"], [class*="description"], [class*="summary"], [class*="posted"], [class*="date"]) {
+    color: var(--gl-muted) !important;
+  }
+  
+  /* Fix inline-forced black text from Elfsight (don’t touch background) */
+  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+    :is([style*="color:#000"], [style*="color: #000"], [style*="color:#000000"], [style*="color: #000000"], [style*="color:rgb(0,0,0)"], [style*="color: rgb(0, 0, 0)"]) {
+    color: var(--gl-text) !important;
+  }
+  </style>
+  <style>
+  @media (prefers-color-scheme: light){
+    .divider{
+      background: linear-gradient(90deg, rgba(0,0,0,.12), rgba(0,0,0,.06)) !important;
+      box-shadow: 0 1px 0 rgba(0,0,0,.06) inset !important;
+    }
+  }
+  </style>
 </head>
 <body>
   <div class="topbar-bleed" aria-hidden="true"></div>
@@ -1208,6 +1192,7 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 </script>
 </body>
 </html>
+
 
 
 
