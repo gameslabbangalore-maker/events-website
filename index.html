@@ -1,1165 +1,1169 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Games Lab — Events & Experiences</title>
-
-  <link rel="icon" href="Games Lab Logo.png" type="image/png" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#181818" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-
-  <!-- CSP: allow inline scripts, PapaParse, Google CSV (incl. redirects) -->
-  <meta http-equiv="Content-Security-Policy"
-content="
-  default-src 'self';
-  img-src 'self'
-           https://ik.imagekit.io
-           https://via.placeholder.com
-           https://*.googleusercontent.com
-           https://*.elfsightcdn.com
-           data:;
-  script-src 'self'
-             https://cdnjs.cloudflare.com
-             https://*.elfsight.com
+  <!doctype html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Games Lab — Events & Experiences</title>
+  
+    <link rel="icon" href="Games Lab Logo.png" type="image/png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#181818" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  
+    <!-- CSP: allow inline scripts, PapaParse, Google CSV (incl. redirects) -->
+    <meta http-equiv="Content-Security-Policy"
+  content="
+    default-src 'self';
+    img-src 'self'
+             https://ik.imagekit.io
+             https://via.placeholder.com
+             https://*.googleusercontent.com
              https://*.elfsightcdn.com
-             'unsafe-inline';
-  style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
-  font-src   https://fonts.gstatic.com data:;
-  connect-src https://docs.google.com
-              https://*.googleusercontent.com
-              https://*.elfsight.com
-              https://*.elfsightcdn.com;
-  frame-src   https://*.elfsight.com https://*.elfsightcdn.com;
-  object-src 'none';
-  base-uri 'self';
-">
-
-  <!-- SEO / social -->
-  <meta name="description" content="Games Lab hosts fun, alcohol-free social events and workshops—Mafia nights, game nights, and more." />
-  <link rel="canonical" href="https://gameslab.co.in/" />
-  <meta property="og:title" content="Games Lab — Events & Experiences" />
-  <meta property="og:description" content="Discover unique, friendly events & workshops near you." />
-  <meta property="og:image" content="https://ik.imagekit.io/gameslab/tr:w-1200,h-630,f-auto/og-cover.png" />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="preconnect" href="https://phosphor.utils.elfsightcdn.com" crossorigin>
-
-  <!-- Preconnects -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
-  <link rel="preconnect" href="https://static.elfsight.com" crossorigin>
-  <link rel="preconnect" href="https://apps.elfsight.com" crossorigin>
-  <link rel="preconnect" href="https://core.service.elfsight.com" crossorigin>
-  <link rel="preconnect" href="https://universe-static.elfsightcdn.com" crossorigin>
-  <link rel="preconnect" href="https://service-reviews-ultimate.elfsight.com" crossorigin>
-
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
-  <style>
-    :root {
-      --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
-      --topbar-height-desktop:58px; --topbar-height-mobile:48px;
-      --animated-height-desktop:150px; --animated-height-mobile:80px;
-      --line-height-desktop:1.4; --line-height-mobile:1.5;
-      --animated-font-size-max:1.6rem;
+             data:;
+    script-src 'self'
+               https://cdnjs.cloudflare.com
+               https://*.elfsight.com
+               https://*.elfsightcdn.com
+               'unsafe-inline';
+    style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src   https://fonts.gstatic.com data:;
+    connect-src https://docs.google.com
+                https://*.googleusercontent.com
+                https://*.elfsight.com
+                https://*.elfsightcdn.com;
+    frame-src   https://*.elfsight.com https://*.elfsightcdn.com;
+    object-src 'none';
+    base-uri 'self';
+  ">
+  
+    <!-- SEO / social -->
+    <meta name="description" content="Games Lab hosts fun, alcohol-free social events and workshops—Mafia nights, game nights, and more." />
+    <link rel="canonical" href="https://gameslab.co.in/" />
+    <meta property="og:title" content="Games Lab — Events & Experiences" />
+    <meta property="og:description" content="Discover unique, friendly events & workshops near you." />
+    <meta property="og:image" content="https://ik.imagekit.io/gameslab/tr:w-1200,h-630,f-auto/og-cover.png" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://phosphor.utils.elfsightcdn.com" crossorigin>
+  
+    <!-- Preconnects -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
+    <link rel="preconnect" href="https://static.elfsight.com" crossorigin>
+    <link rel="preconnect" href="https://apps.elfsight.com" crossorigin>
+    <link rel="preconnect" href="https://core.service.elfsight.com" crossorigin>
+    <link rel="preconnect" href="https://universe-static.elfsightcdn.com" crossorigin>
+    <link rel="preconnect" href="https://service-reviews-ultimate.elfsight.com" crossorigin>
+  
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  
+    <style>
+      :root {
+        --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
+        --topbar-height-desktop:58px; --topbar-height-mobile:48px;
+        --animated-height-desktop:150px; --animated-height-mobile:80px;
+        --line-height-desktop:1.4; --line-height-mobile:1.5;
+        --animated-font-size-max:1.6rem;
+      }
+      html,body{margin:0;height:100%}
+      body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  
+      .topbar-bleed{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10002;pointer-events:none}
+  
+      .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));box-sizing:border-box;z-index:10003;border-bottom:1px solid rgba(255,255,255,.3);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}    .topbar-left{display:flex;align-items:center;height:100%}
+      .logo{height:36px;width:36px;border-radius:8px;margin-right:12px;object-fit:cover}
+      .brand{font-size:1.45rem;font-weight:700;letter-spacing:.5px;color:#fff}
+      @media (max-width:600px){.topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}.logo{height:26px;width:26px;margin-right:8px}.brand{font-size:1rem}}
+      .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
+      @media (max-width:600px){.topbar-spacer{height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}}
+  
+      /* Light theme — same frosted glass as the event page */
+      @media (prefers-color-scheme: light){
+        .topbar,
+        .topbar-bleed{
+          background: rgba(255,255,255,.55) !important;
+          border-bottom: 1px solid rgba(0,0,0,.08);
+          -webkit-backdrop-filter: saturate(180%) blur(14px);
+          backdrop-filter: saturate(180%) blur(14px);
+        }
+      }
+  
+      .wrap{max-width:1200px;margin:0 auto;padding:20px 18px 0}
+      @media (min-width:769px){.wrap{padding-top:12px}}
+      @media (max-width:768px){.wrap{padding-left:12px !important;padding-right:12px !important;padding-top:14px}}
+  
+      .animated-wrapper{width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;padding:0 8px;height:var(--animated-height-desktop);max-height:var(--animated-height-desktop)}
+      @media (max-width:768px){.animated-wrapper{height:var(--animated-height-mobile);margin-bottom:10px;max-height:var(--animated-height-mobile)}}
+      .animated-text{width:100%;max-width:980px;font-weight:700;font-family:'Comfortaa',cursive;font-size:var(--animated-font-size-max);text-transform:uppercase;text-align:center;letter-spacing:2.1px;color:#fff;margin:0;white-space:pre-wrap;line-height:var(--line-height-desktop)}
+      @media (max-width:768px){.animated-text{font-size:clamp(.75rem,4vw,1.05rem);line-height:1.4;letter-spacing:1.4px;padding:0 6px}}
+      @media (prefers-reduced-motion: reduce){ .animated-text{animation:none !important} }
+  
+      .divider{width:100%;height:1px;margin:28px 0 18px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow:0 1px 0 rgba(255,255,255,.02) inset;border-radius:1px;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+      @media (max-width:768px){.divider{margin:10px 0 16px}}
+  
+      .title{text-align:center;margin-bottom:18px}
+      .title h2{color:var(--accent);margin:0;font-size:1.9rem;font-weight:700;letter-spacing:.2px}
+  
+      .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  
+      .cards-row{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:flex-start}
+  
+      /* Light theme: soften skeleton shimmer */
+      @media (prefers-color-scheme: light){
+      .sk-line,.sk-box,.gal-skel-bg{background:linear-gradient(90deg,#e9e9e9 25%,#f3f3f3 37%,#e9e9e9 63%)!important;background-size:400% 100%!important}
+      .sk-media,.gal-skel{background:#efefef!important}
+      }
+  
+      /* Keep yellow hover only in dark; blue→darker blue in light */
+      @media (prefers-color-scheme: dark){.book-btn:hover{background:#ffe974!important}}
+      @media (prefers-color-scheme: light){.book-btn:hover{background:#095e94!important}}
+  
+      /* Stabilize fixed header on mobile (iOS WebKit quirk) */
+      @media (max-width:768px){.topbar,.topbar-bleed{transform:translateZ(0);-webkit-transform:translateZ(0)}}
+  
+      /* Real cards */
+      .card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .16s ease, box-shadow .16s ease;cursor:default;box-shadow:0 6px 22px rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+      .card:hover{transform:translateY(-6px);box-shadow:0 10px 28px rgba(0,0,0,.9)}
+      .media{width:100%;padding-top:56.25%;position:relative;background:#111}
+      .media img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
+      .card-body{padding:14px;display:flex;flex-direction:column;gap:6px}
+      .event-title{margin:0;font-size:17px;font-weight:700;color:#fff;line-height:1.18}
+      .meta{margin:0;font-size:13.5px;color:var(--muted)}
+      .location{margin:0;font-size:14px;color:var(--muted)}
+      .location a{color:var(--accent);text-decoration:none;font-weight:600}
+      .location a:hover{text-decoration:underline}
+      .event-tagline{font-size:14.5px;color:var(--muted)}
+      .card-footer{padding:12px 14px 18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+      .book-btn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block}
+      .book-btn:hover{background:#ffe974}
+  
+      /* Skeletons — identical structure to cards */
+      .sk-card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 22px rgba(0,0,0,.8)}
+      .sk-media{width:100%;padding-top:56.25%;position:relative;overflow:hidden;background:#111}
+      .sk-body{padding:14px}
+      .sk-footer{padding:12px 14px 18px;display:flex;justify-content:center}
+      .sk-line,
+      .sk-box{border-radius:10px;background:linear-gradient(90deg,#2a2a2a 25%,#333 37%,#2a2a2a 63%);background-size:400% 100%;animation:skshimmer 1.2s infinite}
+      .sk-line{height:12px;margin:8px 0}
+      .sk-line.w-80{width:80%}.sk-line.w-60{width:60%}.sk-line.w-40{width:40%}
+      .sk-btn{width:130px;height:42px}
+      @keyframes skshimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+  
+      /* Mobile layout (real cards & skeletons) */
+      .mobile-info{display:none}
+      .card-date{display:none}
+      @media (max-width:768px){
+        .cards-row{justify-content:center}
+        .card,.sk-card{width:90vw;max-width:400px;height:auto;flex-direction:row;align-items:center;gap:8px;padding:calc(10px + 1vw) calc(8px + 1vw);border-radius:12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+        .media,.sk-media{width:18vw;max-width:72px;aspect-ratio:1/1;height:auto;padding-top:0;border-radius:10px;overflow:hidden;flex-shrink:0;background:#111}
+        .media img{position:static}
+        .card-body,.sk-body{padding:0;display:flex;flex-direction:column;gap:calc(4px + .3vw);flex:1 1 auto}
+        .event-title{font-size:calc(13px + 1.5vw) !important;font-weight:900 !important;color:#fff;margin:0}
+        .meta,.location{display:none}
+        .mobile-info{display:block;font-size:calc(11px + .7vw);color:var(--muted);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw}
+        .mobile-info a{color:var(--accent);text-decoration:none;font-weight:600}
+        .mobile-info a:hover{text-decoration:underline}
+        .card-footer{display:none}
+        .sk-footer{display:none} /* mirror real card on mobile */
+  
+        /* --- MOBILE DATE BOX: ensure visible + typography --- */
+        .card-date{
+          display:flex;
+          width:18vw; max-width:72px;
+          height:auto; aspect-ratio:1/1;
+          flex-direction:column; justify-content:center; align-items:center;
+          border-radius:10px; background:var(--datebox);
+          border:1.5px solid rgba(255,255,255,.08);
+          color:#fff;
+        }
+        .card-date .day{
+          font-weight:800;               /* Bigger + bold */
+          font-size:calc(22px + 2vw);    /* larger number */
+          line-height:1;
+          color:var(--accent);
+        }
+        .card-date .month{
+          font-size:calc(12px + 1vw);    /* smaller month (unchanged size) */
+          line-height:1;
+          color:#fff;
+        }
+  
+        /* --- MOBILE SKELETON SIZE POLISH --- */
+        .sk-line{height:8px;margin:4px 0}
+      }
+  
+      @media (prefers-color-scheme: light){
+        :root{--bg:#f5f5f5;--card:#fff;--muted:#444;--accent:#0a75bc;--datebox:#ececec;--text-main:#181818}
+        body{background:var(--bg);color:var(--text-main)}
+        .animated-text{color:#000}
+        .topbar,.topbar-bleed{background:rgba(255,255,255,.1);color:#181818}
+        .card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 6px 22px rgba(0,0,0,.8)}
+        .event-title{color:#000}
+        .card-date{background:var(--datebox);border:1.5px solid rgba(0,0,0,.03);color:#181818}
+        .card-date .day{color:#0a75bc}
+        .card-date .month{color:#000}
+        .book-btn{color:#fff}
+        .brand{color:#242424}
+      }
+  
+      /* ===== Gallery styles ===== */
+      .gallery-wrap{position:relative;max-width:1200px;margin:0 auto}
+      .gallery-viewport{position:relative;width:100%;border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
+      .gallery-track{display:flex;transition:transform .35s ease;will-change:transform;touch-action:pan-y}
+      .gal-slide{position:relative;flex:0 0 100%;height:0;padding-top:56.25%; /* 16:9 */ overflow:hidden}
+      .gal-bg{position:absolute;inset:0;filter:blur(18px) brightness(.55);transform:scale(1.1);background-size:cover;background-position:center;z-index:0}
+      .gal-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;transition:opacity .2s ease}
+      .gal-slide.portrait .gal-img{object-fit:contain;}
+      
+      /* Desktop arrows */
+      .gal-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:rgba(0,0,0,.35);border:none;color:#fff;font-size:28px;line-height:1;border-radius:10px;padding:10px 14px;cursor:pointer;backdrop-filter:blur(6px)}
+      .gal-prev{left:8px}.gal-next{right:8px}
+      .gal-nav:hover{background:rgba(0,0,0,.5)}
+      @media (max-width:768px){.gal-nav{display:none}} /* mobile: swipe only */
+      
+      /* Skeletons */
+      .gallery-skeletons{display:grid;grid-template-columns:1fr;gap:14px}
+      .gal-skel{position:relative;height:0;padding-top:56.25%;border-radius:12px;overflow:hidden;background:#111}
+      .gal-skel-bg{position:absolute;inset:0;background:linear-gradient(90deg,#2a2a2a 25%,#333 37%,#2a2a2a 63%);background-size:400% 100%;animation:skshimmer 1.2s infinite}
+      
+      /* Lightbox */
+      .gal-lightbox[hidden]{display:none}
+      .gal-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10010;display:flex;align-items:center;justify-content:center}
+      .gal-lightbox-inner{position:relative;width:100%;height:100%}
+      .gal-lightbox-stage{
+        position:absolute; inset:50% auto auto 50%;
+        transform:translate(-50%,-50%);
+        max-width:95vw; max-height:90vh;
+        display:flex; flex-direction:column; align-items:center;
+      }
+      #gal-lightbox-img{
+        max-width:95vw; max-height:80vh; /* leave room for caption */
+        width:auto; height:auto; object-fit:contain; display:block; margin:0 auto;
+      }
+      .gal-lightbox-cap{margin-top:8px;text-align:center;font-size:.95rem;color:#ddd}
+      .gal-lightbox-close,.gal-lightbox-prev,.gal-lightbox-next{
+        position:absolute;top:14px;background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:10px;padding:8px 12px;font-size:22px;cursor:pointer;backdrop-filter:blur(6px)
+      }
+      .gal-lightbox-close{right:14px}
+      .gal-lightbox-prev{left:14px;top:50%;transform:translateY(-50%)}
+      .gal-lightbox-next{right:14px;top:50%;transform:translateY(-50%)}
+      @media (max-width:768px){
+        .gal-lightbox-prev,.gal-lightbox-next{display:none} /* mobile lightbox: swipe */
+      }
+      
+      /* Light theme tweaks */
+      @media (prefers-color-scheme: light){
+        .gal-nav{background:rgba(255,255,255,.6);color:#000}
+        .gal-nav:hover{background:rgba(255,255,255,.8)}
+        .gal-lightbox{background:rgba(255,255,255,.9)}
+        .gal-lightbox-close,.gal-lightbox-prev,.gal-lightbox-next{background:rgba(255,255,255,.7);color:#000}
+        .gal-lightbox-cap{color:#222}
+      }
+      /* ===== /Gallery styles ===== */
+  
+      /* Gallery: cap width on larger screens (Option 2 smaller) */
+      @media (min-width: 992px){ .gallery-wrap { max-width: 720px; } }
+      @media (min-width: 1440px){ .gallery-wrap { max-width: 820px; } }
+  
+      /* Gallery skeletons: single placeholder (matches 1-up slider) */
+      .gallery-skeletons .gal-skel:not(:first-child){
+        display: none;
+      }
+  
+       /* ===== Contact (header stays as-is) ===== */
+      .contact-wrap{max-width:1200px;margin:0 auto;padding:0 12px;}
+      .contact-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;justify-content:center;}
+      .contact-head .logo-lg{width:44px;height:44px;border-radius:10px;object-fit:cover;}
+      .contact-sub{margin:0;font-weight:700;letter-spacing:.6px;color:var(--muted);}
+      
+      /* Unified list for Phone, Email, Instagram, WhatsApp */
+      .contact-list{list-style:none;margin:0;padding:0;display:grid;gap:16px;}
+      .row{display:grid;grid-template-columns:28px 1fr;column-gap:12px;align-items:center;}
+      .icon{width:28px;height:28px;color:var(--accent);}
+      .link{color:var(--text-main);text-decoration:none;font-weight:700;}
+      .link:hover{color:var(--accent);}
+      .email-text{overflow-wrap:anywhere;word-break:break-word;line-break:anywhere;}
+      
+      /* Phone chooser */
+      .phone-wrap{position:relative;}
+      .phone-menu{
+        position:absolute;top:100%;left:40px;margin-top:6px;
+        background:var(--card);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);
+        padding:8px;display:flex;gap:8px;z-index:5;
+      }
+      .phone-menu[hidden]{display:none;}
+      .phone-menu a{display:inline-block;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700;background:rgba(255,255,255,.06);color:var(--text-main) !important;}
+      .phone-menu a:hover{background:rgba(255,255,255,.12);color:var(--accent) !important;}
+      
+      /* Desktop+: center the unified list and let it flow in one line if space allows */
+      @media (min-width:1100px){
+        .contact-list{display:flex;justify-content:center;flex-wrap:wrap;gap:24px 32px;}
+        .row{display:flex;gap:12px;}
+      }
+      
+      /* Light theme tweaks via variables */
+      @media (prefers-color-scheme: light){
+        .contact-head .logo-lg{}
+        .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
+      }
+    </style>
+    <style>
+    /* ---------- Elfsight Google Reviews (TEXT ONLY theming) ---------- */
+    /* Scope: your widget instance */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
+      /* Light defaults */
+      --gl-text: #1a1a1a;        /* main text */
+      --gl-strong: #111111;      /* titles / names / big rating */
+      --gl-muted: #555555;       /* meta: dates, "Posted on", captions */
     }
-    html,body{margin:0;height:100%}
-    body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-
-    .topbar-bleed{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10002;pointer-events:none}
-
-    .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));box-sizing:border-box;z-index:10003;border-bottom:1px solid rgba(255,255,255,.3);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}    .topbar-left{display:flex;align-items:center;height:100%}
-    .logo{height:36px;width:36px;border-radius:8px;margin-right:12px;object-fit:cover}
-    .brand{font-size:1.45rem;font-weight:700;letter-spacing:.5px;color:#fff}
-    @media (max-width:600px){.topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}.logo{height:26px;width:26px;margin-right:8px}.brand{font-size:1rem}}
-    .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
-    @media (max-width:600px){.topbar-spacer{height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}}
-
-    /* Light theme — same frosted glass as the event page */
-    @media (prefers-color-scheme: light){
-      .topbar,
-      .topbar-bleed{
-        background: rgba(255,255,255,.3) !important;
-        border-bottom: 1px solid rgba(0,0,0,.08);
-        -webkit-backdrop-filter: saturate(180%) blur(14px);
-        backdrop-filter: saturate(180%) blur(14px);
+    
+    /* Dark-mode text palette (auto via device theme) */
+    @media (prefers-color-scheme: dark){
+      .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd{
+        --gl-text: #f2f2f2;
+        --gl-strong: #ffffff;
+        --gl-muted: #cccccc;
       }
     }
-
-    .wrap{max-width:1200px;margin:0 auto;padding:20px 18px 0}
-    @media (min-width:769px){.wrap{padding-top:12px}}
-    @media (max-width:768px){.wrap{padding-left:12px !important;padding-right:12px !important;padding-top:14px}}
-
-    .animated-wrapper{width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:8px;padding:0 8px;height:var(--animated-height-desktop);max-height:var(--animated-height-desktop)}
-    @media (max-width:768px){.animated-wrapper{height:var(--animated-height-mobile);margin-bottom:10px;max-height:var(--animated-height-mobile)}}
-    .animated-text{width:100%;max-width:980px;font-weight:700;font-family:'Comfortaa',cursive;font-size:var(--animated-font-size-max);text-transform:uppercase;text-align:center;letter-spacing:2.1px;color:#fff;margin:0;white-space:pre-wrap;line-height:var(--line-height-desktop)}
-    @media (max-width:768px){.animated-text{font-size:clamp(.75rem,4vw,1.05rem);line-height:1.4;letter-spacing:1.4px;padding:0 6px}}
-    @media (prefers-reduced-motion: reduce){ .animated-text{animation:none !important} }
-
-    .divider{width:100%;height:1px;margin:28px 0 18px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow:0 1px 0 rgba(255,255,255,.02) inset;border-radius:1px;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
-    @media (max-width:768px){.divider{margin:10px 0 16px}}
-
-    .title{text-align:center;margin-bottom:18px}
-    .title h2{color:var(--accent);margin:0;font-size:1.9rem;font-weight:700;letter-spacing:.2px}
-
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-
-    .cards-row{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:flex-start}
-
-    /* Light theme: soften skeleton shimmer */
-    @media (prefers-color-scheme: light){
-    .sk-line,.sk-box,.gal-skel-bg{background:linear-gradient(90deg,#e9e9e9 25%,#f3f3f3 37%,#e9e9e9 63%)!important;background-size:400% 100%!important}
-    .sk-media,.gal-skel{background:#efefef!important}
+    
+    /* Apply to common TEXT elements only.
+       Excludes buttons and SVGs (so blue CTA & star icons stay as-is). */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+      :is(h1,h2,h3,h4,h5,h6,p,span,a,small,time,div,li,strong,em)
+      :not([class*="Button"]):not(button):not([role="button"]) {
+      color: var(--gl-text) !important;
     }
-
-    /* Keep yellow hover only in dark; blue→darker blue in light */
-    @media (prefers-color-scheme: dark){.book-btn:hover{background:#ffe974!important}}
-    @media (prefers-color-scheme: light){.book-btn:hover{background:#095e94!important}}
-
-    /* Stabilize fixed header on mobile (iOS WebKit quirk) */
-    @media (max-width:768px){.topbar,.topbar-bleed{transform:translateZ(0);-webkit-transform:translateZ(0)}}
-
-    /* Real cards */
-    .card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:transform .16s ease, box-shadow .16s ease;cursor:default;box-shadow:0 6px 22px rgba(0,0,0,.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-    .card:hover{transform:translateY(-6px);box-shadow:0 10px 28px rgba(0,0,0,.9)}
-    .media{width:100%;padding-top:56.25%;position:relative;background:#111}
-    .media img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover}
-    .card-body{padding:14px;display:flex;flex-direction:column;gap:6px}
-    .event-title{margin:0;font-size:17px;font-weight:700;color:#fff;line-height:1.18}
-    .meta{margin:0;font-size:13.5px;color:var(--muted)}
-    .location{margin:0;font-size:14px;color:var(--muted)}
-    .location a{color:var(--accent);text-decoration:none;font-weight:600}
-    .location a:hover{text-decoration:underline}
-    .event-tagline{font-size:14.5px;color:var(--muted)}
-    .card-footer{padding:12px 14px 18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-    .book-btn{background:var(--accent);color:#000;padding:10px 16px;border-radius:8px;font-weight:700;text-decoration:none;display:inline-block}
-    .book-btn:hover{background:#ffe974}
-
-    /* Skeletons — identical structure to cards */
-    .sk-card{width:340px;background:var(--card);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 6px 22px rgba(0,0,0,.8)}
-    .sk-media{width:100%;padding-top:56.25%;position:relative;overflow:hidden;background:#111}
-    .sk-body{padding:14px}
-    .sk-footer{padding:12px 14px 18px;display:flex;justify-content:center}
-    .sk-line,
-    .sk-box{border-radius:10px;background:linear-gradient(90deg,#2a2a2a 25%,#333 37%,#2a2a2a 63%);background-size:400% 100%;animation:skshimmer 1.2s infinite}
-    .sk-line{height:12px;margin:8px 0}
-    .sk-line.w-80{width:80%}.sk-line.w-60{width:60%}.sk-line.w-40{width:40%}
-    .sk-btn{width:130px;height:42px}
-    @keyframes skshimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
-
-    /* Mobile layout (real cards & skeletons) */
-    .mobile-info{display:none}
-    .card-date{display:none}
-    @media (max-width:768px){
-      .cards-row{justify-content:center}
-      .card,.sk-card{width:90vw;max-width:400px;height:auto;flex-direction:row;align-items:center;gap:8px;padding:calc(10px + 1vw) calc(8px + 1vw);border-radius:12px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-      .media,.sk-media{width:18vw;max-width:72px;aspect-ratio:1/1;height:auto;padding-top:0;border-radius:10px;overflow:hidden;flex-shrink:0;background:#111}
-      .media img{position:static}
-      .card-body,.sk-body{padding:0;display:flex;flex-direction:column;gap:calc(4px + .3vw);flex:1 1 auto}
-      .event-title{font-size:calc(13px + 1.5vw) !important;font-weight:900 !important;color:#fff;margin:0}
-      .meta,.location{display:none}
-      .mobile-info{display:block;font-size:calc(11px + .7vw);color:var(--muted);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90vw}
-      .mobile-info a{color:var(--accent);text-decoration:none;font-weight:600}
-      .mobile-info a:hover{text-decoration:underline}
-      .card-footer{display:none}
-      .sk-footer{display:none} /* mirror real card on mobile */
-
-      /* --- MOBILE DATE BOX: ensure visible + typography --- */
-      .card-date{
-        display:flex;
-        width:18vw; max-width:72px;
-        height:auto; aspect-ratio:1/1;
-        flex-direction:column; justify-content:center; align-items:center;
-        border-radius:10px; background:var(--datebox);
-        border:1.5px solid rgba(255,255,255,.08);
-        color:#fff;
+    
+    /* Stronger headings: reviewer names, titles, big rating values */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+      :is([class*="title"], [class*="name"], [class*="rating"], [class*="score"], [class*="average"]) {
+      color: var(--gl-strong) !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Muted metadata: dates, "Posted on Google", captions, summaries */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+      :is([class*="subtitle"], [class*="meta"], [class*="caption"], [class*="description"], [class*="summary"], [class*="posted"], [class*="date"]) {
+      color: var(--gl-muted) !important;
+    }
+    
+    /* Fix inline-forced black text from Elfsight (don’t touch background) */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+      :is([style*="color:#000"], [style*="color: #000"], [style*="color:#000000"], [style*="color: #000000"], [style*="color:rgb(0,0,0)"], [style*="color: rgb(0, 0, 0)"]) {
+      color: var(--gl-text) !important;
+    }
+    </style>
+    <style>
+    @media (prefers-color-scheme: light){
+      .divider{
+        background: linear-gradient(90deg, rgba(0,0,0,.12), rgba(0,0,0,.06)) !important;
+        box-shadow: 0 1px 0 rgba(0,0,0,.06) inset !important;
       }
-      .card-date .day{
-        font-weight:800;               /* Bigger + bold */
-        font-size:calc(22px + 2vw);    /* larger number */
-        line-height:1;
-        color:var(--accent);
-      }
-      .card-date .month{
-        font-size:calc(12px + 1vw);    /* smaller month (unchanged size) */
-        line-height:1;
-        color:#fff;
-      }
-
-      /* --- MOBILE SKELETON SIZE POLISH --- */
-      .sk-line{height:8px;margin:4px 0}
     }
-
-    @media (prefers-color-scheme: light){
-      :root{--bg:#f5f5f5;--card:#fff;--muted:#444;--accent:#0a75bc;--datebox:#ececec;--text-main:#181818}
-      body{background:var(--bg);color:var(--text-main)}
-      .animated-text{color:#000}
-      .topbar,.topbar-bleed{background:rgba(255,255,255,.1);color:#181818}
-      .card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 6px 22px rgba(0,0,0,.8)}
-      .event-title{color:#000}
-      .card-date{background:var(--datebox);border:1.5px solid rgba(0,0,0,.03);color:#181818}
-      .card-date .day{color:#0a75bc}
-      .card-date .month{color:#000}
-      .book-btn{color:#fff}
-      .brand{color:#242424}
-    }
-
-    /* ===== Gallery styles ===== */
-    .gallery-wrap{position:relative;max-width:1200px;margin:0 auto}
-    .gallery-viewport{position:relative;width:100%;border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
-    .gallery-track{display:flex;transition:transform .35s ease;will-change:transform;touch-action:pan-y}
-    .gal-slide{position:relative;flex:0 0 100%;height:0;padding-top:56.25%; /* 16:9 */ overflow:hidden}
-    .gal-bg{position:absolute;inset:0;filter:blur(18px) brightness(.55);transform:scale(1.1);background-size:cover;background-position:center;z-index:0}
-    .gal-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;transition:opacity .2s ease}
-    .gal-slide.portrait .gal-img{object-fit:contain;}
+    </style>
     
-    /* Desktop arrows */
-    .gal-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;background:rgba(0,0,0,.35);border:none;color:#fff;font-size:28px;line-height:1;border-radius:10px;padding:10px 14px;cursor:pointer;backdrop-filter:blur(6px)}
-    .gal-prev{left:8px}.gal-next{right:8px}
-    .gal-nav:hover{background:rgba(0,0,0,.5)}
-    @media (max-width:768px){.gal-nav{display:none}} /* mobile: swipe only */
-    
-    /* Skeletons */
-    .gallery-skeletons{display:grid;grid-template-columns:1fr;gap:14px}
-    .gal-skel{position:relative;height:0;padding-top:56.25%;border-radius:12px;overflow:hidden;background:#111}
-    .gal-skel-bg{position:absolute;inset:0;background:linear-gradient(90deg,#2a2a2a 25%,#333 37%,#2a2a2a 63%);background-size:400% 100%;animation:skshimmer 1.2s infinite}
-    
-    /* Lightbox */
-    .gal-lightbox[hidden]{display:none}
-    .gal-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10010;display:flex;align-items:center;justify-content:center}
-    .gal-lightbox-inner{position:relative;width:100%;height:100%}
-    .gal-lightbox-stage{
-      position:absolute; inset:50% auto auto 50%;
-      transform:translate(-50%,-50%);
-      max-width:95vw; max-height:90vh;
-      display:flex; flex-direction:column; align-items:center;
-    }
-    #gal-lightbox-img{
-      max-width:95vw; max-height:80vh; /* leave room for caption */
-      width:auto; height:auto; object-fit:contain; display:block; margin:0 auto;
-    }
-    .gal-lightbox-cap{margin-top:8px;text-align:center;font-size:.95rem;color:#ddd}
-    .gal-lightbox-close,.gal-lightbox-prev,.gal-lightbox-next{
-      position:absolute;top:14px;background:rgba(0,0,0,.4);color:#fff;border:none;border-radius:10px;padding:8px 12px;font-size:22px;cursor:pointer;backdrop-filter:blur(6px)
-    }
-    .gal-lightbox-close{right:14px}
-    .gal-lightbox-prev{left:14px;top:50%;transform:translateY(-50%)}
-    .gal-lightbox-next{right:14px;top:50%;transform:translateY(-50%)}
-    @media (max-width:768px){
-      .gal-lightbox-prev,.gal-lightbox-next{display:none} /* mobile lightbox: swipe */
-    }
-    
-    /* Light theme tweaks */
-    @media (prefers-color-scheme: light){
-      .gal-nav{background:rgba(255,255,255,.6);color:#000}
-      .gal-nav:hover{background:rgba(255,255,255,.8)}
-      .gal-lightbox{background:rgba(255,255,255,.9)}
-      .gal-lightbox-close,.gal-lightbox-prev,.gal-lightbox-next{background:rgba(255,255,255,.7);color:#000}
-      .gal-lightbox-cap{color:#222}
-    }
-    /* ===== /Gallery styles ===== */
-
-    /* Gallery: cap width on larger screens (Option 2 smaller) */
-    @media (min-width: 992px){ .gallery-wrap { max-width: 720px; } }
-    @media (min-width: 1440px){ .gallery-wrap { max-width: 820px; } }
-
-    /* Gallery skeletons: single placeholder (matches 1-up slider) */
-    .gallery-skeletons .gal-skel:not(:first-child){
-      display: none;
-    }
-
-     /* ===== Contact (header stays as-is) ===== */
-    .contact-wrap{max-width:1200px;margin:0 auto;padding:0 12px;}
-    .contact-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;justify-content:center;}
-    .contact-head .logo-lg{width:44px;height:44px;border-radius:10px;object-fit:cover;}
-    .contact-sub{margin:0;font-weight:700;letter-spacing:.6px;color:var(--muted);}
-    
-    /* Unified list for Phone, Email, Instagram, WhatsApp */
-    .contact-list{list-style:none;margin:0;padding:0;display:grid;gap:16px;}
-    .row{display:grid;grid-template-columns:28px 1fr;column-gap:12px;align-items:center;}
-    .icon{width:28px;height:28px;color:var(--accent);}
-    .link{color:var(--text-main);text-decoration:none;font-weight:700;}
-    .link:hover{color:var(--accent);}
-    .email-text{overflow-wrap:anywhere;word-break:break-word;line-break:anywhere;}
-    
-    /* Phone chooser */
-    .phone-wrap{position:relative;}
-    .phone-menu{
-      position:absolute;top:100%;left:40px;margin-top:6px;
-      background:var(--card);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);
-      padding:8px;display:flex;gap:8px;z-index:5;
-    }
-    .phone-menu[hidden]{display:none;}
-    .phone-menu a{display:inline-block;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700;background:rgba(255,255,255,.06);color:var(--text-main) !important;}
-    .phone-menu a:hover{background:rgba(255,255,255,.12);color:var(--accent) !important;}
-    
-    /* Desktop+: center the unified list and let it flow in one line if space allows */
-    @media (min-width:1100px){
-      .contact-list{display:flex;justify-content:center;flex-wrap:wrap;gap:24px 32px;}
-      .row{display:flex;gap:12px;}
-    }
-    
-    /* Light theme tweaks via variables */
-    @media (prefers-color-scheme: light){
-      .contact-head .logo-lg{}
-      .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
-    }
-  </style>
-  <style>
-  /* ---------- Elfsight Google Reviews (TEXT ONLY theming) ---------- */
-  /* Scope: your widget instance */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
-    /* Light defaults */
-    --gl-text: #1a1a1a;        /* main text */
-    --gl-strong: #111111;      /* titles / names / big rating */
-    --gl-muted: #555555;       /* meta: dates, "Posted on", captions */
-  }
+  </head>
+  <body>
+    <div class="topbar-bleed" aria-hidden="true"></div>
+    <header class="topbar" role="banner">
+      <div class="topbar-left">
+        <img src="https://ik.imagekit.io/gameslab/tr:w-36,q-100,f-auto/Games_Lab_Logo.png" alt="Games Lab Logo" class="logo" width="36" height="36"/>
+        <span class="brand">Games Lab</span>
+      </div>
+    </header>
+    <div class="topbar-spacer" aria-hidden="true"></div>
   
-  /* Dark-mode text palette (auto via device theme) */
-  @media (prefers-color-scheme: dark){
-    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd{
-      --gl-text: #f2f2f2;
-      --gl-strong: #ffffff;
-      --gl-muted: #cccccc;
-    }
-  }
+    <main class="wrap" role="main">
+      <h1 class="sr-only">Games Lab — Events & Experiences</h1>
   
-  /* Apply to common TEXT elements only.
-     Excludes buttons and SVGs (so blue CTA & star icons stay as-is). */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    :is(h1,h2,h3,h4,h5,h6,p,span,a,small,time,div,li,strong,em)
-    :not([class*="Button"]):not(button):not([role="button"]) {
-    color: var(--gl-text) !important;
-  }
+      <!-- Animated headline (one-time typing; preserves line breaks) -->
+      <div class="animated-wrapper" aria-live="polite">
+        <div class="animated-text"></div>
+      </div>
   
-  /* Stronger headings: reviewer names, titles, big rating values */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    :is([class*="title"], [class*="name"], [class*="rating"], [class*="score"], [class*="average"]) {
-    color: var(--gl-strong) !important;
-    font-weight: 600 !important;
-  }
+      <div class="divider" aria-hidden="true"></div>
+      <div class="title"><h2>Upcoming Events</h2></div>
   
-  /* Muted metadata: dates, "Posted on Google", captions, summaries */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    :is([class*="subtitle"], [class*="meta"], [class*="caption"], [class*="description"], [class*="summary"], [class*="posted"], [class*="date"]) {
-    color: var(--gl-muted) !important;
-  }
+      <div id="events" class="cards-row" aria-live="polite"></div>
   
-  /* Fix inline-forced black text from Elfsight (don’t touch background) */
-  .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
-    :is([style*="color:#000"], [style*="color: #000"], [style*="color:#000000"], [style*="color: #000000"], [style*="color:rgb(0,0,0)"], [style*="color: rgb(0, 0, 0)"]) {
-    color: var(--gl-text) !important;
-  }
-  </style>
-  <style>
-  @media (prefers-color-scheme: light){
-    .divider{
-      background: linear-gradient(90deg, rgba(0,0,0,.12), rgba(0,0,0,.06)) !important;
-      box-shadow: 0 1px 0 rgba(0,0,0,.06) inset !important;
-    }
-  }
-  </style>
+      <div class="divider" style="margin-top:40px;"></div>
+      <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
+      <div id="explore-cards" class="cards-row"></div>
   
-</head>
-<body>
-  <div class="topbar-bleed" aria-hidden="true"></div>
-  <header class="topbar" role="banner">
-    <div class="topbar-left">
-      <img src="https://ik.imagekit.io/gameslab/tr:w-36,q-100,f-auto/Games_Lab_Logo.png" alt="Games Lab Logo" class="logo" width="36" height="36"/>
-      <span class="brand">Games Lab</span>
-    </div>
-  </header>
-  <div class="topbar-spacer" aria-hidden="true"></div>
-
-  <main class="wrap" role="main">
-    <h1 class="sr-only">Games Lab — Events & Experiences</h1>
-
-    <!-- Animated headline (one-time typing; preserves line breaks) -->
-    <div class="animated-wrapper" aria-live="polite">
-      <div class="animated-text"></div>
-    </div>
-
-    <div class="divider" aria-hidden="true"></div>
-    <div class="title"><h2>Upcoming Events</h2></div>
-
-    <div id="events" class="cards-row" aria-live="polite"></div>
-
-    <div class="divider" style="margin-top:40px;"></div>
-    <div class="title" style="margin-top:40px;"><h2>Explore Our Other Events</h2></div>
-    <div id="explore-cards" class="cards-row"></div>
-
-    <!-- ===== Gallery ===== -->
-<div class="divider" style="margin-top:40px;"></div>
-<div class="title" style="margin-top:40px;"><h2>Gallery</h2></div>
-
-<div id="gallery" class="gallery-wrap">
-  <!-- Desktop arrows (hidden on mobile) -->
-  <button class="gal-nav gal-prev" aria-label="Previous image">&lsaquo;</button>
-  <button class="gal-nav gal-next" aria-label="Next image">&rsaquo;</button>
-
-  <!-- Skeletons while CSV loads -->
-  <div id="gallery-skeletons" class="gallery-skeletons">
-    <div class="gal-skel"><div class="gal-skel-bg"></div></div>
-    <div class="gal-skel"><div class="gal-skel-bg"></div></div>
-    <div class="gal-skel"><div class="gal-skel-bg"></div></div>
-    <div class="gal-skel"><div class="gal-skel-bg"></div></div>
-    <div class="gal-skel"><div class="gal-skel-bg"></div></div>
-    <div class="gal-skel"><div class="gal-skel-bg"></div></div>
-  </div>
-
-  <!-- Slider -->
-  <div class="gallery-viewport">
-    <div class="gallery-track" id="gallery-track" aria-live="polite"></div>
-  </div>
-</div>
-
-<!-- Lightbox -->
-<div id="gal-lightbox" class="gal-lightbox" hidden>
-  <div class="gal-lightbox-inner">
-    <button class="gal-lightbox-close" aria-label="Close">&times;</button>
-    <button class="gal-lightbox-prev" aria-label="Previous">&lsaquo;</button>
-    <button class="gal-lightbox-next" aria-label="Next">&rsaquo;</button>
-    <div class="gal-lightbox-stage">
-      <img id="gal-lightbox-img" alt="">
-      <div id="gal-lightbox-cap" class="gal-lightbox-cap"></div>
-    </div>
-  </div>
-</div>
-<!-- ===== /Gallery ===== -->
-
-
-    <div class="divider" style="margin-top:40px;"></div>
-    <div class="title" style="margin-top:40px;"><h2>About Us</h2></div>
-    <div style="max-width:800px;margin:0 auto;text-align:justify;white-space:pre-line;line-height:1.6;font-size:1rem;padding:0 10px;">
-Games Lab is a group of fun loving people organizing fun events throughout the year. We aim to make life happier and lighter for all who join us. We strive for unique experiences, memorable time, and widest smiles.
-
-Games Lab uses innovative ideas and curates the best social experiences for people. We give unique twists to world renowned games and help people stay happening.
-
-Instead of the typical alcohol-focused gatherings, we bring people together through the joy of fun events and workshops. Whether it’s Mafia, Game Night, Interactive Challenges or Workshops, this community creates a fun and inclusive environment where everyone can relax and connect.
-
-Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly competition. At our events discover a refreshing alternative to traditional socializing, where friendships take center stage and lasting memories are made.
-    </div>
-    <div class="divider" style="margin-top:40px;"></div>
-    <div class="title" style="margin-top:40px;"><h2>What Our Attendees Say</h2></div>
-    <!-- Elfsight Google Reviews | Games Lab reviews -->
-  <div class="elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd"></div>
+      <!-- ===== Gallery ===== -->
   <div class="divider" style="margin-top:40px;"></div>
-  <div class="title" style="margin-top:40px;"><h2>Contact Us</h2></div>
+  <div class="title" style="margin-top:40px;"><h2>Gallery</h2></div>
   
-  <section class="contact-wrap" aria-labelledby="contact-title">
-    <div class="contact-head">
-      <img class="logo-lg"
-           src="https://ik.imagekit.io/gameslab/tr:w-88,q-100,f-auto/Games_Lab_Logo.png"
-           width="44" height="44" alt="Games Lab logo" />
-      <p id="contact-title" class="contact-sub">REACH OUT TO US!</p>
+  <div id="gallery" class="gallery-wrap">
+    <!-- Desktop arrows (hidden on mobile) -->
+    <button class="gal-nav gal-prev" aria-label="Previous image">&lsaquo;</button>
+    <button class="gal-nav gal-next" aria-label="Next image">&rsaquo;</button>
+  
+    <!-- Skeletons while CSV loads -->
+    <div id="gallery-skeletons" class="gallery-skeletons">
+      <div class="gal-skel"><div class="gal-skel-bg"></div></div>
+      <div class="gal-skel"><div class="gal-skel-bg"></div></div>
+      <div class="gal-skel"><div class="gal-skel-bg"></div></div>
+      <div class="gal-skel"><div class="gal-skel-bg"></div></div>
+      <div class="gal-skel"><div class="gal-skel-bg"></div></div>
+      <div class="gal-skel"><div class="gal-skel-bg"></div></div>
     </div>
   
-    <ul class="contact-list">
-      <!-- Phone (with chooser) -->
-      <li class="row phone-wrap">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2Z"/></svg>
-        <a id="phone-link" class="link" href="tel:+917676099857" data-tel="+917676099857">+91&nbsp;76760&nbsp;99857</a>
-        <div id="phone-menu" class="phone-menu" hidden>
-          <a id="call-now" href="tel:+917676099857">Call</a>
-          <a id="wa-now"   href="https://wa.me/917676099857" target="_blank" rel="noopener">WhatsApp</a>
-        </div>
-      </li>
+    <!-- Slider -->
+    <div class="gallery-viewport">
+      <div class="gallery-track" id="gallery-track" aria-live="polite"></div>
+    </div>
+  </div>
   
-      <!-- Email -->
-      <li class="row">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 13 2 6.76V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6.76L12 13Zm0-2.47L22 4H2l10 6.53Z"/></svg>
-        <a class="link email-text" href="mailto:gameslab.bangalore@gmail.com">gameslab.bangalore@gmail.com</a>
-      </li>
+  <!-- Lightbox -->
+  <div id="gal-lightbox" class="gal-lightbox" hidden>
+    <div class="gal-lightbox-inner">
+      <button class="gal-lightbox-close" aria-label="Close">&times;</button>
+      <button class="gal-lightbox-prev" aria-label="Previous">&lsaquo;</button>
+      <button class="gal-lightbox-next" aria-label="Next">&rsaquo;</button>
+      <div class="gal-lightbox-stage">
+        <img id="gal-lightbox-img" alt="">
+        <div id="gal-lightbox-cap" class="gal-lightbox-cap"></div>
+      </div>
+    </div>
+  </div>
+  <!-- ===== /Gallery ===== -->
   
-      <!-- Instagram -->
-      <li class="row">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.25-2.75a.75.75 0 1 1-.75.75.75.75 0 0 1 .75-.75Z"/></svg>
-        <a class="link" href="https://www.instagram.com/games._.lab/" target="_blank" rel="noopener">Follow Us</a>
-      </li>
   
-      <!-- WhatsApp Community -->
-      <li class="row">
-        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
-        <a class="link" href="https://chat.whatsapp.com/BDglWOECbIiGLaCRVmzAaj" target="_blank" rel="noopener">Join our Community</a>
-      </li>
-    </ul>
-  </section>
-  <div class="divider" style="margin-top:40px;"></div>
-
-  </main>
-
-  <!-- One-time typing animation (keeps original line breaks) -->
-  <script>
-    (function(){
-      const lines = [
-        'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
-      ];
-      const msg = lines.join('\n');
-      const el = document.querySelector('.animated-text');
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      el.textContent = msg;          // fallback visible
-      if (reduceMotion) return;
-
-      // one-shot typing
-      let i = 0;
-      const delay = 55;
-      el.textContent = '';
-      (function typeOnce(){
-        if (i <= msg.length) {
-          el.textContent = msg.substring(0, i);
-          i++;
-          setTimeout(typeOnce, delay);
+      <div class="divider" style="margin-top:40px;"></div>
+      <div class="title" style="margin-top:40px;"><h2>About Us</h2></div>
+      <div style="max-width:800px;margin:0 auto;text-align:justify;white-space:pre-line;line-height:1.6;font-size:1rem;padding:0 10px;">
+  Games Lab is a group of fun loving people organizing fun events throughout the year. We aim to make life happier and lighter for all who join us. We strive for unique experiences, memorable time, and widest smiles.
+  
+  Games Lab uses innovative ideas and curates the best social experiences for people. We give unique twists to world renowned games and help people stay happening.
+  
+  Instead of the typical alcohol-focused gatherings, we bring people together through the joy of fun events and workshops. Whether it’s Mafia, Game Night, Interactive Challenges or Workshops, this community creates a fun and inclusive environment where everyone can relax and connect.
+  
+  Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly competition. At our events discover a refreshing alternative to traditional socializing, where friendships take center stage and lasting memories are made.
+      </div>
+      <div class="divider" style="margin-top:40px;"></div>
+      <div class="title" style="margin-top:40px;"><h2>What Our Attendees Say</h2></div>
+      <!-- Elfsight Google Reviews | Games Lab reviews -->
+    <div class="elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd"></div>
+    <div class="divider" style="margin-top:40px;"></div>
+    <div class="title" style="margin-top:40px;"><h2>Contact Us</h2></div>
+    
+    <section class="contact-wrap" aria-labelledby="contact-title">
+      <div class="contact-head">
+        <img class="logo-lg"
+             src="https://ik.imagekit.io/gameslab/tr:w-88,q-100,f-auto/Games_Lab_Logo.png"
+             width="44" height="44" alt="Games Lab logo" />
+        <p id="contact-title" class="contact-sub">REACH OUT TO US!</p>
+      </div>
+    
+      <ul class="contact-list">
+        <!-- Phone (with chooser) -->
+        <li class="row phone-wrap">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2Z"/></svg>
+          <a id="phone-link" class="link" href="tel:+917676099857" data-tel="+917676099857">+91&nbsp;76760&nbsp;99857</a>
+          <div id="phone-menu" class="phone-menu" hidden>
+            <a id="call-now" href="tel:+917676099857">Call</a>
+            <a id="wa-now"   href="https://wa.me/917676099857" target="_blank" rel="noopener">WhatsApp</a>
+          </div>
+        </li>
+    
+        <!-- Email -->
+        <li class="row">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 13 2 6.76V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6.76L12 13Zm0-2.47L22 4H2l10 6.53Z"/></svg>
+          <a class="link email-text" href="mailto:gameslab.bangalore@gmail.com">gameslab.bangalore@gmail.com</a>
+        </li>
+    
+        <!-- Instagram -->
+        <li class="row">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.25-2.75a.75.75 0 1 1-.75.75.75.75 0 0 1 .75-.75Z"/></svg>
+          <a class="link" href="https://www.instagram.com/games._.lab/" target="_blank" rel="noopener">Follow Us</a>
+        </li>
+    
+        <!-- WhatsApp Community -->
+        <li class="row">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
+          <a class="link" href="https://chat.whatsapp.com/BDglWOECbIiGLaCRVmzAaj" target="_blank" rel="noopener">Join our Community</a>
+        </li>
+      </ul>
+    </section>
+    <div class="divider" style="margin-top:40px;"></div>
+  
+    </main>
+  
+    <!-- One-time typing animation (keeps original line breaks) -->
+    <script>
+      (function(){
+        const lines = [
+          'IF "HOW TO HAVE A GOOD TIME ?"','IS THE QUESTION,','WE ARE THE ANSWER'
+        ];
+        const msg = lines.join('\n');
+        const el = document.querySelector('.animated-text');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        el.textContent = msg;          // fallback visible
+        if (reduceMotion) return;
+  
+        // one-shot typing
+        let i = 0;
+        const delay = 55;
+        el.textContent = '';
+        (function typeOnce(){
+          if (i <= msg.length) {
+            el.textContent = msg.substring(0, i);
+            i++;
+            setTimeout(typeOnce, delay);
+          }
+        })();
+      })();
+    </script>
+  
+    <script>
+      // ------- reusable skeleton helpers (dynamic exact-match, matching layout) -------
+      function createSkeletonCard(){
+        const sk = document.createElement('div');
+        sk.className = 'sk-card';
+        sk.innerHTML = `
+          <div class="sk-media"></div>
+          <div class="sk-body">
+            <div class="sk-line w-80"></div>
+            <div class="sk-line w-60"></div>
+            <div class="sk-line w-40"></div>
+          </div>
+          <div class="sk-footer">
+            <div class="sk-box sk-btn"></div>
+          </div>
+        `;
+        return sk;
+      }
+      function setSkeletons(container, count){
+        container.innerHTML = '';
+        for(let i=0;i<count;i++) container.appendChild(createSkeletonCard());
+      }
+      function replaceSkeletonWithCard(container, index, cardEl){
+        const sk = container.children[index];
+        if (sk) container.replaceChild(cardEl, sk);
+        else container.appendChild(cardEl);
+      }
+    </script>
+  
+    <!-- Upcoming Events -->
+    <script>
+      (async function(){
+        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+        const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+        const container = document.getElementById("events");
+  
+        // show a small default immediately
+        setSkeletons(container, 3);
+  
+        function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^\"|\"$/g, ''); }
+        function parseEventDate(str) {
+          if (!str) return null;
+          str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '').replace(/’/g,"'").replace(/`/g,"'");
+          const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+          if (!parts) return null;
+          const [_, day, monthStr, yearStr] = parts;
+          const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
+          if (month === undefined) return null;
+          const year = 2000 + parseInt(yearStr, 10);
+          return new Date(year, month, parseInt(day, 10));
+        }
+  
+        try{
+          const res = await fetch(csvUrl + '&cb=' + Date.now(), { cache: "no-store" });
+          if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
+          const csvText = await res.text();
+  
+          const parsed = Papa.parse(csvText, {skipEmptyLines:true});
+          const rows = parsed.data || [];
+          if (rows.length < 2) {
+            container.innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
+            return;
+          }
+  
+          const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
+          const today = new Date(); today.setHours(0,0,0,0);
+  
+          // Build list first so we know the exact count
+          const items = [];
+          dataRows.sort((a,b)=>{
+            const da = parseEventDate(clean(a[1]));
+            const db = parseEventDate(clean(b[1]));
+            if(!da) return 1; if(!db) return -1; return da - db;
+          }).forEach(cols=>{
+            const dateObj = parseEventDate(clean(cols[1]));
+            if(!dateObj) return;
+            dateObj.setHours(0,0,0,0);
+            if(dateObj < today) return;
+            items.push(cols);
+          });
+  
+          // Set skeletons to the exact count now
+          if (items.length > 0) setSkeletons(container, items.length);
+  
+          // Render and swap each skeleton for its card
+          items.forEach((cols, idx)=>{
+            const name = clean(cols[0]);
+            const date = clean(cols[1]);
+            const time = clean(cols[2]);
+            const locText = clean(cols[3]);
+            const locLink = clean(cols[4]);
+            const ticket = clean(cols[5]) || "#";
+            const image = clean(cols[6]) || fallbackImage;
+            const pageLink = (cols[7]!==undefined)?clean(cols[7]):"";
+            const eventDateObj = parseEventDate(date);
+  
+            const card = document.createElement("article");
+            card.className = "card";
+  
+            const media = document.createElement("div");
+            media.className = "media";
+            const img = document.createElement("img");
+            img.loading = "lazy"; img.src = image; img.alt = name || "Event image";
+            img.width = 800; img.height = 450;
+            img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+            media.appendChild(img);
+            card.appendChild(media);
+  
+            const body = document.createElement("div");
+            body.className = "card-body";
+  
+            const h = document.createElement("h3");
+            h.className = "event-title";
+            /* Title is plain text now (no link) */
+            h.textContent = name || "Untitled Event";
+            body.appendChild(h);
+  
+            const meta = document.createElement("p");
+            meta.className = "meta";
+            meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
+            body.appendChild(meta);
+  
+            if (locText || locLink) {
+              const locP = document.createElement("p");
+              locP.className = "location";
+              const a = document.createElement("a");
+              a.href = locLink || "#"; a.target = "_blank"; a.rel = "noopener noreferrer";
+              a.textContent = locText;
+              locP.appendChild(a);
+              body.appendChild(locP);
+            }
+  
+            const mobileInfo = document.createElement("p");
+            mobileInfo.className = "mobile-info";
+            if (locText) {
+              const a2 = document.createElement("a");
+              a2.href = locLink || "#"; a2.target = "_blank"; a2.rel = "noopener noreferrer";
+              a2.textContent = locText;
+              mobileInfo.appendChild(a2);
+            }
+            if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
+            if (time) mobileInfo.appendChild(document.createTextNode(time));
+            body.appendChild(mobileInfo);
+  
+            card.appendChild(body);
+  
+            if (eventDateObj) {
+              const dayNum = eventDateObj.getDate();
+              const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
+              const dateBox = document.createElement("div");
+              dateBox.className = "card-date";
+              dateBox.innerHTML =
+                `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
+                `<div class="month">${monthShort}</div>` +
+                `<div class="time"></div>`;
+              card.appendChild(dateBox);
+            }
+  
+            const footer = document.createElement("div");
+            footer.className = "card-footer";
+            if (ticket && ticket !== "#") {
+              const btn = document.createElement("a");
+              btn.className = "book-btn";
+              btn.href = ticket; btn.target = "_blank"; btn.rel = "noopener noreferrer";
+              btn.textContent = "Book Now";
+              footer.appendChild(btn);
+            }
+            card.appendChild(footer);
+  
+            // Mobile full-card tap -> ticket (if present)
+            card.addEventListener('click', function(e) {
+              if (e.target.closest('a,button')) return;
+              if (window.innerWidth <= 768) {
+                if (ticket && ticket !== "#") window.open(ticket, '_blank');
+              }
+            });
+  
+            replaceSkeletonWithCard(container, idx, card);
+          });
+  
+          if (items.length === 0) {
+            container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
+          }
+        } catch (err) {
+          console.error('Upcoming events error:', err);
+          container.innerHTML = '<p style="color:#f66">Could not load events — check the CSV publish link and CSP settings.</p>';
         }
       })();
-    })();
-  </script>
-
-  <script>
-    // ------- reusable skeleton helpers (dynamic exact-match, matching layout) -------
-    function createSkeletonCard(){
-      const sk = document.createElement('div');
-      sk.className = 'sk-card';
-      sk.innerHTML = `
-        <div class="sk-media"></div>
-        <div class="sk-body">
-          <div class="sk-line w-80"></div>
-          <div class="sk-line w-60"></div>
-          <div class="sk-line w-40"></div>
-        </div>
-        <div class="sk-footer">
-          <div class="sk-box sk-btn"></div>
-        </div>
-      `;
-      return sk;
-    }
-    function setSkeletons(container, count){
-      container.innerHTML = '';
-      for(let i=0;i<count;i++) container.appendChild(createSkeletonCard());
-    }
-    function replaceSkeletonWithCard(container, index, cardEl){
-      const sk = container.children[index];
-      if (sk) container.replaceChild(cardEl, sk);
-      else container.appendChild(cardEl);
-    }
-  </script>
-
-  <!-- Upcoming Events -->
-  <script>
-    (async function(){
-      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-      const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
-      const container = document.getElementById("events");
-
-      // show a small default immediately
-      setSkeletons(container, 3);
-
-      function clean(v){ if (v === undefined || v === null) return ""; return String(v).trim().replace(/^\"|\"$/g, ''); }
-      function parseEventDate(str) {
-        if (!str) return null;
-        str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '').replace(/’/g,"'").replace(/`/g,"'");
-        const parts = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-        if (!parts) return null;
-        const [_, day, monthStr, yearStr] = parts;
-        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[monthStr];
-        if (month === undefined) return null;
-        const year = 2000 + parseInt(yearStr, 10);
-        return new Date(year, month, parseInt(day, 10));
-      }
-
-      try{
-        const res = await fetch(csvUrl + '&cb=' + Date.now(), { cache: "no-store" });
-        if(!res.ok) throw new Error("CSV fetch failed: " + res.status);
-        const csvText = await res.text();
-
-        const parsed = Papa.parse(csvText, {skipEmptyLines:true});
-        const rows = parsed.data || [];
-        if (rows.length < 2) {
-          container.innerHTML = '<p style="color:#bbb">No events found in the sheet.</p>';
-          return;
-        }
-
-        const dataRows = rows.slice(1).filter(r => r && r[0] && String(r[0]).trim() !== "");
-        const today = new Date(); today.setHours(0,0,0,0);
-
-        // Build list first so we know the exact count
-        const items = [];
-        dataRows.sort((a,b)=>{
-          const da = parseEventDate(clean(a[1]));
-          const db = parseEventDate(clean(b[1]));
-          if(!da) return 1; if(!db) return -1; return da - db;
-        }).forEach(cols=>{
-          const dateObj = parseEventDate(clean(cols[1]));
-          if(!dateObj) return;
-          dateObj.setHours(0,0,0,0);
-          if(dateObj < today) return;
-          items.push(cols);
-        });
-
-        // Set skeletons to the exact count now
-        if (items.length > 0) setSkeletons(container, items.length);
-
-        // Render and swap each skeleton for its card
-        items.forEach((cols, idx)=>{
-          const name = clean(cols[0]);
-          const date = clean(cols[1]);
-          const time = clean(cols[2]);
-          const locText = clean(cols[3]);
-          const locLink = clean(cols[4]);
-          const ticket = clean(cols[5]) || "#";
-          const image = clean(cols[6]) || fallbackImage;
-          const pageLink = (cols[7]!==undefined)?clean(cols[7]):"";
-          const eventDateObj = parseEventDate(date);
-
-          const card = document.createElement("article");
-          card.className = "card";
-
-          const media = document.createElement("div");
-          media.className = "media";
-          const img = document.createElement("img");
-          img.loading = "lazy"; img.src = image; img.alt = name || "Event image";
-          img.width = 800; img.height = 450;
-          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
-          media.appendChild(img);
-          card.appendChild(media);
-
-          const body = document.createElement("div");
-          body.className = "card-body";
-
-          const h = document.createElement("h3");
-          h.className = "event-title";
-          /* Title is plain text now (no link) */
-          h.textContent = name || "Untitled Event";
-          body.appendChild(h);
-
-          const meta = document.createElement("p");
-          meta.className = "meta";
-          meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
-          body.appendChild(meta);
-
-          if (locText || locLink) {
-            const locP = document.createElement("p");
-            locP.className = "location";
-            const a = document.createElement("a");
-            a.href = locLink || "#"; a.target = "_blank"; a.rel = "noopener noreferrer";
-            a.textContent = locText;
-            locP.appendChild(a);
-            body.appendChild(locP);
-          }
-
-          const mobileInfo = document.createElement("p");
-          mobileInfo.className = "mobile-info";
-          if (locText) {
-            const a2 = document.createElement("a");
-            a2.href = locLink || "#"; a2.target = "_blank"; a2.rel = "noopener noreferrer";
-            a2.textContent = locText;
-            mobileInfo.appendChild(a2);
-          }
-          if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
-          if (time) mobileInfo.appendChild(document.createTextNode(time));
-          body.appendChild(mobileInfo);
-
-          card.appendChild(body);
-
-          if (eventDateObj) {
-            const dayNum = eventDateObj.getDate();
-            const monthShort = eventDateObj.toLocaleString('en-US', { month: 'short' });
-            const dateBox = document.createElement("div");
-            dateBox.className = "card-date";
-            dateBox.innerHTML =
-              `<div class="day">${String(dayNum).padStart(2,'0')}</div>` +
-              `<div class="month">${monthShort}</div>` +
-              `<div class="time"></div>`;
-            card.appendChild(dateBox);
-          }
-
-          const footer = document.createElement("div");
-          footer.className = "card-footer";
-          if (ticket && ticket !== "#") {
-            const btn = document.createElement("a");
-            btn.className = "book-btn";
-            btn.href = ticket; btn.target = "_blank"; btn.rel = "noopener noreferrer";
-            btn.textContent = "Book Now";
-            footer.appendChild(btn);
-          }
-          card.appendChild(footer);
-
-          // Mobile full-card tap -> ticket (if present)
-          card.addEventListener('click', function(e) {
-            if (e.target.closest('a,button')) return;
-            if (window.innerWidth <= 768) {
-              if (ticket && ticket !== "#") window.open(ticket, '_blank');
+    </script>
+  
+    <!-- Explore (unchanged, titles already plain text) -->
+    <script>
+      (async function() {
+        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
+        const container = document.getElementById('explore-cards');
+        const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
+  
+        setSkeletons(container, 3);
+  
+        try {
+          const res = await fetch(csvUrl + '&cb=' + Date.now(), { cache: "no-store" });
+          if (!res.ok) throw new Error("Failed to fetch explore events");
+          const csvText = await res.text();
+          const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+  
+          const items = parsed.data.filter(event =>
+            event && (event['Scheduled'] || '').trim().toLowerCase() === 'no'
+          );
+  
+          if (items.length > 0) setSkeletons(container, items.length);
+  
+          items.forEach((event, idx) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+  
+            const media = document.createElement('div');
+            media.className = 'media';
+            const img = document.createElement('img');
+            img.src = (event['Image Links'] || '').trim() || fallbackImage;
+            img.alt = (event['Event'] || '').trim();
+            img.loading = "lazy"; img.width = 800; img.height = 450;
+            img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
+            media.appendChild(img);
+            card.appendChild(media);
+  
+            const body = document.createElement('div');
+            body.className = 'card-body';
+  
+            const title = document.createElement('div');
+            title.className = 'event-title';
+            title.textContent = (event['Event'] || '').trim();
+            body.appendChild(title);
+  
+            if (event['Tagline'] && String(event['Tagline']).trim() !== '') {
+              const tagline = document.createElement('div');
+              tagline.className = 'event-tagline';
+              tagline.textContent = String(event['Tagline']).trim();
+              body.appendChild(tagline);
             }
-          });
+  
+            card.appendChild(body);
+  
+            const footer = document.createElement('div');
+            footer.className = 'card-footer';
+            const learn = document.createElement('a');
+            learn.className = 'book-btn';  // same styling as Book Now
+            learn.href = (event['Page Link'] || '#').trim();
+            // open in the same tab:
+            learn.removeAttribute('target');
+            learn.removeAttribute('rel');
+            learn.textContent = 'Learn More';
 
-          replaceSkeletonWithCard(container, idx, card);
-        });
-
-        if (items.length === 0) {
-          container.innerHTML = '<p style="color:#bbb">No upcoming events.</p>';
-        }
-      } catch (err) {
-        console.error('Upcoming events error:', err);
-        container.innerHTML = '<p style="color:#f66">Could not load events — check the CSV publish link and CSP settings.</p>';
-      }
-    })();
-  </script>
-
-  <!-- Explore (unchanged, titles already plain text) -->
-  <script>
-    (async function() {
-      const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=583837785&single=true&output=csv";
-      const container = document.getElementById('explore-cards');
-      const fallbackImage = "https://via.placeholder.com/800x450?text=Event+Image";
-
-      setSkeletons(container, 3);
-
-      try {
-        const res = await fetch(csvUrl + '&cb=' + Date.now(), { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to fetch explore events");
-        const csvText = await res.text();
-        const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-
-        const items = parsed.data.filter(event =>
-          event && (event['Scheduled'] || '').trim().toLowerCase() === 'no'
-        );
-
-        if (items.length > 0) setSkeletons(container, items.length);
-
-        items.forEach((event, idx) => {
-          const card = document.createElement('div');
-          card.className = 'card';
-
-          const media = document.createElement('div');
-          media.className = 'media';
-          const img = document.createElement('img');
-          img.src = (event['Image Links'] || '').trim() || fallbackImage;
-          img.alt = (event['Event'] || '').trim();
-          img.loading = "lazy"; img.width = 800; img.height = 450;
-          img.onerror = function(){ this.onerror=null; this.src = fallbackImage; };
-          media.appendChild(img);
-          card.appendChild(media);
-
-          const body = document.createElement('div');
-          body.className = 'card-body';
-
-          const title = document.createElement('div');
-          title.className = 'event-title';
-          title.textContent = (event['Event'] || '').trim();
-          body.appendChild(title);
-
-          if (event['Tagline'] && String(event['Tagline']).trim() !== '') {
-            const tagline = document.createElement('div');
-            tagline.className = 'event-tagline';
-            tagline.textContent = String(event['Tagline']).trim();
-            body.appendChild(tagline);
-          }
-
-          card.appendChild(body);
-
-          const footer = document.createElement('div');
-          footer.className = 'card-footer';
-          const learn = document.createElement('a');
-          learn.className = 'book-btn';  // same styling as Book Now
-          learn.href = (event['Page Link'] || '#').trim();
-          learn.target = '_blank';
-          learn.rel = 'noopener noreferrer';
-          learn.textContent = 'Learn More';
-          footer.appendChild(learn);
-          card.appendChild(footer);
-
-          card.addEventListener('click', function(e) {
-            if (e.target.closest('a')) return;
-            if (window.innerWidth <= 768) {
+            card.addEventListener('click', function(e) {
+              if (e.target.closest('a')) return;
+              if (window.innerWidth <= 768) {
               const url = (event['Page Link'] || '').trim();
-              if (url) window.open(url, '_blank');
+              if (url) window.location.href = url; // same tab
             }
+            });
+  
+            replaceSkeletonWithCard(container, idx, card);
           });
-
-          replaceSkeletonWithCard(container, idx, card);
-        });
-
-        if (!items.length) {
-          container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
-        }
-      } catch (err) {
-        console.error('Error loading explore events:', err);
-        container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
-      }
-    })();
-  </script>
-
-<script>
-(function(){
-  const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1078145247&single=true&output=csv";
-  const MAX_SKELETONS = 6;
-
-  const wrap = document.getElementById('gallery');
-  const track = document.getElementById('gallery-track');
-  const skel  = document.getElementById('gallery-skeletons');
-  if (!wrap || !track || !skel) return;
-
-  // ---------- helpers ----------
-  const isMobile = () => window.innerWidth <= 768;
-  const slidesPerView = () => 1;
-  const stepPct = () => 100 / slidesPerView();
-
-  const lightboxTransform = () => 'w-1600,q-80,f-auto';
-  const blurTransform     = 'w-40,q-10,bl-6,f-auto';
-  const slideTransform    = () => (isMobile() ? 'w-720,q-80,f-auto' : 'w-1200,q-80,f-auto');
-
-  // Ensure transform is inserted after endpoint and always has f-auto
-  function withIK(url, transform) {
-    function ensureFAuto(t){ return t.includes('f-auto') ? t : (t + (t.endsWith(',') ? '' : ',') + 'f-auto'); }
-    const needed = ensureFAuto(transform);
-    try {
-      const u = new URL(url);
-      const trMatch = u.pathname.match(/\/tr:([^/]+)/);
-      if (trMatch) { // already has /tr:
-        const current = trMatch[1];
-        if (!/(\b|,)f-auto(\b|,)/.test(current)) {
-          u.pathname = u.pathname.replace('/tr:' + current, '/tr:' + current + ',f-auto');
-        }
-        return u.toString();
-      }
-      const parts = u.pathname.split('/'); // ["", "gameslab", "folder", "file.jpg"]
-      if (parts.length >= 3) {
-        parts.splice(2, 0, 'tr:' + needed);
-        u.pathname = parts.join('/');
-        return u.toString();
-      } else {
-        u.pathname = u.pathname.replace(/\/?$/, '/') + 'tr:' + needed;
-        return u.toString();
-      }
-    } catch(e) {
-      if (url.includes('/tr:')) return url.replace(/(\/tr:[^/]+)/, m => m.includes('f-auto') ? m : m + ',f-auto');
-      const m = url.match(/^(https?:\/\/[^/]+)\/([^/]+)(\/.*)?$/);
-      if (!m) return url;
-      const origin = m[1], endpoint = m[2], rest = m[3] || '';
-      return `${origin}/${endpoint}/tr:${needed}${rest}`;
-    }
-  }
-
-  function createSlide(obj){
-    const slide = document.createElement('div');
-    slide.className = 'gal-slide';
-
-    const bg = document.createElement('div');
-    bg.className = 'gal-bg';
-    bg.style.backgroundImage = `url("${withIK(obj.Image, blurTransform)}")`;
-    slide.appendChild(bg);
-
-    const img = document.createElement('img');
-    img.className = 'gal-img';
-    img.alt = obj.Alt || '';
-    img.loading = 'lazy';
-    img.decoding = 'async';
-    img.src = withIK(obj.Image, slideTransform());
-    img.onerror = function () {
-      if (!img.dataset.retry) {
-        img.dataset.retry = '1';
-        img.src = withIK(obj.Image, slideTransform().replace('f-auto', 'f-jpg'));
-      }
-    };
-    img.addEventListener('load', ()=>{
-      if (img.naturalHeight > img.naturalWidth) slide.classList.add('portrait');
-    }, { once:true });
-
-    slide.addEventListener('click', () => openLightbox(realIndexFromSlide(slide)));
-    slide.appendChild(img);
-    return slide;
-  }
-
-  // ---------- fetch & build ----------
-  fetch(CSV_URL, { cache: 'no-cache' })
-    .then(r => r.text())
-    .then(text => Papa.parse(text, { header:true, skipEmptyLines:true }).data)
-    .then(rows => {
-      const items = rows
-        .map((r,i)=>({
-          _i:i,
-          Image:String(r['Image']||'').trim(),
-          Alt:String(r['Alt']||'').trim(),
-          Caption:String(r['Caption']||'').trim(),
-          Show:String(r['Show']||'').trim().toLowerCase(),
-          Order:(r['Order']!==undefined && r['Order']!=='') ? Number(r['Order']) : null
-        }))
-        .filter(r => r.Image && (r.Show==='yes' || r.Show==='y' || r.Show==='true'))
-        .sort((a,b)=>{
-          if (a.Order!=null && b.Order!=null) return a.Order - b.Order;
-          if (a.Order!=null) return -1;
-          if (b.Order!=null) return 1;
-          return a._i - b._i;
-        });
-
-      if (!items.length) {
-        skel.innerHTML = '<div style="color:#bbb;text-align:center;padding:16px 0">No gallery images yet.</div>';
-        return;
-      }
-
-      // cap skeletons visually
-      while (skel.children.length > Math.min(items.length, MAX_SKELETONS)) {
-        skel.removeChild(skel.lastElementChild);
-      }
-
-      let slides = items.map(createSlide);
-      let pos = 0; // will be set in buildTrack
-      let spv = slidesPerView();
-
-      function buildTrack() {
-        spv = slidesPerView();
-        track.innerHTML = '';
-
-        // clones for looping: spv on each side
-        const headClones = [];
-        const tailClones = [];
-        for (let i=0;i<spv;i++){
-          const hc = createSlide(items[i]); hc.dataset.clone='head'; headClones.push(hc);
-          const idx = items.length - spv + i;
-          const tc = createSlide(items[idx]); tc.dataset.clone='tail'; tailClones.push(tc);
-        }
-
-        track.append(...tailClones);
-        slides.forEach(s => track.appendChild(s));
-        track.append(...headClones);
-
-        // start at first real slide index = spv
-        pos = spv;
-        setTransform(false);
-        skel.style.display = 'none';
-        preloadAround(pos);
-      }
-
-      function setTransform(withAnim=true){
-        const step = stepPct();
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        track.style.transition = (withAnim && !reduce) ? 'transform .35s ease' : 'none';
-        track.style.transform = `translate3d(-${pos*step}%,0,0)`;
-      }
-
-      function realIndexFromPos(p){
-        const n = items.length;
-        return ((p - spv + n) % n);
-      }
-      function realIndexFromSlide(slide){
-        const idx = Array.from(track.children).indexOf(slide);
-        return realIndexFromPos(idx);
-      }
-
-      function go(delta){
-        if (sliding) return;
-        sliding = true;
-        pos += delta;
-        setTransform(true);
-        setTimeout(()=>{
-          const total = items.length;
-          // jump when we hit the clones
-          if (pos < spv) {
-            pos += total;
-            setTransform(false);
-          } else if (pos > total + spv - 1) {
-            pos -= total;
-            setTransform(false);
+  
+          if (!items.length) {
+            container.innerHTML = '<div style="color:#bbb;text-align:center;">No other events to explore at this time.</div>';
           }
-          sliding = false;
-        }, 380);
+        } catch (err) {
+          console.error('Error loading explore events:', err);
+          container.innerHTML = '<div style="color:#f66;text-align:center;">Could not load other events.</div>';
+        }
+      })();
+    </script>
+  
+  <script>
+  (function(){
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1078145247&single=true&output=csv";
+    const MAX_SKELETONS = 6;
+  
+    const wrap = document.getElementById('gallery');
+    const track = document.getElementById('gallery-track');
+    const skel  = document.getElementById('gallery-skeletons');
+    if (!wrap || !track || !skel) return;
+  
+    // ---------- helpers ----------
+    const isMobile = () => window.innerWidth <= 768;
+    const slidesPerView = () => 1;
+    const stepPct = () => 100 / slidesPerView();
+  
+    const lightboxTransform = () => 'w-1600,q-80,f-auto';
+    const blurTransform     = 'w-40,q-10,bl-6,f-auto';
+    const slideTransform    = () => (isMobile() ? 'w-720,q-80,f-auto' : 'w-1200,q-80,f-auto');
+  
+    // Ensure transform is inserted after endpoint and always has f-auto
+    function withIK(url, transform) {
+      function ensureFAuto(t){ return t.includes('f-auto') ? t : (t + (t.endsWith(',') ? '' : ',') + 'f-auto'); }
+      const needed = ensureFAuto(transform);
+      try {
+        const u = new URL(url);
+        const trMatch = u.pathname.match(/\/tr:([^/]+)/);
+        if (trMatch) { // already has /tr:
+          const current = trMatch[1];
+          if (!/(\b|,)f-auto(\b|,)/.test(current)) {
+            u.pathname = u.pathname.replace('/tr:' + current, '/tr:' + current + ',f-auto');
+          }
+          return u.toString();
+        }
+        const parts = u.pathname.split('/'); // ["", "gameslab", "folder", "file.jpg"]
+        if (parts.length >= 3) {
+          parts.splice(2, 0, 'tr:' + needed);
+          u.pathname = parts.join('/');
+          return u.toString();
+        } else {
+          u.pathname = u.pathname.replace(/\/?$/, '/') + 'tr:' + needed;
+          return u.toString();
+        }
+      } catch(e) {
+        if (url.includes('/tr:')) return url.replace(/(\/tr:[^/]+)/, m => m.includes('f-auto') ? m : m + ',f-auto');
+        const m = url.match(/^(https?:\/\/[^/]+)\/([^/]+)(\/.*)?$/);
+        if (!m) return url;
+        const origin = m[1], endpoint = m[2], rest = m[3] || '';
+        return `${origin}/${endpoint}/tr:${needed}${rest}`;
       }
-
-      function preloadAround(p){
-        [p-1,p,p+1].forEach(k=>{
-          const el = track.children[k];
-          if(!el) return;
-          const img = el.querySelector('img.gal-img');
-          if (img && img.dataset.src){ img.src = img.dataset.src; delete img.dataset.src; }
-        });
-      }
-
-      buildTrack();
-
-      // arrows (desktop only; hidden via CSS on mobile)
-      const prevBtn = wrap.querySelector('.gal-prev');
-      const nextBtn = wrap.querySelector('.gal-next');
-      prevBtn.addEventListener('click', ()=>go(-1));
-      nextBtn.addEventListener('click', ()=>go(1));
-
-      // swipe / drag
-      const viewport = wrap.querySelector('.gallery-viewport');
-      let startX=0, startPos=pos, dragging=false, sliding=false;
-
-      const W = () => viewport.clientWidth;
-      function onDown(e){
-        dragging = true;
-        track.style.transition = 'none';
-        startX = (e.touches ? e.touches[0].clientX : e.clientX);
-        startPos = pos;
-        pauseAuto();
-      }
-      function onMove(e){
-        if (!dragging) return;
-        const x = (e.touches ? e.touches[0].clientX : e.clientX);
-        const dx = x - startX;
-        const pct = dx / W() * 100; // dx equal to one slide (W/spv) = stepPct
-        const step = stepPct();
-        track.style.transform = `translate3d(-${startPos*step - pct}%,0,0)`;
-      }
-      function onUp(e){
-        if (!dragging) return;
-        dragging = false;
-        const x = (e.changedTouches ? e.changedTouches[0].clientX : e.clientX);
-        const dx = x - startX;
-        const threshold = Math.max(40, (W()/slidesPerView())*0.2); // 20% of one slide
-        if (dx > threshold) go(-1);
-        else if (dx < -threshold) go(1);
-        else setTransform(true);
-        resumeAutoSoon();
-      }
-
-      viewport.addEventListener('mousedown', onDown);
-      viewport.addEventListener('mousemove', onMove);
-      window.addEventListener('mouseup', onUp);
-      viewport.addEventListener('touchstart', onDown, { passive:true });
-      viewport.addEventListener('touchmove', onMove, { passive:true });
-      viewport.addEventListener('touchend', onUp);
-
-      // autoplay (pause on hover/touch; respect reduced motion)
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let timer = null, paused = false;
-      function tick(){ if (!paused) go(1); }
-      function startAuto(){ if (!reduce && !timer) timer = setInterval(tick, 3500); }
-      function stopAuto(){ if (timer){ clearInterval(timer); timer = null; } }
-      function pauseAuto(){ paused = true; stopAuto(); }
-      function resumeAuto(){ paused = false; startAuto(); }
-      function resumeAutoSoon(){ setTimeout(()=>!dragging && resumeAuto(), 1200); }
-
-      if (!reduce) startAuto();
-      viewport.addEventListener('mouseenter', pauseAuto);
-      viewport.addEventListener('mouseleave', resumeAuto);
-      viewport.addEventListener('touchstart', pauseAuto, {passive:true});
-      viewport.addEventListener('touchend', resumeAutoSoon);
-
-      // handle resize: rebuild if slidesPerView changes; otherwise refresh sizes for current/adjacent
-      let lastSPV = slidesPerView();
-      window.addEventListener('resize', ()=>{
-        const now = slidesPerView();
-        if (now !== lastSPV){
-          lastSPV = now;
-          buildTrack();
+    }
+  
+    function createSlide(obj){
+      const slide = document.createElement('div');
+      slide.className = 'gal-slide';
+  
+      const bg = document.createElement('div');
+      bg.className = 'gal-bg';
+      bg.style.backgroundImage = `url("${withIK(obj.Image, blurTransform)}")`;
+      slide.appendChild(bg);
+  
+      const img = document.createElement('img');
+      img.className = 'gal-img';
+      img.alt = obj.Alt || '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.src = withIK(obj.Image, slideTransform());
+      img.onerror = function () {
+        if (!img.dataset.retry) {
+          img.dataset.retry = '1';
+          img.src = withIK(obj.Image, slideTransform().replace('f-auto', 'f-jpg'));
+        }
+      };
+      img.addEventListener('load', ()=>{
+        if (img.naturalHeight > img.naturalWidth) slide.classList.add('portrait');
+      }, { once:true });
+  
+      slide.addEventListener('click', () => openLightbox(realIndexFromSlide(slide)));
+      slide.appendChild(img);
+      return slide;
+    }
+  
+    // ---------- fetch & build ----------
+    fetch(CSV_URL, { cache: 'no-cache' })
+      .then(r => r.text())
+      .then(text => Papa.parse(text, { header:true, skipEmptyLines:true }).data)
+      .then(rows => {
+        const items = rows
+          .map((r,i)=>({
+            _i:i,
+            Image:String(r['Image']||'').trim(),
+            Alt:String(r['Alt']||'').trim(),
+            Caption:String(r['Caption']||'').trim(),
+            Show:String(r['Show']||'').trim().toLowerCase(),
+            Order:(r['Order']!==undefined && r['Order']!=='') ? Number(r['Order']) : null
+          }))
+          .filter(r => r.Image && (r.Show==='yes' || r.Show==='y' || r.Show==='true'))
+          .sort((a,b)=>{
+            if (a.Order!=null && b.Order!=null) return a.Order - b.Order;
+            if (a.Order!=null) return -1;
+            if (b.Order!=null) return 1;
+            return a._i - b._i;
+          });
+  
+        if (!items.length) {
+          skel.innerHTML = '<div style="color:#bbb;text-align:center;padding:16px 0">No gallery images yet.</div>';
           return;
         }
-        // update current/neighbor image sizes on breakpoint changes
-        [pos-1,pos,pos+1].forEach(k=>{
-          const el = track.children[k];
-          if(!el) return;
-          const img = el.querySelector('img.gal-img');
-          if(!img) return;
-          const raw = items[realIndexFromPos(k)].Image;
-          img.src = withIK(raw, slideTransform());
-        });
-      });
-
-      // LIGHTBOX
-      const lb = document.getElementById('gal-lightbox');
-      const lbImg = document.getElementById('gal-lightbox-img');
-      const lbCap = document.getElementById('gal-lightbox-cap');
-      const lbClose = lb.querySelector('.gal-lightbox-close');
-      const lbPrev = lb.querySelector('.gal-lightbox-prev');
-      const lbNext = lb.querySelector('.gal-lightbox-next');
-
-      let currentReal = realIndexFromPos(pos);
-      function openLightbox(realIdx){
-        currentReal = realIdx;
-        updateLightbox();
-        lb.hidden = false;
-        pauseAuto();
-      }
-      function closeLightbox(){ lb.hidden = true; resumeAutoSoon(); }
-      function updateLightbox(){
-        const item = items[currentReal];
-        lbImg.src = withIK(item.Image, lightboxTransform());
-        lbImg.alt = item.Alt || '';
-        lbImg.onerror = function () {
-          if (!lbImg.dataset.retry) {
-            lbImg.dataset.retry = '1';
-            lbImg.src = withIK(item.Image, lightboxTransform().replace('f-auto','f-jpg'));
+  
+        // cap skeletons visually
+        while (skel.children.length > Math.min(items.length, MAX_SKELETONS)) {
+          skel.removeChild(skel.lastElementChild);
+        }
+  
+        let slides = items.map(createSlide);
+        let pos = 0; // will be set in buildTrack
+        let spv = slidesPerView();
+  
+        function buildTrack() {
+          spv = slidesPerView();
+          track.innerHTML = '';
+  
+          // clones for looping: spv on each side
+          const headClones = [];
+          const tailClones = [];
+          for (let i=0;i<spv;i++){
+            const hc = createSlide(items[i]); hc.dataset.clone='head'; headClones.push(hc);
+            const idx = items.length - spv + i;
+            const tc = createSlide(items[idx]); tc.dataset.clone='tail'; tailClones.push(tc);
           }
-        };
-        lbCap.textContent = item.Caption ? item.Caption : '';
-        lbCap.style.display = item.Caption ? 'block' : 'none';
-      }
-      function lbGo(delta){
-        currentReal = (currentReal + delta + items.length) % items.length;
-        updateLightbox();
-      }
-
-      lbClose.addEventListener('click', closeLightbox);
-      lbPrev.addEventListener('click', ()=>lbGo(-1));
-      lbNext.addEventListener('click', ()=>lbGo(1));
-      lb.addEventListener('click', (e)=>{ if (e.target === lb) closeLightbox(); });
-
-      // swipe in lightbox
-      let lStart=0, lDrag=false;
-      lb.addEventListener('touchstart', e=>{ lDrag=true; lStart=e.touches[0].clientX; }, {passive:true});
-      lb.addEventListener('touchend', e=>{
-        if(!lDrag) return; lDrag=false;
-        const dx = e.changedTouches[0].clientX - lStart;
-        const thr = 50;
-        if (dx > thr) lbGo(-1);
-        else if (dx < -thr) lbGo(1);
+  
+          track.append(...tailClones);
+          slides.forEach(s => track.appendChild(s));
+          track.append(...headClones);
+  
+          // start at first real slide index = spv
+          pos = spv;
+          setTransform(false);
+          skel.style.display = 'none';
+          preloadAround(pos);
+        }
+  
+        function setTransform(withAnim=true){
+          const step = stepPct();
+          const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          track.style.transition = (withAnim && !reduce) ? 'transform .35s ease' : 'none';
+          track.style.transform = `translate3d(-${pos*step}%,0,0)`;
+        }
+  
+        function realIndexFromPos(p){
+          const n = items.length;
+          return ((p - spv + n) % n);
+        }
+        function realIndexFromSlide(slide){
+          const idx = Array.from(track.children).indexOf(slide);
+          return realIndexFromPos(idx);
+        }
+  
+        function go(delta){
+          if (sliding) return;
+          sliding = true;
+          pos += delta;
+          setTransform(true);
+          setTimeout(()=>{
+            const total = items.length;
+            // jump when we hit the clones
+            if (pos < spv) {
+              pos += total;
+              setTransform(false);
+            } else if (pos > total + spv - 1) {
+              pos -= total;
+              setTransform(false);
+            }
+            sliding = false;
+          }, 380);
+        }
+  
+        function preloadAround(p){
+          [p-1,p,p+1].forEach(k=>{
+            const el = track.children[k];
+            if(!el) return;
+            const img = el.querySelector('img.gal-img');
+            if (img && img.dataset.src){ img.src = img.dataset.src; delete img.dataset.src; }
+          });
+        }
+  
+        buildTrack();
+  
+        // arrows (desktop only; hidden via CSS on mobile)
+        const prevBtn = wrap.querySelector('.gal-prev');
+        const nextBtn = wrap.querySelector('.gal-next');
+        prevBtn.addEventListener('click', ()=>go(-1));
+        nextBtn.addEventListener('click', ()=>go(1));
+  
+        // swipe / drag
+        const viewport = wrap.querySelector('.gallery-viewport');
+        let startX=0, startPos=pos, dragging=false, sliding=false;
+  
+        const W = () => viewport.clientWidth;
+        function onDown(e){
+          dragging = true;
+          track.style.transition = 'none';
+          startX = (e.touches ? e.touches[0].clientX : e.clientX);
+          startPos = pos;
+          pauseAuto();
+        }
+        function onMove(e){
+          if (!dragging) return;
+          const x = (e.touches ? e.touches[0].clientX : e.clientX);
+          const dx = x - startX;
+          const pct = dx / W() * 100; // dx equal to one slide (W/spv) = stepPct
+          const step = stepPct();
+          track.style.transform = `translate3d(-${startPos*step - pct}%,0,0)`;
+        }
+        function onUp(e){
+          if (!dragging) return;
+          dragging = false;
+          const x = (e.changedTouches ? e.changedTouches[0].clientX : e.clientX);
+          const dx = x - startX;
+          const threshold = Math.max(40, (W()/slidesPerView())*0.2); // 20% of one slide
+          if (dx > threshold) go(-1);
+          else if (dx < -threshold) go(1);
+          else setTransform(true);
+          resumeAutoSoon();
+        }
+  
+        viewport.addEventListener('mousedown', onDown);
+        viewport.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+        viewport.addEventListener('touchstart', onDown, { passive:true });
+        viewport.addEventListener('touchmove', onMove, { passive:true });
+        viewport.addEventListener('touchend', onUp);
+  
+        // autoplay (pause on hover/touch; respect reduced motion)
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let timer = null, paused = false;
+        function tick(){ if (!paused) go(1); }
+        function startAuto(){ if (!reduce && !timer) timer = setInterval(tick, 3500); }
+        function stopAuto(){ if (timer){ clearInterval(timer); timer = null; } }
+        function pauseAuto(){ paused = true; stopAuto(); }
+        function resumeAuto(){ paused = false; startAuto(); }
+        function resumeAutoSoon(){ setTimeout(()=>!dragging && resumeAuto(), 1200); }
+  
+        if (!reduce) startAuto();
+        viewport.addEventListener('mouseenter', pauseAuto);
+        viewport.addEventListener('mouseleave', resumeAuto);
+        viewport.addEventListener('touchstart', pauseAuto, {passive:true});
+        viewport.addEventListener('touchend', resumeAutoSoon);
+  
+        // handle resize: rebuild if slidesPerView changes; otherwise refresh sizes for current/adjacent
+        let lastSPV = slidesPerView();
+        window.addEventListener('resize', ()=>{
+          const now = slidesPerView();
+          if (now !== lastSPV){
+            lastSPV = now;
+            buildTrack();
+            return;
+          }
+          // update current/neighbor image sizes on breakpoint changes
+          [pos-1,pos,pos+1].forEach(k=>{
+            const el = track.children[k];
+            if(!el) return;
+            const img = el.querySelector('img.gal-img');
+            if(!img) return;
+            const raw = items[realIndexFromPos(k)].Image;
+            img.src = withIK(raw, slideTransform());
+          });
+        });
+  
+        // LIGHTBOX
+        const lb = document.getElementById('gal-lightbox');
+        const lbImg = document.getElementById('gal-lightbox-img');
+        const lbCap = document.getElementById('gal-lightbox-cap');
+        const lbClose = lb.querySelector('.gal-lightbox-close');
+        const lbPrev = lb.querySelector('.gal-lightbox-prev');
+        const lbNext = lb.querySelector('.gal-lightbox-next');
+  
+        let currentReal = realIndexFromPos(pos);
+        function openLightbox(realIdx){
+          currentReal = realIdx;
+          updateLightbox();
+          lb.hidden = false;
+          pauseAuto();
+        }
+        function closeLightbox(){ lb.hidden = true; resumeAutoSoon(); }
+        function updateLightbox(){
+          const item = items[currentReal];
+          lbImg.src = withIK(item.Image, lightboxTransform());
+          lbImg.alt = item.Alt || '';
+          lbImg.onerror = function () {
+            if (!lbImg.dataset.retry) {
+              lbImg.dataset.retry = '1';
+              lbImg.src = withIK(item.Image, lightboxTransform().replace('f-auto','f-jpg'));
+            }
+          };
+          lbCap.textContent = item.Caption ? item.Caption : '';
+          lbCap.style.display = item.Caption ? 'block' : 'none';
+        }
+        function lbGo(delta){
+          currentReal = (currentReal + delta + items.length) % items.length;
+          updateLightbox();
+        }
+  
+        lbClose.addEventListener('click', closeLightbox);
+        lbPrev.addEventListener('click', ()=>lbGo(-1));
+        lbNext.addEventListener('click', ()=>lbGo(1));
+        lb.addEventListener('click', (e)=>{ if (e.target === lb) closeLightbox(); });
+  
+        // swipe in lightbox
+        let lStart=0, lDrag=false;
+        lb.addEventListener('touchstart', e=>{ lDrag=true; lStart=e.touches[0].clientX; }, {passive:true});
+        lb.addEventListener('touchend', e=>{
+          if(!lDrag) return; lDrag=false;
+          const dx = e.changedTouches[0].clientX - lStart;
+          const thr = 50;
+          if (dx > thr) lbGo(-1);
+          else if (dx < -thr) lbGo(1);
+        });
+      })
+      .catch(err => {
+        console.error('Gallery load error:', err);
+        skel.innerHTML = '<div style="color:#f66;text-align:center;padding:16px 0">Could not load gallery.</div>';
       });
-    })
-    .catch(err => {
-      console.error('Gallery load error:', err);
-      skel.innerHTML = '<div style="color:#f66;text-align:center;padding:16px 0">Could not load gallery.</div>';
-    });
-})();
-</script>
-<script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
-<script>
-(function(){
-  const phone = document.getElementById('phone-link');
-  const menu  = document.getElementById('phone-menu');
-  const waBtn = document.getElementById('wa-now');
-  if (!phone || !menu || !waBtn) return;
-
-  // Prefill WhatsApp message
-  const tel = (phone.dataset.tel || '').replace(/[^\d]/g,'');
-  const msg = encodeURIComponent("Hi! I'd like to know more about Games Lab events.");
-  waBtn.href = `https://wa.me/${tel}?text=${msg}`;
-
-  function openMenu(){
-    if (!menu.hidden){
-      menu.hidden = true; return;
-    }
-    menu.hidden = false;
-    const onAway = (e)=>{
-      if (!menu.contains(e.target) && e.target !== phone){
-        menu.hidden = true; cleanup();
-      }
-    };
-    const onEsc = (e)=>{ if (e.key === 'Escape'){ menu.hidden = true; cleanup(); } };
-    function cleanup(){
-      document.removeEventListener('click', onAway, true);
-      document.removeEventListener('keydown', onEsc, true);
-    }
-    document.addEventListener('click', onAway, true);
-    document.addEventListener('keydown', onEsc, true);
-  }
-
-  phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
-})();
-</script>
-<script>
-  // Force same-tab for any link to /events/
-  (function(){
-    const sel = 'a[href^="/events/"], a[href*="://gameslab.co.in/events/"]';
-    document.querySelectorAll(sel).forEach(a => a.removeAttribute('target'));
   })();
-</script>
-</body>
-</html>
-
-
+  </script>
+  <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+  <script>
+  (function(){
+    const phone = document.getElementById('phone-link');
+    const menu  = document.getElementById('phone-menu');
+    const waBtn = document.getElementById('wa-now');
+    if (!phone || !menu || !waBtn) return;
+  
+    // Prefill WhatsApp message
+    const tel = (phone.dataset.tel || '').replace(/[^\d]/g,'');
+    const msg = encodeURIComponent("Hi! I'd like to know more about Games Lab events.");
+    waBtn.href = `https://wa.me/${tel}?text=${msg}`;
+  
+    function openMenu(){
+      if (!menu.hidden){
+        menu.hidden = true; return;
+      }
+      menu.hidden = false;
+      const onAway = (e)=>{
+        if (!menu.contains(e.target) && e.target !== phone){
+          menu.hidden = true; cleanup();
+        }
+      };
+      const onEsc = (e)=>{ if (e.key === 'Escape'){ menu.hidden = true; cleanup(); } };
+      function cleanup(){
+        document.removeEventListener('click', onAway, true);
+        document.removeEventListener('keydown', onEsc, true);
+      }
+      document.addEventListener('click', onAway, true);
+      document.addEventListener('keydown', onEsc, true);
+    }
+  
+    phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
+  })();
+  </script>
+  <script>
+    // Force same-tab for any link to /events/ (incl. links added later)
+    (function(){
+      const sel = 'a[href^="/events/"], a[href*="://gameslab.co.in/events/"]';
+      const fix = (root=document) => root.querySelectorAll(sel).forEach(a => a.removeAttribute('target'));
+      fix(); // initial pass
+      new MutationObserver(muts => {
+        muts.forEach(m => m.addedNodes.forEach(n => {
+          if (n.nodeType === 1) fix(n);
+        }));
+      }).observe(document.body, { childList:true, subtree:true });
+    })();
+  </script>
+  </body>
+  </html>
+  
