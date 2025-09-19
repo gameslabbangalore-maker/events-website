@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience. Night of Mafias ! by Games Lab." />
 
-  <!-- Open Graph / Twitter (place early so crawlers see within first ~40KB) -->
+  <!-- Open Graph / Twitter -->
   <meta property="og:title" content="Night of Mafias ! — Games Lab">
   <meta property="og:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
   <meta property="og:url" content="https://gameslab.co.in/events/night-of-mafias/">
@@ -66,14 +66,13 @@ content="
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
-    /* Topbar (same structure as home) */
+    /* Topbar (structure matches home) */
     .topbar-bleed{
       position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);
-      /* make invisible so first paint looks clean */
       background:transparent !important;
       backdrop-filter:none !important;
       -webkit-backdrop-filter:none !important;
-      z-index:10002;pointer-events:none
+      z-index:10002;pointer-events:none;
     }
     .topbar{
       position:fixed;top:0;left:0;right:0;display:flex;align-items:center;
@@ -82,10 +81,17 @@ content="
       box-sizing:border-box;z-index:10003;
       border-bottom:1px solid rgba(255,255,255,.3);
       background:rgba(24,24,24,.07);
-      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)
+      -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     }
+    /* Light theme — mirror homepage glass (softer border + lighter tint) */
     @media (prefers-color-scheme: light){
-      .topbar{border-bottom:1px solid rgba(0,0,0,.3)}
+      .topbar,
+      .topbar-bleed{
+        background:rgba(255,255,255,.55) !important;
+        border-bottom:1px solid rgba(0,0,0,.08);
+        -webkit-backdrop-filter:saturate(180%) blur(14px);
+        backdrop-filter:saturate(180%) blur(14px);
+      }
     }
     .topbar-left{display:flex;align-items:center;height:100%}
     .topbar-left.home-link{color:inherit;text-decoration:none}
@@ -125,22 +131,18 @@ content="
     }
   </style>
 
+  <!-- Mobile-only: fade-in banner to avoid first-paint shimmer under glass -->
   <style>
-    /* Mobile-only: delay the banner's visual paint so the glass header
-       blurs a neutral surface on first load (no shimmer). */
     @media (max-width: 959px) {
       .banner img{
-        opacity: 0;
-        animation: maf-banner-in .28s ease-out .18s forwards;
-        will-change: opacity;
+        opacity:0; animation: maf-banner-in .28s ease-out .18s forwards; will-change:opacity;
       }
       @keyframes maf-banner-in { to { opacity: 1; } }
     }
-    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) and (max-width: 959px) {
-      .banner img{ animation: none; opacity: 1; }
+      .banner img{ animation:none; opacity:1; }
     }
-    </style>
+  </style>
 
   <!-- ===== EVENT PAGE LAYOUT ===== -->
   <style>
@@ -153,7 +155,6 @@ content="
       .divider{background:linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,.06));box-shadow:0 1px 0 rgba(0,0,0,.06) inset;}
     }
 
-    /* Page grid: banner + side facts in the first row */
     .page-grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -164,7 +165,7 @@ content="
         "highlights"
         "divider"
         "content";
-      gap: 12px;
+      gap:12px;
     }
     @media (min-width:960px){
       .page-grid{
@@ -173,77 +174,51 @@ content="
           "banner   side"
           "title    side"
           "tagline  side"
-          "divider  side"    /* divider sits above content, left column only */
+          "divider  side"
           "content  side";
-        column-gap: 18px;
-        row-gap: 12px;
+        column-gap:18px; row-gap:12px;
       }
     }
 
-    /* Banner: desktop tall, mobile a bit shorter; slightly wider than content on mobile */
-    .banner{grid-area: banner; border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
-    .banner img{width:100%;height: clamp(360px, 64vh, 720px);object-fit: cover;object-position:center}
+    .banner{grid-area:banner;border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
+    .banner img{width:100%;height:clamp(360px,64vh,720px);object-fit:cover;object-position:center}
     @media (max-width:768px){
-      .banner{ margin-left:-2px; margin-right:-2px; border-radius:12px; }
-      .banner img{height: clamp(220px, 40vh, 420px);}
+      .banner{margin-left:-2px;margin-right:-2px;border-radius:12px}
+      .banner img{height:clamp(220px,40vh,420px)}
     }
 
-    /* Headings match homepage yellow section titles */
-    .heading { color: var(--accent); font-size: 1.9rem; font-weight: 700; letter-spacing: .2px; margin: 0 0 18px; }
-    @media (max-width:959px){ .heading{ text-align:center; } }
+    .heading{color:var(--accent);font-size:1.9rem;font-weight:700;letter-spacing:.2px;margin:0 0 18px}
+    @media (max-width:959px){.heading{text-align:center}}
 
-    /* Event title row (mobile shows share icon) */
-    .title-row{
-      grid-area:title;
-      display:flex;
-      align-items:center;     /* keep share icon perfectly inline */
-      gap:8px;
-      margin-bottom:4px;      /* slightly tighter above tagline */
-    }
-    @media (max-width:959px){ .title-row{ justify-content:center; } }
-    .title-row .heading{ margin:0; line-height:1.1; }
+    .title-row{grid-area:title;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+    @media (max-width:959px){.title-row{justify-content:center}}
+    .title-row .heading{margin:0;line-height:1.1}
 
-    /* Tagline styled like 'REACH OUT TO US!' */
-    .tagline{
-      grid-area:tagline;
-      margin: 0 0 10px;
-      font-weight:700; letter-spacing:.6px; color:var(--muted);
-      text-align:left;
-    }
-    @media (max-width:959px){ .tagline{ text-align:center; } }
+    .tagline{grid-area:tagline;margin:0 0 10px;font-weight:700;letter-spacing:.6px;color:var(--muted);text-align:left}
+    @media (max-width:959px){.tagline{text-align:center}}
 
-    /* Mobile Highlights — clean inline list (no box) */
-    .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin: 0 0 8px}
+    .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin:0 0 8px}
     .highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .h-item{font-size:13.5px;display:flex;flex-direction:column;gap:2px}
     .h-label{color:var(--muted);font-weight:700;letter-spacing:.3px}
     .h-value{font-weight:800}
-    @media (min-width:960px){ .highlights-mobile{display:none !important} }
+    @media (min-width:960px){.highlights-mobile{display:none !important}}
 
-    /* Divider row between highlights/tagline and content; left column only on desktop */
-    .page-grid > .divider{ grid-area: divider; margin:12px 0 12px; }
+    .page-grid > .divider{grid-area:divider;margin:12px 0 12px}
 
     .content{grid-area:content}
-    .prose{font-size:1.04rem; line-height:1.6}
+    .prose{font-size:1.04rem;line-height:1.6}
     .prose p{margin:0 0 14px}
 
-    /* Videos — portrait, compact */
     .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden}
     .video-portrait iframe{width:100%;height:100%;border:0}
     .recap-grid-portrait{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));justify-items:center}
     .recap-grid-portrait .video-portrait{max-width:clamp(160px,28vw,220px)}
 
-    /* Right info card (desktop) — centered header + button */
-    .side-card{grid-area:side; display:none}
+    .side-card{grid-area:side;display:none}
     @media (min-width:960px){
       .side-card{display:block}
-      .info-card{
-        position: sticky;
-        top: calc(var(--topbar-height-desktop) + 16px);
-        background:var(--card);border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);padding:14px;
-        border:1.5px solid rgba(255,255,255,.08);
-        text-align:center;
-      }
+      .info-card{position:sticky;top:calc(var(--topbar-height-desktop) + 16px);background:var(--card);border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);padding:14px;border:1.5px solid rgba(255,255,255,.08);text-align:center}
       @media (prefers-color-scheme: light){.info-card{border-color:rgba(0,0,0,.06)}}
       .info-card h3{margin:0 0 12px;font-size:13px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
       .facts{display:grid;gap:8px;margin:8px 0 14px;text-align:left}
@@ -252,39 +227,36 @@ content="
       .info-card .btn{margin:0 auto}
     }
 
-    /* Buttons */
     .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer}
     .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer;position:relative;top:-1px}
-    @media (min-width:960px){ .share-inline{display:none} } /* inline share only on mobile */
+    @media (min-width:960px){.share-inline{display:none}}
 
-    /* MOBILE microbar — matches Top Bar visuals; bold content */
-    /* replace your current .mobile-info-bar / .mobile-info-bar.show block with this */
+    /* MOBILE microbar — text left, share right (locked) */
     .mobile-info-bar{
       position:fixed;left:0;right:0;
       top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
       z-index:10001;padding:8px 12px;
       background:rgba(24,24,24,.07);
       border-bottom:1px solid rgba(255,255,255,.3);
-      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
-    
-      /* NEW: start fully hidden so it doesn't show through the transparent header */
+      -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+
       transform:translate3d(0,-100%,0);
-      opacity:0;
-      pointer-events:none;
-    
+      opacity:0; pointer-events:none;
       transition:transform .2s ease, opacity .15s ease;
-      will-change:transform, opacity;
+      will-change:transform,opacity;
     }
     @media (prefers-color-scheme: light){
-      .mobile-info-bar{background:rgba(255,255,255,.1);border-bottom:1px solid rgba(0,0,0,.3)}
+      .mobile-info-bar{background:rgba(255,255,255,.55);border-bottom:1px solid rgba(0,0,0,.08)}
     }
-    .mobile-info-bar.show{
-      transform:translate3d(0,0,0);
-      opacity:1;
-      pointer-events:auto;
+    .mobile-info-bar.show{transform:translate3d(0,0,0);opacity:1;pointer-events:auto}
+    .mobile-info-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;flex-wrap:nowrap}
+    .mobile-info{display:flex;gap:10px;flex-wrap:wrap;color:var(--text-main);font-weight:800;min-width:0}
+    .mobile-info strong{font-weight:900}
+    @media (min-width:601px){
+      .mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
     }
-    @media (min-width:960px){ .mobile-info-bar{display:none !important} }
+    @media (min-width:960px){.mobile-info-bar{display:none !important}}
   </style>
 </head>
 <body>
@@ -316,7 +288,6 @@ content="
   <!-- ===== Page grid ===== -->
   <main class="wrap" role="main">
     <div class="page-grid">
-      <!-- Row 1: Banner + Side card -->
       <figure class="banner">
         <img src="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" alt="Night of Mafias ! event banner">
       </figure>
@@ -336,7 +307,6 @@ content="
         </div>
       </aside>
 
-      <!-- Row 2: Title + inline share (mobile only) -->
       <div class="title-row">
         <h2 class="heading" id="eventTitle">Night of Mafias !</h2>
         <button class="icon-btn share-inline" id="shareNearTitle" aria-label="Share this event" title="Share">
@@ -344,10 +314,8 @@ content="
         </button>
       </div>
 
-      <!-- Tagline -->
       <p class="tagline">SPEND YOUR FRIDAY NIGHT SOLVING A UNIQUE MURDER MYSTERY.</p>
 
-      <!-- Mobile highlights -->
       <div class="highlights-mobile" id="highlightsMobile">
         <div class="highlights-grid" aria-label="Event highlights">
           <div class="h-item"><div class="h-label">Format</div><div class="h-value">Social deduction</div></div>
@@ -359,10 +327,8 @@ content="
         </div>
       </div>
 
-      <!-- Divider row (sits above content; left-only on desktop) -->
       <div class="divider" aria-hidden="true"></div>
 
-      <!-- Content -->
       <article class="content">
         <section id="details" aria-labelledby="about">
           <h2 id="about" class="heading">About the event</h2>
@@ -405,16 +371,14 @@ content="
           </div>
         </section>
       </article>
-    </div> <!-- /.page-grid -->
+    </div>
 
-    <!-- Single divider above Contact Us -->
     <div class="divider" style="margin-top:40px;"></div>
 
     <div class="title" style="text-align:center;margin-bottom:18px;">
       <h2 class="heading" style="margin:0;">Contact Us</h2>
     </div>
 
-    <!-- Contact -->
     <section class="contact-wrap" aria-labelledby="contact-title">
       <div class="contact-head">
         <img class="logo-lg"
@@ -473,8 +437,8 @@ content="
         const topbarH = topbar ? topbar.offsetHeight : 56;
 
         const rect = highlights.getBoundingClientRect();
-        const bottomY = rect.bottom + window.scrollY;      // bottom of highlights in doc space
-        const shouldShow = window.scrollY >= (bottomY - topbarH); // only after fully scrolled past
+        const bottomY = rect.bottom + window.scrollY;
+        const shouldShow = window.scrollY >= (bottomY - topbarH);
         microbar.classList.toggle('show', shouldShow);
         microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
       }
