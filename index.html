@@ -1144,8 +1144,12 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
   phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
 })();
 </script>
+<script>
+  document.querySelectorAll('a.learn-more').forEach(a=>a.removeAttribute('target'));
+</script>
 </body>
 </html>
+
 
 
 
