@@ -3,21 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <title>Night of Mafias ! — Games Lab</title>
-
-  <link rel="icon" href="/Games Lab Logo.png" type="image/png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="canonical" href="https://gameslab.co.in/events/night-of-mafias/" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience. Night of Mafias ! by Games Lab." />
-  <meta property="og:title" content="Night of Mafias ! — Games Lab" />
-  <meta property="og:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience." />
-  <meta property="og:image" content="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" />
-  <meta property="og:type" content="website" />
 
-  <!-- Open Graph (WhatsApp/FB) -->
+  <!-- Open Graph / Twitter (place early so crawlers see within first ~40KB) -->
   <meta property="og:title" content="Night of Mafias ! — Games Lab">
   <meta property="og:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
   <meta property="og:url" content="https://gameslab.co.in/events/night-of-mafias/">
@@ -28,12 +20,13 @@
   <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Games Lab">
-  
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Night of Mafias ! — Games Lab">
   <meta name="twitter:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
   <meta name="twitter:image" content="https://gameslab.co.in/og/night-of-mafias.jpg?v=1">
+
+  <link rel="icon" href="/Games Lab Logo.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <!-- CSP aligned with Home + YouTube for embeds -->
   <meta http-equiv="Content-Security-Policy"
@@ -73,15 +66,37 @@ content="
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
-    /* Topbar (same as home) */
-    .topbar-bleed{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10002;pointer-events:none}
-    @media (prefers-color-scheme: light){.topbar-bleed{background:#fff !important}}
-    .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));box-sizing:border-box;z-index:10003;border-bottom:1px solid rgba(255,255,255,.3);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-    @media (prefers-color-scheme: light){.topbar{border-bottom:1px solid rgba(0,0,0,.3)}}
+    /* Topbar (same structure as home) */
+    .topbar-bleed{
+      position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);
+      /* make invisible so first paint looks clean */
+      background:transparent !important;
+      backdrop-filter:none !important;
+      -webkit-backdrop-filter:none !important;
+      z-index:10002;pointer-events:none
+    }
+    .topbar{
+      position:fixed;top:0;left:0;right:0;display:flex;align-items:center;
+      padding-left:24px;padding-top:env(safe-area-inset-top,0px);
+      height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));
+      box-sizing:border-box;z-index:10003;
+      border-bottom:1px solid rgba(255,255,255,.3);
+      background:rgba(24,24,24,.07);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)
+    }
+    @media (prefers-color-scheme: light){
+      .topbar{border-bottom:1px solid rgba(0,0,0,.3)}
+    }
     .topbar-left{display:flex;align-items:center;height:100%}
+    .topbar-left.home-link{color:inherit;text-decoration:none}
+    .topbar-left.home-link:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
     .logo{height:36px;width:36px;border-radius:8px;margin-right:12px;object-fit:cover}
     .brand{font-size:1.45rem;font-weight:700;letter-spacing:.5px;color:#fff}
-    @media (max-width:600px){.topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}.logo{height:26px;width:26px;margin-right:8px}.brand{font-size:1rem}}
+    @media (max-width:600px){
+      .topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}
+      .logo{height:26px;width:26px;margin-right:8px}
+      .brand{font-size:1rem}
+    }
     .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
     @media (max-width:600px){.topbar-spacer{height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}}
     @media (max-width:768px){.topbar,.topbar-bleed{transform:translateZ(0);-webkit-transform:translateZ(0)}}
@@ -108,46 +123,42 @@ content="
       .brand{color:#242424}
       .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
     }
-    /* --- MOBILE SHIMMER FIX: give the blur a uniform surface to sample --- */
-    @media (max-width: 959px) {
-      /* Turn the existing .topbar-bleed into a fixed cover that sits
-         behind the header and in front of the page content. */
-      .topbar-bleed{
-        /* make it as tall as the mobile header area */
-        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
-        /* solid/soft gradient like the page bg so the blur samples this,
-           not the banner image */
-        background: linear-gradient(
-          to bottom,
-          rgba(24,24,24,.96) 0%,
-          rgba(24,24,24,.78) 70%,
-          rgba(24,24,24,0) 100%
-        ) !important;
-    
-        /* IMPORTANT: remove blur from the bleed layer itself.
-           Only the header (.topbar) stays blurred. */
-        -webkit-backdrop-filter: none !important;
-        backdrop-filter: none !important;
-    
-        /* keep it above content but below the header; non-interactive */
-        z-index: 10002 !important;
-        pointer-events: none;
-      }
-    }
-    
-    /* Light mode version of the same guard */
-    @media (max-width: 959px) and (prefers-color-scheme: light) {
-      .topbar-bleed{
-        background: linear-gradient(
-          to bottom,
-          rgba(245,245,245,.98) 0%,
-          rgba(245,245,245,.82) 70%,
-          rgba(245,245,245,0) 100%
-        ) !important;
-      }
-    }
-
   </style>
+
+  <style>
+/* Invisible “background” under the header on mobile so the blur samples this,
+   not the banner. It blends into page background and fades to transparent. */
+@media (max-width: 959px) {
+  .blur-buffer{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    /* Tall enough to cover header + some area below it */
+    height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px) + 100px);
+    /* Dark theme blend (matches --bg) */
+    background: linear-gradient(
+      to bottom,
+      rgba(24,24,24,1) 0%,
+      rgba(24,24,24,0.85) 55%,
+      rgba(24,24,24,0.60) 75%,
+      rgba(24,24,24,0) 100%
+    );
+    z-index: 10001;          /* below .topbar (10003) and .topbar-bleed (10002) */
+    pointer-events: none;    /* never blocks taps */
+  }
+}
+/* Light theme version so it also blends perfectly there */
+@media (max-width: 959px) and (prefers-color-scheme: light) {
+  .blur-buffer{
+    background: linear-gradient(
+      to bottom,
+      rgba(245,245,245,1) 0%,
+      rgba(245,245,245,0.85) 55%,
+      rgba(245,245,245,0.60) 75%,
+      rgba(245,245,245,0) 100%
+    );
+  }
+}
+</style>
 
   <!-- ===== EVENT PAGE LAYOUT ===== -->
   <style>
@@ -187,17 +198,12 @@ content="
       }
     }
 
-    /* Banner: desktop tall, mobile shorter; mobile full-bleed to increase visual width */
+    /* Banner: desktop tall, mobile a bit shorter; slightly wider than content on mobile */
     .banner{grid-area: banner; border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
     .banner img{width:100%;height: clamp(360px, 64vh, 720px);object-fit: cover;object-position:center}
-    /* NEW (slightly wider than content, not full-bleed) */
     @media (max-width:768px){
-      .banner{
-        margin-left:-2px;
-        margin-right:-2px;
-        border-radius:12px; /* keep rounded corners like desktop */
-      }
-      .banner img{height: clamp(220px, 40vh, 420px);} /* reduced only on mobile */
+      .banner{ margin-left:-2px; margin-right:-2px; border-radius:12px; }
+      .banner img{height: clamp(220px, 40vh, 420px);}
     }
 
     /* Headings match homepage yellow section titles */
@@ -208,14 +214,14 @@ content="
     .title-row{
       grid-area:title;
       display:flex;
-      align-items:center;     /* perfectly inline with title */
+      align-items:center;     /* keep share icon perfectly inline */
       gap:8px;
       margin-bottom:4px;      /* slightly tighter above tagline */
     }
     @media (max-width:959px){ .title-row{ justify-content:center; } }
     .title-row .heading{ margin:0; line-height:1.1; }
 
-    /* Tagline like 'REACH OUT TO US!' */
+    /* Tagline styled like 'REACH OUT TO US!' */
     .tagline{
       grid-area:tagline;
       margin: 0 0 10px;
@@ -297,12 +303,15 @@ content="
   <!-- ===== Top bar ===== -->
   <div class="topbar-bleed" aria-hidden="true"></div>
   <header class="topbar" role="banner">
-    <div class="topbar-left">
+    <a class="topbar-left home-link" href="/" aria-label="Go to Games Lab homepage">
       <img src="https://ik.imagekit.io/gameslab/tr:w-36,q-100,f-auto/Games_Lab_Logo.png" alt="Games Lab Logo" class="logo" width="36" height="36"/>
       <span class="brand">Games Lab</span>
-    </div>
+    </a>
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
+  <!-- Blur buffer: invisible gradient under the top bar (mobile only) -->
+  <div class="blur-buffer" aria-hidden="true"></div>
+
 
   <!-- ===== Mobile sticky microbar ===== -->
   <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
@@ -479,7 +488,7 @@ content="
         const topbarH = topbar ? topbar.offsetHeight : 56;
 
         const rect = highlights.getBoundingClientRect();
-        const bottomY = rect.bottom + window.scrollY;           // bottom of highlights in doc space
+        const bottomY = rect.bottom + window.scrollY;      // bottom of highlights in doc space
         const shouldShow = window.scrollY >= (bottomY - topbarH); // only after fully scrolled past
         microbar.classList.toggle('show', shouldShow);
         microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
