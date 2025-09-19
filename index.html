@@ -72,16 +72,24 @@ content="
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
     .topbar-bleed{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10002;pointer-events:none}
-    @media (prefers-color-scheme: light){.topbar-bleed{background:#fff !important}}
 
-    .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));box-sizing:border-box;z-index:10003;border-bottom:1px solid rgba(255,255,255,.3);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-    @media (prefers-color-scheme: light){.topbar{border-bottom:1px solid rgba(0,0,0,.3)}}
-    .topbar-left{display:flex;align-items:center;height:100%}
+    .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));box-sizing:border-box;z-index:10003;border-bottom:1px solid rgba(255,255,255,.3);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}    .topbar-left{display:flex;align-items:center;height:100%}
     .logo{height:36px;width:36px;border-radius:8px;margin-right:12px;object-fit:cover}
     .brand{font-size:1.45rem;font-weight:700;letter-spacing:.5px;color:#fff}
     @media (max-width:600px){.topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}.logo{height:26px;width:26px;margin-right:8px}.brand{font-size:1rem}}
     .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
     @media (max-width:600px){.topbar-spacer{height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}}
+
+    /* Light theme — same frosted glass as the event page */
+    @media (prefers-color-scheme: light){
+      .topbar,
+      .topbar-bleed{
+        background: rgba(255,255,255,.48) !important;
+        border-bottom: 1px solid rgba(0,0,0,.06);
+        -webkit-backdrop-filter: saturate(180%) blur(14px);
+        backdrop-filter: saturate(180%) blur(14px);
+      }
+    }
 
     .wrap{max-width:1200px;margin:0 auto;padding:20px 18px 0}
     @media (min-width:769px){.wrap{padding-top:12px}}
@@ -1145,7 +1153,12 @@ Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly co
 })();
 </script>
 <script>
-  document.querySelectorAll('a.learn-more').forEach(a=>a.removeAttribute('target'));
+  // Force same-tab for any link to /events/
+  (function(){
+    const sel = 'a[href^="/events/"], a[href*="://gameslab.co.in/events/"]';
+    document.querySelectorAll(sel).forEach(a => a.removeAttribute('target'));
+  })();
 </script>
 </body>
 </html>
+
