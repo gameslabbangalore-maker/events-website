@@ -12,8 +12,12 @@
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience. Night of Mafias ! by Games Lab." />
+  <meta property="og:title" content="Night of Mafias ! — Games Lab" />
+  <meta property="og:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience." />
+  <meta property="og:image" content="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" />
+  <meta property="og:type" content="website" />
 
-  <!-- Open Graph -->
+  <!-- Open Graph (WhatsApp/FB) -->
   <meta property="og:title" content="Night of Mafias ! — Games Lab">
   <meta property="og:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
   <meta property="og:url" content="https://gameslab.co.in/events/night-of-mafias/">
@@ -24,14 +28,14 @@
   <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Games Lab">
-
+  
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Night of Mafias ! — Games Lab">
   <meta name="twitter:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
   <meta name="twitter:image" content="https://gameslab.co.in/og/night-of-mafias.jpg?v=1">
 
-  <!-- CSP -->
+  <!-- CSP aligned with Home + YouTube for embeds -->
   <meta http-equiv="Content-Security-Policy"
 content="
   default-src 'self';
@@ -61,7 +65,7 @@ content="
 
   <!-- ===== THEME + SHARED (from Home) ===== -->
   <style>
-    :root{
+    :root {
       --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
       --topbar-height-desktop:58px; --topbar-height-mobile:48px;
     }
@@ -69,59 +73,20 @@ content="
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
-    /* ===== Topbar (glass via ::before + frost shield) ===== */
-    .topbar-bleed{
-      position:fixed;top:0;left:0;right:0;
-      height:env(safe-area-inset-top,0px);
-      background:transparent !important;
-      backdrop-filter:none !important;
-      -webkit-backdrop-filter:none !important;
-      z-index:10002;pointer-events:none;
-    }
-    .topbar{
-      position:fixed;top:0;left:0;right:0;display:flex;align-items:center;
-      padding-left:24px;padding-top:env(safe-area-inset-top,0px);
-      height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));
-      box-sizing:border-box;z-index:10003;
-      border-bottom:1px solid rgba(255,255,255,.30);
-      background:rgba(24,24,24,.08); /* tint only; blur is on ::before */
-    }
-    .topbar::before{
-      content:"";position:absolute;inset:0;pointer-events:none;
-      -webkit-backdrop-filter: blur(10px) saturate(160%);
-              backdrop-filter: blur(10px) saturate(160%);
-      /* fade blur away at the very bottom to avoid ‘smear’ into first row */
-      -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 14px), transparent 100%);
-              mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 14px), transparent 100%);
-    }
-    .topbar-left.home-link{display:flex;align-items:center;height:100%;color:inherit;text-decoration:none}
+    /* Topbar (same as home) */
+    .topbar-bleed{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:10002;pointer-events:none}
+    @media (prefers-color-scheme: light){.topbar-bleed{background:#fff !important}}
+    .topbar{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;padding-left:24px;padding-top:env(safe-area-inset-top,0px);height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));box-sizing:border-box;z-index:10003;border-bottom:1px solid rgba(255,255,255,.3);background:rgba(24,24,24,.07);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+    @media (prefers-color-scheme: light){.topbar{border-bottom:1px solid rgba(0,0,0,.3)}}
+    .topbar-left{display:flex;align-items:center;height:100%}
     .logo{height:36px;width:36px;border-radius:8px;margin-right:12px;object-fit:cover}
     .brand{font-size:1.45rem;font-weight:700;letter-spacing:.5px;color:#fff}
-
-    .frost-shield{
-      position:fixed;top:0;left:0;right:0;height:16px;z-index:10002;pointer-events:none;
-      background:linear-gradient(to bottom, rgba(24,24,24,.92), rgba(24,24,24,0));
-    }
-
+    @media (max-width:600px){.topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}.logo{height:26px;width:26px;margin-right:8px}.brand{font-size:1rem}}
     .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
-    @media (max-width:600px){
-      .topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}
-      .logo{height:26px;width:26px;margin-right:8px}
-      .brand{font-size:1rem}
-      .topbar-spacer{height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}
-    }
+    @media (max-width:600px){.topbar-spacer{height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}}
     @media (max-width:768px){.topbar,.topbar-bleed{transform:translateZ(0);-webkit-transform:translateZ(0)}}
 
-    /* Light theme adjustments */
-    @media (prefers-color-scheme: light){
-      :root{--bg:#f5f5f5;--card:#fff;--muted:#444;--accent:#0a75bc;--datebox:#ececec;--text-main:#181818}
-      .brand{color:#242424}
-      .topbar{border-bottom:1px solid rgba(0,0,0,.12); background:rgba(255,255,255,.65)}
-      .topbar::before{-webkit-backdrop-filter: blur(10px) saturate(140%); backdrop-filter: blur(10px) saturate(140%)}
-      .frost-shield{background:linear-gradient(to bottom, rgba(255,255,255,.95), rgba(255,255,255,0))}
-    }
-
-    /* ===== Contact (same as Home) ===== */
+    /* Contact (same as home) */
     .contact-wrap{max-width:1200px;margin:0 auto;padding:0 12px;}
     .contact-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;justify-content:center;}
     .contact-head .logo-lg{width:44px;height:44px;border-radius:10px;object-fit:cover;}
@@ -138,6 +103,50 @@ content="
     .phone-menu a{display:inline-block;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700;background:rgba(255,255,255,.06);color:var(--text-main) !important;}
     .phone-menu a:hover{background:rgba(255,255,255,.12);color:var(--accent) !important;}
     @media (min-width:1100px){.contact-list{display:flex;justify-content:center;flex-wrap:wrap;gap:24px 32px;}.row{display:flex;gap:12px;}}
+    @media (prefers-color-scheme: light){
+      :root{--bg:#f5f5f5;--card:#fff;--muted:#444;--accent:#0a75bc;--datebox:#ececec;--text-main:#181818}
+      .brand{color:#242424}
+      .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
+    }
+    /* --- MOBILE SHIMMER FIX: give the blur a uniform surface to sample --- */
+    @media (max-width: 959px) {
+      /* Turn the existing .topbar-bleed into a fixed cover that sits
+         behind the header and in front of the page content. */
+      .topbar-bleed{
+        /* make it as tall as the mobile header area */
+        height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
+        /* solid/soft gradient like the page bg so the blur samples this,
+           not the banner image */
+        background: linear-gradient(
+          to bottom,
+          rgba(24,24,24,.96) 0%,
+          rgba(24,24,24,.78) 70%,
+          rgba(24,24,24,0) 100%
+        ) !important;
+    
+        /* IMPORTANT: remove blur from the bleed layer itself.
+           Only the header (.topbar) stays blurred. */
+        -webkit-backdrop-filter: none !important;
+        backdrop-filter: none !important;
+    
+        /* keep it above content but below the header; non-interactive */
+        z-index: 10002 !important;
+        pointer-events: none;
+      }
+    }
+    
+    /* Light mode version of the same guard */
+    @media (max-width: 959px) and (prefers-color-scheme: light) {
+      .topbar-bleed{
+        background: linear-gradient(
+          to bottom,
+          rgba(245,245,245,.98) 0%,
+          rgba(245,245,245,.82) 70%,
+          rgba(245,245,245,0) 100%
+        ) !important;
+      }
+    }
+
   </style>
 
   <!-- ===== EVENT PAGE LAYOUT ===== -->
@@ -151,15 +160,15 @@ content="
       .divider{background:linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,.06));box-shadow:0 1px 0 rgba(0,0,0,.06) inset;}
     }
 
-    /* Order: title → tagline → highlights → banner → divider → content */
+    /* Page grid: banner + side facts in the first row */
     .page-grid{
       display:grid;
       grid-template-columns: 1fr;
       grid-template-areas:
+        "banner"
         "title"
         "tagline"
         "highlights"
-        "banner"
         "divider"
         "content";
       gap: 12px;
@@ -168,66 +177,84 @@ content="
       .page-grid{
         grid-template-columns: minmax(0,1fr) 340px;
         grid-template-areas:
+          "banner   side"
           "title    side"
           "tagline  side"
-          "banner   side"
-          "divider  side"
+          "divider  side"    /* divider sits above content, left column only */
           "content  side";
         column-gap: 18px;
         row-gap: 12px;
       }
     }
 
-    /* Banner */
-    .banner{grid-area: banner;border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
+    /* Banner: desktop tall, mobile shorter; mobile full-bleed to increase visual width */
+    .banner{grid-area: banner; border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
     .banner img{width:100%;height: clamp(360px, 64vh, 720px);object-fit: cover;object-position:center}
+    /* NEW (slightly wider than content, not full-bleed) */
     @media (max-width:768px){
-      .banner{margin-left:-2px;margin-right:-2px;border-radius:12px}
-      .banner img{height: clamp(220px, 40vh, 420px);}
+      .banner{
+        margin-left:-2px;
+        margin-right:-2px;
+        border-radius:12px; /* keep rounded corners like desktop */
+      }
+      .banner img{height: clamp(220px, 40vh, 420px);} /* reduced only on mobile */
     }
 
     /* Headings match homepage yellow section titles */
-    .heading{color:var(--accent);font-size:1.9rem;font-weight:700;letter-spacing:.2px;margin:0 0 18px}
-    @media (max-width:959px){.heading{text-align:center}}
+    .heading { color: var(--accent); font-size: 1.9rem; font-weight: 700; letter-spacing: .2px; margin: 0 0 18px; }
+    @media (max-width:959px){ .heading{ text-align:center; } }
 
-    /* Title row + inline share */
-    .title-row{grid-area:title;display:flex;align-items:center;gap:8px;margin-bottom:4px}
-    @media (max-width:959px){.title-row{justify-content:center}}
-    .title-row .heading{margin:0;line-height:1.1}
+    /* Event title row (mobile shows share icon) */
+    .title-row{
+      grid-area:title;
+      display:flex;
+      align-items:center;     /* perfectly inline with title */
+      gap:8px;
+      margin-bottom:4px;      /* slightly tighter above tagline */
+    }
+    @media (max-width:959px){ .title-row{ justify-content:center; } }
+    .title-row .heading{ margin:0; line-height:1.1; }
 
     /* Tagline like 'REACH OUT TO US!' */
-    .tagline{grid-area:tagline;margin:0 0 10px;font-weight:700;letter-spacing:.6px;color:var(--muted);text-align:left}
-    @media (max-width:959px){.tagline{text-align:center}}
+    .tagline{
+      grid-area:tagline;
+      margin: 0 0 10px;
+      font-weight:700; letter-spacing:.6px; color:var(--muted);
+      text-align:left;
+    }
+    @media (max-width:959px){ .tagline{ text-align:center; } }
 
-    /* Mobile Highlights — clean inline list */
-    .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin:0 0 8px}
+    /* Mobile Highlights — clean inline list (no box) */
+    .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin: 0 0 8px}
     .highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .h-item{font-size:13.5px;display:flex;flex-direction:column;gap:2px}
     .h-label{color:var(--muted);font-weight:700;letter-spacing:.3px}
     .h-value{font-weight:800}
-    @media (min-width:960px){.highlights-mobile{display:none !important}}
+    @media (min-width:960px){ .highlights-mobile{display:none !important} }
 
-    /* Divider row above content */
-    .page-grid > .divider{grid-area:divider;margin:12px 0 12px}
+    /* Divider row between highlights/tagline and content; left column only on desktop */
+    .page-grid > .divider{ grid-area: divider; margin:12px 0 12px; }
 
     .content{grid-area:content}
-    .prose{font-size:1.04rem;line-height:1.6}
+    .prose{font-size:1.04rem; line-height:1.6}
     .prose p{margin:0 0 14px}
 
-    /* Videos — portrait */
+    /* Videos — portrait, compact */
     .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden}
     .video-portrait iframe{width:100%;height:100%;border:0}
     .recap-grid-portrait{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));justify-items:center}
     .recap-grid-portrait .video-portrait{max-width:clamp(160px,28vw,220px)}
 
-    /* Right info card */
-    .side-card{grid-area:side;display:none}
+    /* Right info card (desktop) — centered header + button */
+    .side-card{grid-area:side; display:none}
     @media (min-width:960px){
       .side-card{display:block}
       .info-card{
-        position:sticky;top:calc(var(--topbar-height-desktop) + 16px);
+        position: sticky;
+        top: calc(var(--topbar-height-desktop) + 16px);
         background:var(--card);border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);padding:14px;
-        border:1.5px solid rgba(255,255,255,.08);text-align:center;
+        border:1.5px solid rgba(255,255,255,.08);
+        text-align:center;
       }
       @media (prefers-color-scheme: light){.info-card{border-color:rgba(0,0,0,.06)}}
       .info-card h3{margin:0 0 12px;font-size:13px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
@@ -241,37 +268,40 @@ content="
     .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer}
     .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer;position:relative;top:-1px}
-    @media (min-width:960px){.share-inline{display:none}}
+    @media (min-width:960px){ .share-inline{display:none} } /* inline share only on mobile */
 
-    /* Mobile microbar (kept same visuals as before) */
+    /* MOBILE microbar — matches Top Bar visuals; bold content */
     .mobile-info-bar{
-      position:fixed;left:0;right:0;top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
-      z-index:10001;padding:8px 12px;background:rgba(24,24,24,.07);
-      border-bottom:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      position:fixed;left:0;right:0;
+      top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
+      z-index:10001;padding:8px 12px;
+      background:rgba(24,24,24,.07);
+      border-bottom:1px solid rgba(255,255,255,.3);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
       translate:0 -100%;transition:translate .2s ease;
     }
     @media (prefers-color-scheme: light){
-      .mobile-info-bar{background:rgba(255,255,255,.75);border-bottom:1px solid rgba(0,0,0,.12)}
+      .mobile-info-bar{background:rgba(255,255,255,.1);border-bottom:1px solid rgba(0,0,0,.3)}
     }
     .mobile-info-bar.show{translate:0 0}
     .mobile-info-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto}
     .mobile-info{display:flex;gap:10px;flex-wrap:wrap;color:var(--text-main);font-weight:800}
     .mobile-info strong{font-weight:900}
-    @media (min-width:601px){.mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}}
-    @media (min-width:960px){.mobile-info-bar{display:none !important}}
+    @media (min-width:601px){
+      .mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
+    }
+    @media (min-width:960px){ .mobile-info-bar{display:none !important} }
   </style>
 </head>
 <body>
   <!-- ===== Top bar ===== -->
   <div class="topbar-bleed" aria-hidden="true"></div>
   <header class="topbar" role="banner">
-    <a class="topbar-left home-link" href="/" aria-label="Go to Games Lab homepage">
+    <div class="topbar-left">
       <img src="https://ik.imagekit.io/gameslab/tr:w-36,q-100,f-auto/Games_Lab_Logo.png" alt="Games Lab Logo" class="logo" width="36" height="36"/>
       <span class="brand">Games Lab</span>
-    </a>
+    </div>
   </header>
-  <!-- Frost shield (prevents iOS from sampling bright pixels right under the header) -->
-  <div class="frost-shield" aria-hidden="true"></div>
   <div class="topbar-spacer" aria-hidden="true"></div>
 
   <!-- ===== Mobile sticky microbar ===== -->
@@ -292,7 +322,27 @@ content="
   <!-- ===== Page grid ===== -->
   <main class="wrap" role="main">
     <div class="page-grid">
-      <!-- Title + share -->
+      <!-- Row 1: Banner + Side card -->
+      <figure class="banner">
+        <img src="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" alt="Night of Mafias ! event banner">
+      </figure>
+
+      <aside class="side-card" aria-label="Highlights">
+        <div class="info-card" role="complementary">
+          <h3>Highlights</h3>
+          <div class="facts">
+            <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
+            <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
+            <div class="fact"><span class="label">Group size</span><span>8–25 players</span></div>
+            <div class="fact"><span class="label">Difficulty</span><span>Beginner-friendly</span></div>
+            <div class="fact"><span class="label">Age</span><span>14+</span></div>
+            <div class="fact"><span class="label">Price</span><span>₹ 350/-</span></div>
+          </div>
+          <button class="btn" id="shareBtnSide" aria-label="Share this event">Share this page</button>
+        </div>
+      </aside>
+
+      <!-- Row 2: Title + inline share (mobile only) -->
       <div class="title-row">
         <h2 class="heading" id="eventTitle">Night of Mafias !</h2>
         <button class="icon-btn share-inline" id="shareNearTitle" aria-label="Share this event" title="Share">
@@ -315,27 +365,7 @@ content="
         </div>
       </div>
 
-      <!-- Banner + desktop side card -->
-      <figure class="banner">
-        <img src="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" alt="Night of Mafias ! event banner">
-      </figure>
-
-      <aside class="side-card" aria-label="Highlights">
-        <div class="info-card" role="complementary">
-          <h3>Highlights</h3>
-          <div class="facts">
-            <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
-            <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
-            <div class="fact"><span class="label">Group size</span><span>8–25 players</span></div>
-            <div class="fact"><span class="label">Difficulty</span><span>Beginner-friendly</span></div>
-            <div class="fact"><span class="label">Age</span><span>14+</span></div>
-            <div class="fact"><span class="label">Price</span><span>₹ 350/-</span></div>
-          </div>
-          <button class="btn" id="shareBtnSide" aria-label="Share this event">Share this page</button>
-        </div>
-      </aside>
-
-      <!-- Divider row above content -->
+      <!-- Divider row (sits above content; left-only on desktop) -->
       <div class="divider" aria-hidden="true"></div>
 
       <!-- Content -->
@@ -449,8 +479,8 @@ content="
         const topbarH = topbar ? topbar.offsetHeight : 56;
 
         const rect = highlights.getBoundingClientRect();
-        const bottomY = rect.bottom + window.scrollY;
-        const shouldShow = window.scrollY >= (bottomY - topbarH);
+        const bottomY = rect.bottom + window.scrollY;           // bottom of highlights in doc space
+        const shouldShow = window.scrollY >= (bottomY - topbarH); // only after fully scrolled past
         microbar.classList.toggle('show', shouldShow);
         microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
       }
