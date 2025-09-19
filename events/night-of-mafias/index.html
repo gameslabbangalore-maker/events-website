@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience. Night of Mafias ! by Games Lab." />
 
-  <!-- Open Graph / Twitter -->
+  <!-- Open Graph / Twitter (place early so crawlers see within first ~40KB) -->
   <meta property="og:title" content="Night of Mafias ! — Games Lab">
   <meta property="og:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
   <meta property="og:url" content="https://gameslab.co.in/events/night-of-mafias/">
@@ -66,43 +66,27 @@ content="
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
-    /* Topbar safe-area strip (we toggle .glass class on it from JS) */
+    /* Topbar (same structure as home) */
     .topbar-bleed{
       position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);
-      background:transparent; border-bottom:0;
-      backdrop-filter:none; -webkit-backdrop-filter:none;
-      z-index:10002; pointer-events:none;
-      transition: background .18s ease, border-color .18s ease, opacity .12s ease;
+      /* make invisible so first paint looks clean */
+      background:transparent !important;
+      backdrop-filter:none !important;
+      -webkit-backdrop-filter:none !important;
+      z-index:10002;pointer-events:none
     }
-    .topbar-bleed.glass{
-      background:rgba(24,24,24,.07);
-      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
-    }
-    @media (prefers-color-scheme: light){
-      .topbar-bleed.glass{ background:rgba(255,255,255,.1); }
-    }
-
-    /* Topbar base: no blur by default; we add .glass when needed */
     .topbar{
       position:fixed;top:0;left:0;right:0;display:flex;align-items:center;
       padding-left:24px;padding-top:env(safe-area-inset-top,0px);
       height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));
       box-sizing:border-box;z-index:10003;
-      border-bottom:1px solid transparent;
-      background:transparent;
-      -webkit-backdrop-filter:none; backdrop-filter:none;
-      transition: background .18s ease, border-color .18s ease, -webkit-backdrop-filter .18s ease, backdrop-filter .18s ease;
-      isolation:isolate; /* contain filter effects */
-    }
-    .topbar.glass{
+      border-bottom:1px solid rgba(255,255,255,.3);
       background:rgba(24,24,24,.07);
-      border-bottom-color:rgba(255,255,255,.3);
-      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)
     }
     @media (prefers-color-scheme: light){
-      .topbar.glass{ border-bottom-color:rgba(0,0,0,.3) }
+      .topbar{border-bottom:1px solid rgba(0,0,0,.3)}
     }
-
     .topbar-left{display:flex;align-items:center;height:100%}
     .topbar-left.home-link{color:inherit;text-decoration:none}
     .topbar-left.home-link:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
@@ -142,7 +126,8 @@ content="
   </style>
 
   <style>
-    /* Mobile-only: fade banner in so first paint under the header is neutral (no shimmer) */
+    /* Mobile-only: delay the banner's visual paint so the glass header
+       blurs a neutral surface on first load (no shimmer). */
     @media (max-width: 959px) {
       .banner img{
         opacity: 0;
@@ -151,10 +136,11 @@ content="
       }
       @keyframes maf-banner-in { to { opacity: 1; } }
     }
+    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) and (max-width: 959px) {
       .banner img{ animation: none; opacity: 1; }
     }
-  </style>
+    </style>
 
   <!-- ===== EVENT PAGE LAYOUT ===== -->
   <style>
@@ -167,7 +153,7 @@ content="
       .divider{background:linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,.06));box-shadow:0 1px 0 rgba(0,0,0,.06) inset;}
     }
 
-    /* Page grid */
+    /* Page grid: banner + side facts in the first row */
     .page-grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -187,14 +173,14 @@ content="
           "banner   side"
           "title    side"
           "tagline  side"
-          "divider  side"
+          "divider  side"    /* divider sits above content, left column only */
           "content  side";
         column-gap: 18px;
         row-gap: 12px;
       }
     }
 
-    /* Banner */
+    /* Banner: desktop tall, mobile a bit shorter; slightly wider than content on mobile */
     .banner{grid-area: banner; border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
     .banner img{width:100%;height: clamp(360px, 64vh, 720px);object-fit: cover;object-position:center}
     @media (max-width:768px){
@@ -202,20 +188,22 @@ content="
       .banner img{height: clamp(220px, 40vh, 420px);}
     }
 
-    /* Headings (match homepage) */
+    /* Headings match homepage yellow section titles */
     .heading { color: var(--accent); font-size: 1.9rem; font-weight: 700; letter-spacing: .2px; margin: 0 0 18px; }
     @media (max-width:959px){ .heading{ text-align:center; } }
 
-    /* Title row (mobile share inline) */
+    /* Event title row (mobile shows share icon) */
     .title-row{
       grid-area:title;
-      display:flex; align-items:center; gap:8px;
-      margin-bottom:4px;
+      display:flex;
+      align-items:center;     /* keep share icon perfectly inline */
+      gap:8px;
+      margin-bottom:4px;      /* slightly tighter above tagline */
     }
     @media (max-width:959px){ .title-row{ justify-content:center; } }
     .title-row .heading{ margin:0; line-height:1.1; }
 
-    /* Tagline style like 'REACH OUT TO US!' */
+    /* Tagline styled like 'REACH OUT TO US!' */
     .tagline{
       grid-area:tagline;
       margin: 0 0 10px;
@@ -224,7 +212,7 @@ content="
     }
     @media (max-width:959px){ .tagline{ text-align:center; } }
 
-    /* Mobile Highlights (no box) */
+    /* Mobile Highlights — clean inline list (no box) */
     .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin: 0 0 8px}
     .highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .h-item{font-size:13.5px;display:flex;flex-direction:column;gap:2px}
@@ -232,20 +220,20 @@ content="
     .h-value{font-weight:800}
     @media (min-width:960px){ .highlights-mobile{display:none !important} }
 
-    /* Divider row (left column only on desktop) */
+    /* Divider row between highlights/tagline and content; left column only on desktop */
     .page-grid > .divider{ grid-area: divider; margin:12px 0 12px; }
 
     .content{grid-area:content}
     .prose{font-size:1.04rem; line-height:1.6}
     .prose p{margin:0 0 14px}
 
-    /* Videos (portrait) */
+    /* Videos — portrait, compact */
     .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden}
     .video-portrait iframe{width:100%;height:100%;border:0}
     .recap-grid-portrait{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));justify-items:center}
     .recap-grid-portrait .video-portrait{max-width:clamp(160px,28vw,220px)}
 
-    /* Side card (desktop) */
+    /* Right info card (desktop) — centered header + button */
     .side-card{grid-area:side; display:none}
     @media (min-width:960px){
       .side-card{display:block}
@@ -268,27 +256,33 @@ content="
     .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer}
     .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer;position:relative;top:-1px}
-    @media (min-width:960px){ .share-inline{display:none} }
+    @media (min-width:960px){ .share-inline{display:none} } /* inline share only on mobile */
 
-    /* Mobile microbar (unchanged) */
+    /* MOBILE microbar — matches Top Bar visuals; bold content */
+    /* replace your current .mobile-info-bar / .mobile-info-bar.show block with this */
     .mobile-info-bar{
       position:fixed;left:0;right:0;
       top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
       z-index:10001;padding:8px 12px;
       background:rgba(24,24,24,.07);
       border-bottom:1px solid rgba(255,255,255,.3);
-      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-      translate:0 -100%;transition:translate .2s ease;
+      -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    
+      /* NEW: start fully hidden so it doesn't show through the transparent header */
+      transform:translate3d(0,-100%,0);
+      opacity:0;
+      pointer-events:none;
+    
+      transition:transform .2s ease, opacity .15s ease;
+      will-change:transform, opacity;
     }
     @media (prefers-color-scheme: light){
       .mobile-info-bar{background:rgba(255,255,255,.1);border-bottom:1px solid rgba(0,0,0,.3)}
     }
-    .mobile-info-bar.show{translate:0 0}
-    .mobile-info-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto}
-    .mobile-info{display:flex;gap:10px;flex-wrap:wrap;color:var(--text-main);font-weight:800}
-    .mobile-info strong{font-weight:900}
-    @media (min-width:601px){
-      .mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
+    .mobile-info-bar.show{
+      transform:translate3d(0,0,0);
+      opacity:1;
+      pointer-events:auto;
     }
     @media (min-width:960px){ .mobile-info-bar{display:none !important} }
   </style>
@@ -365,7 +359,7 @@ content="
         </div>
       </div>
 
-      <!-- Divider row -->
+      <!-- Divider row (sits above content; left-only on desktop) -->
       <div class="divider" aria-hidden="true"></div>
 
       <!-- Content -->
@@ -461,7 +455,7 @@ content="
 
   <!-- ===== Scripts ===== -->
   <script>
-    // Mobile microbar: show only after highlights fully scroll past topbar
+    // Microbar: show only after the bottom of the highlights passes the top bar (mobile only)
     (function(){
       const microbar   = document.getElementById('mobileInfoBar');
       const highlights = document.getElementById('highlightsMobile');
@@ -477,9 +471,10 @@ content="
         }
         const topbar = document.querySelector('.topbar');
         const topbarH = topbar ? topbar.offsetHeight : 56;
+
         const rect = highlights.getBoundingClientRect();
-        const bottomY = rect.bottom + window.scrollY;
-        const shouldShow = window.scrollY >= (bottomY - topbarH);
+        const bottomY = rect.bottom + window.scrollY;      // bottom of highlights in doc space
+        const shouldShow = window.scrollY >= (bottomY - topbarH); // only after fully scrolled past
         microbar.classList.toggle('show', shouldShow);
         microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
       }
@@ -488,9 +483,7 @@ content="
       window.addEventListener('scroll', update, { passive:true });
       window.addEventListener('resize', update);
     })();
-  </script>
 
-  <script>
     // Share (Web Share API + clipboard fallback)
     (function(){
       async function sharePage(){
@@ -508,10 +501,8 @@ content="
       document.getElementById('shareBtnSide')?.addEventListener('click', sharePage);
       document.getElementById('shareNearTitle')?.addEventListener('click', sharePage);
     })();
-  </script>
 
-  <script>
-    // Contact phone chooser
+    // Contact phone chooser (same as Home)
     (function(){
       const phone = document.getElementById('phone-link');
       const menu  = document.getElementById('phone-menu');
@@ -535,37 +526,6 @@ content="
         document.addEventListener('keydown', onEsc, true);
       }
       phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
-    })();
-  </script>
-
-  <script>
-    // ===== Transparent-at-first header -> Glass when banner top meets header bottom =====
-    (function(){
-      const topbar = document.querySelector('.topbar');
-      const bleed  = document.querySelector('.topbar-bleed');
-      const banner = document.querySelector('.banner');
-      if (!topbar || !banner) return;
-
-      function topbarHeight(){ return topbar.offsetHeight || 56; }
-      function bannerTop(){
-        // Use rect + scrollY to handle different layouts
-        return banner.getBoundingClientRect().top + window.scrollY;
-      }
-      function applyGlass(on){
-        topbar.classList.toggle('glass', on);
-        bleed?.classList.toggle('glass', on);
-      }
-      function update(){
-        const threshold = bannerTop() - topbarHeight();
-        const shouldBeGlass = window.scrollY >= threshold - 1;
-        applyGlass(shouldBeGlass);
-      }
-
-      window.addEventListener('load', update, { passive:true });
-      window.addEventListener('scroll', update, { passive:true });
-      window.addEventListener('resize', update);
-      window.addEventListener('orientationchange', update);
-      setTimeout(update, 250); // in case fonts/images change flow after load
     })();
   </script>
 </body>
