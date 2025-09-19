@@ -763,13 +763,19 @@
   
             const footer = document.createElement('div');
             footer.className = 'card-footer';
+            
             const learn = document.createElement('a');
-            learn.className = 'book-btn';  // same styling as Book Now
-            learn.href = (event['Page Link'] || '#').trim();
-            // open in the same tab:
-            learn.removeAttribute('target');
-            learn.removeAttribute('rel');
+            learn.className = 'book-btn';                // same styling as Book Now
+            const pageUrl = (event['Page Link'] || '#').trim();
+            learn.href = pageUrl;
             learn.textContent = 'Learn More';
+            
+            // force same-tab explicitly
+            learn.target = '_self';
+            learn.removeAttribute('rel');
+            
+            footer.appendChild(learn);
+            card.appendChild(footer);
 
             card.addEventListener('click', function(e) {
               if (e.target.closest('a')) return;
@@ -1167,3 +1173,4 @@
   </body>
   </html>
   
+
