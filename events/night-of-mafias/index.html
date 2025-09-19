@@ -126,39 +126,21 @@ content="
   </style>
 
   <style>
-/* Invisible “background” under the header on mobile so the blur samples this,
-   not the banner. It blends into page background and fades to transparent. */
-@media (max-width: 959px) {
-  .blur-buffer{
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    /* Tall enough to cover header + some area below it */
-    height: calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px) + 100px);
-    /* Dark theme blend (matches --bg) */
-    background: linear-gradient(
-      to bottom,
-      rgba(24,24,24,1) 0%,
-      rgba(24,24,24,0.85) 55%,
-      rgba(24,24,24,0.60) 75%,
-      rgba(24,24,24,0) 100%
-    );
-    z-index: 10001;          /* below .topbar (10003) and .topbar-bleed (10002) */
-    pointer-events: none;    /* never blocks taps */
-  }
-}
-/* Light theme version so it also blends perfectly there */
-@media (max-width: 959px) and (prefers-color-scheme: light) {
-  .blur-buffer{
-    background: linear-gradient(
-      to bottom,
-      rgba(245,245,245,1) 0%,
-      rgba(245,245,245,0.85) 55%,
-      rgba(245,245,245,0.60) 75%,
-      rgba(245,245,245,0) 100%
-    );
-  }
-}
-</style>
+    /* Mobile-only: delay the banner's visual paint so the glass header
+       blurs a neutral surface on first load (no shimmer). */
+    @media (max-width: 959px) {
+      .banner img{
+        opacity: 0;
+        animation: maf-banner-in .28s ease-out .18s forwards;
+        will-change: opacity;
+      }
+      @keyframes maf-banner-in { to { opacity: 1; } }
+    }
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) and (max-width: 959px) {
+      .banner img{ animation: none; opacity: 1; }
+    }
+    </style>
 
   <!-- ===== EVENT PAGE LAYOUT ===== -->
   <style>
@@ -309,9 +291,6 @@ content="
     </a>
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
-  <!-- Blur buffer: invisible gradient under the top bar (mobile only) -->
-  <div class="blur-buffer" aria-hidden="true"></div>
-
 
   <!-- ===== Mobile sticky microbar ===== -->
   <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
