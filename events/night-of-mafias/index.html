@@ -351,6 +351,35 @@ content="
       width:18px;height:18px; display:block; color:currentColor; fill:currentColor;
     }
     .btn, .btn-primary, .wide-cta, .btn:link, .btn:visited { text-decoration:none !important; }
+
+    /* Make the side column span the full left-column height so sticky works all the way */
+    @media (min-width:960px){
+      .page-grid{ align-items: start; }
+      .side-card{ grid-row: 1 / -1; align-self: start; }
+      .info-card{ position: sticky; top: calc(var(--topbar-height-desktop) + 16px); }
+    }
+
+    #about-nom.section-title,
+    #recaps-title.section-title{
+      font-size: 1.22rem;   /* same as your .section-title override */
+      font-weight: 900;
+      letter-spacing: .2px;
+      margin: 0 0 14px;
+      color: var(--text-main);
+    }
+
+    /* Slightly smaller date|time and location on mobile microbar */
+    .micro-left{ font-size: .86rem; font-weight: 800; }  /* was .98/.90 in spots, now a bit smaller */
+    .micro-link{ font-size: .76rem; }                    /* keep links subtly smaller as well */
+    
+    /* Make Share button sit inline with the title */
+    .mobile-info-inner{ align-items: center; }           /* align title and share on one row */
+    #shareBtnTop{
+      margin-top: 0;                                     /* remove earlier bump */
+      display: inline-flex; align-items: center;         /* ensure icon centers vertically */
+    }
+    #shareBtnTop svg{ display:block; }                   /* no baseline wobble */
+    
   </style>
 </head>
 <body>
