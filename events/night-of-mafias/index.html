@@ -206,10 +206,9 @@ content="
     .h-value{font-weight:800}
     @media (min-width:960px){.highlights-mobile{display:none !important}}
 
-    /* mobile Highlights header that matches the desktop card label */
     .hl-card-title{
       font-size:13px; letter-spacing:.45px; text-transform:uppercase;
-      color:var(--muted); font-weight:800; margin:0 0 6px; text-align:center;
+      color:var(--muted); font-weight:800; margin:0 0 6px; text-align:left;
     }
 
     .page-grid > .divider{grid-area:divider;margin:12px 0 12px}
@@ -228,7 +227,7 @@ content="
     /* Right-hand card (desktop) */
     .side-card{grid-area:side;display:none}
     @media (min-width:960px){
-      .side-card{display:block; grid-row:1 / -1; align-self:start;} /* span all rows for sticky visibility */
+      .side-card{display:block}
       .info-card{
         position:sticky;
         top:calc(var(--topbar-height-desktop) + 16px);
@@ -242,7 +241,6 @@ content="
       @media (prefers-color-scheme: light){.info-card{border-color:rgba(0,0,0,.06)}}
       .info-card h3{margin:0 0 14px;font-size:13px;letter-spacing:.45px;text-transform:uppercase;color:var(--muted);text-align:center}
 
-      /* Reworked schedule: each line is a left (text) + right (link) */
       .schedule-list{display:grid;gap:10px;margin-bottom:10px}
       .schedule-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
       .when{font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -284,13 +282,13 @@ content="
       .mobile-info-bar{background:rgba(255,255,255,.55);border-bottom:1px solid rgba(0,0,0,.08)}
     }
     .mobile-info-bar.show{transform:translate3d(0,0,0);opacity:1;pointer-events:auto}
-    .mobile-info-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;flex-wrap:nowrap}
-    .mobile-info{display:flex;flex-direction:column;gap:4px;color:var(--text-main);min-width:0}
-    .micro-title{font-size:1.18rem;font-weight:900;line-height:1.05}
-    .micro-meta{display:grid;row-gap:6px;margin-top:4px}
-    .micro-line{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-    .micro-left{font-size:.9rem;font-weight:800;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .micro-link{font-size:.78rem;font-weight:800;color:var(--muted);text-decoration:none;white-space:nowrap}
+    .mobile-info-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;flex-wrap:nowrap}
+    .mobile-info{display:flex;flex-direction:column;gap:2px;color:var(--text-main);min-width:0}
+    .micro-title{font-size:1.12rem;font-weight:900;line-height:1.1}
+    .micro-meta{display:grid;gap:2px}
+    .micro-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+    .micro-left{font-size:.98rem;font-weight:800;color:var(--text-main);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .micro-link{font-size:.85rem;font-weight:800;color:var(--muted);text-decoration:none;white-space:nowrap}
     .icon-only{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;background:transparent;border:0;color:var(--text-main)}
 
     @media (min-width:601px){
@@ -308,12 +306,13 @@ content="
     .fab-book[hidden]{display:none}
     @media (min-width:960px){ .fab-book{display:none!important} }
 
-    /* Desktop share pill tidy (icon + text inline) */
     @media (min-width:960px){
       .share-row .btn{
-        display:inline-flex; align-items:center; gap:6px;
-        background:transparent !important; border:0 !important;
-        color:var(--muted); padding:0; line-height:1;
+        background:transparent !important;
+        border:0 !important;
+        color:var(--muted);
+        padding:0;
+        line-height:1;
       }
       .share-row .btn:hover{ color:var(--text-main); }
     }
@@ -322,7 +321,7 @@ content="
     .vid-modal[hidden]{display:none}
     .vid-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10020;display:flex;align-items:center;justify-content:center;padding:16px}
     .vid-stage{position:relative;width:min(900px,92vw);aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 10px 36px rgba(0,0,0,.6)}
-    .vid-stage.portrait{width:min(450px,92vw);aspect-ratio:9/16}
+    .vid-stage.portrait{width:min(450px,92vw);aspect-ratio:9/16} /* auto-switch */
     .vid-stage iframe{width:100%;height:100%;border:0}
     .vid-close{position:absolute;top:10px;right:10px;border:0;border-radius:10px;background:rgba(0,0,0,.4);color:#fff;padding:6px 10px;cursor:pointer}
     .vid-close:hover{background:rgba(0,0,0,.6)}
@@ -341,9 +340,9 @@ content="
     }
     @media (min-width:960px){ .divider-left{ grid-column:1; } }
 
-    /* Section titles (H3 look) — bigger + bold */
+    /* Section titles (H3 look) */
     .section-title{
-      font-size:1.28rem; line-height:1.4; font-weight:900;
+      font-size:1.12rem; line-height:1.4; font-weight:900;
       color:var(--text-main); margin:0 0 14px; letter-spacing:.2px; text-transform:none;
     }
 
@@ -351,7 +350,6 @@ content="
     .btn svg.icon, .icon-btn svg, .share-inline svg, #shareBtnTop svg{
       width:18px;height:18px; display:block; color:currentColor; fill:currentColor;
     }
-    /* Ensure no underline on CTAs */
     .btn, .btn-primary, .wide-cta, .btn:link, .btn:visited { text-decoration:none !important; }
   </style>
 </head>
@@ -447,7 +445,7 @@ content="
           <div class="h-item"><div class="h-label">Duration</div><div class="h-value">2–3 hours</div></div>
           <div class="h-item"><div class="h-label">Group size</div><div class="h-value">8–25 players</div></div>
           <div class="h-item"><div class="h-label">Difficulty</div><div class="h-value">Beginner-friendly</div></div>
-          <div class="h-item"><div class="h-label">Age</div><div class="h-value">14+</</div></div>
+          <div class="h-item"><div class="h-label">Age</div><div class="h-value">14+</div></div>
           <div class="h-item"><div class="h-label">Price</div><div class="h-value">₹ 350/-</div></div>
         </div>
       </div>
@@ -505,7 +503,7 @@ content="
             <p>
               <strong>Join us for Night of Mafias! — where deception is an art, and trust is the ultimate gamble.</strong>
             </p>
-          </div><!-- /.prose -->
+          </div><!-- FIX: close .prose -->
         </section>
 
         <div class="divider" aria-hidden="true"></div>
@@ -535,10 +533,11 @@ content="
             <iframe loading="lazy" title="Recap 3" src="https://www.youtube.com/embed/IsGh10mGWbM?rel=0"></iframe>
           </div>
         </div>
+        <!-- FIX: removed stray extra </div> that broke layout -->
       </section>
     </div>
 
-    <!-- Divider used previously to hide floating Book button near footer (kept for layout spacing only) -->
+    <!-- Divider used to hide floating Book button near footer -->
     <div class="divider" id="contactTopDivider" style="margin-top:40px;"></div>
 
     <div class="title" style="text-align:center;margin-bottom:18px;">
@@ -578,7 +577,7 @@ content="
 
         <!-- WhatsApp -->
         <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0  0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0  0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
           <a class="link" href="https://chat.whatsapp.com/BDglWOECbIiGLaCRVmzAaj" target="_blank" rel="noopener">Join our Community</a>
         </li>
       </ul>
@@ -659,6 +658,7 @@ content="
       const fab = document.getElementById('fabBook');
       if (!fab) return;
       fab.hidden = false; // ensure visible
+      // FIX: removed stray io.observe/extra IIFE that caused a runtime error
     })();
 
     // Load data from Upcoming sheet and wire schedule/microbar
@@ -689,14 +689,6 @@ content="
         return {h,m:min};
       }
       function pad(n){ return String(n).padStart(2,'0'); }
-      function fmtHuman(d, tStr){
-        const dt = new Date(d);
-        const wk = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
-        const day = String(dt.getDate()).padStart(2,'0');
-        const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()];
-        const yr2 = String(dt.getFullYear()).slice(-2);
-        return `${wk}, ${day} ${mon} '${yr2} | ${tStr}`;
-      }
       function fmtDateOnly(d){
         const dt = new Date(d);
         const wk = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
@@ -740,7 +732,16 @@ content="
         const title   = clean(match['EventName']) || eventTitle;
 
         const base = parseEventDate(dateStr);
-        const tm = parseTime12h(timeStr);
+        const tm = (function(t){
+          if(!t) return {h:19,m:0};
+          const m = t.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+          if(!m) return {h:19,m:0};
+          let h = parseInt(m[1],10), min=parseInt(m[2],10);
+          const ampm = m[3].toUpperCase();
+          if (ampm==='PM' && h<12) h+=12;
+          if (ampm==='AM' && h===12) h=0;
+          return {h: h, m: min};
+        })(timeStr);
         if (base){ base.setHours(tm.h, tm.m, 0, 0); }
 
         // Desktop Schedule (inline links)
@@ -752,7 +753,7 @@ content="
         const scBook  = document.getElementById('scBook');
 
         if (scheduled && base){
-          scWhen.textContent  = fmtDateOnly(base); // Sun, 21 Sep '25
+          scWhen.textContent  = fmtDateOnly(base);
           scWhere.textContent = locText || '';
           const ics = makeICS({
             title, start: base, durationHours: 2,
@@ -776,11 +777,10 @@ content="
           document.getElementById('highlightsMobile')?.setAttribute('hidden','');
         }
 
-        /* ===== Microbar (two lines, right-aligned links, no dots, no book) ===== */
+        // Microbar content
         const microTitle = document.getElementById('microTitle');
         const microMeta  = document.getElementById('microMeta');
         const esc = s => (s||'').replace(/[&<>"]/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m]));
-
         microTitle.innerHTML = `<strong>${title}</strong>`;
 
         if (scheduled && base){
@@ -801,6 +801,7 @@ content="
           microMeta.textContent = '8–25 players • Beginner-friendly';
         }
 
+        // Re-evaluate microbar visibility after content fills
         window.__updateMicrobarVis && window.__updateMicrobarVis();
 
       }catch(e){ console.error('Sheet load failed', e); }
@@ -818,7 +819,6 @@ content="
         const url = el.getAttribute('data-embed') || el.querySelector('iframe')?.src || '';
         const hasQ = url.includes('?');
         const withAuto = url + (hasQ ? '&' : '?') + 'autoplay=1';
-        // orientation: treat .video-portrait as portrait; anything else landscape
         if (el.classList.contains('video-portrait')) {
           stage.classList.add('portrait');
         } else {
