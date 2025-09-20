@@ -271,6 +271,32 @@ content="
       .mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
     }
     @media (min-width:960px){.mobile-info-bar{display:none !important}}
+
+    /* Keep dividers confined to the left content column */
+    .content .divider {
+      height: 1px;
+      width: 100%;
+      max-width: var(--content-max, 720px); /* match your left column width */
+      margin: 20px 0;
+      border: 0;
+      background: linear-gradient(to right, rgba(0,0,0,.16), rgba(0,0,0,.06));
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      .content .divider {
+        background: linear-gradient(to right, rgba(255,255,255,.22), rgba(255,255,255,.10));
+      }
+    }
+    
+    /* Light touch typography inside your existing .prose block */
+    .prose h3 { margin: 0 0 6px; font-size: clamp(18px, 2.4vw, 20px); }
+    .prose p  { margin: 0 0 16px; line-height: 1.6; }
+    .prose ul { margin: 0 0 16px; padding-left: 1.2em; }
+    .prose li { margin: 4px 0; }
+    .prose .muted { color: var(--muted, #555); }
+    @media (prefers-color-scheme: dark) {
+      .prose .muted { color: var(--muted-dark, #bcbcbc); }
+    }
   </style>
 </head>
 <body>
@@ -328,7 +354,7 @@ content="
         </button>
       </div>
 
-      <p class="tagline">SPEND YOUR FRIDAY NIGHT SOLVING A UNIQUE MURDER MYSTERY.</p>
+      <p class="tagline">Read faces, trade lies, and outlast the table in a social deduction showdown.</p>
 
       <div class="highlights-mobile" id="highlightsMobile">
         <div class="highlights-grid" aria-label="Event highlights">
@@ -346,18 +372,60 @@ content="
       <article class="content">
         <section id="details" aria-labelledby="about">
           <h2 id="about" class="heading">About the event</h2>
+      
           <div class="prose">
-            <p><strong><i> Who Killed the Villagers ?<br />
-              Everyone is a Suspect !<br />
-              We need you Detective .<br /><br /></i></strong>
-              Find yourself identifying the hidden Mafia killers or be the cunning force yourself.<br /><br />
-              Indulge in a super interactive game of <strong>MAFIA</strong> in a unique setting and watch the drama unfold with a chance to meet and bond with people from all walks of life. <br />Socialize and make new friends all the while playing a superlative game.<br /><br />
-              Don't worry if you haven't played before rules will be explained to you. <br />This game is suitable for all poker-faced adults and requires no prior experience.
-              </p>
+            <p>
+              Step into a night of suspense, strategy, and thrilling deception.
+              <em>Night of Mafias!</em> takes the classic social deduction experience and reimagines it with a
+              <em>Games Lab twist</em>—a unique setting, fresh surprises, and endless drama.
+            </p>
+      
+            <div class="divider" aria-hidden="true"></div>
+      
+            <h3>🌙 What Makes It Different?</h3>
+            <p>
+              Forget the same old game—this is <em>Mafia reinvented</em>. With original twists and engaging storytelling,
+              every round feels alive. Roles change, alliances form and break, and trust becomes the most dangerous gamble of all.
+            </p>
+      
+            <div class="divider" aria-hidden="true"></div>
+      
+            <h3>🕹 How It Works</h3>
+            <ul>
+              <li>Players are secretly assigned hidden roles at the start.</li>
+              <li><em>Daytime</em> is for open debate, accusations, and voting—who can you trust?</li>
+              <li><em>Nighttime</em> is when the hidden forces strike, and strategies quietly unfold.</li>
+              <li>Round by round, the tension builds until only one side survives.</li>
+            </ul>
+            <p class="muted">
+              Don’t worry if you’ve never played before—the rules are explained in a fun, easy way.
+              All you need is a sharp mind (or a convincing poker face).
+            </p>
+      
+            <div class="divider" aria-hidden="true"></div>
+      
+            <h3>✨ Why Join?</h3>
+            <ul>
+              <li>A <em>super-interactive experience</em> where you’ll laugh, scheme, and plot</li>
+              <li>A chance to <em>meet and bond</em> with people from all walks of life</li>
+              <li>Perfect for both beginners and seasoned Mafia lovers</li>
+              <li>A setting designed for maximum drama, suspense, and fun</li>
+            </ul>
+      
+            <div class="divider" aria-hidden="true"></div>
+      
+            <p>
+              <strong>⚡ Who killed the villagers? Everyone is a suspect.</strong><br />
+              Will you be the sharp-eyed detective uncovering lies, or the cunning player weaving them?
+            </p>
+            <p>
+              <strong>Join us for Night of Mafias! — where deception is an art, and trust is the ultimate gamble.</strong>
+            </p>
           </div>
         </section>
-
+      
         <div class="divider" aria-hidden="true"></div>
+      </article>
 
         <section id="about-video" aria-labelledby="about-nom">
           <h2 id="about-nom" class="heading">About Night of Mafias</h2>
