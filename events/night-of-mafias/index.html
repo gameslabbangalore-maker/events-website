@@ -308,6 +308,17 @@ content="
     .fab-book[hidden]{display:none}
     @media (min-width:960px){ .fab-book{display:none!important} }
 
+    @media (min-width:960px){
+      .share-row .btn{
+        background:transparent !important;
+        border:0 !important;
+        color:var(--muted);
+        padding:0;
+        line-height:1;
+      }
+      .share-row .btn:hover{ color:var(--text-main); }
+    }
+
     /* Video Lightbox */
     .vid-modal[hidden]{display:none}
     .vid-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10020;display:flex;align-items:center;justify-content:center;padding:16px}
@@ -660,7 +671,7 @@ content="
 
     // Load data from Upcoming sheet and wire schedule/microbar
     (async function(){
-      const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv".replace("9k6","9k1"); // keep as your original
+      const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
       const pagePath = location.pathname.replace(/\/+$/,'') || '/';
       const eventTitle = document.getElementById('eventTitle')?.textContent.trim() || 'Night of Mafias !';
 
