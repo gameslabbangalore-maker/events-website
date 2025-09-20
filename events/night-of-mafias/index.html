@@ -355,34 +355,72 @@ content="
     /* Ensure no underline on CTAs */
     .btn, .btn-primary, .wide-cta, .btn:link, .btn:visited { text-decoration:none !important; }
 
-  /* --- Desktop: share button text+icon inline --- */
-  @media (min-width:960px){
+    /* --- Desktop: share button text+icon inline --- */
+    @media (min-width:960px){
+      .share-row .btn{
+        display:inline-flex; align-items:center; gap:6px;
+        background:transparent !important; border:0 !important;
+        color:var(--muted); padding:0; line-height:1;
+      }
+      .share-row .btn:hover{ color:var(--text-main); }
+    }
+    
+    /* --- Desktop: keep card visible while scrolling (style is fine; see HTML move in section C) --- */
+    
+    /* --- Mobile microbar sizing + alignment --- */
+    .micro-title{ font-size:1.18rem; font-weight:900; line-height:1.05; } /* title a bit larger */
+    .micro-line{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+    .micro-left{ font-size:.9rem; font-weight:800; }   /* date/time & location smaller */
+    .micro-link{ font-size:.78rem; font-weight:800; color:var(--muted); text-decoration:none; }
+    
+    /* share stays inline with title (already right-aligned by the container) */
+    .mobile-info-inner{ justify-content:space-between; }
+    
+    /* --- Mobile: Highlights header centered but same style --- */
+    .hl-card-title{ text-align:center; }
+    
+    /* --- Common: bigger, bolder H3s --- */
+    .section-title{
+      font-size:1.22rem;   /* was ~1.12rem */
+      font-weight:900;
+    }
+
+    /* keep the right card sticky across the entire left column height */
+    @media (min-width:960px){
+      .side-card{ grid-row: 1 / -1; align-self: start; }  /* span all rows */
+    }
+
+    /* enforce H3 look for those two ids */
+    #about-nom.section-title,
+    #recaps-title.section-title,
+    #about-nom,
+    #recaps-title{
+      font-size:1.28rem;   /* bigger */
+      font-weight:900; 
+      letter-spacing:.2px;
+      margin:0 0 14px;
+      color:var(--text-main);
+      text-transform:none;
+    }
+
+    /* microbar typography + spacing */
+    .micro-title{ font-size:1.18rem; font-weight:900; line-height:1.05; }
+    .micro-meta{ display:grid; row-gap:6px; margin-top:4px; }   /* more space between lines */
+    .micro-line{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+    .micro-left{ font-size:.9rem; font-weight:800; }            /* smaller than title */
+    .micro-link{ font-size:.78rem; font-weight:800; color:var(--muted); text-decoration:none; }
+    
+    /* keep share inline with the title’s baseline */
+    #shareBtnTop{ align-self:flex-start; margin-top:2px; } 
+    .mobile-info-inner{ align-items:flex-start; }               /* title + share align at top */
+
+    @media (min-width:960px){
     .share-row .btn{
       display:inline-flex; align-items:center; gap:6px;
       background:transparent !important; border:0 !important;
       color:var(--muted); padding:0; line-height:1;
     }
     .share-row .btn:hover{ color:var(--text-main); }
-  }
-  
-  /* --- Desktop: keep card visible while scrolling (style is fine; see HTML move in section C) --- */
-  
-  /* --- Mobile microbar sizing + alignment --- */
-  .micro-title{ font-size:1.18rem; font-weight:900; line-height:1.05; } /* title a bit larger */
-  .micro-line{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
-  .micro-left{ font-size:.9rem; font-weight:800; }   /* date/time & location smaller */
-  .micro-link{ font-size:.78rem; font-weight:800; color:var(--muted); text-decoration:none; }
-  
-  /* share stays inline with title (already right-aligned by the container) */
-  .mobile-info-inner{ justify-content:space-between; }
-  
-  /* --- Mobile: Highlights header centered but same style --- */
-  .hl-card-title{ text-align:center; }
-  
-  /* --- Common: bigger, bolder H3s --- */
-  .section-title{
-    font-size:1.22rem;   /* was ~1.12rem */
-    font-weight:900;
   }
 
   </style>
@@ -596,9 +634,7 @@ content="
         </li>
 
         <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 2v.01L12 12 4 6.01V6h16ZM4 18V8l8 6 8-6v10H4Z"/>
-          </svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 13 2 6.76V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6.76L12 13Zm0-2.47L22 4H2l10 6.53Z"/></svg>
           <a class="link email-text" href="mailto:info@gameslab.co.in">info@gameslab.co.in</a>
         </li>
 
@@ -688,22 +724,14 @@ content="
       phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
     })();
 
-    // Floating Book button: hide only when Contact area meaningfully overlaps
+    // Floating Book button: never auto-hide
     (function(){
       const fab = document.getElementById('fabBook');
-      const stopAt = document.getElementById('contactTopDivider');
-      if (!fab || !stopAt) return;
-    
-      const io = new IntersectionObserver(entries=>{
-        // hide when ~35% of the Contact divider area has entered viewport
-        const vis = entries.some(e => e.isIntersecting && e.intersectionRatio > 0.35);
-        fab.hidden = vis;
-      }, {
-        root: null,
-        rootMargin: '0px 0px -35% 0px',  // require more of the section to enter
-        threshold: [0, 0.35, 1]
-      });
-    
+      if (!fab) return;
+      fab.hidden = false; // ensure visible
+      // no IntersectionObserver -> no hiding
+    })();
+
       io.observe(stopAt);
     })();
 
