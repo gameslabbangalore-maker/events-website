@@ -28,6 +28,9 @@
   <link rel="icon" href="/Games Lab Logo.png" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
+  <!-- CSV parser for sheet -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
   <!-- CSP aligned with Home + YouTube for embeds -->
   <meta http-equiv="Content-Security-Policy"
 content="
@@ -55,8 +58,6 @@ content="
 ">
 
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-  <!-- PapaParse for CSV (same domain allowed by CSP) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <!-- ===== THEME + SHARED (from Home) ===== -->
   <style>
@@ -144,10 +145,12 @@ content="
     }
   </style>
 
-  <!-- Mobile-only: fade-in banner -->
+  <!-- Mobile-only: fade-in banner to avoid first-paint shimmer under glass -->
   <style>
     @media (max-width: 959px) {
-      .banner img{ opacity:0; animation: maf-banner-in .28s ease-out .18s forwards; will-change:opacity; }
+      .banner img{
+        opacity:0; animation: maf-banner-in .28s ease-out .18s forwards; will-change:opacity;
+      }
       @keyframes maf-banner-in { to { opacity: 1; } }
     }
     @media (prefers-reduced-motion: reduce) and (max-width: 959px) {
@@ -180,7 +183,7 @@ content="
     }
     @media (min-width:960px){
       .page-grid{
-        grid-template-columns: minmax(0,1fr) 340px;
+        grid-template-columns: minmax(0,1fr) 360px;
         grid-template-areas:
           "banner   side"
           "title    side"
@@ -208,6 +211,7 @@ content="
     .tagline{grid-area:tagline;margin:0 0 10px;font-weight:700;letter-spacing:.6px;color:var(--muted);text-align:left}
     @media (max-width:959px){.tagline{text-align:center}}
 
+    /* ===== Mobile highlights block (only when scheduled) ===== */
     .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin:0 0 8px}
     .highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .h-item{font-size:13.5px;display:flex;flex-direction:column;gap:2px}
@@ -218,24 +222,51 @@ content="
     .page-grid > .divider{grid-area:divider;margin:12px 0 12px}
 
     .content{grid-area:content}
-    .prose{font-size:1.04rem;line-height:1.6}
-    .prose p{margin:0 0 14px}
+    .prose{font-size:1.04rem;line-height:1.7}
+    .prose p{margin:0 0 16px}
+    .prose h3{margin:0 0 14px;font-weight:800}
 
+    /* Videos */
     .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden}
     .video-portrait iframe{width:100%;height:100%;border:0}
     .recap-grid-portrait{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));justify-items:center}
     .recap-grid-portrait .video-portrait{max-width:clamp(160px,28vw,220px)}
+    /* Match “About Night of Mafias” video to recaps size */
+    #about-video .video-portrait{max-width:clamp(160px,28vw,220px);margin-left:auto;margin-right:auto}
 
+    /* Right-hand card */
     .side-card{grid-area:side;display:none}
     @media (min-width:960px){
       .side-card{display:block}
-      .info-card{position:sticky;top:calc(var(--topbar-height-desktop) + 16px);background:var(--card);border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);padding:14px;border:1.5px solid rgba(255,255,255,.08);text-align:center}
+      .info-card{
+        position:sticky;
+        top:calc(var(--topbar-height-desktop) + 16px);
+        background:var(--card);
+        border-radius:12px;
+        box-shadow:0 6px 22px rgba(0,0,0,.8);
+        padding:14px 14px 16px;
+        border:1.5px solid rgba(255,255,255,.08);
+      }
       @media (prefers-color-scheme: light){.info-card{border-color:rgba(0,0,0,.06)}}
-      .info-card h3{margin:0 0 12px;font-size:13px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
-      .facts{display:grid;gap:8px;margin:8px 0 14px;text-align:left}
+      .info-card h3{margin:0 0 10px;font-size:13px;letter-spacing:.45px;text-transform:uppercase;color:var(--muted);text-align:center}
+      .info-card .section-title{margin:2px 0 10px;font-size:13px;letter-spacing:.45px;text-transform:uppercase;color:var(--muted)}
+      .facts{display:grid;gap:8px;margin:8px 0 2px}
       .fact{display:flex;justify-content:space-between;gap:10px;font-size:14px}
       .fact .label{color:var(--muted)}
-      .info-card .btn{margin:0 auto}
+      .info-card .btn{margin:0;white-space:nowrap}
+      .info-card .btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16)}
+      .info-card .btn-primary{background:var(--accent);color:#000;border:0;font-weight:900}
+      .info-card .btn-primary:hover{filter:brightness(1.05)}
+      .info-card .schedule-grid{
+        display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;margin-bottom:8px
+      }
+      .info-card .when-where{display:flex;flex-direction:column;gap:6px;font-size:14px}
+      .info-card .when-where .line{display:flex;gap:8px;align-items:center}
+      .info-card .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+      .info-card .wide-cta{display:block;width:100%;text-align:center;padding:10px 14px;border-radius:10px;margin:6px 0 6px}
+      .info-card .row-div{height:1px;margin:10px 0;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.04));border:0}
+      .info-card .share-row{display:flex;justify-content:center;margin-top:6px}
+      .info-card .share-row .icon{width:18px;height:18px;margin-right:6px}
     }
 
     .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer}
@@ -243,7 +274,7 @@ content="
     .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer;position:relative;top:-1px}
     @media (min-width:960px){.share-inline{display:none}}
 
-    /* MOBILE microbar */
+    /* MOBILE microbar — compact, icon-only share */
     .mobile-info-bar{
       position:fixed;left:0;right:0;
       top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
@@ -261,9 +292,11 @@ content="
     }
     .mobile-info-bar.show{transform:translate3d(0,0,0);opacity:1;pointer-events:auto}
     .mobile-info-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;flex-wrap:nowrap}
-    .mobile-info{display:flex;gap:10px;flex-wrap:wrap;color:var(--text-main);font-weight:800;min-width:0}
-    .mobile-info a{color:var(--text-main);text-decoration:underline}
+    .mobile-info{display:flex;gap:8px;flex-wrap:wrap;color:var(--text-main);font-weight:800;min-width:0;align-items:center}
     .mobile-info strong{font-weight:900}
+    .micro-title{font-size:.98rem}
+    .micro-meta{font-size:.92rem;color:var(--muted)}
+    .icon-only{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px}
     @media (min-width:601px){
       .mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
     }
@@ -279,34 +312,23 @@ content="
       background: linear-gradient(to right, rgba(0,0,0,.16), rgba(0,0,0,.06));
     }
     @media (prefers-color-scheme: dark) {
-      .content .divider {
-        background: linear-gradient(to right, rgba(255,255,255,.22), rgba(255,255,255,.10));
-      }
+      .content .divider { background: linear-gradient(to right, rgba(255,255,255,.22), rgba(255,255,255,.10)); }
     }
-    .prose h3 { margin: 0 0 6px; font-size: clamp(18px, 2.4vw, 20px); }
-    .prose p  { margin: 0 0 16px; line-height: 1.6; }
-    .prose ul { margin: 0 0 16px; padding-left: 1.2em; }
-    .prose li { margin: 4px 0; }
-    .prose .muted { color: var(--muted, #555); }
-    @media (prefers-color-scheme: dark) { .prose .muted { color: var(--muted-dark, #bcbcbc); } }
+
+    /* Floating Book Now (mobile) */
+    .fab-book{
+      position:fixed; right:12px; bottom:12px; z-index:10000;
+      background:var(--accent); color:#000; font-weight:900;
+      padding:10px 14px; border-radius:12px; text-decoration:none;
+      box-shadow:0 6px 18px rgba(0,0,0,.45);
+    }
+    .fab-book[hidden]{display:none}
+    @media (min-width:960px){ .fab-book{display:none!important} }
 
     /* Ensure all main sections stay in the left column on desktop */
     @media (min-width:960px){
       .page-grid > section { grid-column: 1; }
     }
-
-    /* Floating Book Now (mobile only) */
-    .floating-book{
-      position:fixed; left:12px; right:12px;
-      bottom:12px; z-index:10000;
-      display:none; justify-content:center; text-align:center;
-      padding:12px 16px; border-radius:12px;
-      background:var(--accent); color:#000; font-weight:900;
-      text-decoration:none; box-shadow:0 8px 22px rgba(0,0,0,.6);
-      transition:transform .2s ease, opacity .2s ease;
-    }
-    .floating-book.hide{ transform:translateY(140%); opacity:.0; pointer-events:none; }
-    @media (max-width:959px){ .floating-book{ display:block; } }
   </style>
 </head>
 <body>
@@ -323,21 +345,18 @@ content="
   <!-- ===== Mobile sticky microbar ===== -->
   <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
     <div class="mobile-info-inner">
-      <div class="mobile-info" id="mobileInfo">
-        <!-- will be replaced if Scheduled = Yes -->
-        <strong>Night of Mafias !</strong>
-        <span>• 8–25 players</span>
-        <span>• Beginner-friendly</span>
+      <div class="mobile-info">
+        <span class="micro-title" id="microTitle"><strong>Night of Mafias !</strong></span>
+        <span class="micro-meta" id="microMeta">• 8–25 players • Beginner-friendly</span>
       </div>
-      <div style="display:flex;gap:8px;">
-        <!-- Book button will be inserted here when scheduled -->
-        <button class="btn" id="shareBtnTop" aria-label="Share this event" title="Share">
-          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
-          Share
-        </button>
-      </div>
+      <button class="btn icon-only" id="shareBtnTop" aria-label="Share this event" title="Share">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
+      </button>
     </div>
   </div>
+
+  <!-- Floating Book Now (mobile) -->
+  <a id="fabBook" class="fab-book" href="#" target="_blank" rel="noopener">Book Now</a>
 
   <!-- ===== Page grid ===== -->
   <main class="wrap" role="main">
@@ -346,15 +365,30 @@ content="
         <img src="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" alt="Night of Mafias ! event banner">
       </figure>
 
+      <!-- RIGHT CARD -->
       <aside class="side-card" aria-label="Highlights">
         <div class="info-card" role="complementary">
-          <h3>Highlights</h3>
+          <h3>HIGHLIGHTS</h3>
 
-          <!-- Scheduled info gets injected here (first) -->
-          <div class="facts" id="factsScheduled" style="margin-top:0; display:none;"></div>
+          <!-- SCHEDULE BLOCK (desktop only, populated by JS) -->
+          <div id="scheduleBlock" class="schedule-block" hidden>
+            <div class="section-title">Schedule</div>
+            <div class="schedule-grid">
+              <div class="when-where">
+                <div class="line" id="scWhen">—</div>
+                <div class="line" id="scWhere">—</div>
+              </div>
+              <div class="actions">
+                <a id="scAddCal" class="btn btn-ghost" href="#" download>Add to Calendar</a>
+                <a id="scDir" class="btn btn-ghost" href="#" target="_blank" rel="noopener">Directions</a>
+              </div>
+            </div>
+            <a id="scBook" class="btn btn-primary wide-cta" href="#" target="_blank" rel="noopener">Book Now</a>
+            <div class="row-div" aria-hidden="true"></div>
+          </div>
 
-          <!-- Your existing highlights stay as-is -->
-          <div class="facts">
+          <!-- STATIC HIGHLIGHTS -->
+          <div class="facts" id="factsList">
             <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
             <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
             <div class="fact"><span class="label">Group size</span><span>8–25 players</span></div>
@@ -363,10 +397,12 @@ content="
             <div class="fact"><span class="label">Price</span><span>₹ 350/-</span></div>
           </div>
 
-          <!-- Book button (desktop) will be shown only when scheduled -->
-          <a class="btn" id="bookBtnSide" href="#" style="display:none;">Book Now</a>
-
-          <button class="btn" id="shareBtnSide" aria-label="Share this event">Share this page</button>
+          <div class="share-row">
+            <button class="btn btn-ghost" id="shareBtnSide" aria-label="Share this event">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
+              Share
+            </button>
+          </div>
         </div>
       </aside>
 
@@ -379,7 +415,10 @@ content="
 
       <p class="tagline">Read faces, trade lies, and outlast the table in a social deduction showdown.</p>
 
-      <div class="highlights-mobile" id="highlightsMobile">
+      <!-- MOBILE highlights header (shown only when scheduled) -->
+      <div class="highlights-mobile" id="highlightsMobile" hidden>
+        <div class="divider" aria-hidden="true" style="margin-top:4px;margin-bottom:8px;"></div>
+        <h3 class="heading" style="margin:0 0 6px;text-align:left;">Highlights</h3>
         <div class="highlights-grid" aria-label="Event highlights">
           <div class="h-item"><div class="h-label">Format</div><div class="h-value">Social deduction</div></div>
           <div class="h-item"><div class="h-label">Duration</div><div class="h-value">2–3 hours</div></div>
@@ -394,7 +433,7 @@ content="
 
       <article class="content">
         <section id="details" aria-labelledby="about">
-          <h3 id="about" class="heading">About the event</h3>
+          <h3 id="about" class="heading">About the Event</h3>
           <div class="prose">
             <p>
               Step into a night of suspense, strategy, and thrilling deception.
@@ -476,8 +515,8 @@ content="
       </section>
     </div>
 
-    <!-- sentinel to hide floating Book when Contact comes in -->
-    <div id="floatStopSentinel" class="divider" style="margin-top:40px;"></div>
+    <!-- This divider's ID is used to hide the floating Book button on mobile near the footer -->
+    <div class="divider" id="contactTopDivider" style="margin-top:40px;"></div>
 
     <div class="title" style="text-align:center;margin-bottom:18px;">
       <h2 class="heading" style="margin:0;">Contact Us</h2>
@@ -506,13 +545,16 @@ content="
           <a class="link email-text" href="mailto:info@gameslab.co.in">info@gameslab.co.in</a>
         </li>
 
+        <!-- Clean Instagram icon -->
         <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1 5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.25-2.75a.75.75 0 1 1-.75.75.75.75 0 0 1 .75-.75Z"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5.5A5.5 5.5 0 1 0 17.5 13 5.5 5.5 0 0 0 12 7.5Zm0 2A3.5 3.5 0 1 1 8.5 13 3.5 3.5 0 0 1 12 9.5Zm5.2-2.2a.8.8 0 1 0 .8.8.8.8 0 0 0-.8-.8Z"/>
+          </svg>
           <a class="link" href="https://www.instagram.com/games._.lab/" target="_blank" rel="noopener">Follow Us</a>
         </li>
 
         <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0  2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Z"/></svg>
           <a class="link" href="https://chat.whatsapp.com/BDglWOECbIiGLaCRVmzAaj" target="_blank" rel="noopener">Join our Community</a>
         </li>
       </ul>
@@ -521,34 +563,36 @@ content="
     <div class="divider" style="margin-top:40px;"></div>
   </main>
 
-  <!-- Floating Book Now (mobile) -->
-  <a href="#" id="floatBook" class="floating-book hide" aria-label="Book Now">Book Now</a>
-
   <!-- ===== Scripts ===== -->
   <script>
-    // Microbar: show only after the bottom of the highlights passes the top bar (mobile only)
+    // Microbar: show only after the bottom of the mobile highlights passes the top bar
     (function(){
       const microbar   = document.getElementById('mobileInfoBar');
       const highlights = document.getElementById('highlightsMobile');
       if (!microbar) return;
+
       function isDesktop(){ return window.innerWidth >= 960; }
+
       function update(){
-        if (isDesktop() || !highlights) {
+        if (isDesktop() || !highlights || highlights.hasAttribute('hidden')) {
           microbar.classList.remove('show');
           microbar.setAttribute('aria-hidden','true');
           return;
         }
         const topbar = document.querySelector('.topbar');
         const topbarH = topbar ? topbar.offsetHeight : 56;
+
         const rect = highlights.getBoundingClientRect();
         const bottomY = rect.bottom + window.scrollY;
         const shouldShow = window.scrollY >= (bottomY - topbarH);
         microbar.classList.toggle('show', shouldShow);
         microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
       }
+
       window.addEventListener('load', update, { passive:true });
       window.addEventListener('scroll', update, { passive:true });
       window.addEventListener('resize', update);
+      window.__updateMicrobarVis = update; // expose for schedule toggle
     })();
 
     // Share (Web Share API + clipboard fallback)
@@ -569,15 +613,17 @@ content="
       document.getElementById('shareNearTitle')?.addEventListener('click', sharePage);
     })();
 
-    // Contact phone chooser
+    // Contact phone chooser (same as Home)
     (function(){
       const phone = document.getElementById('phone-link');
       const menu  = document.getElementById('phone-menu');
       const waBtn = document.getElementById('wa-now');
       if (!phone || !menu || !waBtn) return;
+
       const tel = (phone.dataset.tel || '').replace(/[^\d]/g,'');
       const msg = encodeURIComponent("Hi! I'd like to know more about Games Lab events.");
       waBtn.href = `https://wa.me/${tel}?text=${msg}`;
+
       function openMenu(){
         if (!menu.hidden){ menu.hidden = true; return; }
         menu.hidden = false;
@@ -593,205 +639,154 @@ content="
       phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
     })();
 
-    // ===== Read "Upcoming" sheet -> inject schedule (side card + microbar + floating book)
-    (async function(){
-      const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-      const DEFAULT_DURATION_MIN = 150; // 2.5h default if no explicit end time
+    // Floating Book button: hide when contact divider enters
+    (function(){
+      const fab = document.getElementById('fabBook');
+      const stopAt = document.getElementById('contactTopDivider');
+      if (!fab || !stopAt) return;
+      const io = new IntersectionObserver(entries=>{
+        const vis = entries.some(e=>e.isIntersecting);
+        fab.hidden = vis; // hide when divider visible
+      }, { rootMargin: '0px 0px -20% 0px' });
+      io.observe(stopAt);
+    })();
 
-      // --- helpers ---
-      const clean = (v)=> (v==null? "": String(v).trim().replace(/^\"|\"$/g,''));
-      function normalizePath(href){
-        try{
-          const u = new URL(href, window.location.origin);
-          return u.pathname.replace(/\/+$/,'').toLowerCase();
-        }catch(e){
-          return String(href||'').replace(/^https?:\/\/[^/]+/,'').replace(/\/+$/,'').toLowerCase();
-        }
-      }
-      // Accepts "Fri, 12 Sep '25" or "12 Sep '25"
-      function parseDisplayDate(str){
+    // ====== Load from Upcoming sheet and wire schedule/highlights/microbar ======
+    (async function(){
+      const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+      const pagePath = location.pathname.replace(/\/+$/,'') || '/';
+      const eventTitle = document.getElementById('eventTitle')?.textContent.trim() || 'Night of Mafias !';
+
+      function clean(v){ if (v===undefined || v===null) return ""; return String(v).trim().replace(/^\"|\"$/g, ''); }
+      function parseEventDate(str) {
         if (!str) return null;
-        str = str.trim().replace(/^[A-Za-z]{3},?\s*/,'').replace(/’/g,"'").replace(/`/g,"'");
+        str = str.trim().replace(/^[A-Za-z]{3},?\s*/, '').replace(/’/g,"'").replace(/`/g,"'");
         const m = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
         if (!m) return null;
-        const day = +m[1];
-        const mon = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}[m[2]];
-        const year = 2000 + (+m[3]);
-        return { y:year, m:mon, d:day };
+        const day = parseInt(m[1],10);
+        const month = { Jan:0, Feb:1, Mar:2, Apr:3, May:4, Jun:5, Jul:6, Aug:7, Sep:8, Oct:9, Nov:10, Dec:11 }[m[2]];
+        const year = 2000 + parseInt(m[3],10);
+        return new Date(year, month, day);
       }
-      // "7:30 PM" | "19:00" | "7 PM"
-      function parseTime(tstr){
-        if (!tstr) return { h:19, mi:0 }; // fallback 7 PM
-        const s = tstr.trim().toUpperCase();
-        const m = s.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/);
-        if (!m) return { h:19, mi:0 };
-        let h = +m[1], mi = m[2]? +m[2] : 0, ap = m[3];
-        if (ap === 'AM'){ if (h === 12) h = 0; }
-        else if (ap === 'PM'){ if (h < 12) h += 12; }
-        return { h, mi };
+      function parseTime12h(t){
+        if(!t) return {h:19,m:0};
+        const m = t.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+        if(!m) return {h:19,m:0};
+        let h = parseInt(m[1],10), min=parseInt(m[2],10);
+        const ampm = m[3].toUpperCase();
+        if (ampm==='PM' && h<12) h+=12;
+        if (ampm==='AM' && h===12) h=0;
+        return {h,m:min};
       }
-      function toGoogleDateStrUTC(date){ // -> YYYYMMDDTHHMMSSZ
-        const iso = date.toISOString(); // 2025-09-12T14:00:00.000Z
-        return iso.replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
+      function pad(n){ return String(n).padStart(2,'0'); }
+      function fmtHuman(d, tStr){
+        const dt = new Date(d);
+        const opts={ weekday:'short', day:'2-digit', month:'short', year:'2-digit'};
+        const datePart = dt.toLocaleDateString('en-US', opts).replace(',', '');
+        return `${datePart} | ${tStr}`;
       }
-      function buildAddToCalendarURL({ title, dateDisp, timeDisp, locationText, locationLink }){
-        const d = parseDisplayDate(dateDisp);
-        const t = parseTime(timeDisp);
-        if (!d) return '';
-        // Build IST local time then convert to UTC
-        const istOffsetMin = 330;
-        // Create a UTC date that corresponds to IST local (subtract offset)
-        const startUTC = new Date(Date.UTC(d.y, d.m, d.d, t.h, t.mi));
-        startUTC.setUTCMinutes(startUTC.getUTCMinutes() - istOffsetMin);
-        const endUTC = new Date(startUTC.getTime() + DEFAULT_DURATION_MIN*60000);
-
-        const dates = `${toGoogleDateStrUTC(startUTC)}/${toGoogleDateStrUTC(endUTC)}`;
-        const text = encodeURIComponent(title || 'Games Lab Event');
-        const details = encodeURIComponent(
-          (locationLink ? `Get directions: ${locationLink}\n` : '') +
-          `More info: ${window.location.href}`
-        );
-        const loc = encodeURIComponent(locationText || '');
-        const ctz = 'Asia/Kolkata';
-        return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&ctz=${encodeURIComponent(ctz)}&details=${details}&location=${loc}`;
-      }
-
-      // find our row in "Upcoming" by Page Link
-      function matchRow(rows){
-        const current = normalizePath(window.location.pathname);
-        // rows are arrays; index mapping per your sheet (0..8)
-        for (const r of rows){
-          if (!r || !r[0]) continue;
-          const pageLink = clean(r[4]);
-          if (!pageLink) continue;
-          const p = normalizePath(pageLink);
-          if (p === current) return r;
-        }
-        // fallback by title (optional)
-        for (const r of rows){
-          if ((clean(r[0])||'').toLowerCase().includes('night of mafias')) return r;
-        }
-        return null;
+      function makeICS({title, start, durationHours=2, locationText='', locationUrl='', description=''}){
+        const dt = new Date(start);
+        const end = new Date(dt.getTime() + durationHours*60*60*1000);
+        const stamp = (x)=> x.getFullYear()
+            + pad(x.getMonth()+1) + pad(x.getDate())
+            + 'T' + pad(x.getHours()) + pad(x.getMinutes()) + pad(x.getSeconds());
+        const loc = locationUrl ? `${locationText} (${locationUrl})` : locationText;
+        const lines = [
+          'BEGIN:VCALENDAR',
+          'VERSION:2.0',
+          'PRODID:-//Games Lab//Events//EN',
+          'BEGIN:VEVENT',
+          `DTSTAMP:${stamp(new Date())}`,
+          `DTSTART:${stamp(dt)}`,
+          `DTEND:${stamp(end)}`,
+          `SUMMARY:${title}`,
+          `LOCATION:${loc.replace(/,/g,'\\,')}`,
+          `DESCRIPTION:${description}`,
+          'END:VEVENT',
+          'END:VCALENDAR'
+        ];
+        return 'data:text/calendar;charset=utf8,' + encodeURIComponent(lines.join('\r\n'));
       }
 
       try{
-        const res = await fetch(CSV_URL + '&cb=' + Date.now(), { cache:'no-store' });
-        if (!res.ok) throw new Error('CSV fetch failed: '+res.status);
-        const csv = await res.text();
-        const parsed = Papa.parse(csv, { skipEmptyLines:true });
-        const all = (parsed.data || []).slice(1); // skip header row if present
-        const row = matchRow(all);
-        if (!row) return; // nothing to do
+        const res = await fetch(SHEET_URL + '&cb=' + Date.now(), { cache:'no-store' });
+        const text = await res.text();
+        const rows = Papa.parse(text, { header:true, skipEmptyLines:true }).data;
 
-        const name       = clean(row[0]);
-        const dateDisp   = clean(row[1]);
-        const timeDisp   = clean(row[2]);
-        const venueText  = clean(row[3]);
-        const scheduled  = (clean(row[5])||'').toLowerCase();
-        const mapsLink   = clean(row[6]);
-        const ticketLink = clean(row[7]);
-
-        // update title if needed
-        if (name){ const h = document.getElementById('eventTitle'); if (h) h.textContent = name; }
-
-        if (scheduled === 'yes'){
-          // ---- Build Add to Calendar URL
-          const addUrl = buildAddToCalendarURL({
-            title: name, dateDisp, timeDisp, locationText: venueText, locationLink: mapsLink
-          });
-
-          // ---- DESKTOP: inject schedule facts at top of side card
-          const factsTop = document.getElementById('factsScheduled');
-          if (factsTop){
-            factsTop.style.display = 'grid';
-            factsTop.innerHTML = `
-              <div class="fact">
-                <span class="label">Date &amp; Time</span>
-                <span>
-                  ${dateDisp}${timeDisp ? ' | ' + timeDisp : ''}
-                  ${addUrl ? ' · <a href="'+addUrl+'" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:900">Add</a>' : ''}
-                </span>
-              </div>
-              <div class="fact">
-                <span class="label">Location</span>
-                <span>
-                  ${venueText ? venueText : ''}
-                  ${mapsLink ? ' · <a href="'+mapsLink+'" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:900">Directions</a>' : ''}
-                </span>
-              </div>
-            `;
-          }
-          // Desktop book button
-          const sideBtn = document.getElementById('bookBtnSide');
-          if (sideBtn && ticketLink){
-            sideBtn.href = ticketLink;
-            sideBtn.style.display = 'inline-flex';
-            sideBtn.textContent = 'Book Now';
-          }
-
-          // ---- MOBILE: fill microbar with date/time (+Add), venue (+Directions), add Book
-          const mi = document.getElementById('mobileInfo');
-          if (mi){
-            mi.innerHTML = '';
-            const strong = document.createElement('strong');
-            strong.textContent = name || 'This event';
-            mi.appendChild(strong);
-
-            if (dateDisp || timeDisp){
-              const sep = document.createTextNode(' • ');
-              mi.appendChild(sep);
-              const aAdd = document.createElement('a');
-              aAdd.href = addUrl || '#';
-              if (!addUrl) aAdd.removeAttribute('href');
-              aAdd.textContent = dateDisp + (timeDisp ? ' | ' + timeDisp : '');
-              aAdd.target = '_blank'; aAdd.rel = 'noopener';
-              mi.appendChild(aAdd);
-            }
-
-            if (venueText){
-              const sep2 = document.createTextNode(' • ');
-              mi.appendChild(sep2);
-              const aDir = document.createElement('a');
-              aDir.textContent = venueText;
-              if (mapsLink){ aDir.href = mapsLink; aDir.target = '_blank'; aDir.rel='noopener'; }
-              mi.appendChild(aDir);
-            }
-          }
-          // Microbar Book button (compact)
-          (function(){
-            const shareBtn = document.getElementById('shareBtnTop');
-            if (shareBtn && ticketLink){
-              const parent = shareBtn.parentElement;
-              const book = document.createElement('a');
-              book.className = 'btn';
-              book.id = 'bookBtnMicro';
-              book.textContent = 'Book';
-              book.href = ticketLink;
-              book.target = '_blank'; book.rel='noopener';
-              parent.insertBefore(book, shareBtn);
-            }
-          })();
-
-          // ---- Floating Book (mobile)
-          (function(){
-            const float = document.getElementById('floatBook');
-            if (!float || !ticketLink) return;
-            float.href = ticketLink;
-            float.classList.remove('hide');
-            // Hide when contact section (sentinel) intersects
-            const sentinel = document.getElementById('floatStopSentinel');
-            if (!('IntersectionObserver' in window) || !sentinel) return;
-            const io = new IntersectionObserver(entries=>{
-              entries.forEach(e=>{
-                if (e.isIntersecting) float.classList.add('hide');
-                else float.classList.remove('hide');
-              });
-            }, { rootMargin: '0px 0px -120px 0px' });
-            io.observe(sentinel);
-          })();
+        // find matching row
+        const match = rows.find(r=>{
+          const pageLink = clean(r['Page Link']).replace(/\/+$/,'');
+          const name = clean(r['EventName']);
+          return pageLink && pagePath.endsWith(pageLink) || name.toLowerCase() === eventTitle.toLowerCase();
+        });
+        if (!match) {
+          // Hide schedule on mobile if not found
+          document.getElementById('highlightsMobile')?.setAttribute('hidden','');
+          return;
         }
-      }catch(err){
-        console.error('Event schedule load error:', err);
+
+        const scheduled = clean(match['Scheduled']).toLowerCase()==='yes';
+        const dateStr = clean(match['Date']);
+        const timeStr = clean(match['Time']);
+        const locText = clean(match['Location']);
+        const locLink = clean(match['Location Link']);
+        const ticket  = clean(match['Ticket Link']);
+        const title   = clean(match['EventName']) || eventTitle;
+
+        // Build Date object
+        const base = parseEventDate(dateStr);
+        const tm = parseTime12h(timeStr);
+        if (base){ base.setHours(tm.h, tm.m, 0, 0); }
+
+        // Desktop schedule block
+        const scBlock = document.getElementById('scheduleBlock');
+        const scWhen  = document.getElementById('scWhen');
+        const scWhere = document.getElementById('scWhere');
+        const scAdd   = document.getElementById('scAddCal');
+        const scDir   = document.getElementById('scDir');
+        const scBook  = document.getElementById('scBook');
+        const facts   = document.getElementById('factsList');
+
+        if (scheduled && base){
+          scWhen.textContent  = fmtHuman(base, timeStr);
+          scWhere.textContent = locText || '';
+          if (locLink) { scDir.href = locLink; scDir.removeAttribute('aria-disabled'); }
+
+          const ics = makeICS({
+            title, start: base, durationHours: 2,
+            locationText: locText, locationUrl: locLink,
+            description: document.location.href
+          });
+          scAdd.href = ics;
+          if (ticket){ scBook.href = ticket; }
+          scBlock.hidden = false;
+
+          // Mobile highlights visible when scheduled
+          document.getElementById('highlightsMobile')?.removeAttribute('hidden');
+
+          // Floating Book button
+          const fab = document.getElementById('fabBook');
+          if (ticket){ fab.href = ticket; fab.removeAttribute('hidden'); }
+        } else {
+          // Not scheduled — hide schedule block & mobile highlights
+          scBlock.hidden = true;
+          document.getElementById('highlightsMobile')?.setAttribute('hidden','');
+          // Optional: add price to microbar here if you want
+        }
+
+        // Microbar content (concise)
+        const microTitle = document.getElementById('microTitle');
+        const microMeta  = document.getElementById('microMeta');
+        microTitle.innerHTML = `<strong>${title}</strong>`;
+        if (scheduled && base){
+          microMeta.textContent = `· ${fmtHuman(base, timeStr)} • ${locText}`;
+        } else {
+          microMeta.textContent = `• 8–25 players • Beginner-friendly`;
+        }
+        window.__updateMicrobarVis && window.__updateMicrobarVis();
+      }catch(e){
+        console.error('Sheet load failed', e);
       }
     })();
   </script>
