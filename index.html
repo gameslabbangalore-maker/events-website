@@ -19,21 +19,20 @@
              https://ik.imagekit.io
              https://via.placeholder.com
              https://*.googleusercontent.com
-             https://*.embedsocial.com
-             https://embedsocial.com
+             https://*.elfsightcdn.com
              data:;
     script-src 'self'
                https://cdnjs.cloudflare.com
-               https://embedsocial.com
-               https://*.embedsocial.com
+               https://*.elfsight.com
+               https://*.elfsightcdn.com
                'unsafe-inline';
     style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src   https://fonts.gstatic.com data:;
     connect-src https://docs.google.com
                 https://*.googleusercontent.com
-                https://embedsocial.com
-                https://*.embedsocial.com;
-    frame-src   https://embedsocial.com https://*.embedsocial.com;
+                https://*.elfsight.com
+                https://*.elfsightcdn.com;
+    frame-src   https://*.elfsight.com https://*.elfsightcdn.com;
     object-src 'none';
     base-uri 'self';
   ">
@@ -52,7 +51,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
-    <link rel="preconnect" href="https://embedsocial.com" crossorigin>
+    <link rel="preconnect" href="https://static.elfsight.com" crossorigin>
+    <link rel="preconnect" href="https://apps.elfsight.com" crossorigin>
+    <link rel="preconnect" href="https://core.service.elfsight.com" crossorigin>
+    <link rel="preconnect" href="https://universe-static.elfsightcdn.com" crossorigin>
+    <link rel="preconnect" href="https://service-reviews-ultimate.elfsight.com" crossorigin>
   
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -308,47 +311,58 @@
       }
     </style>
     <style>
-    /* Reviews container stays consistent with your site cards */
-    .reviews-wrap{
-      max-width:1200px; margin:0 auto; padding:16px;
+    /* ---------- Elfsight Google Reviews (TEXT ONLY theming) ---------- */
+    /* Scope: your widget instance */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd {
+      /* Light defaults */
+      --gl-text: #1a1a1a;        /* main text */
+      --gl-strong: #111111;      /* titles / names / big rating */
+      --gl-muted: #555555;       /* meta: dates, "Posted on", captions */
     }
     
-    /* The widget sits in a rounded panel like your other sections */
-    .embedsocial-wrap{
-      position:relative;
-      border-radius:16px;
-      overflow:hidden;
-      background: #111;              /* base behind light widget */
-      box-shadow: 0 8px 24px rgba(0,0,0,.4);
-    }
-    
-    /* Nudge the iframe visuals a bit in dark mode without touching its internals */
-    .embedsocial-wrap iframe{
-      width:100%; height:auto;
-      border:0;
-    }
-    
-    /* Subtle dark treatment for the whole iframe in dark mode only */
+    /* Dark-mode text palette (auto via device theme) */
     @media (prefers-color-scheme: dark){
-      .embedsocial-wrap iframe{
-        filter: brightness(.88) contrast(1.05);
-      }
-      .embedsocial-dark-overlay{
-        opacity: .28;                 /* feel free to tune 0.2–0.38 */
+      .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd{
+        --gl-text: #f2f2f2;
+        --gl-strong: #ffffff;
+        --gl-muted: #cccccc;
       }
     }
     
-    /* The overlay that darkens the light iframe */
-    .embedsocial-dark-overlay{
-      position:absolute; inset:0;
-      background: radial-gradient(100% 100% at 50% 0%, rgba(0,0,0,.20) 0%, rgba(0,0,0,.35) 100%);
-      pointer-events:none;            /* never block clicks inside the widget */
-      opacity: 0;                     /* off by default, enabled in dark mode */
-      transition: opacity .2s ease;
+    /* Apply to common TEXT elements only.
+       Excludes buttons and SVGs (so blue CTA & star icons stay as-is). */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd.elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+      :is(h1,h2,h3,h4,h5,h6,p,span,a,small,time,div,li,strong,em)
+      :not([class*="Button"]):not(button):not([role="button"]) {
+      color: var(--gl-text) !important;
     }
     
-    /* Light theme divider polish stays as you already added */
-
+    /* Stronger headings: reviewer names, titles, big rating values */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+      :is([class*="title"], [class*="name"], [class*="rating"], [class*="score"], [class*="average"]) {
+      color: var(--gl-strong) !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Muted metadata: dates, "Posted on Google", captions, summaries */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+      :is([class*="subtitle"], [class*="meta"], [class*="caption"], [class*="description"], [class*="summary"], [class*="posted"], [class*="date"]) {
+      color: var(--gl-muted) !important;
+    }
+    
+    /* Fix inline-forced black text from Elfsight (don’t touch background) */
+    .elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd
+      :is([style*="color:#000"], [style*="color: #000"], [style*="color:#000000"], [style*="color: #000000"], [style*="color:rgb(0,0,0)"], [style*="color: rgb(0, 0, 0)"]) {
+      color: var(--gl-text) !important;
+    }
+    </style>
+    <style>
+    @media (prefers-color-scheme: light){
+      .divider{
+        background: linear-gradient(90deg, rgba(0,0,0,.12), rgba(0,0,0,.06)) !important;
+        box-shadow: 0 1px 0 rgba(0,0,0,.06) inset !important;
+      }
+    }
     </style>
     
   </head>
@@ -433,29 +447,7 @@
       <div class="divider" style="margin-top:40px;"></div>
       <div class="title" style="margin-top:40px;"><h2>What Our Attendees Say</h2></div>
       <!-- Elfsight Google Reviews | Games Lab reviews -->
-    <!-- With this wrapper + EmbedSocial embed -->
-      <div class="reviews-wrap">
-        <div class="embedsocial-wrap">
-          <div class="embedsocial-widget" data-ref="53fa664ff5e038ad82bc56a2a6441854">
-            <a href="https://embedsocial.com/google-reviews-widget/" title="Add Google reviews on a website" target="_blank" class="powered-by-es es-slider">
-              <img src="https://embedsocial.com/cdn/icon/embedsocial-logo.webp" alt="EmbedSocial">
-              <span>Google reviews widget</span>
-            </a>
-          </div>
-          <!-- dark-mode overlay layer; only visible in dark -->
-          <div class="embedsocial-dark-overlay" aria-hidden="true"></div>
-        </div>
-      </div>
-      
-      <!-- Loader script -->
-      <script>
-      (function(d, s, id) {
-        if (d.getElementById(id)) return;
-        var js = d.createElement(s); js.id = id;
-        js.src = "https://embedsocial.com/cdn/aht.js";
-        d.getElementsByTagName("head")[0].appendChild(js);
-      })(document, "script", "EmbedSocialWidgetScript");
-      </script>
+    <div class="elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd"></div>
     <div class="divider" style="margin-top:40px;"></div>
     <div class="title" style="margin-top:40px;"><h2>Contact Us</h2></div>
     
@@ -1130,6 +1122,7 @@
       });
   })();
   </script>
+  <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
   <script>
   (function(){
     const phone = document.getElementById('phone-link');
@@ -1180,5 +1173,3 @@
   </body>
   </html>
   
-
-
