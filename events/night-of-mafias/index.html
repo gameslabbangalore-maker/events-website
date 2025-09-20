@@ -317,6 +317,59 @@ content="
 
     /* Keep left column sections in column 1 on desktop */
     @media (min-width:960px){ .page-grid > section { grid-column: 1; } }
+
+    /* === DESKTOP schedule typography + button look === */
+    @media (min-width:960px){
+      .when-where .when{font-size:16px;font-weight:900;line-height:1.25}
+      .when-where .where{
+        font-size:16px;font-weight:900;line-height:1.25;
+        color:var(--text-main);        /* same size as date */
+        margin-top:6px;                /* a bit more spacing above */
+      }
+      .actions .btn{ text-decoration:none; }
+      .actions .btn-ghost{
+        background:transparent;        /* remove background */
+        border:0;                      /* remove border */
+        color:var(--muted);            /* small, grey text */
+      }
+      .actions .btn-sm{ font-size:12.5px; padding:0; } /* compact, texty */
+    }
+    
+    /* Book Now: ensure no underline anywhere */
+    .btn, .btn-primary, .wide-cta, .btn:link, .btn:visited { text-decoration:none !important; }
+    
+    /* Share buttons: make icon follow text color everywhere */
+    .btn svg.icon, .icon-btn svg, .share-inline svg, #shareBtnTop svg{
+      width:18px;height:18px; display:block; color:currentColor; fill:currentColor;
+    }
+    
+    /* Microbar share button look (stays “on theme”) */
+    .icon-only{
+      background:transparent; border:0; color:var(--text-main);
+    }
+    
+    /* === VIDEO alignment (left) === */
+    .recap-grid-portrait{ justify-items:start; }               /* was center */
+    #about-video .video-portrait{ margin-left:0; margin-right:auto; } /* stop centering */
+    
+    /* === MOBILE: Highlights header should match desktop Highlights label in card === */
+    @media (max-width:959px){
+      .highlights-mobile h3{
+        font-size:13px; letter-spacing:.45px; text-transform:uppercase;
+        color:var(--muted); font-weight:800; margin:0 0 6px; text-align:left;
+      }
+    }
+    
+    /* === Divider that only spans the left column on desktop === */
+    .divider-left{ width:100%; height:1px; margin:28px 0 18px; }
+    @media (min-width:960px){ .divider-left{ grid-column:1; } }
+    
+    /* === “H3 style” section titles (use this class on those three headings) === */
+    .section-title{
+      font-size:1.04rem; line-height:1.4; font-weight:800;
+      color:var(--text-main); margin:0 0 14px; letter-spacing:.2px; text-transform:none;
+    }
+
   </style>
 </head>
 <body>
@@ -422,7 +475,7 @@ content="
 
       <article class="content">
         <section id="details" aria-labelledby="about">
-          <h3 id="about" class="heading">About the Event</h3>
+          <h3 id="about" class="section-title">About the Event</h3>
           <div class="prose">
             <p>
               Step into a night of suspense, strategy, and thrilling deception.
@@ -478,16 +531,16 @@ content="
       </article>
 
       <section id="about-video" aria-labelledby="about-nom">
-        <h3 id="about-nom" class="heading">About Night of Mafias</h3>
+        <h3 id="about-nom" class="section-title">About Night of Mafias</h3>
         <div class="video-portrait" data-embed="https://www.youtube.com/embed/p232ZZCCJKA?rel=0">
           <iframe loading="lazy" title="About Night of Mafias (portrait)" src="https://www.youtube.com/embed/p232ZZCCJKA?rel=0"></iframe>
         </div>
       </section>
 
-      <div class="divider" aria-hidden="true"></div>
-
+      <div class="divider-left" aria-hidden="true"></div>
+      
       <section id="recaps" aria-labelledby="recaps-title">
-        <h3 id="recaps-title" class="heading">Event recaps</h3>
+        <h3 id="recaps-title" class="section-title">Event recaps</h3>
         <p class="contact-sub" style="margin:0 0 18px; text-align:left;">CATCH THE VIBE OF THE EVENT WITH THESE VIDEOS</p>
         <div class="recap-grid-portrait">
           <div class="video-portrait" data-embed="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0">
@@ -526,6 +579,13 @@ content="
             <a id="call-now" href="tel:+917676099857">Call</a>
             <a id="wa-now"   href="https://wa.me/917676099857" target="_blank" rel="noopener">WhatsApp</a>
           </div>
+        </li>
+
+        <li class="row">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 2v.01L12 12 4 6.01V6h16ZM4 18V8l8 6 8-6v10H4Z"/>
+          </svg>
+          <a class="link email-text" href="mailto:info@gameslab.co.in">info@gameslab.co.in</a>
         </li>
 
         <!-- Instagram (exact as Home) -->
@@ -656,9 +716,11 @@ content="
       function pad(n){ return String(n).padStart(2,'0'); }
       function fmtHuman(d, tStr){
         const dt = new Date(d);
-        const opts={ weekday:'short', day:'2-digit', month:'short', year:'2-digit'};
-        const datePart = dt.toLocaleDateString('en-US', opts).replace(',', '');
-        return `${datePart} | ${tStr}`;
+        const wk = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getDay()];
+        const day = String(dt.getDate()).padStart(2,'0');
+        const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][dt.getMonth()];
+        const yr2 = String(dt.getFullYear()).slice(-2);
+        return `${wk}, ${day} ${mon} '${yr2} | ${tStr}`;
       }
       function makeICS({title, start, durationHours=2, locationText='', locationUrl='', description=''}){
         const dt = new Date(start);
