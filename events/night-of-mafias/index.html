@@ -297,6 +297,10 @@ content="
     @media (prefers-color-scheme: dark) {
       .prose .muted { color: var(--muted-dark, #bcbcbc); }
     }
+    /* Ensure all main sections stay in the left column on desktop */
+    @media (min-width:960px){
+      .page-grid > section { grid-column: 1; }
+    }
   </style>
 </head>
 <body>
@@ -452,7 +456,6 @@ content="
             </div>
           </div>
         </section>
-      </article>
     </div>
 
     <div class="divider" style="margin-top:40px;"></div>
