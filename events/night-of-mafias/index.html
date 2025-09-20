@@ -538,84 +538,7 @@ content="
   text-transform: none;
 }
 
-@media (max-width: 600px) {
-  .mobile-info-bar {
-    padding: 8px 10px;
-  }
-  .mobile-info-inner {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .microbar-left {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-    flex: 1 1 auto;
-  }
-  .micro-title {
-    font-size: 1.22rem;
-    font-weight: 900;
-    color: var(--text-main);
-    line-height: 1.2;
-  }
-  .micro-meta-line {
-    font-size: 0.98rem;
-    color: var(--muted);
-    font-weight: 800;
-    margin-top: 2px;
-  }
-  .microbar-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-    min-width: 120px;
-  }
-  .share-btn-bold {
-    display: flex;
-    align-items: center;
-    font-size: 1.18rem;
-    font-weight: 900;
-    color: var(--text-main);
-    background: none;
-    border: none;
-    gap: 5px;
-    cursor: pointer;
-    margin-bottom: 4px;
-  }
-  .microbar-link {
-    font-size: 0.87rem;
-    color: var(--muted);
-    font-weight: 700;
-    text-decoration: none;
-    text-align: right;
-    padding: 1px 0;
-  }
-}
-    @media (max-width: 600px) {
-  .mobile-schedule {
-    display: block;
-    margin-top: 2px;
-    margin-bottom: 4px;
-  }
-  .mobile-schedule .schedule-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2px;
-    font-size: 0.96rem;
-  }
-  .mobile-schedule .when,
-  .mobile-schedule .where {
-    font-weight: 800;
-    color: var(--text-main);
-  }
-}
-
+    
   </style>
 </head>
 <body>
@@ -631,26 +554,16 @@ content="
 
   <!-- Mobile sticky microbar -->
   <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
-  <div class="mobile-info-inner">
-    <!-- Left side: Title, Date/Time, Location -->
-    <div class="microbar-left">
-      <span class="micro-title" id="microTitle">Night of Mafias !</span>
-      <span class="micro-meta-line" id="microDateTime">Sun, 21 Sep '25 | 7:30 PM</span>
-      <span class="micro-meta-line" id="microLocation">Dialogues Cafe</span>
-    </div>
-    <!-- Right side: Share button, Add to Calendar, Get Directions -->
-    <div class="microbar-right">
-      <button class="share-btn-bold" id="shareBtnTop" aria-label="Share this event" title="Share">
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/>
-        </svg>
-        <span>Share</span>
+    <div class="mobile-info-inner">
+      <div class="mobile-info">
+        <span class="micro-title" id="microTitle"><strong>Night of Mafias !</strong></span>
+        <div class="micro-meta" id="microMeta"><!-- filled by JS --></div>
+      </div>
+      <button class="btn icon-only" id="shareBtnTop" aria-label="Share this event" title="Share">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
       </button>
-      <a class="microbar-link" id="addCalMobile" href="#" download>Add to Calendar</a>
-      <a class="microbar-link" id="getDirectionsMobile" href="#" target="_blank" rel="noopener">Get Directions</a>
     </div>
   </div>
-</div>
 
   <!-- Floating Book Now (mobile) -->
   <a id="fabBook" class="fab-book" href="#" target="_blank" rel="noopener">Book Now</a>
@@ -1052,64 +965,29 @@ content="
           document.getElementById('highlightsMobile')?.setAttribute('hidden','');
         }
 
-        // Microbar content (new snippet wiring)
-{
-  const microTitle        = document.getElementById('microTitle');
-  const microDateTime     = document.getElementById('microDateTime');
-  const microLocation     = document.getElementById('microLocation');
-  const addCalMobile      = document.getElementById('addCalMobile');
-  const getDirMobile      = document.getElementById('getDirectionsMobile');
+        // Microbar content
+        const microTitle = document.getElementById('microTitle');
+        const microMeta  = document.getElementById('microMeta');
+        const esc = s => (s||'').replace(/[&<>"]/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m]));
+        microTitle.innerHTML = `<strong>${title}</strong>`;
 
-  // Title
-  if (microTitle) microTitle.textContent = title;
+        if (scheduled && base){
+          const icsForBar = makeICS({
+            title, start: base, durationHours: 2,
+            locationText: locText, locationUrl: locLink,
+            description: location.href
+          });
 
-  if (scheduled && base) {
-    // Build ICS using your existing helper
-    const icsForBar = makeICS({
-      title,
-      start: base,
-      durationHours: 2,
-      locationText: locText,
-      locationUrl: locLink,
-      description: location.href
-    });
+          const dateLeft = fmtDateOnly(base) + " | " + timeStr;
+          const addCal   = `<a class="micro-link" href="${esc(icsForBar)}" download>add to calendar</a>`;
+          const dirLink  = locLink ? `<a class="micro-link" href="${esc(locLink)}" target="_blank" rel="noopener">get directions</a>` : '';
 
-    // Date/time line: uses your fmtDateOnly + original time string
-    if (microDateTime) {
-      const timePart = timeStr && timeStr.trim() ? ` | ${timeStr.trim()}` : '';
-      microDateTime.textContent = `${fmtDateOnly(base)}${timePart}`;
-    }
-
-    // Location line
-    if (microLocation) microLocation.textContent = locText || '';
-
-    // Add to calendar link
-    if (addCalMobile) {
-      addCalMobile.href = icsForBar;
-      addCalMobile.removeAttribute('hidden');
-    }
-
-    // Directions link (hide if no URL)
-    if (getDirMobile) {
-      if (locLink) {
-        getDirMobile.href = locLink;
-        getDirMobile.removeAttribute('hidden');
-      } else {
-        getDirMobile.setAttribute('hidden', '');
-      }
-    }
-  } else {
-    // Unscheduled fallback text (keep microbar tidy)
-    if (microDateTime) microDateTime.textContent = '2–3 hours • 8–25 players';
-    if (microLocation) microLocation.textContent = 'Beginner-friendly';
-
-    if (addCalMobile) addCalMobile.setAttribute('hidden', '');
-    if (getDirMobile) getDirMobile.setAttribute('hidden', '');
-  }
-
-  // Re-evaluate visibility after filling content
-  window.__updateMicrobarVis && window.__updateMicrobarVis();
-}
+          microMeta.innerHTML =
+            `<div class="micro-line"><span class="micro-left">${esc(dateLeft)}</span>${addCal}</div>`+
+            `<div class="micro-line"><span class="micro-left">${esc(locText)}</span>${dirLink}</div>`;
+        } else {
+          microMeta.textContent = '8–25 players • Beginner-friendly';
+        }
 
         // Re-evaluate microbar visibility after content fills
         window.__updateMicrobarVis && window.__updateMicrobarVis();
