@@ -419,6 +419,30 @@ content="
   text-transform: none;
 }
 
+    /* New left/right microbar layout */
+  .microbar-left{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
+  .microbar-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+  .micro-title{font-size:1.12rem;font-weight:900;line-height:1.2}
+  .micro-meta-line{font-size:.98rem;color:var(--muted);font-weight:800}
+  .microbar-link{font-size:.87rem;color:var(--muted);font-weight:700;text-decoration:none}
+  .microbar-right .microbar-link[hidden]{display:none}
+
+/* Small floating Share FAB (mobile only) */
+.fab-share{
+  position:fixed; right:12px; bottom:68px; z-index:10000;
+  width:44px; height:44px; border-radius:12px;
+  background:rgba(24,24,24,.35); color:var(--text-main);
+  border:1px solid rgba(255,255,255,.25);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.35); cursor:pointer;
+}
+@media (prefers-color-scheme: light){
+  .fab-share{ background:rgba(255,255,255,.65); border-color:rgba(0,0,0,.15); }
+}
+@media (min-width:960px){ .fab-share{ display:none } } /* mobile only */
+
+    
   </style>
 </head>
 <body>
@@ -432,21 +456,32 @@ content="
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
 
-  <!-- Mobile sticky microbar -->
   <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
-    <div class="mobile-info-inner">
-      <div class="mobile-info">
-        <span class="micro-title" id="microTitle"><strong>Night of Mafias !</strong></span>
-        <div class="micro-meta" id="microMeta"><!-- filled by JS --></div>
-      </div>
-      <button class="btn icon-only" id="shareBtnTop" aria-label="Share this event" title="Share">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
-      </button>
+  <div class="mobile-info-inner">
+    <!-- Left side -->
+    <div class="microbar-left">
+      <span class="micro-title" id="microTitle">Night of Mafias !</span>
+      <span class="micro-meta-line" id="microDateTime">—</span>
+      <span class="micro-meta-line" id="microLocation">—</span>
+    </div>
+    <!-- Right side -->
+    <div class="microbar-right" id="microRight">
+      <!-- Filled by JS: (scheduled) Add to Calendar / Get Directions
+           or (not scheduled) 8–25 players / 2–3 hours -->
     </div>
   </div>
+</div>
+
 
   <!-- Floating Book Now (mobile) -->
   <a id="fabBook" class="fab-book" href="#" target="_blank" rel="noopener">Book Now</a>
+
+  <button id="shareFab" class="fab-share" aria-label="Share this event" title="Share">
+  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+    <path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/>
+  </svg>
+</button>
+
 
   <!-- Page grid -->
   <main class="wrap" role="main">
@@ -665,40 +700,53 @@ content="
   <!-- ===== Scripts ===== -->
   <script>
     // Microbar visibility (mobile)
-    (function(){
-      const microbar   = document.getElementById('mobileInfoBar');
-      const highlights = document.getElementById('highlightsMobile');
-      if (!microbar) return;
-      function isDesktop(){ return window.innerWidth >= 960; }
-      function update(){
-        if (isDesktop() || !highlights || highlights.hasAttribute('hidden')) {
-          microbar.classList.remove('show'); microbar.setAttribute('aria-hidden','true'); return;
-        }
-        const topbarH = (document.querySelector('.topbar')?.offsetHeight || 56);
-        const rect = highlights.getBoundingClientRect();
-        const bottomY = rect.bottom + window.scrollY;
-        const shouldShow = window.scrollY >= (bottomY - topbarH);
-        microbar.classList.toggle('show', shouldShow);
-        microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
-      }
-      window.addEventListener('load', update, { passive:true });
-      window.addEventListener('scroll', update, { passive:true });
-      window.addEventListener('resize', update);
-      window.__updateMicrobarVis = update;
-    })();
+(function(){
+  const microbar    = document.getElementById('mobileInfoBar');
+  const highlights  = document.getElementById('highlightsMobile');
+  const banner      = document.querySelector('.banner');
+  if (!microbar) return;
 
-    // Share
-    (function(){
-      async function sharePage(){
-        const data = { title: document.title, text: 'Check out Night of Mafias ! at Games Lab', url: location.href };
-        try{ if (navigator.share) await navigator.share(data);
-             else { await navigator.clipboard.writeText(data.url); alert('Link copied to clipboard'); } }
-        catch(e){}
-      }
-      document.getElementById('shareBtnTop')?.addEventListener('click', sharePage);
-      document.getElementById('shareBtnSide')?.addEventListener('click', sharePage);
-      document.getElementById('shareNearTitle')?.addEventListener('click', sharePage);
-    })();
+  function isDesktop(){ return window.innerWidth >= 960; }
+
+  function triggerEl(){
+    // Prefer highlights if visible; otherwise fall back to banner
+    if (highlights && !highlights.hasAttribute('hidden')) return highlights;
+    return banner || document.body; // very safe fallback
+  }
+
+  function update(){
+    if (isDesktop()){ microbar.classList.remove('show'); microbar.setAttribute('aria-hidden','true'); return; }
+    const topbarH = (document.querySelector('.topbar')?.offsetHeight || 56);
+    const el = triggerEl();
+    const rect = el.getBoundingClientRect();
+    const bottomY = rect.bottom + window.scrollY;
+    const shouldShow = window.scrollY >= (bottomY - topbarH);
+    microbar.classList.toggle('show', shouldShow);
+    microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
+  }
+
+  window.addEventListener('load', update, { passive:true });
+  window.addEventListener('scroll', update, { passive:true });
+  window.addEventListener('resize', update);
+  window.__updateMicrobarVis = update;
+})();
+
+
+   // Share
+(function(){
+  async function sharePage(){
+    const data = { title: document.title, text: 'Check out Night of Mafias ! at Games Lab', url: location.href };
+    try{
+      if (navigator.share) await navigator.share(data);
+      else { await navigator.clipboard.writeText(data.url); alert('Link copied to clipboard'); }
+    }catch(e){}
+  }
+  // Wire only side-card and the new FAB (microbar has no share now)
+  document.getElementById('shareBtnSide')?.addEventListener('click', sharePage);
+  document.getElementById('shareFab')?.addEventListener('click', sharePage);
+  // (Optional) keep the near-title share if you want on desktop:
+  document.getElementById('shareNearTitle')?.addEventListener('click', sharePage);
+})();
 
     // Contact phone chooser (same as Home)
     (function(){
@@ -845,59 +893,49 @@ content="
           document.getElementById('highlightsMobile')?.setAttribute('hidden','');
         }
 
-        // Microbar content (left/right layout; scheduled vs not; keeps your visibility logic)
+        // Microbar content (scheduled vs not; left/right wiring)
 {
-  const microTitle = document.getElementById('microTitle');
-  const microMeta  = document.getElementById('microMeta');
-  const shareBtn   = document.getElementById('shareBtnTop');
+  const titleEl      = document.getElementById('microTitle');
+  const dateEl       = document.getElementById('microDateTime');
+  const locEl        = document.getElementById('microLocation');
+  const rightEl      = document.getElementById('microRight');
   const esc = s => (s||'').replace(/[&<>"]/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m]));
 
-  // Title on left (bigger)
-  if (microTitle) microTitle.innerHTML = `<strong>${esc(title)}</strong>`;
+  // Title (always)
+  if (titleEl) titleEl.textContent = title;
 
-  // Make the right-hand Share button bold & title-sized (no HTML edits)
-  if (shareBtn) {
-    shareBtn.classList.remove('icon-only');
-    shareBtn.classList.add('share-btn-bold');
-    // add "Share" label if missing
-    if (!/Share<\/span>/.test(shareBtn.innerHTML)) {
-      shareBtn.innerHTML =
-        `<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg><span>Share</span>`;
-    }
-  }
+  if (scheduled && base){
+    // Left column: Date & Time, Location
+    const timePart = timeStr && timeStr.trim() ? ` | ${timeStr.trim()}` : '';
+    if (dateEl) dateEl.textContent = `${fmtDateOnly(base)}${timePart}`;
+    if (locEl)  locEl.textContent  = locText || '';
 
-  if (scheduled && base) {
-    // ICS for "Add to Calendar"
+    // Right column: Add to Calendar, Get Directions
     const icsForBar = makeICS({
-      title,
-      start: base,
-      durationHours: 3,
-      locationText: locText,
-      locationUrl: locLink,
+      title, start: base, durationHours: 2,
+      locationText: locText, locationUrl: locLink,
       description: location.href
     });
 
-    const dateLeft = `${fmtDateOnly(base)}${timeStr ? " | " + timeStr.trim() : ""}`;
-    const addCal   = `<a class="micro-link" href="${esc(icsForBar)}" download>Add to Calendar</a>`;
-    const dirLink  = locLink
-      ? `<a class="micro-link" href="${esc(locLink)}" target="_blank" rel="noopener">Get Directions</a>`
-      : `<span class="micro-link" style="opacity:.7" aria-disabled="true">Get Directions</span>`;
+    const addCal = `<a class="microbar-link" id="addCalMobile" href="${esc(icsForBar)}" download>Add to Calendar</a>`;
+    const dir    = locLink
+      ? `<a class="microbar-link" id="getDirectionsMobile" href="${esc(locLink)}" target="_blank" rel="noopener">Get Directions</a>`
+      : `<span class="microbar-link" aria-disabled="true" style="opacity:.7">Get Directions</span>`;
 
-    // Left: Title (already set), then Date&Time, then Location
-    // Right: Share (real button element you already have), then Add to Calendar, then Get Directions
-    microMeta.innerHTML =
-      `<div class="micro-line"><span class="micro-left">${esc(dateLeft)}</span>${addCal}</div>` +
-      `<div class="micro-line"><span class="micro-left">${esc(locText || "")}</span>${dirLink}</div>`;
+    if (rightEl) rightEl.innerHTML = `${addCal}${dir}`;
   } else {
-    // Not scheduled
-    // Left (small): "Social Deduction", "Beginner-friendly"
-    // Right (small): "8–25 players", "3-4 hours"
-    microMeta.innerHTML =
-      `<div class="micro-line"><span class="micro-left">Social deduction</span><span class="micro-link">8–25 players</span></div>` +
-      `<div class="micro-line"><span class="micro-left">Beginner-friendly</span><span class="micro-link">2–3 hours</span></div>`;
+    // Not scheduled:
+    // Left: "social deduction", "beginner-friendly"
+    if (dateEl) dateEl.textContent = 'Social deduction';
+    if (locEl)  locEl.textContent  = 'Beginner-friendly';
+
+    // Right: "8–25 players", "2–3 hours"
+    if (rightEl) rightEl.innerHTML =
+      `<span class="microbar-link">8–25 players</span>` +
+      `<span class="microbar-link">2–3 hours</span>`;
   }
 
-  // Re-evaluate microbar visibility after content fills (keeps your filter/show logic intact)
+  // Re-evaluate visibility after filling content
   window.__updateMicrobarVis && window.__updateMicrobarVis();
 }
 
