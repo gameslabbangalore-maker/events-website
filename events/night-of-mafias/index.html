@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience. Night of Mafias ! by Games Lab." />
 
-  <!-- Open Graph / Twitter -->
+  <!-- OG/Twitter -->
   <meta property="og:title" content="Night of Mafias ! — Games Lab">
   <meta property="og:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
   <meta property="og:url" content="https://gameslab.co.in/events/night-of-mafias/">
@@ -21,17 +21,14 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Games Lab">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Night of Mafias ! — Games Lab">
-  <meta name="twitter:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
-  <meta name="twitter:image" content="https://gameslab.co.in/og/night-of-mafias.jpg?v=1">
 
   <link rel="icon" href="/Games Lab Logo.png" type="image/png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-  <!-- CSV parser for sheet -->
+  <!-- PapaParse for sheet -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-  <!-- CSP aligned with Home + YouTube for embeds -->
+  <!-- CSP -->
   <meta http-equiv="Content-Security-Policy"
 content="
   default-src 'self';
@@ -59,7 +56,7 @@ content="
 
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- ===== THEME + SHARED (from Home) ===== -->
+  <!-- ===== THEME + SHARED ===== -->
   <style>
     :root {
       --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
@@ -69,17 +66,12 @@ content="
     body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
-    /* Safe-area strip above the top bar — match the bar’s glass */
     .topbar-bleed{
-      position: fixed;
-      top: 0; left: 0; right: 0;
+      position: fixed; top: 0; left: 0; right: 0;
       height: env(safe-area-inset-top, 0px);
       background: rgba(255,255,255,.55) !important;
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      z-index: 10002;
-      pointer-events: none;
-      border: 0;
+      -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+      z-index: 10002; pointer-events: none; border: 0;
     }
     @media (prefers-color-scheme: light){
       .topbar-bleed{
@@ -99,8 +91,7 @@ content="
       -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     }
     @media (prefers-color-scheme: light){
-      .topbar,
-      .topbar-bleed{
+      .topbar,.topbar-bleed{
         background:rgba(255,255,255,.55) !important;
         border-bottom:1px solid rgba(0,0,0,.08);
         -webkit-backdrop-filter:saturate(180%) blur(14px);
@@ -145,17 +136,13 @@ content="
     }
   </style>
 
-  <!-- Mobile-only: fade-in banner to avoid first-paint shimmer under glass -->
+  <!-- Mobile-only: fade-in banner -->
   <style>
     @media (max-width: 959px) {
-      .banner img{
-        opacity:0; animation: maf-banner-in .28s ease-out .18s forwards; will-change:opacity;
-      }
+      .banner img{ opacity:0; animation: maf-banner-in .28s ease-out .18s forwards; will-change:opacity; }
       @keyframes maf-banner-in { to { opacity: 1; } }
     }
-    @media (prefers-reduced-motion: reduce) and (max-width: 959px) {
-      .banner img{ animation:none; opacity:1; }
-    }
+    @media (prefers-reduced-motion: reduce) and (max-width: 959px) { .banner img{ animation:none; opacity:1; } }
   </style>
 
   <!-- ===== EVENT PAGE LAYOUT ===== -->
@@ -211,7 +198,7 @@ content="
     .tagline{grid-area:tagline;margin:0 0 10px;font-weight:700;letter-spacing:.6px;color:var(--muted);text-align:left}
     @media (max-width:959px){.tagline{text-align:center}}
 
-    /* ===== Mobile highlights block (only when scheduled) ===== */
+    /* ===== Mobile highlights (only when scheduled; toggled via JS) ===== */
     .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin:0 0 8px}
     .highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .h-item{font-size:13.5px;display:flex;flex-direction:column;gap:2px}
@@ -227,14 +214,14 @@ content="
     .prose h3{margin:0 0 14px;font-weight:800}
 
     /* Videos */
-    .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden}
-    .video-portrait iframe{width:100%;height:100%;border:0}
+    .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden;cursor:pointer}
+    .video-portrait iframe{width:100%;height:100%;border:0;pointer-events:none}
     .recap-grid-portrait{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));justify-items:center}
     .recap-grid-portrait .video-portrait{max-width:clamp(160px,28vw,220px)}
-    /* Match “About Night of Mafias” video to recaps size */
+    /* Match About video to recaps size */
     #about-video .video-portrait{max-width:clamp(160px,28vw,220px);margin-left:auto;margin-right:auto}
 
-    /* Right-hand card */
+    /* Right-hand card (desktop) */
     .side-card{grid-area:side;display:none}
     @media (min-width:960px){
       .side-card{display:block}
@@ -244,37 +231,45 @@ content="
         background:var(--card);
         border-radius:12px;
         box-shadow:0 6px 22px rgba(0,0,0,.8);
-        padding:14px 14px 16px;
+        padding:18px 16px 18px;
         border:1.5px solid rgba(255,255,255,.08);
+        overflow:hidden; /* ensures no child overflow (e.g., wide CTA corners) */
       }
       @media (prefers-color-scheme: light){.info-card{border-color:rgba(0,0,0,.06)}}
-      .info-card h3{margin:0 0 10px;font-size:13px;letter-spacing:.45px;text-transform:uppercase;color:var(--muted);text-align:center}
-      .info-card .section-title{margin:2px 0 10px;font-size:13px;letter-spacing:.45px;text-transform:uppercase;color:var(--muted)}
-      .facts{display:grid;gap:8px;margin:8px 0 2px}
-      .fact{display:flex;justify-content:space-between;gap:10px;font-size:14px}
-      .fact .label{color:var(--muted)}
-      .info-card .btn{margin:0;white-space:nowrap}
-      .info-card .btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16)}
-      .info-card .btn-primary{background:var(--accent);color:#000;border:0;font-weight:900}
-      .info-card .btn-primary:hover{filter:brightness(1.05)}
-      .info-card .schedule-grid{
-        display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;margin-bottom:8px
+
+      .info-card h3{margin:0 0 14px;font-size:13px;letter-spacing:.45px;text-transform:uppercase;color:var(--muted);text-align:center}
+
+      /* Schedule at the top */
+      .schedule-grid{
+        display:grid;grid-template-columns:1fr auto;gap:12px 10px;align-items:start;margin-bottom:10px
       }
-      .info-card .when-where{display:flex;flex-direction:column;gap:6px;font-size:14px}
-      .info-card .when-where .line{display:flex;gap:8px;align-items:center}
-      .info-card .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
-      .info-card .wide-cta{display:block;width:100%;text-align:center;padding:10px 14px;border-radius:10px;margin:6px 0 6px}
-      .info-card .row-div{height:1px;margin:10px 0;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.04));border:0}
-      .info-card .share-row{display:flex;justify-content:center;margin-top:6px}
-      .info-card .share-row .icon{width:18px;height:18px;margin-right:6px}
+      .when-where{display:flex;flex-direction:column;gap:10px}
+      .when-where .when{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:900;font-size:16px}
+      .when-where .where{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:800;font-size:15px;color:#eaeaea}
+      .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+      .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer;line-height:1}
+      .btn-sm{padding:6px 10px;font-size:13px;border-radius:8px}
+      .btn-ghost{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16)}
+      .btn-primary{background:var(--accent);color:#000;border:0;font-weight:900}
+      .btn-primary:hover{filter:brightness(1.05)}
+      .wide-cta{display:block;width:100%;text-align:center;padding:11px 14px;border-radius:10px;margin:6px 0 8px;box-sizing:border-box}
+
+      .row-div{height:1px;margin:12px 0;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.04));border:0}
+
+      /* Highlights list spacing */
+      .facts{display:grid;gap:10px;margin:10px 0 4px}
+      .fact{display:flex;justify-content:space-between;gap:10px;font-size:14px;line-height:1.55}
+      .fact .label{color:var(--muted)}
+
+      .share-row{display:flex;justify-content:center;margin-top:10px}
+      .share-row .icon{width:18px;height:18px;margin-right:6px}
     }
 
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;cursor:pointer}
     .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
     .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer;position:relative;top:-1px}
     @media (min-width:960px){.share-inline{display:none}}
 
-    /* MOBILE microbar — compact, icon-only share */
+    /* MOBILE microbar (unchanged behavior) */
     .mobile-info-bar{
       position:fixed;left:0;right:0;
       top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
@@ -302,19 +297,6 @@ content="
     }
     @media (min-width:960px){.mobile-info-bar{display:none !important}}
 
-    /* Keep dividers confined to the left content column */
-    .content .divider {
-      height: 1px;
-      width: 100%;
-      max-width: var(--content-max, 720px);
-      margin: 20px 0;
-      border: 0;
-      background: linear-gradient(to right, rgba(0,0,0,.16), rgba(0,0,0,.06));
-    }
-    @media (prefers-color-scheme: dark) {
-      .content .divider { background: linear-gradient(to right, rgba(255,255,255,.22), rgba(255,255,255,.10)); }
-    }
-
     /* Floating Book Now (mobile) */
     .fab-book{
       position:fixed; right:12px; bottom:12px; z-index:10000;
@@ -325,14 +307,20 @@ content="
     .fab-book[hidden]{display:none}
     @media (min-width:960px){ .fab-book{display:none!important} }
 
-    /* Ensure all main sections stay in the left column on desktop */
-    @media (min-width:960px){
-      .page-grid > section { grid-column: 1; }
-    }
+    /* Video Lightbox */
+    .vid-modal[hidden]{display:none}
+    .vid-modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10020;display:flex;align-items:center;justify-content:center;padding:16px}
+    .vid-stage{position:relative;width:min(900px,92vw);aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 10px 36px rgba(0,0,0,.6)}
+    .vid-stage iframe{width:100%;height:100%;border:0}
+    .vid-close{position:absolute;top:10px;right:10px;border:0;border-radius:10px;background:rgba(0,0,0,.4);color:#fff;padding:6px 10px;cursor:pointer}
+    .vid-close:hover{background:rgba(0,0,0,.6)}
+
+    /* Keep left column sections in column 1 on desktop */
+    @media (min-width:960px){ .page-grid > section { grid-column: 1; } }
   </style>
 </head>
 <body>
-  <!-- ===== Top bar ===== -->
+  <!-- Top bar -->
   <div class="topbar-bleed" aria-hidden="true"></div>
   <header class="topbar" role="banner">
     <a class="topbar-left home-link" href="/" aria-label="Go to Games Lab homepage">
@@ -342,7 +330,7 @@ content="
   </header>
   <div class="topbar-spacer" aria-hidden="true"></div>
 
-  <!-- ===== Mobile sticky microbar ===== -->
+  <!-- Mobile sticky microbar -->
   <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
     <div class="mobile-info-inner">
       <div class="mobile-info">
@@ -358,7 +346,7 @@ content="
   <!-- Floating Book Now (mobile) -->
   <a id="fabBook" class="fab-book" href="#" target="_blank" rel="noopener">Book Now</a>
 
-  <!-- ===== Page grid ===== -->
+  <!-- Page grid -->
   <main class="wrap" role="main">
     <div class="page-grid">
       <figure class="banner">
@@ -368,26 +356,27 @@ content="
       <!-- RIGHT CARD -->
       <aside class="side-card" aria-label="Highlights">
         <div class="info-card" role="complementary">
-          <h3>HIGHLIGHTS</h3>
+          <!-- Top heading now SCHEDULE -->
+          <h3>Schedule</h3>
 
-          <!-- SCHEDULE BLOCK (desktop only, populated by JS) -->
-          <div id="scheduleBlock" class="schedule-block" hidden>
-            <div class="section-title">Schedule</div>
+          <!-- Desktop SCHEDULE (filled by JS) -->
+          <div id="scheduleBlock" hidden>
             <div class="schedule-grid">
               <div class="when-where">
-                <div class="line" id="scWhen">—</div>
-                <div class="line" id="scWhere">—</div>
+                <div class="when" id="scWhen">—</div>
+                <div class="where" id="scWhere">—</div>
               </div>
               <div class="actions">
-                <a id="scAddCal" class="btn btn-ghost" href="#" download>Add to Calendar</a>
-                <a id="scDir" class="btn btn-ghost" href="#" target="_blank" rel="noopener">Directions</a>
+                <a id="scAddCal" class="btn btn-ghost btn-sm" href="#" download>Add to Calendar</a>
+                <a id="scDir" class="btn btn-ghost btn-sm" href="#" target="_blank" rel="noopener">Get directions</a>
               </div>
             </div>
             <a id="scBook" class="btn btn-primary wide-cta" href="#" target="_blank" rel="noopener">Book Now</a>
             <div class="row-div" aria-hidden="true"></div>
           </div>
 
-          <!-- STATIC HIGHLIGHTS -->
+          <!-- Now the HIGHLIGHTS heading sits under the divider -->
+          <h3>Highlights</h3>
           <div class="facts" id="factsList">
             <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
             <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
@@ -398,7 +387,7 @@ content="
           </div>
 
           <div class="share-row">
-            <button class="btn btn-ghost" id="shareBtnSide" aria-label="Share this event">
+            <button class="btn btn-ghost btn-sm" id="shareBtnSide" aria-label="Share this event">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
               Share
             </button>
@@ -489,37 +478,36 @@ content="
       </article>
 
       <section id="about-video" aria-labelledby="about-nom">
-        <h2 id="about-nom" class="heading">About Night of Mafias</h2>
-        <div class="video-portrait">
-          <iframe loading="lazy" allowfullscreen title="About Night of Mafias (portrait)"
-            src="https://www.youtube.com/embed/p232ZZCCJKA?rel=0"></iframe>
+        <h3 id="about-nom" class="heading">About Night of Mafias</h3>
+        <div class="video-portrait" data-embed="https://www.youtube.com/embed/p232ZZCCJKA?rel=0">
+          <iframe loading="lazy" title="About Night of Mafias (portrait)" src="https://www.youtube.com/embed/p232ZZCCJKA?rel=0"></iframe>
         </div>
       </section>
 
       <div class="divider" aria-hidden="true"></div>
 
       <section id="recaps" aria-labelledby="recaps-title">
-        <h2 id="recaps-title" class="heading">Event recaps</h2>
+        <h3 id="recaps-title" class="heading">Event recaps</h3>
         <p class="contact-sub" style="margin:0 0 18px; text-align:left;">CATCH THE VIBE OF THE EVENT WITH THESE VIDEOS</p>
         <div class="recap-grid-portrait">
-          <div class="video-portrait">
-            <iframe loading="lazy" allowfullscreen title="Recap 1" src="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0"></iframe>
+          <div class="video-portrait" data-embed="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0">
+            <iframe loading="lazy" title="Recap 1" src="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0"></iframe>
           </div>
-          <div class="video-portrait">
-            <iframe loading="lazy" allowfullscreen title="Recap 2" src="https://www.youtube.com/embed/KwDyHylu-Ik?rel=0"></iframe>
+          <div class="video-portrait" data-embed="https://www.youtube.com/embed/KwDyHylu-Ik?rel=0">
+            <iframe loading="lazy" title="Recap 2" src="https://www.youtube.com/embed/KwDyHylu-Ik?rel=0"></iframe>
           </div>
-          <div class="video-portrait">
-            <iframe loading="lazy" allowfullscreen title="Recap 3" src="https://www.youtube.com/embed/IsGh10mGWbM?rel=0"></iframe>
+          <div class="video-portrait" data-embed="https://www.youtube.com/embed/IsGh10mGWbM?rel=0">
+            <iframe loading="lazy" title="Recap 3" src="https://www.youtube.com/embed/IsGh10mGWbM?rel=0"></iframe>
           </div>
         </div>
       </section>
     </div>
 
-    <!-- This divider's ID is used to hide the floating Book button on mobile near the footer -->
+    <!-- Divider used to hide floating Book button near footer -->
     <div class="divider" id="contactTopDivider" style="margin-top:40px;"></div>
 
     <div class="title" style="text-align:center;margin-bottom:18px;">
-      <h2 class="heading" style="margin:0;">Contact Us</h2>
+      <h3 class="heading" style="margin:0;">Contact Us</h3>
     </div>
 
     <section class="contact-wrap" aria-labelledby="contact-title">
@@ -540,21 +528,17 @@ content="
           </div>
         </li>
 
-        <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 13 2 6.76V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6.76L12 13Zm0-2.47L22 4H2l10 6.53Z"/></svg>
-          <a class="link email-text" href="mailto:info@gameslab.co.in">info@gameslab.co.in</a>
-        </li>
-
-        <!-- Clean Instagram icon -->
+        <!-- Instagram (exact as Home) -->
         <li class="row">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 5.5A5.5 5.5 0 1 0 17.5 13 5.5 5.5 0 0 0 12 7.5Zm0 2A3.5 3.5 0 1 1 8.5 13 3.5 3.5 0 0 1 12 9.5Zm5.2-2.2a.8.8 0 1 0 .8.8.8.8 0 0 0-.8-.8Z"/>
+            <path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.25-2.75a.75.75 0 1 1-.75.75.75.75 0 0 1 .75-.75Z"/>
           </svg>
           <a class="link" href="https://www.instagram.com/games._.lab/" target="_blank" rel="noopener">Follow Us</a>
         </li>
 
+        <!-- WhatsApp (exact as Home) -->
         <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Z"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
           <a class="link" href="https://chat.whatsapp.com/BDglWOECbIiGLaCRVmzAaj" target="_blank" rel="noopener">Join our Community</a>
         </li>
       </ul>
@@ -563,50 +547,46 @@ content="
     <div class="divider" style="margin-top:40px;"></div>
   </main>
 
+  <!-- Video Lightbox Modal -->
+  <div id="vidModal" class="vid-modal" hidden>
+    <div class="vid-stage">
+      <button class="vid-close" id="vidClose" aria-label="Close video">Close ✕</button>
+      <iframe id="vidFrame" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+  </div>
+
   <!-- ===== Scripts ===== -->
   <script>
-    // Microbar: show only after the bottom of the mobile highlights passes the top bar
+    // Microbar visibility (mobile)
     (function(){
       const microbar   = document.getElementById('mobileInfoBar');
       const highlights = document.getElementById('highlightsMobile');
       if (!microbar) return;
-
       function isDesktop(){ return window.innerWidth >= 960; }
-
       function update(){
         if (isDesktop() || !highlights || highlights.hasAttribute('hidden')) {
-          microbar.classList.remove('show');
-          microbar.setAttribute('aria-hidden','true');
-          return;
+          microbar.classList.remove('show'); microbar.setAttribute('aria-hidden','true'); return;
         }
-        const topbar = document.querySelector('.topbar');
-        const topbarH = topbar ? topbar.offsetHeight : 56;
-
+        const topbarH = (document.querySelector('.topbar')?.offsetHeight || 56);
         const rect = highlights.getBoundingClientRect();
         const bottomY = rect.bottom + window.scrollY;
         const shouldShow = window.scrollY >= (bottomY - topbarH);
         microbar.classList.toggle('show', shouldShow);
         microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
       }
-
       window.addEventListener('load', update, { passive:true });
       window.addEventListener('scroll', update, { passive:true });
       window.addEventListener('resize', update);
-      window.__updateMicrobarVis = update; // expose for schedule toggle
+      window.__updateMicrobarVis = update;
     })();
 
-    // Share (Web Share API + clipboard fallback)
+    // Share
     (function(){
       async function sharePage(){
-        const data = {
-          title: document.title,
-          text: 'Check out Night of Mafias ! at Games Lab',
-          url: window.location.href
-        };
-        try{
-          if (navigator.share) { await navigator.share(data); }
-          else { await navigator.clipboard.writeText(data.url); alert('Link copied to clipboard'); }
-        }catch(e){ /* user cancelled */ }
+        const data = { title: document.title, text: 'Check out Night of Mafias ! at Games Lab', url: location.href };
+        try{ if (navigator.share) await navigator.share(data);
+             else { await navigator.clipboard.writeText(data.url); alert('Link copied to clipboard'); } }
+        catch(e){}
       }
       document.getElementById('shareBtnTop')?.addEventListener('click', sharePage);
       document.getElementById('shareBtnSide')?.addEventListener('click', sharePage);
@@ -619,20 +599,15 @@ content="
       const menu  = document.getElementById('phone-menu');
       const waBtn = document.getElementById('wa-now');
       if (!phone || !menu || !waBtn) return;
-
       const tel = (phone.dataset.tel || '').replace(/[^\d]/g,'');
       const msg = encodeURIComponent("Hi! I'd like to know more about Games Lab events.");
       waBtn.href = `https://wa.me/${tel}?text=${msg}`;
-
       function openMenu(){
         if (!menu.hidden){ menu.hidden = true; return; }
         menu.hidden = false;
         const onAway = (e)=>{ if (!menu.contains(e.target) && e.target !== phone){ menu.hidden = true; cleanup(); } };
         const onEsc  = (e)=>{ if (e.key === 'Escape'){ menu.hidden = true; cleanup(); } };
-        function cleanup(){
-          document.removeEventListener('click', onAway, true);
-          document.removeEventListener('keydown', onEsc, true);
-        }
+        function cleanup(){ document.removeEventListener('click', onAway, true); document.removeEventListener('keydown', onEsc, true); }
         document.addEventListener('click', onAway, true);
         document.addEventListener('keydown', onEsc, true);
       }
@@ -651,7 +626,7 @@ content="
       io.observe(stopAt);
     })();
 
-    // ====== Load from Upcoming sheet and wire schedule/highlights/microbar ======
+    // Load data from Upcoming sheet and wire schedule/microbar
     (async function(){
       const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
       const pagePath = location.pathname.replace(/\/+$/,'') || '/';
@@ -688,23 +663,13 @@ content="
       function makeICS({title, start, durationHours=2, locationText='', locationUrl='', description=''}){
         const dt = new Date(start);
         const end = new Date(dt.getTime() + durationHours*60*60*1000);
-        const stamp = (x)=> x.getFullYear()
-            + pad(x.getMonth()+1) + pad(x.getDate())
-            + 'T' + pad(x.getHours()) + pad(x.getMinutes()) + pad(x.getSeconds());
+        const stamp = (x)=> x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+'T'+pad(x.getHours())+pad(x.getMinutes())+pad(x.getSeconds());
         const loc = locationUrl ? `${locationText} (${locationUrl})` : locationText;
         const lines = [
-          'BEGIN:VCALENDAR',
-          'VERSION:2.0',
-          'PRODID:-//Games Lab//Events//EN',
-          'BEGIN:VEVENT',
-          `DTSTAMP:${stamp(new Date())}`,
-          `DTSTART:${stamp(dt)}`,
-          `DTEND:${stamp(end)}`,
-          `SUMMARY:${title}`,
-          `LOCATION:${loc.replace(/,/g,'\\,')}`,
-          `DESCRIPTION:${description}`,
-          'END:VEVENT',
-          'END:VCALENDAR'
+          'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Games Lab//Events//EN','BEGIN:VEVENT',
+          `DTSTAMP:${stamp(new Date())}`,`DTSTART:${stamp(dt)}`,`DTEND:${stamp(end)}`,
+          `SUMMARY:${title}`,`LOCATION:${loc.replace(/,/g,'\\,')}`,`DESCRIPTION:${description}`,
+          'END:VEVENT','END:VCALENDAR'
         ];
         return 'data:text/calendar;charset=utf8,' + encodeURIComponent(lines.join('\r\n'));
       }
@@ -714,17 +679,12 @@ content="
         const text = await res.text();
         const rows = Papa.parse(text, { header:true, skipEmptyLines:true }).data;
 
-        // find matching row
         const match = rows.find(r=>{
           const pageLink = clean(r['Page Link']).replace(/\/+$/,'');
           const name = clean(r['EventName']);
-          return pageLink && pagePath.endsWith(pageLink) || name.toLowerCase() === eventTitle.toLowerCase();
+          return (pageLink && pagePath.endsWith(pageLink)) || name.toLowerCase() === eventTitle.toLowerCase();
         });
-        if (!match) {
-          // Hide schedule on mobile if not found
-          document.getElementById('highlightsMobile')?.setAttribute('hidden','');
-          return;
-        }
+        if (!match) { document.getElementById('highlightsMobile')?.setAttribute('hidden',''); return; }
 
         const scheduled = clean(match['Scheduled']).toLowerCase()==='yes';
         const dateStr = clean(match['Date']);
@@ -734,48 +694,44 @@ content="
         const ticket  = clean(match['Ticket Link']);
         const title   = clean(match['EventName']) || eventTitle;
 
-        // Build Date object
         const base = parseEventDate(dateStr);
         const tm = parseTime12h(timeStr);
         if (base){ base.setHours(tm.h, tm.m, 0, 0); }
 
-        // Desktop schedule block
+        // Desktop Schedule
         const scBlock = document.getElementById('scheduleBlock');
         const scWhen  = document.getElementById('scWhen');
         const scWhere = document.getElementById('scWhere');
         const scAdd   = document.getElementById('scAddCal');
         const scDir   = document.getElementById('scDir');
         const scBook  = document.getElementById('scBook');
-        const facts   = document.getElementById('factsList');
 
         if (scheduled && base){
           scWhen.textContent  = fmtHuman(base, timeStr);
           scWhere.textContent = locText || '';
-          if (locLink) { scDir.href = locLink; scDir.removeAttribute('aria-disabled'); }
+          if (locLink) { scDir.href = locLink; }
+          scDir.textContent = 'Get directions';
+          scAdd.textContent = 'Add to Calendar';
 
           const ics = makeICS({
             title, start: base, durationHours: 2,
             locationText: locText, locationUrl: locLink,
-            description: document.location.href
+            description: location.href
           });
           scAdd.href = ics;
           if (ticket){ scBook.href = ticket; }
           scBlock.hidden = false;
 
-          // Mobile highlights visible when scheduled
+          // Mobile
           document.getElementById('highlightsMobile')?.removeAttribute('hidden');
-
-          // Floating Book button
           const fab = document.getElementById('fabBook');
           if (ticket){ fab.href = ticket; fab.removeAttribute('hidden'); }
         } else {
-          // Not scheduled — hide schedule block & mobile highlights
           scBlock.hidden = true;
           document.getElementById('highlightsMobile')?.setAttribute('hidden','');
-          // Optional: add price to microbar here if you want
         }
 
-        // Microbar content (concise)
+        // Microbar
         const microTitle = document.getElementById('microTitle');
         const microMeta  = document.getElementById('microMeta');
         microTitle.innerHTML = `<strong>${title}</strong>`;
@@ -785,9 +741,33 @@ content="
           microMeta.textContent = `• 8–25 players • Beginner-friendly`;
         }
         window.__updateMicrobarVis && window.__updateMicrobarVis();
-      }catch(e){
-        console.error('Sheet load failed', e);
+      }catch(e){ console.error('Sheet load failed', e); }
+    })();
+
+    // Video Lightbox: open bigger player on click
+    (function(){
+      const modal = document.getElementById('vidModal');
+      const frame = document.getElementById('vidFrame');
+      const close = document.getElementById('vidClose');
+      if (!modal || !frame) return;
+
+      function open(url){
+        const hasQ = url.includes('?');
+        const withAuto = url + (hasQ ? '&' : '?') + 'autoplay=1';
+        frame.src = withAuto;
+        modal.hidden = false;
       }
+      function shut(){
+        frame.src = 'about:blank';
+        modal.hidden = true;
+      }
+
+      document.querySelectorAll('.video-portrait').forEach(v => {
+        v.addEventListener('click', () => open(v.getAttribute('data-embed') || v.querySelector('iframe')?.src || ''));
+      });
+      close.addEventListener('click', shut);
+      modal.addEventListener('click', (e)=>{ if (e.target === modal) shut(); });
+      window.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && !modal.hidden) shut(); });
     })();
   </script>
 </body>
