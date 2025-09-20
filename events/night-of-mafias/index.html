@@ -359,6 +359,13 @@ content="
       .info-card{ position: sticky; top: calc(var(--topbar-height-desktop) + 16px); }
     }
 
+    /* === FIX: let the aside sit in the repeated 'side' area rows from your template === */
+    @media (min-width:960px){
+      .page-grid{ align-items:start; }
+      .side-card{ grid-row:auto; align-self:start; }  /* undo 1 / -1 */
+      .info-card{ position:sticky; top:calc(var(--topbar-height-desktop) + 16px); }
+    }
+
     #about-nom.section-title,
     #recaps-title.section-title{
       font-size: 1.22rem;   /* same as your .section-title override */
@@ -379,6 +386,30 @@ content="
       display: inline-flex; align-items: center;         /* ensure icon centers vertically */
     }
     #shareBtnTop svg{ display:block; }                   /* no baseline wobble */
+
+    /* === FIX: microbar grid layout with Title | Share on the first row === */
+    @media (max-width:959px){
+      .mobile-info-inner{
+        display:grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+          "title share"
+          "meta  meta";
+        align-items:center;
+        gap:6px 10px;
+      }
+      #microTitle{ grid-area:title; }
+      #shareBtnTop{ grid-area:share; margin-top:0; display:inline-flex; align-items:center; }
+      #microMeta{ grid-area:meta; }
+    }
+    
+    /* Make date|time and location a bit smaller; keep links even smaller */
+    .micro-left{ font-size:.84rem; font-weight:800; }   /* smaller than title */
+    .micro-link{ font-size:.74rem; font-weight:800; }
+    
+    /* Each meta row stays "left text | right link" */
+    .micro-line{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
     
   </style>
 </head>
