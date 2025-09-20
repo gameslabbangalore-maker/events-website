@@ -653,24 +653,16 @@
             meta.textContent = (date ? date : "") + ((date && time) ? " | " : "") + (time ? time : "");
             body.appendChild(meta);
   
-            if (locText || locLink) {
+            if (locText) {
               const locP = document.createElement("p");
               locP.className = "location";
-              const a = document.createElement("a");
-              a.href = locLink || "#"; a.target = "_blank"; a.rel = "noopener noreferrer";
-              a.textContent = locText;
-              locP.appendChild(a);
+              locP.textContent = locText; // plain text, no link
               body.appendChild(locP);
             }
-  
+
             const mobileInfo = document.createElement("p");
             mobileInfo.className = "mobile-info";
-            if (locText) {
-              const a2 = document.createElement("a");
-              a2.href = locLink || "#"; a2.target = "_blank"; a2.rel = "noopener noreferrer";
-              a2.textContent = locText;
-              mobileInfo.appendChild(a2);
-            }
+            if (locText) mobileInfo.appendChild(document.createTextNode(locText)); // plain text
             if (locText && time) mobileInfo.appendChild(document.createTextNode(" | "));
             if (time) mobileInfo.appendChild(document.createTextNode(time));
             body.appendChild(mobileInfo);
@@ -1238,6 +1230,7 @@
   </body>
   </html>
   
+
 
 
 
