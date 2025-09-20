@@ -510,7 +510,7 @@ content="
         <h3 class="hl-card-title">Highlights</h3>
         <div class="highlights-grid" aria-label="Event highlights">
           <div class="h-item"><div class="h-label">Format</div><div class="h-value">Social deduction</div></div>
-          <div class="h-item"><div class="h-label">Duration</div><div class="h-value">2–3 hours</div></div>
+          <div class="h-item"><div class="h-label">Duration</div><div class="h-value">3–4 hours</div></div>
           <div class="h-item"><div class="h-label">Group size</div><div class="h-value">8–25 players</div></div>
           <div class="h-item"><div class="h-label">Difficulty</div><div class="h-value">Beginner-friendly</div></div>
           <div class="h-item"><div class="h-label">Age</div><div class="h-value">14+</div></div>
@@ -765,7 +765,7 @@ content="
         const yr2 = String(dt.getFullYear()).slice(-2);
         return `${wk}, ${day} ${mon} '${yr2}`;
       }
-      function makeICS({title, start, durationHours=2, locationText='', locationUrl='', description=''}){
+      function makeICS({title, start, durationHours=3, locationText='', locationUrl='', description=''}){
         const dt = new Date(start);
         const end = new Date(dt.getTime() + durationHours*60*60*1000);
         const stamp = (x)=> x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+'T'+pad(x.getHours())+pad(x.getMinutes())+pad(x.getSeconds());
@@ -824,7 +824,7 @@ content="
           scWhen.textContent  = fmtDateOnly(base);
           scWhere.textContent = locText || '';
           const ics = makeICS({
-            title, start: base, durationHours: 2,
+            title, start: base, durationHours: 3,
             locationText: locText, locationUrl: locLink,
             description: location.href
           });
@@ -845,29 +845,61 @@ content="
           document.getElementById('highlightsMobile')?.setAttribute('hidden','');
         }
 
-        // Microbar content
-        const microTitle = document.getElementById('microTitle');
-        const microMeta  = document.getElementById('microMeta');
-        const esc = s => (s||'').replace(/[&<>"]/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m]));
-        microTitle.innerHTML = `<strong>${title}</strong>`;
+        // Microbar content (left/right layout; scheduled vs not; keeps your visibility logic)
+{
+  const microTitle = document.getElementById('microTitle');
+  const microMeta  = document.getElementById('microMeta');
+  const shareBtn   = document.getElementById('shareBtnTop');
+  const esc = s => (s||'').replace(/[&<>"]/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[m]));
 
-        if (scheduled && base){
-          const icsForBar = makeICS({
-            title, start: base, durationHours: 2,
-            locationText: locText, locationUrl: locLink,
-            description: location.href
-          });
+  // Title on left (bigger)
+  if (microTitle) microTitle.innerHTML = `<strong>${esc(title)}</strong>`;
 
-          const dateLeft = fmtDateOnly(base) + " | " + timeStr;
-          const addCal   = `<a class="micro-link" href="${esc(icsForBar)}" download>add to calendar</a>`;
-          const dirLink  = locLink ? `<a class="micro-link" href="${esc(locLink)}" target="_blank" rel="noopener">get directions</a>` : '';
+  // Make the right-hand Share button bold & title-sized (no HTML edits)
+  if (shareBtn) {
+    shareBtn.classList.remove('icon-only');
+    shareBtn.classList.add('share-btn-bold');
+    // add "Share" label if missing
+    if (!/Share<\/span>/.test(shareBtn.innerHTML)) {
+      shareBtn.innerHTML =
+        `<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg><span>Share</span>`;
+    }
+  }
 
-          microMeta.innerHTML =
-            `<div class="micro-line"><span class="micro-left">${esc(dateLeft)}</span>${addCal}</div>`+
-            `<div class="micro-line"><span class="micro-left">${esc(locText)}</span>${dirLink}</div>`;
-        } else {
-          microMeta.textContent = '8–25 players • Beginner-friendly';
-        }
+  if (scheduled && base) {
+    // ICS for "Add to Calendar"
+    const icsForBar = makeICS({
+      title,
+      start: base,
+      durationHours: 3,
+      locationText: locText,
+      locationUrl: locLink,
+      description: location.href
+    });
+
+    const dateLeft = `${fmtDateOnly(base)}${timeStr ? " | " + timeStr.trim() : ""}`;
+    const addCal   = `<a class="micro-link" href="${esc(icsForBar)}" download>Add to Calendar</a>`;
+    const dirLink  = locLink
+      ? `<a class="micro-link" href="${esc(locLink)}" target="_blank" rel="noopener">Get Directions</a>`
+      : `<span class="micro-link" style="opacity:.7" aria-disabled="true">Get Directions</span>`;
+
+    // Left: Title (already set), then Date&Time, then Location
+    // Right: Share (real button element you already have), then Add to Calendar, then Get Directions
+    microMeta.innerHTML =
+      `<div class="micro-line"><span class="micro-left">${esc(dateLeft)}</span>${addCal}</div>` +
+      `<div class="micro-line"><span class="micro-left">${esc(locText || "")}</span>${dirLink}</div>`;
+  } else {
+    // Not scheduled
+    // Left (small): "Social Deduction", "Beginner-friendly"
+    // Right (small): "8–25 players", "3-4 hours"
+    microMeta.innerHTML =
+      `<div class="micro-line"><span class="micro-left">Social deduction</span><span class="micro-link">8–25 players</span></div>` +
+      `<div class="micro-line"><span class="micro-left">Beginner-friendly</span><span class="micro-link">2–3 hours</span></div>`;
+  }
+
+  // Re-evaluate microbar visibility after content fills (keeps your filter/show logic intact)
+  window.__updateMicrobarVis && window.__updateMicrobarVis();
+}
 
         // Re-evaluate microbar visibility after content fills
         window.__updateMicrobarVis && window.__updateMicrobarVis();
