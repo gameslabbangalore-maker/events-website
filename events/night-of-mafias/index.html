@@ -13,704 +13,336 @@
   <meta property="og:title" content="Night of Mafias ! — Games Lab">
   <meta property="og:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
   <meta property="og:url" content="https://gameslab.co.in/events/night-of-mafias/">
-  <meta property="og:image" content="https://gameslab.co.in/og/night-of-mafias.jpg?v=1">
-  <meta property="og:image:secure_url" content="https://gameslab.co.in/og/night-of-mafias.jpg?v=1">
-  <meta property="og:image:type" content="image/jpeg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Games Lab">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Night of Mafias ! — Games Lab">
-  <meta name="twitter:description" content="Bluff, deduce, and bond in our beginner-friendly social deduction experience.">
-  <meta name="twitter:image" content="https://gameslab.co.in/og/night-of-mafias.jpg?v=1">
+  <meta property="og:image" content="https://ik.imagekit.io/yourpath/Night_of_Mafias.png">
 
-  <link rel="icon" href="/Games Lab Logo.png" type="image/png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <!-- Comfortaa / Inter (fallbacks) -->
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- CSP aligned with Home + YouTube for embeds -->
-  <meta http-equiv="Content-Security-Policy"
-content="
-  default-src 'self';
-  img-src 'self'
-           https://ik.imagekit.io
-           https://via.placeholder.com
-           https://*.googleusercontent.com
-           https://*.elfsightcdn.com
-           data:;
-  script-src 'self'
-             https://cdnjs.cloudflare.com
-             https://*.elfsight.com
-             https://*.elfsightcdn.com
-             'unsafe-inline';
-  style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
-  font-src   https://fonts.gstatic.com data:;
-  connect-src https://docs.google.com
-              https://*.googleusercontent.com
-              https://*.elfsight.com
-              https://*.elfsightcdn.com;
-  frame-src   https://www.youtube.com https://player.vimeo.com https://*.elfsight.com https://*.elfsightcdn.com;
-  object-src 'none';
-  base-uri 'self';
-">
-
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- ===== THEME + SHARED (from Home) ===== -->
   <style>
-    :root {
-      --bg:#181818; --card:#212121; --muted:#d0d0d0; --accent:#fce029; --datebox:#303030; --text-main:#fff;
-      --topbar-height-desktop:58px; --topbar-height-mobile:48px;
-    }
-    html,body{margin:0;height:100%}
-    body{background:var(--bg);color:var(--text-main);font-family:'Comfortaa',cursive;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
-
-    /* Safe-area strip above the top bar — match the bar’s glass */
-    .topbar-bleed{
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: env(safe-area-inset-top, 0px);
-      background: rgba(255,255,255,.55) !important;
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      z-index: 10002;
-      pointer-events: none;
-      border: 0;
+    :root{
+      --bg:#111; --card:#1b1b1b; --fg:#eaeaea; --muted:#bdbdbd; --accent:#fce029;
+      --topbar-height:64px;
     }
     @media (prefers-color-scheme: light){
-      .topbar-bleed{
-        background: rgba(255,255,255,.55) !important;
-        -webkit-backdrop-filter: saturate(180%) blur(14px);
-        backdrop-filter: saturate(180%) blur(14px);
-      }
+      :root{ --bg:#fafafa; --card:#ffffff; --fg:#1a1a1a; --muted:#666; --accent:#fce029; }
     }
 
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    /* Top bar */
     .topbar{
-      position:fixed;top:0;left:0;right:0;display:flex;align-items:center;
-      padding-left:24px;padding-top:env(safe-area-inset-top,0px);
-      height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px));
-      box-sizing:border-box;z-index:10003;
-      border-bottom:1px solid rgba(255,255,255,.3);
-      background:rgba(24,24,24,.07);
-      -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+      position:sticky; top:0; z-index:50; height:var(--topbar-height);
+      display:flex; align-items:center; gap:12px; padding:0 12px;
+      background:linear-gradient(to bottom, rgba(0,0,0,.6), rgba(0,0,0,0));
+      -webkit-backdrop-filter:saturate(140%) blur(10px);
+      backdrop-filter:saturate(140%) blur(10px);
     }
     @media (prefers-color-scheme: light){
-      .topbar,
-      .topbar-bleed{
-        background:rgba(255,255,255,.55) !important;
-        border-bottom:1px solid rgba(0,0,0,.08);
-        -webkit-backdrop-filter:saturate(180%) blur(14px);
-        backdrop-filter:saturate(180%) blur(14px);
-      }
+      .topbar{ background:linear-gradient(to bottom, rgba(255,255,255,.7), rgba(255,255,255,0)); }
     }
-    .topbar-left{display:flex;align-items:center;height:100%}
-    .topbar-left.home-link{color:inherit;text-decoration:none}
-    .topbar-left.home-link:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-    .logo{height:36px;width:36px;border-radius:8px;margin-right:12px;object-fit:cover}
-    .brand{font-size:1.45rem;font-weight:700;letter-spacing:.5px;color:#fff}
-    @media (max-width:600px){
-      .topbar{padding-left:10px;height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}
-      .logo{height:26px;width:26px;margin-right:8px}
-      .brand{font-size:1rem}
-    }
-    .topbar-spacer{width:100%;height:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
-    @media (max-width:600px){.topbar-spacer{height:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px))}}
-    @media (max-width:768px){.topbar,.topbar-bleed{transform:translateZ(0);-webkit-transform:translateZ(0)}}
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:700; }
+    .brand img{ width:28px; height:28px; border-radius:6px; }
+    .crumbs{ font-size:.9rem; color:var(--muted); }
+    .crumbs b{ color:var(--fg); }
 
-    /* Contact (same as home) */
-    .contact-wrap{max-width:1200px;margin:0 auto;padding:0 12px;}
-    .contact-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;justify-content:center;}
-    .contact-head .logo-lg{width:44px;height:44px;border-radius:10px;object-fit:cover;}
-    .contact-sub{margin:0;font-weight:700;letter-spacing:.6px;color:var(--muted);}
-    .contact-list{list-style:none;margin:0;padding:0;display:grid;gap:16px;}
-    .row{display:grid;grid-template-columns:28px 1fr;column-gap:12px;align-items:center;}
-    .icon{width:28px;height:28px;color:var(--accent);}
-    .link{color:var(--text-main);text-decoration:none;font-weight:700;}
-    .link:hover{color:var(--accent);}
-    .email-text{overflow-wrap:anywhere;word-break:break-word;line-break:anywhere;}
-    .phone-wrap{position:relative;}
-    .phone-menu{position:absolute;top:100%;left:40px;margin-top:6px;background:var(--card);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);padding:8px;display:flex;gap:8px;z-index:5;}
-    .phone-menu[hidden]{display:none;}
-    .phone-menu a{display:inline-block;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700;background:rgba(255,255,255,.06);color:var(--text-main) !important;}
-    .phone-menu a:hover{background:rgba(255,255,255,.12);color:var(--accent) !important;}
-    @media (min-width:1100px){.contact-list{display:flex;justify-content:center;flex-wrap:wrap;gap:24px 32px;}.row{display:flex;gap:12px;}}
-    @media (prefers-color-scheme: light){
-      :root{--bg:#f5f5f5;--card:#fff;--muted:#444;--accent:#0a75bc;--datebox:#ececec;--text-main:#181818}
-      .brand{color:#242424}
-      .phone-menu{box-shadow:0 8px 24px rgba(0,0,0,.12);}
+    /* Page title */
+    .page-title{
+      max-width:1200px; margin:8px auto 8px; padding:0 16px;
+      display:flex; align-items:center; gap:8px; justify-content:space-between;
     }
-  </style>
+    .page-title h1{
+      margin:0; font-family:Comfortaa, Inter, system-ui; font-weight:700;
+      font-size:clamp(1.25rem, 1.05rem + 1.5vw, 2rem);
+      letter-spacing:.2px;
+    }
+    .title-actions{ display:flex; gap:8px; align-items:center; }
+    .share-chip{
+      display:inline-flex; align-items:center; gap:6px;
+      border:1px solid rgba(255,255,255,.08);
+      padding:6px 10px; border-radius:999px; font-size:.9rem; color:var(--fg);
+      background:transparent;
+    }
+    @media (prefers-color-scheme: light){ .share-chip{ border-color:rgba(0,0,0,.08); } }
 
-  <!-- Mobile-only: fade-in banner -->
-  <style>
-    @media (max-width: 959px) {
-      .banner img{ opacity:0; animation: maf-banner-in .28s ease-out .18s forwards; will-change:opacity; }
-      @keyframes maf-banner-in { to { opacity: 1; } }
-    }
-    @media (prefers-reduced-motion: reduce) and (max-width: 959px) {
-      .banner img{ animation:none; opacity:1; }
-    }
-  </style>
-
-  <!-- ===== EVENT PAGE LAYOUT ===== -->
-  <style>
-    .wrap{max-width:1200px;margin:0 auto;padding:20px 18px 0}
-    @media (min-width:769px){.wrap{padding-top:12px}}
-    @media (max-width:768px){.wrap{padding:14px 12px 0}}
-
-    .divider{width:100%;height:1px;margin:28px 0 18px;background:linear-gradient(90deg,rgba(255,255,255,.06),rgba(255,255,255,.02));box-shadow:0 1px 0 rgba(255,255,255,.02) inset;border-radius:1px;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
-    @media (prefers-color-scheme: light){
-      .divider{background:linear-gradient(90deg,rgba(0,0,0,.12),rgba(0,0,0,.06));box-shadow:0 1px 0 rgba(0,0,0,.06) inset;}
-    }
-
-    .page-grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      grid-template-areas:
-        "banner"
-        "title"
-        "tagline"
-        "highlights"
-        "divider"
-        "content";
-      gap:12px;
-    }
+    /* Hide title share chip on desktop (show only on mobile) */
     @media (min-width:960px){
-      .page-grid{
-        grid-template-columns: minmax(0,1fr) 340px;
-        grid-template-areas:
-          "banner   side"
-          "title    side"
-          "tagline  side"
-          "divider  side"
-          "content  side";
-        column-gap:18px; row-gap:12px;
-      }
+      .page-title .share-chip{ display:none !important; }
     }
 
-    .banner{grid-area:banner;border-radius:12px;overflow:hidden;background:#111;box-shadow:0 6px 22px rgba(0,0,0,.8)}
-    .banner img{width:100%;height:clamp(360px,64vh,720px);object-fit:cover;object-position:center}
-    @media (max-width:768px){
-      .banner{margin-left:-2px;margin-right:-2px;border-radius:12px}
-      .banner img{height:clamp(220px,40vh,420px)}
+    /* Layout */
+    .page{
+      max-width:1200px; margin:0 auto; padding:0 16px 64px;
+      display:grid; grid-template-columns: 1fr; gap:24px;
+    }
+    @media (min-width: 1040px){
+      .page{ grid-template-columns: minmax(0, 1fr) 360px; gap:28px; }
     }
 
-    .heading{color:var(--accent);font-size:1.9rem;font-weight:700;letter-spacing:.2px;margin:0 0 18px}
-    @media (max-width:959px){.heading{text-align:center}}
+    /* Main media */
+    .hero{
+      width:100%; border-radius:14px; overflow:hidden; background:#000;
+      box-shadow:0 12px 36px rgba(0,0,0,.35);
+    }
+    .hero img{ width:100%; height:auto; display:block; }
 
-    .title-row{grid-area:title;display:flex;align-items:center;gap:8px;margin-bottom:4px}
-    @media (max-width:959px){.title-row{justify-content:center}}
-    .title-row .heading{margin:0;line-height:1.1}
+    /* Right card (schedule + highlights) */
+    .schedule-card{
+      background:var(--card); border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:14px; box-shadow:0 8px 28px rgba(0,0,0,.35);
+      position:sticky; top:calc(var(--topbar-height) + 16px); height:max-content; align-self:start; z-index:5;
+    }
+    @media (prefers-color-scheme: light){ .schedule-card{ border-color:rgba(0,0,0,.08); } }
 
-    .tagline{grid-area:tagline;margin:0 0 10px;font-weight:700;letter-spacing:.6px;color:var(--muted);text-align:left}
-    @media (max-width:959px){.tagline{text-align:center}}
+    .schedule-head{ font-size:.8rem; letter-spacing:.6px; color:var(--muted); margin-bottom:8px; }
+    .schedule-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .schedule-row .meta .date{ font-weight:700; }
+    .schedule-row .meta .place{ color:var(--muted); margin-top:2px; }
+    .schedule-row .actions{ display:flex; gap:12px; margin-left:auto; }
+    .schedule-row .actions a{
+      border:none; background:transparent; padding:0; margin:0;
+      font-size:.875rem; line-height:1.25rem; color:var(--muted); text-decoration:none;
+      white-space:nowrap;
+    }
+    .schedule-row .actions a:hover{ opacity:.8; }
 
-    .highlights-mobile{grid-area:highlights;display:grid;gap:8px;margin:0 0 8px}
-    .highlights-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .h-item{font-size:13.5px;display:flex;flex-direction:column;gap:2px}
-    .h-label{color:var(--muted);font-weight:700;letter-spacing:.3px}
-    .h-value{font-weight:800}
-    @media (min-width:960px){.highlights-mobile{display:none !important}}
+    .book-btn{
+      display:block; width:100%; height:48px; line-height:48px;
+      text-align:center; border-radius:10px; background:var(--accent); color:#000; font-weight:700;
+      margin:12px 0 10px; white-space:nowrap; overflow:clip; text-overflow:ellipsis;
+      box-shadow:0 6px 16px rgba(252,224,41,.35);
+    }
+    .subtle{ color:var(--muted); font-size:.85rem; }
 
-    .page-grid > .divider{grid-area:divider;margin:12px 0 12px}
+    .hl-title{ margin:10px 0 8px; font-size:.85rem; letter-spacing:.6px; color:var(--muted); }
+    .highlights-grid{ display:grid; gap:12px; }
+    .hl-row{ display:flex; justify-content:space-between; gap:12px; }
+    .hl-row .k{ color:var(--muted); }
+    .hl-row .v{ font-weight:600; }
 
-    .content{grid-area:content}
-    .prose{font-size:1.04rem;line-height:1.6}
-    .prose p{margin:0 0 14px}
+    /* Divider visible both themes */
+    .divider{ border:0; height:1px; background: color-mix(in oklab, var(--fg) 20%, transparent); opacity:.25; margin:16px 0; }
+    @media (prefers-color-scheme: dark){ .divider{ background: color-mix(in oklab, #fff 25%, transparent); opacity:.35; } }
 
-    .video-portrait{aspect-ratio:9/16;width:100%;max-width:clamp(240px,48vw,360px);margin:10px 0;border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);background:#000;overflow:hidden;position:relative;cursor:pointer}
-    .video-portrait iframe{width:100%;height:100%;border:0;pointer-events:none} /* click opens lightbox */
-    .recap-grid-portrait{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));justify-items:start}
-    .recap-grid-portrait .video-portrait{max-width:clamp(160px,28vw,220px)}
+    /* Sections – unify typography with “what makes it different?” */
+    .section{ max-width:960px; margin: 24px auto 0; }
+    .section h2{
+      font-family:Comfortaa, Inter, system-ui; font-weight:700;
+      font-size: clamp(1.25rem, 1.1rem + 1vw, 1.75rem);
+      margin: 28px 0 12px;
+    }
+    .section p{ font-size:1rem; line-height:1.65; margin:0 0 8px; }
 
-    .side-card{grid-area:side;display:none}
+    /* Video frames – same size, left aligned */
+    .video-frame{ width:min(720px, 100%); aspect-ratio:16/9; border-radius:12px; overflow:hidden; background:#000; }
+    .video-frame video, .video-frame iframe{ width:100%; height:100%; display:block; }
+    .video-frame.is-portrait{ aspect-ratio:9/16; }
+
+    /* Popup modal (simple) */
+    .video-modal{
+      position:fixed; inset:0; display:none; place-items:center; background:rgba(0,0,0,.6);
+      padding:16px; z-index:100;
+    }
+    .video-modal.open{ display:grid; }
+    .modal-frame{ width:min(900px, 100%); aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden; }
+    .modal-frame.is-portrait{ aspect-ratio:9/16; }
+    .modal-close{ position:absolute; top:10px; right:10px; background:#000; color:#fff; border:0; padding:8px 10px; border-radius:8px; cursor:pointer; }
+
+    /* Mobile microbar (mobile only) */
+    .microbar{
+      position:sticky; bottom:0; left:0; right:0; z-index:49;
+      display:flex; gap:12px; align-items:center; justify-content:space-between;
+      padding:10px 12px; background:rgba(0,0,0,.7); -webkit-backdrop-filter:saturate(140%) blur(8px);
+      backdrop-filter:saturate(140%) blur(8px);
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+    @media (prefers-color-scheme: light){
+      .microbar{ background:rgba(255,255,255,.7); border-top-color:rgba(0,0,0,.08); }
+    }
+    .microbar a{ color:var(--fg); text-decoration:none; }
+    .microbar .book-sm{ background:var(--accent); color:#000; padding:10px 16px; border-radius:10px; font-weight:700; }
+
+    /* Hide microbar on desktop */
     @media (min-width:960px){
-      .side-card{display:block; grid-row:1 / -1; align-self:start;} /* make it span all rows */
-      .info-card{
-        position:sticky;top:calc(var(--topbar-height-desktop) + 16px);
-        background:var(--card);border-radius:12px;box-shadow:0 6px 22px rgba(0,0,0,.8);
-        padding:16px 16px 14px;border:1.5px solid rgba(255,255,255,.08);text-align:left;min-height:360px
-      }
-      @media (prefers-color-scheme: light){.info-card{border-color:rgba(0,0,0,.06)}}
-      .info-card .sec-title{margin:0 0 10px;font-size:13px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);text-align:center}
-      .info-card .schedule{margin-bottom:12px}
-      .info-card .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0}
-      .info-card .left{font-weight:800;font-size:1.02rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .info-card .left.loc{margin-top:4px}
-      .info-card .mini{font-size:.9rem;color:var(--muted);text-decoration:none;border:1px solid rgba(255,255,255,.18);padding:5px 10px;border-radius:8px;white-space:nowrap}
-      .info-card .mini:hover{color:var(--text-main);border-color:rgba(255,255,255,.35)}
-      .info-card .btn-wide{display:block;width:100%;text-align:center;margin:10px 0 8px;background:var(--accent);color:#000;font-weight:900;border:none;border-radius:10px;padding:10px 12px;text-decoration:none}
-      .info-card .btn-wide:hover{filter:brightness(1.05)}
-      .info-card .inner-divider{height:1px;margin:10px 0 12px;background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,.04))}
-      .info-card .facts{display:grid;gap:10px;margin:8px 0 14px;text-align:left}
-      .info-card .fact{display:flex;justify-content:space-between;gap:10px;font-size:14.5px}
-      .info-card .fact .label{color:var(--muted)}
-      .info-card .share-row{display:flex;justify-content:center}
-      .info-card .share{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);font-weight:700;text-decoration:none}
-      .info-card .share svg{color:#fff} /* white icon */
+      .microbar{ display:none !important; }
     }
-
-    /* Keep dividers confined to left column */
-    .content .divider{height:1px;width:100%;max-width:var(--content-max, 720px);margin:20px 0;border:0;background:linear-gradient(to right, rgba(0,0,0,.16), rgba(0,0,0,.06))}
-    @media (prefers-color-scheme: dark){ .content .divider{background:linear-gradient(to right, rgba(255,255,255,.22), rgba(255,255,255,.10))} }
-
-    /* Prose headings unified (H3 look) */
-    .prose h3{margin:0 0 10px;font-weight:900;font-size:1.15rem;letter-spacing:.2px}
-    .prose p{margin:0 0 16px;line-height:1.6}
-    .prose ul{margin:0 0 16px;padding-left:1.2em}
-    .prose li{margin:4px 0}
-    .prose .muted{color:var(--muted,#bcbcbc)}
-
-    /* Ensure all main sections stay in the left column on desktop */
-    @media (min-width:960px){ .page-grid > section { grid-column: 1; } }
-
-    /* Lightbox for videos */
-    #ytLightbox[hidden]{display:none}
-    #ytLightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10010;display:flex;align-items:center;justify-content:center;padding:18px}
-    #ytLightbox-inner{position:relative;width:min(960px,94vw);aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 6px 22px rgba(0,0,0,.8)}
-    #ytLightbox iframe{width:100%;height:100%;border:0}
-    #ytClose{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:10px;padding:6px 10px;cursor:pointer}
   </style>
 </head>
 <body>
-  <!-- ===== Top bar ===== -->
-  <div class="topbar-bleed" aria-hidden="true"></div>
-  <header class="topbar" role="banner">
-    <a class="topbar-left home-link" href="/" aria-label="Go to Games Lab homepage">
-      <img src="https://ik.imagekit.io/gameslab/tr:w-36,q-100,f-auto/Games_Lab_Logo.png" alt="Games Lab Logo" class="logo" width="36" height="36"/>
-      <span class="brand">Games Lab</span>
-    </a>
-  </header>
-  <div class="topbar-spacer" aria-hidden="true"></div>
 
-  <!-- ===== Mobile sticky microbar (unchanged for now) ===== -->
-  <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
-    <div class="mobile-info-inner">
-      <div class="mobile-info">
-        <strong>Night of Mafias !</strong>
-        <span>• 8–25 players</span>
-        <span>• Beginner-friendly</span>
-      </div>
-      <button class="btn" id="shareBtnTop" aria-label="Share this event" title="Share">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="brand">
+      <img src="https://ik.imagekit.io/yourpath/Games%20Lab%20Logo.png" alt="Games Lab">
+      <div class="crumbs"><b>Games Lab</b></div>
+    </div>
+  </header>
+
+  <!-- Title row (share shows only on mobile per CSS) -->
+  <div class="page-title">
+    <h1>Night of Mafias !</h1>
+    <div class="title-actions">
+      <button class="share-chip" onclick="navigator.share && navigator.share({title:'Night of Mafias !', url:location.href}).catch(()=>{})">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 0 0 0-1.39l7-4.11A2.99 2.99 0 1 0 14 5a3 3 0 0 0 .05.53L7.09 9.64a3 3 0 1 0 0 4.72l7 4.11c-.03.17-.05.34-.05.53a3 3 0 1 0 3.96-2.92z"/></svg>
         Share
       </button>
     </div>
   </div>
 
-  <!-- ===== Page grid ===== -->
-  <main class="wrap" role="main">
-    <div class="page-grid">
-      <figure class="banner">
-        <img src="https://ik.imagekit.io/gameslab/Night_of_Mafias.png" alt="Night of Mafias ! event banner">
+  <main class="page">
+    <!-- Left column -->
+    <div>
+      <figure class="hero">
+        <img src="https://ik.imagekit.io/yourpath/Night_of_Mafias.png" alt="Night of Mafias poster">
       </figure>
 
-      <!-- Right sticky card (content will be injected by JS) -->
-      <aside class="side-card" aria-label="Highlights">
-        <div class="info-card" id="sidebarCard">
-          <p class="sec-title">HIGHLIGHTS</p>
-          <div class="facts">
-            <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
-            <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
-            <div class="fact"><span class="label">Group size</span><span>8–25 players</span></div>
-            <div class="fact"><span class="label">Difficulty</span><span>Beginner-friendly</span></div>
-            <div class="fact"><span class="label">Age</span><span>14+</span></div>
-            <div class="fact"><span class="label">Price</span><span>₹ 350/-</span></div>
-          </div>
-          <div class="share-row">
-            <a class="share" id="shareBtnSide" href="javascript:void(0)">
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
-              Share
-            </a>
-          </div>
-        </div>
-      </aside>
-
-      <div class="title-row">
-        <h2 class="heading" id="eventTitle">Night of Mafias !</h2>
-        <button class="icon-btn share-inline" id="shareNearTitle" aria-label="Share this event" title="Share">
-          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
-        </button>
-      </div>
-
-      <p class="tagline">Read faces, trade lies, and outlast the table in a social deduction showdown.</p>
-
-      <!-- mobile highlights (unchanged for now) -->
-      <div class="highlights-mobile" id="highlightsMobile">
-        <div class="highlights-grid" aria-label="Event highlights">
-          <div class="h-item"><div class="h-label">Format</div><div class="h-value">Social deduction</div></div>
-          <div class="h-item"><div class="h-label">Duration</div><div class="h-value">2–3 hours</div></div>
-          <div class="h-item"><div class="h-label">Group size</div><div class="h-value">8–25 players</div></div>
-          <div class="h-item"><div class="h-label">Difficulty</div><div class="h-value">Beginner-friendly</div></div>
-          <div class="h-item"><div class="h-label">Age</div><div class="h-value">14+</div></div>
-          <div class="h-item"><div class="h-label">Price</div><div class="h-value">₹ 350/-</div></div>
-        </div>
-      </div>
-
-      <div class="divider" aria-hidden="true"></div>
-
-      <article class="content">
-        <section id="details" aria-labelledby="about">
-          <h3 id="about">About the event</h3>
-          <div class="prose">
-            <p>
-              Step into a night of suspense, strategy, and thrilling deception.
-              <em>Night of Mafias!</em> takes the classic social deduction experience and reimagines it with a
-              <em>Games Lab twist</em>—a unique setting, fresh surprises, and endless drama.
-            </p>
-
-            <div class="divider" aria-hidden="true"></div>
-
-            <h3>🌙 What Makes It Different?</h3>
-            <p>
-              Forget the same old game—this is <em>Mafia reinvented</em>. With original twists and engaging storytelling,
-              every round feels alive. Roles change, alliances form and break, and trust becomes the most dangerous gamble of all.
-            </p>
-
-            <div class="divider" aria-hidden="true"></div>
-
-            <h3>🕹 How It Works</h3>
-            <ul>
-              <li>Players are secretly assigned hidden roles at the start.</li>
-              <li><em>Daytime</em> is for open debate, accusations, and voting—who can you trust?</li>
-              <li><em>Nighttime</em> is when the hidden forces strike, and strategies quietly unfold.</li>
-              <li>Round by round, the tension builds until only one side survives.</li>
-            </ul>
-            <p class="muted">
-              Don’t worry if you’ve never played before—the rules are explained in a fun, easy way.
-              All you need is a sharp mind (or a convincing poker face).
-            </p>
-
-            <div class="divider" aria-hidden="true"></div>
-
-            <h3>✨ Why Join?</h3>
-            <ul>
-              <li>A <em>super-interactive experience</em> where you’ll laugh, scheme, and plot</li>
-              <li>A chance to <em>meet and bond</em> with people from all walks of life</li>
-              <li>Perfect for both beginners and seasoned Mafia lovers</li>
-              <li>A setting designed for maximum drama, suspense, and fun</li>
-            </ul>
-
-            <div class="divider" aria-hidden="true"></div>
-
-            <p>
-              <strong>⚡ Who killed the villagers? Everyone is a suspect.</strong><br />
-              Will you be the sharp-eyed detective uncovering lies, or the cunning player weaving them?
-            </p>
-            <p>
-              <strong>Join us for Night of Mafias! — where deception is an art, and trust is the ultimate gamble.</strong>
-            </p>
-          </div>
-        </section>
-
-        <div class="divider" aria-hidden="true"></div>
-      </article>
-
-      <section id="about-video" aria-labelledby="about-nom">
-        <h3 id="about-nom">About Night of Mafias</h3>
-        <div class="video-portrait" data-yt>
-          <iframe title="About Night of Mafias (portrait)"
-            src="https://www.youtube.com/embed/p232ZZCCJKA?rel=0"></iframe>
-        </div>
+      <!-- What makes it different? (reference style) -->
+      <section class="section why-different">
+        <h2>What makes it different?</h2>
+        <p>Read faces, trade lies, and outlast the table in a social deduction showdown.</p>
       </section>
 
-      <div class="divider" aria-hidden="true"></div>
+      <!-- About Night of Mafias – same formatting & left-aligned video -->
+      <section class="section about">
+        <h2>About Night of Mafias</h2>
+        <div class="video-frame">
+          <!-- replace with your source / iframe -->
+          <video src="about-video.mp4" controls playsinline muted></video>
+        </div>
+        <p>Bluff, deduce, and bond—perfect for first-timers and veterans alike.</p>
+      </section>
 
-      <section id="recaps" aria-labelledby="recaps-title">
-        <h3 id="recaps-title">Event recaps</h3>
-        <p class="contact-sub" style="margin:0 0 18px; text-align:left;">CATCH THE VIBE OF THE EVENT WITH THESE VIDEOS</p>
-        <div class="recap-grid-portrait">
-          <div class="video-portrait" data-yt>
-            <iframe title="Recap 1" src="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0"></iframe>
-          </div>
-          <div class="video-portrait" data-yt>
-            <iframe title="Recap 2" src="https://www.youtube.com/embed/KwDyHylu-Ik?rel=0"></iframe>
-          </div>
-          <div class="video-portrait" data-yt>
-            <iframe title="Recap 3" src="https://www.youtube.com/embed/IsGh10mGWbM?rel=0"></iframe>
-          </div>
+      <!-- About the event – same formatting -->
+      <section class="section about-event">
+        <h2>About the event</h2>
+        <p>Beginner-friendly facilitation, quick rounds, and clear rules to keep everyone engaged.</p>
+      </section>
+
+      <hr class="divider">
+
+      <!-- Event recaps – same formatting & left-aligned frames -->
+      <section class="section recaps" id="recaps">
+        <h2>Event recaps</h2>
+        <div class="video-frame">
+          <video src="recap-1.mp4" controls playsinline muted></video>
+        </div>
+        <div style="height:12px"></div>
+        <div class="video-frame">
+          <video src="recap-2.mp4" controls playsinline muted></video>
         </div>
       </section>
     </div>
 
-    <div class="divider" style="margin-top:40px;"></div>
-
-    <div class="title" style="text-align:center;margin-bottom:18px;">
-      <h2 class="heading" style="margin:0;">Contact Us</h2>
-    </div>
-
-    <section class="contact-wrap" aria-labelledby="contact-title">
-      <div class="contact-head">
-        <img class="logo-lg"
-             src="https://ik.imagekit.io/gameslab/tr:w-88,q-100,f-auto/Games_Lab_Logo.png"
-             width="44" height="44" alt="Games Lab logo" />
-        <p id="contact-title" class="contact-sub">REACH OUT TO US!</p>
+    <!-- Right sticky card -->
+    <aside class="schedule-card">
+      <div class="schedule-head">SCHEDULE</div>
+      <div class="schedule-row">
+        <div class="meta">
+          <div class="date">Sun, Sep 21st, ’25</div>
+          <div class="place">Dialogues Cafe</div>
+        </div>
+        <div class="actions">
+          <a href="#add-to-calendar" class="addcal">Add to Calendar</a>
+          <a href="https://maps.google.com/?q=Dialogues%20Cafe" target="_blank" rel="noopener" class="directions">Get directions</a>
+        </div>
       </div>
 
-      <ul class="contact-list">
-        <li class="row phone-wrap">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2Z"/></svg>
-          <a id="phone-link" class="link" href="tel:+917676099857" data-tel="+917676099857">+91&nbsp;76760&nbsp;99857</a>
-          <div id="phone-menu" class="phone-menu" hidden>
-            <a id="call-now" href="tel:+917676099857">Call</a>
-            <a id="wa-now"   href="https://wa.me/917676099857" target="_blank" rel="noopener">WhatsApp</a>
-          </div>
-        </li>
+      <a class="book-btn" href="https://your-booking-link" target="_blank" rel="noopener">Book Now</a>
 
-        <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 13 2 6.76V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6.76L12 13Zm0-2.47L22 4H2l10 6.53Z"/></svg>
-          <a class="link email-text" href="mailto:info@gameslab.co.in">info@gameslab.co.in</a>
-        </li>
+      <div class="hl-title">HIGHLIGHTS</div>
+      <div class="highlights-grid">
+        <div class="hl-row"><span class="k">Format</span><span class="v">Social deduction</span></div>
+        <div class="hl-row"><span class="k">Duration</span><span class="v">2–3 hours</span></div>
+        <div class="hl-row"><span class="k">Group size</span><span class="v">8–25 players</span></div>
+        <div class="hl-row"><span class="k">Difficulty</span><span class="v">Beginner-friendly</span></div>
+        <div class="hl-row"><span class="k">Age</span><span class="v">14+</span></div>
+        <div class="hl-row"><span class="k">Price</span><span class="v">₹ 350/-</span></div>
+      </div>
 
-        <li class="row">
-          <!-- Instagram (same as homepage) -->
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.25-2.75a.75.75 0 1 1-.75.75.75.75 0 0 1 .75-.75Z"/></svg>
-          <a class="link" href="https://www.instagram.com/games._.lab/" target="_blank" rel="noopener">Follow Us</a>
-        </li>
+      <hr class="divider">
 
-        <li class="row">
-          <!-- WhatsApp Community (same as homepage) -->
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
-          <a class="link" href="https://chat.whatsapp.com/BDglWOECbIiGLaCRVmzAaj" target="_blank" rel="noopener">Join our Community</a>
-        </li>
-      </ul>
-    </section>
-
-    <div class="divider" style="margin-top:40px;"></div>
+      <button class="share-chip" style="width:100%" onclick="navigator.share && navigator.share({title:'Night of Mafias !', url:location.href}).catch(()=>{})">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 0 0 0-1.39l7-4.11A2.99 2.99 0 1 0 14 5a3 3 0 0 0 .05.53L7.09 9.64a3 3 0 1 0 0 4.72l7 4.11c-.03.17-.05.34-.05.53a3 3 0 1 0 3.96-2.92z"/></svg>
+        Share
+      </button>
+    </aside>
   </main>
 
-  <!-- Video lightbox -->
-  <div id="ytLightbox" hidden>
-    <div id="ytLightbox-inner">
-      <button id="ytClose" aria-label="Close video">✕</button>
-      <iframe id="ytFrame" allow="autoplay; fullscreen" title="Video"></iframe>
-    </div>
+  <!-- Mobile microbar (hidden on desktop) -->
+  <nav class="microbar">
+    <a href="#add-to-calendar">Add to Calendar</a>
+    <a href="https://maps.google.com/?q=Dialogues%20Cafe" target="_blank" rel="noopener">Get directions</a>
+    <a class="book-sm" href="https://your-booking-link" target="_blank" rel="noopener">Book Now</a>
+  </nav>
+
+  <!-- Minimal modal scaffold (if you open pop-up players) -->
+  <div class="video-modal" id="videoModal" aria-hidden="true">
+    <button class="modal-close" onclick="closeModal()">Close</button>
+    <div class="modal-frame" id="modalFrame"></div>
   </div>
 
-  <!-- ===== Scripts ===== -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script>
-    // Helpers: date parsing & formatting (adds ordinal + ’YY)
-    function parseEventDate(str){
-      if(!str) return null;
-      str = String(str).trim().replace(/’/g,"'").replace(/`/g,"'");
-      str = str.replace(/^[A-Za-z]{3},?\s*/,''); // drop weekday if present
-      const m = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
-      if(!m) return null;
-      const day = +m[1];
-      const mon = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}[m[2]];
-      const year = 2000 + +m[3];
-      return new Date(year, mon, day);
-    }
-    function ordinal(n){
-      const s=["th","st","nd","rd"], v=n%100; return n + (s[(v-20)%10]||s[v]||s[0]);
-    }
-    function formatPretty(date, timeStr){
-      const w = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][date.getDay()];
-      const m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][date.getMonth()];
-      const yr = String(date.getFullYear()).slice(-2);
-      const d = ordinal(date.getDate());
-      // Sun, Sep 21st ’25 | 7:30 PM
-      return `${w}, ${m} ${d} \u2019${yr}` + (timeStr ? ` | ${timeStr}` : "");
-    }
-    function to24hParts(timeStr){ // "7:30 PM" -> [19,30]
-      if(!timeStr) return [18,0];
-      const m = timeStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-      if(!m) return [18,0];
-      let h = +m[1], min = +m[2], ap = m[3].toUpperCase();
-      if(ap==="PM" && h<12) h+=12;
-      if(ap==="AM" && h===12) h=0;
-      return [h,min];
-    }
-    function gcalLink({title, dateObj, time, durationHrs=2, location, locUrl}){
-      const [h,mins] = to24hParts(time);
-      const start = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), h, mins, 0);
-      const end   = new Date(start.getTime() + durationHrs*60*60*1000);
-      function fmt(d){
-        const pad=n=>String(n).padStart(2,'0');
-        return d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' +
-               pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
-      }
-      const dates = fmt(start) + '/' + fmt(end);
-      const params = new URLSearchParams({
-        action: 'TEMPLATE',
-        text: title,
-        dates,
-        location: locUrl ? `${location} (${locUrl})` : location,
-        details: 'Games Lab event'
-      });
-      return 'https://calendar.google.com/calendar/render?' + params.toString();
-    }
-
-    // Build the right card from the "upcoming" sheet
-    (async function(){
-      const CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
-      const res = await fetch(CSV + '&cb=' + Date.now(), {cache:'no-store'});
-      if(!res.ok) return;
-
-      const text = await res.text();
-      const rows = Papa.parse(text, {header:true, skipEmptyLines:true}).data;
-
-      // Find this event by Page Link ending (robust to domain)
-      const THIS_PATH = "/events/night-of-mafias/";
-      const row = rows.find(r=>{
-        const p = String(r['Page Link']||'').trim();
-        return p.endsWith(THIS_PATH) || ('/'+p).endsWith(THIS_PATH);
-      });
-      const card = document.getElementById('sidebarCard');
-      if(!card || !row) return;
-
-      const name   = String(row['EventName']||'Night of Mafias !');
-      const dateS  = String(row['Date']||'').trim();
-      const timeS  = String(row['Time']||'').trim();
-      const loc    = String(row['Location']||'').trim();
-      const locUrl = String(row['Location Link']||'').trim();
-      const tix    = String(row['Ticket Link']||'').trim();
-      const scheduled = String(row['Scheduled']||'').toLowerCase()==='yes';
-
-      const dateObj = parseEventDate(dateS);
-      const pretty  = dateObj ? formatPretty(dateObj, timeS) : (dateS + (timeS?` | ${timeS}`:''));
-      const addUrl  = (dateObj ? gcalLink({title:name, dateObj, time:timeS, location:loc, locUrl}) : '#');
-
-      // Build new inner HTML (Schedule + divider + Highlights)
-      if(scheduled){
-        card.innerHTML = `
-          <p class="sec-title">SCHEDULE</p>
-          <div class="schedule">
-            <div class="row">
-              <div class="left">${pretty}</div>
-              <a class="mini" href="${addUrl}" target="_blank" rel="noopener">Add to Calendar</a>
-            </div>
-            <div class="row">
-              <div class="left loc">${loc}</div>
-              ${locUrl ? `<a class="mini" href="${locUrl}" target="_blank" rel="noopener">Get directions</a>` : ''}
-            </div>
-            ${tix ? `<a class="btn-wide" href="${tix}" target="_blank" rel="noopener">Book Now</a>` : ``}
-          </div>
-          <div class="inner-divider" aria-hidden="true"></div>
-          <p class="sec-title">HIGHLIGHTS</p>
-          <div class="facts">
-            <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
-            <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
-            <div class="fact"><span class="label">Group size</span><span>8–25 players</span></div>
-            <div class="fact"><span class="label">Difficulty</span><span>Beginner-friendly</span></div>
-            <div class="fact"><span class="label">Age</span><span>14+</span></div>
-            <div class="fact"><span class="label">Price</span><span>₹ 350/-</span></div>
-          </div>
-          <div class="share-row">
-            <a class="share" id="shareBtnSide" href="javascript:void(0)">
-              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
-              Share
-            </a>
-          </div>
-        `;
-      }
-    })();
-  </script>
-
-  <script>
-    // Microbar show/hide (unchanged)
+    /* 10) Auto-switch frames to portrait when the source video is portrait */
     (function(){
-      const microbar   = document.getElementById('mobileInfoBar');
-      const highlights = document.getElementById('highlightsMobile');
-      if (!microbar) return;
-      function isDesktop(){ return window.innerWidth >= 960; }
-      function update(){
-        if (isDesktop() || !highlights) {
-          microbar.classList.remove('show');
-          microbar.setAttribute('aria-hidden','true');
-          return;
-        }
-        const topbar = document.querySelector('.topbar');
-        const topbarH = topbar ? topbar.offsetHeight : 56;
-        const rect = highlights.getBoundingClientRect();
-        const bottomY = rect.bottom + window.scrollY;
-        const shouldShow = window.scrollY >= (bottomY - topbarH);
-        microbar.classList.toggle('show', shouldShow);
-        microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
-      }
-      window.addEventListener('load', update, { passive:true });
-      window.addEventListener('scroll', update, { passive:true });
-      window.addEventListener('resize', update);
-    })();
-
-    // Share (Web Share API + clipboard fallback)
-    (function(){
-      async function sharePage(){
-        const data = {
-          title: document.title,
-          text: 'Check out Night of Mafias ! at Games Lab',
-          url: window.location.href
-        };
+      function markPortrait(v){
         try{
-          if (navigator.share) { await navigator.share(data); }
-          else { await navigator.clipboard.writeText(data.url); alert('Link copied to clipboard'); }
-        }catch(e){ /* user cancelled */ }
+          if (!v.videoWidth || !v.videoHeight) return;
+          const isPortrait = v.videoHeight > v.videoWidth;
+          const frame = v.closest('.video-frame, .modal-frame');
+          if (frame) frame.classList.toggle('is-portrait', isPortrait);
+        }catch(e){}
       }
-      document.getElementById('shareBtnTop')?.addEventListener('click', sharePage);
-      document.getElementById('shareBtnSide')?.addEventListener('click', sharePage);
-      document.getElementById('shareNearTitle')?.addEventListener('click', sharePage);
-      // If the card is rebuilt later, rebind after DOM updates too:
-      const mo = new MutationObserver(()=> {
-        document.getElementById('shareBtnSide')?.addEventListener('click', sharePage, {once:true});
+      document.querySelectorAll('video').forEach(v=>{
+        if (v.readyState >= 1) markPortrait(v);
+        v.addEventListener('loadedmetadata', ()=>markPortrait(v), {once:true});
       });
-      mo.observe(document.body, {childList:true, subtree:true});
-    })();
-
-    // Contact phone chooser (same as Home)
-    (function(){
-      const phone = document.getElementById('phone-link');
-      const menu  = document.getElementById('phone-menu');
-      const waBtn = document.getElementById('wa-now');
-      if (!phone || !menu || !waBtn) return;
-
-      const tel = (phone.dataset.tel || '').replace(/[^\d]/g,'');
-      const msg = encodeURIComponent("Hi! I'd like to know more about Games Lab events.");
-      waBtn.href = `https://wa.me/${tel}?text=${msg}`;
-
-      function openMenu(){
-        if (!menu.hidden){ menu.hidden = true; return; }
-        menu.hidden = false;
-        const onAway = (e)=>{ if (!menu.contains(e.target) && e.target !== phone){ menu.hidden = true; cleanup(); } };
-        const onEsc  = (e)=>{ if (e.key === 'Escape'){ menu.hidden = true; cleanup(); } };
-        function cleanup(){
-          document.removeEventListener('click', onAway, true);
-          document.removeEventListener('keydown', onEsc, true);
-        }
-        document.addEventListener('click', onAway, true);
-        document.addEventListener('keydown', onEsc, true);
-      }
-      phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
-    })();
-
-    // Simple YouTube lightbox: click any .video-portrait
-    (function(){
-      const lb = document.getElementById('ytLightbox');
-      const frame = document.getElementById('ytFrame');
-      const closeBtn = document.getElementById('ytClose');
-      function open(src){
-        if(!src) return;
-        const url = new URL(src);
-        // add autoplay=1 if not present
-        if(!url.searchParams.has('autoplay')) url.searchParams.set('autoplay','1');
-        frame.src = url.toString();
-        lb.hidden = false;
-      }
-      function close(){
-        frame.src = "about:blank";
-        lb.hidden = true;
-      }
-      document.querySelectorAll('.video-portrait[data-yt]').forEach(box=>{
-        box.addEventListener('click', ()=>{
-          const src = box.querySelector('iframe')?.src;
-          open(src);
+      window.resizeVideoModal = function(){
+        document.querySelectorAll('.video-modal .modal-frame video').forEach(v=>{
+          if (v.readyState >= 1) markPortrait(v);
+          else v.addEventListener('loadedmetadata', ()=>markPortrait(v), {once:true});
         });
-      });
-      closeBtn.addEventListener('click', close);
-      lb.addEventListener('click', (e)=>{ if (e.target === lb) close(); });
-      window.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && !lb.hidden) close(); });
+      };
     })();
+
+    /* Simple modal helpers (use when you want pop-up playback) */
+    function openModalWithVideo(src, isPortrait=false){
+      const modal = document.getElementById('videoModal');
+      const frame = document.getElementById('modalFrame');
+      frame.innerHTML = '';
+      const vid = document.createElement('video');
+      vid.src = src; vid.controls = true; vid.playsInline = true; vid.autoplay = true;
+      frame.classList.toggle('is-portrait', !!isPortrait);
+      frame.appendChild(vid);
+      modal.classList.add('open');
+      window.resizeVideoModal();
+    }
+    function openModalWithEmbed(embedHtml, isPortrait=false){
+      const modal = document.getElementById('videoModal');
+      const frame = document.getElementById('modalFrame');
+      frame.innerHTML = embedHtml;
+      frame.classList.toggle('is-portrait', !!isPortrait);
+      modal.classList.add('open');
+    }
+    function closeModal(){
+      const modal = document.getElementById('videoModal');
+      const frame = document.getElementById('modalFrame');
+      modal.classList.remove('open'); frame.innerHTML='';
+    }
+
+    /* Optional: delegate clicks from thumbnails to modal
+       <a href="recap-1.mp4" data-video>…</a> or data-embed for iframes */
+    document.addEventListener('click', e=>{
+      const a = e.target.closest('a[data-video], a[data-embed]');
+      if(!a) return;
+      e.preventDefault();
+      const isPortrait = a.dataset.orientation === 'portrait';
+      if (a.hasAttribute('data-video')) openModalWithVideo(a.href, isPortrait);
+      else openModalWithEmbed(a.dataset.embed, isPortrait);
+    });
   </script>
 </body>
 </html>
