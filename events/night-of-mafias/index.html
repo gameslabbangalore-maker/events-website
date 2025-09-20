@@ -354,6 +354,37 @@ content="
     }
     /* Ensure no underline on CTAs */
     .btn, .btn-primary, .wide-cta, .btn:link, .btn:visited { text-decoration:none !important; }
+
+  /* --- Desktop: share button text+icon inline --- */
+  @media (min-width:960px){
+    .share-row .btn{
+      display:inline-flex; align-items:center; gap:6px;
+      background:transparent !important; border:0 !important;
+      color:var(--muted); padding:0; line-height:1;
+    }
+    .share-row .btn:hover{ color:var(--text-main); }
+  }
+  
+  /* --- Desktop: keep card visible while scrolling (style is fine; see HTML move in section C) --- */
+  
+  /* --- Mobile microbar sizing + alignment --- */
+  .micro-title{ font-size:1.18rem; font-weight:900; line-height:1.05; } /* title a bit larger */
+  .micro-line{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+  .micro-left{ font-size:.9rem; font-weight:800; }   /* date/time & location smaller */
+  .micro-link{ font-size:.78rem; font-weight:800; color:var(--muted); text-decoration:none; }
+  
+  /* share stays inline with title (already right-aligned by the container) */
+  .mobile-info-inner{ justify-content:space-between; }
+  
+  /* --- Mobile: Highlights header centered but same style --- */
+  .hl-card-title{ text-align:center; }
+  
+  /* --- Common: bigger, bolder H3s --- */
+  .section-title{
+    font-size:1.22rem;   /* was ~1.12rem */
+    font-weight:900;
+  }
+
   </style>
 </head>
 <body>
@@ -506,7 +537,6 @@ content="
             <p>
               <strong>Join us for Night of Mafias! — where deception is an art, and trust is the ultimate gamble.</strong>
             </p>
-          </div>
         </section>
 
         <div class="divider" aria-hidden="true"></div>
@@ -535,6 +565,7 @@ content="
           <div class="video-portrait" data-embed="https://www.youtube.com/embed/IsGh10mGWbM?rel=0">
             <iframe loading="lazy" title="Recap 3" src="https://www.youtube.com/embed/IsGh10mGWbM?rel=0"></iframe>
           </div>
+        </div>
         </div>
       </section>
     </div>
@@ -657,15 +688,22 @@ content="
       phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
     })();
 
-    // Floating Book button: hide earlier when contact divider enters
+    // Floating Book button: hide only when Contact area meaningfully overlaps
     (function(){
       const fab = document.getElementById('fabBook');
       const stopAt = document.getElementById('contactTopDivider');
       if (!fab || !stopAt) return;
+    
       const io = new IntersectionObserver(entries=>{
-        const vis = entries.some(e=>e.isIntersecting);
-        fab.hidden = vis; // hide when divider visible (so Contact is unobstructed)
-      }, { rootMargin: '0px 0px 0px 0px' }); // hide as soon as footer divider hits viewport
+        // hide when ~35% of the Contact divider area has entered viewport
+        const vis = entries.some(e => e.isIntersecting && e.intersectionRatio > 0.35);
+        fab.hidden = vis;
+      }, {
+        root: null,
+        rootMargin: '0px 0px -35% 0px',  // require more of the section to enter
+        threshold: [0, 0.35, 1]
+      });
+    
       io.observe(stopAt);
     })();
 
