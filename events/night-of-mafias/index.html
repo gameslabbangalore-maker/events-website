@@ -178,8 +178,8 @@ content="
       gap:12px;
     }
     @media (min-width:960px){
-      .page-grid{
-        grid-template-columns: minmax(0,1fr) 340px;
+    .page-grid{
+      grid-template-columns: minmax(0,1fr) 384px;
         grid-template-areas:
           "banner   side"
           "title    side"
@@ -294,6 +294,94 @@ content="
 
     /* ===== Desktop-only rule: hide microbar ===== */
     @media (min-width:960px){ #mobileInfoBar{display:none !important;} }
+
+    /* ========== N.O.M desktop refinements (overrides) ========== */
+
+    /* 1) Book Now: never overflow; look proper */
+    @media (min-width:960px){
+      .info-card .btn-wide{
+        width:100%;
+        box-sizing:border-box;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        height:48px; line-height:48px;
+        border-radius:10px;
+        margin:12px 0 10px;
+      }
+    }
+    
+    /* 2) Actions smaller (Add to Calendar / Get directions) */
+    @media (min-width:960px){
+      .info-card .mini{
+        font-size:.84rem;     /* smaller text */
+        border:none !important;
+        background:transparent !important;
+        padding:0 !important;
+      }
+    }
+    
+    /* 3) Make schedule text breathe in the right card */
+    @media (min-width:960px){
+      .info-card .row{
+        gap:14px;             /* more separation between left/right */
+        margin:12px 0;        /* more vertical spacing */
+      }
+      .info-card .left{
+        max-width:calc(100% - 120px); /* reserve space for the right actions */
+        overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+      }
+    }
+    
+    /* 4) Slightly larger H3s across the left column */
+    .prose h3{ font-size:1.22rem; }
+    
+    /* 5) More space between every fact in highlights */
+    @media (min-width:960px){
+      .info-card .facts{ gap:16px; }
+    }
+    
+    /* 6) Ensure highlights card is truly sticky and never hides */
+    @media (min-width:960px){
+      .side-card{ grid-row:1 / -1; align-self:start; }
+      .info-card{
+        position:sticky; top:calc(var(--topbar-height-desktop) + 16px);
+        height:max-content; z-index:5;
+      }
+    }
+    
+    /* 7) About video = same size as recap thumbnails */
+    #about-video .video-portrait{
+      max-width:clamp(160px,28vw,220px);   /* match .recap-grid-portrait sizing */
+    }
+    
+    /* 8) Divider above Event recaps: stronger contrast on light + dark */
+    #about-video + .divider{
+      opacity:.55;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.28), rgba(255,255,255,.10));
+    }
+    @media (prefers-color-scheme: light){
+      #about-video + .divider{
+        background:
+          linear-gradient(90deg, rgba(0,0,0,.28), rgba(0,0,0,.12));
+      }
+    }
+    
+    /* 9) Popup sizing: feel like a modal, not full page */
+    #ytLightbox{ padding:24px; }
+    #ytLightbox-inner{
+      width: min(960px, 90vw);
+      max-height: 88vh;
+      aspect-ratio: 16 / 9;
+    }
+    #ytLightbox.portrait #ytLightbox-inner{
+      width: auto;           /* size by height first for portrait */
+      height: min(88vh, 720px);
+      max-width: 560px;      /* don’t get too wide */
+      aspect-ratio: 9 / 16;
+      /* fallback if browser ignores aspect-ratio on height: */
+    }
   </style>
 </head>
 <body>
@@ -737,5 +825,19 @@ content="
       window.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && !lb.hidden) close(); });
     })();
   </script>
+<script>
+(function(){
+  const lb = document.getElementById('ytLightbox');
+  const inner = document.getElementById('ytLightbox-inner');
+  if(!lb || !inner) return;
+
+  // Re-apply max-height sizing if viewport changes while modal is open
+  function fit(){
+    if(lb.hidden) return;
+    // no-op: CSS handles max-height/width; keep for future hooks
+  }
+  window.addEventListener('resize', fit);
+})();
+</script>
 </body>
 </html>
