@@ -55,6 +55,8 @@ content="
 ">
 
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+  <!-- PapaParse for CSV (same domain allowed by CSP) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <!-- ===== THEME + SHARED (from Home) ===== -->
   <style>
@@ -75,11 +77,9 @@ content="
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       z-index: 10002;
-      pointer-events: none;                     /* never intercept taps */
-      border: 0;                                /* no extra line */
+      pointer-events: none;
+      border: 0;
     }
-    
-    /* Light theme: same frosted look as the event page */
     @media (prefers-color-scheme: light){
       .topbar-bleed{
         background: rgba(255,255,255,.55) !important;
@@ -97,7 +97,6 @@ content="
       background:rgba(24,24,24,.07);
       -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
     }
-    /* Light theme — mirror homepage glass (softer border + lighter tint) */
     @media (prefers-color-scheme: light){
       .topbar,
       .topbar-bleed{
@@ -145,12 +144,10 @@ content="
     }
   </style>
 
-  <!-- Mobile-only: fade-in banner to avoid first-paint shimmer under glass -->
+  <!-- Mobile-only: fade-in banner -->
   <style>
     @media (max-width: 959px) {
-      .banner img{
-        opacity:0; animation: maf-banner-in .28s ease-out .18s forwards; will-change:opacity;
-      }
+      .banner img{ opacity:0; animation: maf-banner-in .28s ease-out .18s forwards; will-change:opacity; }
       @keyframes maf-banner-in { to { opacity: 1; } }
     }
     @media (prefers-reduced-motion: reduce) and (max-width: 959px) {
@@ -246,7 +243,7 @@ content="
     .icon-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:var(--text-main);cursor:pointer;position:relative;top:-1px}
     @media (min-width:960px){.share-inline{display:none}}
 
-    /* MOBILE microbar — text left, share right (locked) */
+    /* MOBILE microbar */
     .mobile-info-bar{
       position:fixed;left:0;right:0;
       top:calc(var(--topbar-height-mobile) + env(safe-area-inset-top,0px));
@@ -254,7 +251,6 @@ content="
       background:rgba(24,24,24,.07);
       border-bottom:1px solid rgba(255,255,255,.3);
       -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-
       transform:translate3d(0,-100%,0);
       opacity:0; pointer-events:none;
       transition:transform .2s ease, opacity .15s ease;
@@ -266,6 +262,7 @@ content="
     .mobile-info-bar.show{transform:translate3d(0,0,0);opacity:1;pointer-events:auto}
     .mobile-info-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;flex-wrap:nowrap}
     .mobile-info{display:flex;gap:10px;flex-wrap:wrap;color:var(--text-main);font-weight:800;min-width:0}
+    .mobile-info a{color:var(--text-main);text-decoration:underline}
     .mobile-info strong{font-weight:900}
     @media (min-width:601px){
       .mobile-info-bar{top:calc(var(--topbar-height-desktop) + env(safe-area-inset-top,0px))}
@@ -276,31 +273,40 @@ content="
     .content .divider {
       height: 1px;
       width: 100%;
-      max-width: var(--content-max, 720px); /* match your left column width */
+      max-width: var(--content-max, 720px);
       margin: 20px 0;
       border: 0;
       background: linear-gradient(to right, rgba(0,0,0,.16), rgba(0,0,0,.06));
     }
-    
     @media (prefers-color-scheme: dark) {
       .content .divider {
         background: linear-gradient(to right, rgba(255,255,255,.22), rgba(255,255,255,.10));
       }
     }
-    
-    /* Light touch typography inside your existing .prose block */
     .prose h3 { margin: 0 0 6px; font-size: clamp(18px, 2.4vw, 20px); }
     .prose p  { margin: 0 0 16px; line-height: 1.6; }
     .prose ul { margin: 0 0 16px; padding-left: 1.2em; }
     .prose li { margin: 4px 0; }
     .prose .muted { color: var(--muted, #555); }
-    @media (prefers-color-scheme: dark) {
-      .prose .muted { color: var(--muted-dark, #bcbcbc); }
-    }
+    @media (prefers-color-scheme: dark) { .prose .muted { color: var(--muted-dark, #bcbcbc); } }
+
     /* Ensure all main sections stay in the left column on desktop */
     @media (min-width:960px){
       .page-grid > section { grid-column: 1; }
     }
+
+    /* Floating Book Now (mobile only) */
+    .floating-book{
+      position:fixed; left:12px; right:12px;
+      bottom:12px; z-index:10000;
+      display:none; justify-content:center; text-align:center;
+      padding:12px 16px; border-radius:12px;
+      background:var(--accent); color:#000; font-weight:900;
+      text-decoration:none; box-shadow:0 8px 22px rgba(0,0,0,.6);
+      transition:transform .2s ease, opacity .2s ease;
+    }
+    .floating-book.hide{ transform:translateY(140%); opacity:.0; pointer-events:none; }
+    @media (max-width:959px){ .floating-book{ display:block; } }
   </style>
 </head>
 <body>
@@ -317,15 +323,19 @@ content="
   <!-- ===== Mobile sticky microbar ===== -->
   <div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
     <div class="mobile-info-inner">
-      <div class="mobile-info">
+      <div class="mobile-info" id="mobileInfo">
+        <!-- will be replaced if Scheduled = Yes -->
         <strong>Night of Mafias !</strong>
         <span>• 8–25 players</span>
         <span>• Beginner-friendly</span>
       </div>
-      <button class="btn" id="shareBtnTop" aria-label="Share this event" title="Share">
-        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
-        Share
-      </button>
+      <div style="display:flex;gap:8px;">
+        <!-- Book button will be inserted here when scheduled -->
+        <button class="btn" id="shareBtnTop" aria-label="Share this event" title="Share">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
+          Share
+        </button>
+      </div>
     </div>
   </div>
 
@@ -339,6 +349,11 @@ content="
       <aside class="side-card" aria-label="Highlights">
         <div class="info-card" role="complementary">
           <h3>Highlights</h3>
+
+          <!-- Scheduled info gets injected here (first) -->
+          <div class="facts" id="factsScheduled" style="margin-top:0; display:none;"></div>
+
+          <!-- Your existing highlights stay as-is -->
           <div class="facts">
             <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
             <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
@@ -347,6 +362,10 @@ content="
             <div class="fact"><span class="label">Age</span><span>14+</span></div>
             <div class="fact"><span class="label">Price</span><span>₹ 350/-</span></div>
           </div>
+
+          <!-- Book button (desktop) will be shown only when scheduled -->
+          <a class="btn" id="bookBtnSide" href="#" style="display:none;">Book Now</a>
+
           <button class="btn" id="shareBtnSide" aria-label="Share this event">Share this page</button>
         </div>
       </aside>
@@ -375,25 +394,24 @@ content="
 
       <article class="content">
         <section id="details" aria-labelledby="about">
-          <h2 id="about" class="heading">About the event</h2>
-      
+          <h3 id="about" class="heading">About the event</h3>
           <div class="prose">
             <p>
               Step into a night of suspense, strategy, and thrilling deception.
               <em>Night of Mafias!</em> takes the classic social deduction experience and reimagines it with a
               <em>Games Lab twist</em>—a unique setting, fresh surprises, and endless drama.
             </p>
-      
+
             <div class="divider" aria-hidden="true"></div>
-      
+
             <h3>🌙 What Makes It Different?</h3>
             <p>
               Forget the same old game—this is <em>Mafia reinvented</em>. With original twists and engaging storytelling,
               every round feels alive. Roles change, alliances form and break, and trust becomes the most dangerous gamble of all.
             </p>
-      
+
             <div class="divider" aria-hidden="true"></div>
-      
+
             <h3>🕹 How It Works</h3>
             <ul>
               <li>Players are secretly assigned hidden roles at the start.</li>
@@ -405,9 +423,9 @@ content="
               Don’t worry if you’ve never played before—the rules are explained in a fun, easy way.
               All you need is a sharp mind (or a convincing poker face).
             </p>
-      
+
             <div class="divider" aria-hidden="true"></div>
-      
+
             <h3>✨ Why Join?</h3>
             <ul>
               <li>A <em>super-interactive experience</em> where you’ll laugh, scheme, and plot</li>
@@ -415,9 +433,9 @@ content="
               <li>Perfect for both beginners and seasoned Mafia lovers</li>
               <li>A setting designed for maximum drama, suspense, and fun</li>
             </ul>
-      
+
             <div class="divider" aria-hidden="true"></div>
-      
+
             <p>
               <strong>⚡ Who killed the villagers? Everyone is a suspect.</strong><br />
               Will you be the sharp-eyed detective uncovering lies, or the cunning player weaving them?
@@ -427,38 +445,39 @@ content="
             </p>
           </div>
         </section>
-      
+
         <div class="divider" aria-hidden="true"></div>
       </article>
 
-        <section id="about-video" aria-labelledby="about-nom">
-          <h2 id="about-nom" class="heading">About Night of Mafias</h2>
+      <section id="about-video" aria-labelledby="about-nom">
+        <h2 id="about-nom" class="heading">About Night of Mafias</h2>
+        <div class="video-portrait">
+          <iframe loading="lazy" allowfullscreen title="About Night of Mafias (portrait)"
+            src="https://www.youtube.com/embed/p232ZZCCJKA?rel=0"></iframe>
+        </div>
+      </section>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <section id="recaps" aria-labelledby="recaps-title">
+        <h2 id="recaps-title" class="heading">Event recaps</h2>
+        <p class="contact-sub" style="margin:0 0 18px; text-align:left;">CATCH THE VIBE OF THE EVENT WITH THESE VIDEOS</p>
+        <div class="recap-grid-portrait">
           <div class="video-portrait">
-            <iframe loading="lazy" allowfullscreen title="About Night of Mafias (portrait)"
-              src="https://www.youtube.com/embed/p232ZZCCJKA?rel=0"></iframe>
+            <iframe loading="lazy" allowfullscreen title="Recap 1" src="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0"></iframe>
           </div>
-        </section>
-
-        <div class="divider" aria-hidden="true"></div>
-
-        <section id="recaps" aria-labelledby="recaps-title">
-          <h2 id="recaps-title" class="heading">Event recaps</h2>
-          <p class="contact-sub" style="margin:0 0 18px; text-align:left;">CATCH THE VIBE OF THE EVENT WITH THESE VIDEOS</p>
-          <div class="recap-grid-portrait">
-            <div class="video-portrait">
-              <iframe loading="lazy" allowfullscreen title="Recap 1" src="https://www.youtube.com/embed/zZpkFg1jOo8?rel=0"></iframe>
-            </div>
-            <div class="video-portrait">
-              <iframe loading="lazy" allowfullscreen title="Recap 2" src="https://www.youtube.com/embed/KwDyHylu-Ik?rel=0"></iframe>
-            </div>
-            <div class="video-portrait">
-              <iframe loading="lazy" allowfullscreen title="Recap 3" src="https://www.youtube.com/embed/IsGh10mGWbM?rel=0"></iframe>
-            </div>
+          <div class="video-portrait">
+            <iframe loading="lazy" allowfullscreen title="Recap 2" src="https://www.youtube.com/embed/KwDyHylu-Ik?rel=0"></iframe>
           </div>
-        </section>
+          <div class="video-portrait">
+            <iframe loading="lazy" allowfullscreen title="Recap 3" src="https://www.youtube.com/embed/IsGh10mGWbM?rel=0"></iframe>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <div class="divider" style="margin-top:40px;"></div>
+    <!-- sentinel to hide floating Book when Contact comes in -->
+    <div id="floatStopSentinel" class="divider" style="margin-top:40px;"></div>
 
     <div class="title" style="text-align:center;margin-bottom:18px;">
       <h2 class="heading" style="margin:0;">Contact Us</h2>
@@ -493,7 +512,7 @@ content="
         </li>
 
         <li class="row">
-          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0 2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.52 3.48A11.8 11.8 0 0 0 12.01.2C5.55.2.3 5.43.3 11.9c0  2.08.55 4.11 1.6 5.9L.2 24l6.36-1.65a11.7 11.7 0 0 0 5.45 1.38h.01c6.47 0 11.7-5.23 11.7-11.7 0-3.12-1.22-6.06-3.2-8.04ZM12.02 21.2h-.01c-1.74 0-3.45-.46-4.95-1.32l-.35-.2-3.77.98 1.01-3.67-.23-.38a9.79 9.79 0 0 1-1.5-5.12c0-5.42 4.42-9.83 9.85-9.83 2.63 0 5.1 1.03 6.96 2.9a9.76 9.76 0 0 1 2.89 6.95c0 5.42-4.42 9.83-9.85 9.83Zm5.6-7.33c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.68.15-.2.3-.78.98-.95 1.18-.17.2-.35.22-.65.07-.3-.15-1.28-.47-2.44-1.5-.9-.77-1.5-1.72-1.67-2.01-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.38-.02-.53-.07-.15-.68-1.62-.93-2.22-.24-.58-.49-.5-.68-.5l-.58-.01c-.2 0-.52.07-.8.38s-1.05 1.03-1.05 2.5 1.08 2.9 1.23 3.11c.15.2 2.12 3.24 5.14 4.55.72.31 1.29.5 1.74.64.73.23 1.4.2 1.93.12.59-.09 1.78-.73 2.03-1.44.25-.71.25-1.3.17-1.43-.07-.13-.27-.2-.57-.35Z"/></svg>
           <a class="link" href="https://chat.whatsapp.com/BDglWOECbIiGLaCRVmzAaj" target="_blank" rel="noopener">Join our Community</a>
         </li>
       </ul>
@@ -502,6 +521,9 @@ content="
     <div class="divider" style="margin-top:40px;"></div>
   </main>
 
+  <!-- Floating Book Now (mobile) -->
+  <a href="#" id="floatBook" class="floating-book hide" aria-label="Book Now">Book Now</a>
+
   <!-- ===== Scripts ===== -->
   <script>
     // Microbar: show only after the bottom of the highlights passes the top bar (mobile only)
@@ -509,9 +531,7 @@ content="
       const microbar   = document.getElementById('mobileInfoBar');
       const highlights = document.getElementById('highlightsMobile');
       if (!microbar) return;
-
       function isDesktop(){ return window.innerWidth >= 960; }
-
       function update(){
         if (isDesktop() || !highlights) {
           microbar.classList.remove('show');
@@ -520,14 +540,12 @@ content="
         }
         const topbar = document.querySelector('.topbar');
         const topbarH = topbar ? topbar.offsetHeight : 56;
-
         const rect = highlights.getBoundingClientRect();
         const bottomY = rect.bottom + window.scrollY;
         const shouldShow = window.scrollY >= (bottomY - topbarH);
         microbar.classList.toggle('show', shouldShow);
         microbar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
       }
-
       window.addEventListener('load', update, { passive:true });
       window.addEventListener('scroll', update, { passive:true });
       window.addEventListener('resize', update);
@@ -551,17 +569,15 @@ content="
       document.getElementById('shareNearTitle')?.addEventListener('click', sharePage);
     })();
 
-    // Contact phone chooser (same as Home)
+    // Contact phone chooser
     (function(){
       const phone = document.getElementById('phone-link');
       const menu  = document.getElementById('phone-menu');
       const waBtn = document.getElementById('wa-now');
       if (!phone || !menu || !waBtn) return;
-
       const tel = (phone.dataset.tel || '').replace(/[^\d]/g,'');
       const msg = encodeURIComponent("Hi! I'd like to know more about Games Lab events.");
       waBtn.href = `https://wa.me/${tel}?text=${msg}`;
-
       function openMenu(){
         if (!menu.hidden){ menu.hidden = true; return; }
         menu.hidden = false;
@@ -576,7 +592,208 @@ content="
       }
       phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
     })();
+
+    // ===== Read "Upcoming" sheet -> inject schedule (side card + microbar + floating book)
+    (async function(){
+      const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSs9vlFaLhdFNFXvWsBIXlAJu0J5Dj2deY_7SlwAGd9Jk1-djK6xP3rdXim7Co0BJ-pUJueDCYYugew/pub?gid=1356004046&single=true&output=csv";
+      const DEFAULT_DURATION_MIN = 150; // 2.5h default if no explicit end time
+
+      // --- helpers ---
+      const clean = (v)=> (v==null? "": String(v).trim().replace(/^\"|\"$/g,''));
+      function normalizePath(href){
+        try{
+          const u = new URL(href, window.location.origin);
+          return u.pathname.replace(/\/+$/,'').toLowerCase();
+        }catch(e){
+          return String(href||'').replace(/^https?:\/\/[^/]+/,'').replace(/\/+$/,'').toLowerCase();
+        }
+      }
+      // Accepts "Fri, 12 Sep '25" or "12 Sep '25"
+      function parseDisplayDate(str){
+        if (!str) return null;
+        str = str.trim().replace(/^[A-Za-z]{3},?\s*/,'').replace(/’/g,"'").replace(/`/g,"'");
+        const m = str.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+'(\d{2})$/);
+        if (!m) return null;
+        const day = +m[1];
+        const mon = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}[m[2]];
+        const year = 2000 + (+m[3]);
+        return { y:year, m:mon, d:day };
+      }
+      // "7:30 PM" | "19:00" | "7 PM"
+      function parseTime(tstr){
+        if (!tstr) return { h:19, mi:0 }; // fallback 7 PM
+        const s = tstr.trim().toUpperCase();
+        const m = s.match(/^(\d{1,2})(?::(\d{2}))?\s*(AM|PM)?$/);
+        if (!m) return { h:19, mi:0 };
+        let h = +m[1], mi = m[2]? +m[2] : 0, ap = m[3];
+        if (ap === 'AM'){ if (h === 12) h = 0; }
+        else if (ap === 'PM'){ if (h < 12) h += 12; }
+        return { h, mi };
+      }
+      function toGoogleDateStrUTC(date){ // -> YYYYMMDDTHHMMSSZ
+        const iso = date.toISOString(); // 2025-09-12T14:00:00.000Z
+        return iso.replace(/[-:]/g,'').replace(/\.\d{3}Z$/,'Z');
+      }
+      function buildAddToCalendarURL({ title, dateDisp, timeDisp, locationText, locationLink }){
+        const d = parseDisplayDate(dateDisp);
+        const t = parseTime(timeDisp);
+        if (!d) return '';
+        // Build IST local time then convert to UTC
+        const istOffsetMin = 330;
+        // Create a UTC date that corresponds to IST local (subtract offset)
+        const startUTC = new Date(Date.UTC(d.y, d.m, d.d, t.h, t.mi));
+        startUTC.setUTCMinutes(startUTC.getUTCMinutes() - istOffsetMin);
+        const endUTC = new Date(startUTC.getTime() + DEFAULT_DURATION_MIN*60000);
+
+        const dates = `${toGoogleDateStrUTC(startUTC)}/${toGoogleDateStrUTC(endUTC)}`;
+        const text = encodeURIComponent(title || 'Games Lab Event');
+        const details = encodeURIComponent(
+          (locationLink ? `Get directions: ${locationLink}\n` : '') +
+          `More info: ${window.location.href}`
+        );
+        const loc = encodeURIComponent(locationText || '');
+        const ctz = 'Asia/Kolkata';
+        return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&ctz=${encodeURIComponent(ctz)}&details=${details}&location=${loc}`;
+      }
+
+      // find our row in "Upcoming" by Page Link
+      function matchRow(rows){
+        const current = normalizePath(window.location.pathname);
+        // rows are arrays; index mapping per your sheet (0..8)
+        for (const r of rows){
+          if (!r || !r[0]) continue;
+          const pageLink = clean(r[4]);
+          if (!pageLink) continue;
+          const p = normalizePath(pageLink);
+          if (p === current) return r;
+        }
+        // fallback by title (optional)
+        for (const r of rows){
+          if ((clean(r[0])||'').toLowerCase().includes('night of mafias')) return r;
+        }
+        return null;
+      }
+
+      try{
+        const res = await fetch(CSV_URL + '&cb=' + Date.now(), { cache:'no-store' });
+        if (!res.ok) throw new Error('CSV fetch failed: '+res.status);
+        const csv = await res.text();
+        const parsed = Papa.parse(csv, { skipEmptyLines:true });
+        const all = (parsed.data || []).slice(1); // skip header row if present
+        const row = matchRow(all);
+        if (!row) return; // nothing to do
+
+        const name       = clean(row[0]);
+        const dateDisp   = clean(row[1]);
+        const timeDisp   = clean(row[2]);
+        const venueText  = clean(row[3]);
+        const scheduled  = (clean(row[5])||'').toLowerCase();
+        const mapsLink   = clean(row[6]);
+        const ticketLink = clean(row[7]);
+
+        // update title if needed
+        if (name){ const h = document.getElementById('eventTitle'); if (h) h.textContent = name; }
+
+        if (scheduled === 'yes'){
+          // ---- Build Add to Calendar URL
+          const addUrl = buildAddToCalendarURL({
+            title: name, dateDisp, timeDisp, locationText: venueText, locationLink: mapsLink
+          });
+
+          // ---- DESKTOP: inject schedule facts at top of side card
+          const factsTop = document.getElementById('factsScheduled');
+          if (factsTop){
+            factsTop.style.display = 'grid';
+            factsTop.innerHTML = `
+              <div class="fact">
+                <span class="label">Date &amp; Time</span>
+                <span>
+                  ${dateDisp}${timeDisp ? ' | ' + timeDisp : ''}
+                  ${addUrl ? ' · <a href="'+addUrl+'" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:900">Add</a>' : ''}
+                </span>
+              </div>
+              <div class="fact">
+                <span class="label">Location</span>
+                <span>
+                  ${venueText ? venueText : ''}
+                  ${mapsLink ? ' · <a href="'+mapsLink+'" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;font-weight:900">Directions</a>' : ''}
+                </span>
+              </div>
+            `;
+          }
+          // Desktop book button
+          const sideBtn = document.getElementById('bookBtnSide');
+          if (sideBtn && ticketLink){
+            sideBtn.href = ticketLink;
+            sideBtn.style.display = 'inline-flex';
+            sideBtn.textContent = 'Book Now';
+          }
+
+          // ---- MOBILE: fill microbar with date/time (+Add), venue (+Directions), add Book
+          const mi = document.getElementById('mobileInfo');
+          if (mi){
+            mi.innerHTML = '';
+            const strong = document.createElement('strong');
+            strong.textContent = name || 'This event';
+            mi.appendChild(strong);
+
+            if (dateDisp || timeDisp){
+              const sep = document.createTextNode(' • ');
+              mi.appendChild(sep);
+              const aAdd = document.createElement('a');
+              aAdd.href = addUrl || '#';
+              if (!addUrl) aAdd.removeAttribute('href');
+              aAdd.textContent = dateDisp + (timeDisp ? ' | ' + timeDisp : '');
+              aAdd.target = '_blank'; aAdd.rel = 'noopener';
+              mi.appendChild(aAdd);
+            }
+
+            if (venueText){
+              const sep2 = document.createTextNode(' • ');
+              mi.appendChild(sep2);
+              const aDir = document.createElement('a');
+              aDir.textContent = venueText;
+              if (mapsLink){ aDir.href = mapsLink; aDir.target = '_blank'; aDir.rel='noopener'; }
+              mi.appendChild(aDir);
+            }
+          }
+          // Microbar Book button (compact)
+          (function(){
+            const shareBtn = document.getElementById('shareBtnTop');
+            if (shareBtn && ticketLink){
+              const parent = shareBtn.parentElement;
+              const book = document.createElement('a');
+              book.className = 'btn';
+              book.id = 'bookBtnMicro';
+              book.textContent = 'Book';
+              book.href = ticketLink;
+              book.target = '_blank'; book.rel='noopener';
+              parent.insertBefore(book, shareBtn);
+            }
+          })();
+
+          // ---- Floating Book (mobile)
+          (function(){
+            const float = document.getElementById('floatBook');
+            if (!float || !ticketLink) return;
+            float.href = ticketLink;
+            float.classList.remove('hide');
+            // Hide when contact section (sentinel) intersects
+            const sentinel = document.getElementById('floatStopSentinel');
+            if (!('IntersectionObserver' in window) || !sentinel) return;
+            const io = new IntersectionObserver(entries=>{
+              entries.forEach(e=>{
+                if (e.isIntersecting) float.classList.add('hide');
+                else float.classList.remove('hide');
+              });
+            }, { rootMargin: '0px 0px -120px 0px' });
+            io.observe(sentinel);
+          })();
+        }
+      }catch(err){
+        console.error('Event schedule load error:', err);
+      }
+    })();
   </script>
 </body>
 </html>
-
