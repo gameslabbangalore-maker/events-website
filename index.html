@@ -444,10 +444,20 @@
   
   Say goodbye to the bar scene and hello to laughter, camaraderie, and friendly competition. At our events discover a refreshing alternative to traditional socializing, where friendships take center stage and lasting memories are made.
       </div>
+      <!-- Reviews -->
       <div class="divider" style="margin-top:40px;"></div>
       <div class="title" style="margin-top:40px;"><h2>What Our Attendees Say</h2></div>
-      <!-- Elfsight Google Reviews | Games Lab reviews -->
-    <div class="elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd"></div>
+      
+      <section id="reviews" class="reviews-wrap">
+        <!-- Placeholder shown before the widget loads -->
+        <div id="reviews-placeholder" style="text-align:center;padding:14px 0;color:var(--muted)">
+          Loading reviews…
+        </div>
+      
+        <!-- Your Elfsight widget container (note: no platform.js yet) -->
+        <div class="elfsight-app-41a9163f-56a6-4414-a0fc-2ac3ca0c3ccd" data-elfsight-app-lazy></div>
+      </section>
+
     <div class="divider" style="margin-top:40px;"></div>
     <div class="title" style="margin-top:40px;"><h2>Contact Us</h2></div>
     
@@ -473,7 +483,7 @@
         <!-- Email -->
         <li class="row">
           <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 13 2 6.76V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6.76L12 13Zm0-2.47L22 4H2l10 6.53Z"/></svg>
-          <a class="link email-text" href="mailto:gameslab.bangalore@gmail.com">gameslab.bangalore@gmail.com</a>
+          <a class="link email-text" href="mailto:info@gameslab.co.in">info@gameslab.co.in</a>
         </li>
     
         <!-- Instagram -->
@@ -1122,7 +1132,58 @@
       });
   })();
   </script>
-  <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+  <script>
+(function(){
+  const sec = document.getElementById('reviews');
+  if (!sec) return;
+
+  // Avoid loading multiple times in a single tab session
+  const SESSION_KEY = 'elfsightLoaded';
+  function markLoaded(){ try{ sessionStorage.setItem(SESSION_KEY, '1'); }catch(e){} }
+  function alreadyLoaded(){ try{ return sessionStorage.getItem(SESSION_KEY) === '1'; }catch(e){ return false; } }
+
+  function loadElfsight(){
+    if (window.__ELFSIGHT_LOADING__) return;
+    window.__ELFSIGHT_LOADING__ = true;
+
+    const ph = document.getElementById('reviews-placeholder');
+    if (ph) ph.textContent = 'Loading…';
+
+    // Inject platform.js just-in-time
+    const s = document.createElement('script');
+    s.src = "https://static.elfsight.com/platform/platform.js";
+    s.defer = true;
+    s.setAttribute('data-use-service-core','');
+    s.onload = function(){ markLoaded(); if (ph) ph.remove(); };
+    document.head.appendChild(s);
+  }
+
+  // If we already loaded it once in this tab, just skip observer
+  if (alreadyLoaded()){ loadElfsight(); return; }
+
+  // Lazy-load when near viewport
+  if ('IntersectionObserver' in window){
+    const io = new IntersectionObserver((entries)=>{
+      if (entries.some(e => e.isIntersecting)){
+        loadElfsight();
+        io.disconnect();
+      }
+    }, { rootMargin: '250px' });   // start loading a bit before it’s visible
+    io.observe(sec);
+  } else {
+    // Fallback: on slow/old browsers, load on first scroll/timeout
+    loadElfsight();
+  }
+
+  // Optional: mobile tap-to-load variant (uncomment to use)
+  // if (window.matchMedia('(max-width: 640px)').matches){
+  //   sec.addEventListener('click', function once(){
+  //     loadElfsight();
+  //     sec.removeEventListener('click', once);
+  //   }, { once:true });
+  // }
+})();
+</script>
   <script>
   (function(){
     const phone = document.getElementById('phone-link');
@@ -1173,3 +1234,4 @@
   </body>
   </html>
   
+
