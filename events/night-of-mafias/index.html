@@ -361,184 +361,64 @@ content="
       color: var(--text-main);
     }
 
-    @media (min-width: 960px) {
-  /* Float right card */
-  .side-card {
-    position: fixed;
-    top: calc(var(--topbar-height-desktop) + 16px);
-    right: 24px;
-    width: 360px;
-    z-index: 1000;
-    display: block; /* just in case */
-  }
-  /* Override sticky with static */
-  .info-card {
-    position: static !important;
-  }
-  /* Share button inline */
-  .share-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 10px;
-  }
-  .share-row .btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: transparent !important;
-    border: 0 !important;
-    color: var(--muted);
-    padding: 4px 8px;
-    line-height: 1;
-  }
-  .share-row .btn:hover {
-    color: var(--text-main);
-  }
-  .share-row .icon {
-    margin: 0;
-    width: 18px;
-    height: 18px;
-  }
-}
-
-@media (max-width: 600px) {
-  /* Align mobile topbar elements right and stacked */
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 10px;
-  }
-  .mobile-info-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-  }
-  .micro-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-  }
-  #shareBtnTop {
-    order: 3;
-    margin-left: auto;
-  }
-}
-
-/* Unified subheading style */
-.section-title {
-  font-size: 1.22rem;
-  font-weight: 900;
-  letter-spacing: 0.2px;
-  margin: 0 0 14px;
-  color: var(--text-main);
-  text-transform: none;
-}
-/* Override for specific headings as well */
-#about.section-title,
-#about-nom.section-title,
-#recaps-title.section-title {
-  font-size: 1.22rem;
-  font-weight: 900;
-  letter-spacing: 0.2px;
-  margin: 0 0 14px;
-  color: var(--text-main);
-  text-transform: none;
-}
-@media (min-width: 960px) {
-  /* Float right card */
-  .side-card {
-    position: fixed;
-    top: calc(var(--topbar-height-desktop) + 16px);
-    right: 24px;
-    width: 360px;
-    z-index: 1000;
-    display: block; /* just in case */
-  }
-  /* Override sticky with static */
-  .info-card {
-    position: static !important;
-  }
-  /* Share button inline */
-  .share-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 10px;
-  }
-  .share-row .btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: transparent !important;
-    border: 0 !important;
-    color: var(--muted);
-    padding: 4px 8px;
-    line-height: 1;
-  }
-  .share-row .btn:hover {
-    color: var(--text-main);
-  }
-  .share-row .icon {
-    margin: 0;
-    width: 18px;
-    height: 18px;
-  }
-}
-
-@media (max-width: 600px) {
-  /* Align mobile topbar elements right and stacked */
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 10px;
-  }
-  .mobile-info-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-  }
-  .micro-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
-  }
-  #shareBtnTop {
-    order: 3;
-    margin-left: auto;
-  }
-}
-
-/* Unified subheading style */
-.section-title {
-  font-size: 1.22rem;
-  font-weight: 900;
-  letter-spacing: 0.2px;
-  margin: 0 0 14px;
-  color: var(--text-main);
-  text-transform: none;
-}
-/* Override for specific headings as well */
-#about.section-title,
-#about-nom.section-title,
-#recaps-title.section-title {
-  font-size: 1.22rem;
-  font-weight: 900;
-  letter-spacing: 0.2px;
-  margin: 0 0 14px;
-  color: var(--text-main);
-  text-transform: none;
-}
-
     
+  /* Make right side card fixed so it floats throughout page scroll on desktop */
+@media (min-width: 960px) {
+  .side-card {
+    position: fixed;
+    top: calc(var(--topbar-height-desktop) + 16px);
+    right: 24px;
+    width: 360px;
+    z-index: 1000;
+  }
+
+  /* Override sticky position */
+  .info-card {
+    position: static !important;
+  }
+}
+
+/* Share button inline icon + text in right card */
+.share-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+}
+
+.share-row .btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+}
+
+.share-row .icon {
+  margin: 0;
+}
+
+/* Uniform section titles */
+.section-title {
+  font-size: 1.22rem;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  margin: 0 0 14px;
+  color: var(--text-main);
+  text-transform: none;
+}
+
+/* Override about-nom, about, recaps titles to match */
+#about.section-title,
+#about-nom.section-title,
+#recaps-title.section-title {
+  font-size: 1.22rem;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+  margin: 0 0 14px;
+  color: var(--text-main);
+  text-transform: none;
+}
+
   </style>
 </head>
 <body>
@@ -609,7 +489,7 @@ content="
           <div class="share-row">
             <button class="btn btn-ghost btn-sm" id="shareBtnSide" aria-label="Share this event">
               <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/></svg>
-              Share
+              <span>Share</span>
             </button>
           </div>
         </div>
