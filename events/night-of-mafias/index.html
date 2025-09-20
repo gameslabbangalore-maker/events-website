@@ -352,13 +352,6 @@ content="
     }
     .btn, .btn-primary, .wide-cta, .btn:link, .btn:visited { text-decoration:none !important; }
 
-    /* === FIX: let the aside sit in the repeated 'side' area rows from your template === */
-    @media (min-width:960px){
-      .page-grid{ align-items:start; }
-      .side-card{ grid-row:auto; align-self:start; }  /* undo 1 / -1 */
-      .info-card{ position:sticky; top:calc(var(--topbar-height-desktop) + 16px); }
-    }
-
     #about-nom.section-title,
     #recaps-title.section-title{
       font-size: 1.22rem;   /* same as your .section-title override */
@@ -366,36 +359,6 @@ content="
       letter-spacing: .2px;
       margin: 0 0 14px;
       color: var(--text-main);
-    }
-
-    /* MICROBAR grid: title|share on row 1, meta spans row 2 & 3 */
-    @media (max-width:959px){
-      .mobile-info-inner{
-        display:grid;
-        grid-template-columns: 1fr auto;                /* left column grows, right is share */
-        grid-template-rows: auto auto;
-        grid-template-areas:
-          "title share"
-          "meta  meta";
-        align-items:end;                                 /* share aligns to title baseline */
-        column-gap:10px;
-        row-gap:6px;
-      }
-      #microTitle{ grid-area:title; }
-      #shareBtnTop{ grid-area:share; margin-top:0; align-self:end; }  /* inline with title */
-      #microMeta{ grid-area:meta; padding-right:46px; }                /* room under share */
-    }
-    
-    /* Date|time & location a little smaller; links even smaller */
-    .micro-left{ font-size:.82rem; font-weight:800; }
-    .micro-link{ font-size:.72rem; font-weight:800; }
-    
-    /* Each meta line: left text | right link */
-    .micro-line{
-      display:grid;
-      grid-template-columns: 1fr auto;
-      align-items:baseline;
-      column-gap:8px;
     }
 
   </style>
