@@ -442,6 +442,16 @@ content="
 }
 @media (min-width:960px){ .fab-share{ display:none } } /* mobile only */
 
+    /* Add near existing .fab-share rules */
+.fab-share { gap: 8px; }
+.fab-share .fab-share-label { display: none; font-weight: 900; font-size: .95rem; }
+@media (max-width:959px){
+  .fab-share.with-text { padding: 0 12px; width: auto; }
+  .fab-share.with-text .fab-share-label { display: inline; }
+}
+
+    /* Hide the share button beside the H2 everywhere */
+.share-inline { display: none !important; }
     
   </style>
 </head>
@@ -467,7 +477,7 @@ content="
     <!-- Right side -->
     <div class="microbar-right" id="microRight">
       <!-- Filled by JS: (scheduled) Add to Calendar / Get Directions
-           or (not scheduled) 8–25 players / 2–3 hours -->
+           or (not scheduled) 8–25 players / 3-4 hours -->
     </div>
   </div>
 </div>
@@ -480,6 +490,7 @@ content="
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
     <path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.27 3.27 0 000-1.39l7.02-4.11A2.99 2.99 0 0018 7.91a3 3 0 10-2.82-4H15a3 3 0 00.04 1.5l-7.02 4.11a3 3 0 10.01 4.96l7.02 4.11A3 3 0 1018 16.09z"/>
   </svg>
+    <span class="fab-share-label">Share</span>
 </button>
 
 
@@ -493,9 +504,9 @@ content="
       <!-- RIGHT CARD -->
       <aside class="side-card" aria-label="Highlights">
         <div class="info-card" role="complementary">
-          <h3>Schedule</h3>
-
-          <!-- Desktop SCHEDULE (inline links beside each line) -->
+          <h3 id="scheduleHeading">Schedule</h3>
+  
+            <!-- Desktop SCHEDULE (inline links beside each line) -->
           <div id="scheduleBlock" hidden>
             <div class="schedule-list">
               <div class="schedule-row">
@@ -769,13 +780,7 @@ content="
       phone.addEventListener('click', (e)=>{ e.preventDefault(); openMenu(); });
     })();
 
-    // Floating Book button: never auto-hide
-    (function(){
-      const fab = document.getElementById('fabBook');
-      if (!fab) return;
-      fab.hidden = false; // ensure visible
-      // FIX: removed stray io.observe/extra IIFE that caused a runtime error
-    })();
+   // Floating Book button visibility is controlled after sheet load
 
     // Load data from Upcoming sheet and wire schedule/microbar
     (async function(){
@@ -869,19 +874,56 @@ content="
         const scBook  = document.getElementById('scBook');
 
         if (scheduled && base){
-          scWhen.textContent  = fmtDateOnly(base);
-          scWhere.textContent = locText || '';
-          const ics = makeICS({
-            title, start: base, durationHours: 3,
-            locationText: locText, locationUrl: locLink,
-            description: location.href
-          });
-          scAdd.href = ics;
-          scAdd.textContent = 'Add to Calendar';
-          if (locLink) scDir.href = locLink;
-          scDir.textContent = 'Get directions';
-          if (ticket){ scBook.href = ticket; }
-          scBlock.hidden = false;
+  scWhen.textContent  = fmtDateOnly(base);
+  scWhere.textContent = locText || '';
+
+  const ics = makeICS({
+    title, start: base, durationHours: 3,
+    locationText: locText, locationUrl: locLink,
+    description: location.href
+  });
+
+  scAdd.href = ics;
+  scAdd.textContent = 'Add to Calendar';
+
+  if (locLink) scDir.href = locLink;
+  scDir.textContent = 'Get directions';
+
+  if (ticket){ scBook.href = ticket; }
+
+  // Show the schedule section (heading + block)
+  document.getElementById('scheduleHeading')?.removeAttribute('hidden');
+  scBlock.hidden = false;
+
+  // Mobile highlights visible when scheduled
+  document.getElementById('highlightsMobile')?.removeAttribute('hidden');
+
+  // Book Now FAB: only if scheduled AND ticket present
+  const fab = document.getElementById('fabBook');
+  if (fab){
+    if (ticket){ fab.href = ticket; fab.removeAttribute('hidden'); }
+    else { fab.setAttribute('hidden',''); }
+  }
+
+  // Share FAB: icon-only when scheduled
+  document.getElementById('shareFab')?.classList.remove('with-text');
+
+} else {
+  // Hide schedule section (heading + block) on desktop
+  document.getElementById('scheduleHeading')?.setAttribute('hidden','');
+  scBlock.hidden = true;
+
+  // Hide mobile highlights when not scheduled
+  document.getElementById('highlightsMobile')?.setAttribute('hidden','');
+
+  // Hide Book Now FAB when not scheduled
+  const fab = document.getElementById('fabBook');
+  if (fab) fab.setAttribute('hidden','');
+
+  // Share FAB: show “Share” text on mobile when not scheduled
+  document.getElementById('shareFab')?.classList.add('with-text');
+}
+
 
           // Mobile highlights section
           document.getElementById('highlightsMobile')?.removeAttribute('hidden');
