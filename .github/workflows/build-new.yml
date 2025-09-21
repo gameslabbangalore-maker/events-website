@@ -1,0 +1,39 @@
+name: Build Jekyll preview for /new
+on:
+  push:
+    paths:
+      - 'new/**'
+      - '.github/workflows/build-new.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Install Jekyll
+        run: gem install jekyll -N
+
+      # Set a baseurl so links/assets work when preview lives in /new/preview/
+      - name: Write preview config
+        run: echo "baseurl: /new/preview" > new/_config_preview.yml
+
+      - name: Build /new into /new/preview (static preview)
+        run: jekyll build --source new --destination new/preview --config new/_config.yml,new/_config_preview.yml
+
+      - name: Commit built preview
+        run: |
+          git config user.name "bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add new/preview || true
+          git commit -m "Build /new preview" || echo "No changes"
+          git push
