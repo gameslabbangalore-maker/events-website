@@ -484,7 +484,7 @@ content="
 
 
   <!-- Floating Book Now (mobile) -->
-  <a id="fabBook" class="fab-book" href="#" target="_blank" rel="noopener">Book Now</a>
+  <a id="fabBook" class="fab-book" href="#" target="_blank" rel="noopener" hidden>Book Now</a>
 
   <button id="shareFab" class="fab-share" aria-label="Share this event" title="Share">
   <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -504,7 +504,7 @@ content="
       <!-- RIGHT CARD -->
       <aside class="side-card" aria-label="Highlights">
         <div class="info-card" role="complementary">
-          <h3 id="scheduleHeading">Schedule</h3>
+          <h3 id="scheduleHeading" hidden>Schedule</h3>
   
             <!-- Desktop SCHEDULE (inline links beside each line) -->
           <div id="scheduleBlock" hidden>
@@ -923,17 +923,6 @@ content="
   // Share FAB: show “Share” text on mobile when not scheduled
   document.getElementById('shareFab')?.classList.add('with-text');
 }
-
-
-          // Mobile highlights section
-          document.getElementById('highlightsMobile')?.removeAttribute('hidden');
-          // Floating FAB gets ticket
-          const fab = document.getElementById('fabBook');
-          if (ticket){ fab.href = ticket; fab.removeAttribute('hidden'); }
-        } else {
-          scBlock.hidden = true;
-          document.getElementById('highlightsMobile')?.setAttribute('hidden','');
-        }
 
         // Microbar content (scheduled vs not; left/right wiring)
 {
