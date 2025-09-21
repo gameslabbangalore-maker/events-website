@@ -1,0 +1,24 @@
+<section class="contact-wrap" aria-labelledby="contact-title">
+  <div class="contact-head">
+    <img class="logo-lg" src="https://ik.imagekit.io/gameslab/tr:w-88,q-100,f-auto/Games_Lab_Logo.png" width="44" height="44" alt="{{ site.data.globals.site_name }} logo" />
+    <p id="contact-title" class="contact-sub">REACH OUT TO US!</p>
+  </div>
+  <ul class="contact-list">
+    <li class="row phone-wrap">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.07 21 3 13.93 3 5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2Z"/></svg>
+      <a id="phone-link" class="link" href="tel:{{ site.data.globals.contact.phone }}">{{ site.data.globals.contact.phone }}</a>
+      <div id="phone-menu" class="phone-menu" hidden>
+        <a id="call-now" href="tel:{{ site.data.globals.contact.phone }}">Call</a>
+        <a id="wa-now" href="https://wa.me/{{ site.data.globals.contact.phone | remove: '+' }}" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </li>
+    <li class="row">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 13 2 6.76V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6.76L12 13Zm0-2.47L22 4H2l10 6.53Z"/></svg>
+      <a class="link email-text" href="mailto:{{ site.data.globals.contact.email }}">{{ site.data.globals.contact.email }}</a>
+    </li>
+    <li class="row">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Z"/></svg>
+      <a class="link" href="{{ site.data.globals.contact.instagram }}" target="_blank" rel="noopener">Instagram</a>
+    </li>
+  </ul>
+</section>

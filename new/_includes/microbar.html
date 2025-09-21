@@ -1,0 +1,18 @@
+<div class="mobile-info-bar" id="mobileInfoBar" aria-hidden="true">
+  <div class="mobile-info-inner">
+    <div class="microbar-left">
+      <span class="micro-title">{{ page.title }}</span>
+      {% if page.scheduled %}
+        <span class="micro-meta-line">{{ page.start_iso | date: "%a, %b %e • %l:%M %p" }} – {{ page.venue_name }}</span>
+      {% else %}
+        <span class="micro-meta-line">3–4 hours • ₹ {{ page.price }}</span>
+      {% endif %}
+    </div>
+    <div class="microbar-right">
+      {% if page.scheduled %}
+        <a class="microbar-link" href="/calendar/{{ page.slug }}.ics" download>Add to Calendar</a>
+        <a class="microbar-link" href="{{ page.maps_url }}" target="_blank" rel="noopener">Get Directions</a>
+      {% endif %}
+    </div>
+  </div>
+</div>

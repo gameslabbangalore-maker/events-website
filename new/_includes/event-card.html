@@ -1,0 +1,14 @@
+<article class="card">
+  <div class="media"><img src="{{ include.event.banner | default: 'https://via.placeholder.com/640x360' }}" alt="{{ include.event.title }} thumbnail"></div>
+  <div class="card-body">
+    <h3 class="event-title">{{ include.event.title }}</h3>
+    <p class="meta">{{ include.event.start_iso | date: "%a, %d %b • %l:%M %p" }}</p>
+    <p class="location">{{ include.event.venue_name }}</p>
+  </div>
+  <div class="card-footer">
+    <a class="book-btn" href="{{ include.event.url }}">View</a>
+    {% if include.event.ticket_url %}
+      <a class="book-btn" href="{{ include.event.ticket_url }}" target="_blank" rel="noopener">Book Now</a>
+    {% endif %}
+  </div>
+</article>
