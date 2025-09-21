@@ -525,7 +525,7 @@ content="
           <h3>Highlights</h3>
           <div class="facts" id="factsList">
             <div class="fact"><span class="label">Format</span><span>Social deduction</span></div>
-            <div class="fact"><span class="label">Duration</span><span>2–3 hours</span></div>
+            <div class="fact"><span class="label">Duration</span><span>3–4 hours</span></div>
             <div class="fact"><span class="label">Group size</span><span>8–25 players</span></div>
             <div class="fact"><span class="label">Difficulty</span><span>Beginner-friendly</span></div>
             <div class="fact"><span class="label">Age</span><span>14+</span></div>
@@ -955,16 +955,16 @@ content="
 
     if (rightEl) rightEl.innerHTML = `${addCal}${dir}`;
   } else {
-    // Not scheduled:
-    // Left: "social deduction", "beginner-friendly"
-    if (dateEl) dateEl.textContent = 'Social deduction';
-    if (locEl)  locEl.textContent  = 'Beginner-friendly';
+  // Not scheduled:
+  if (dateEl) dateEl.textContent = 'Social deduction';
+  if (locEl)  locEl.textContent  = 'Beginner-friendly';
 
-    // Right: "8–25 players", "2–3 hours"
-    if (rightEl) rightEl.innerHTML =
-      `<span class="microbar-link">8–25 players</span>` +
-      `<span class="microbar-link">2–3 hours</span>`;
-  }
+  // Right: "8–25 players", "3–4 hours", "₹ 350/-"
+  if (rightEl) rightEl.innerHTML =
+    `<span class="microbar-link">8–25 players</span>` +
+    `<span class="microbar-link">3–4 hours</span>` +
+    `<span class="microbar-link">₹ 350/-</span>`;
+}
 
   // Re-evaluate visibility after filling content
   window.__updateMicrobarVis && window.__updateMicrobarVis();
