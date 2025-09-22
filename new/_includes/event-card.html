@@ -6,7 +6,7 @@
     <p class="location">{{ include.event.venue_name }}</p>
   </div>
   <div class="card-footer">
-    <a class="book-btn" href="{{ include.event.url }}">View</a>
+    <a class="book-btn" href="{{ include.event.url | relative_url }}">View</a>
     {% if include.event.ticket_url %}
       <a class="book-btn" href="{{ include.event.ticket_url }}" target="_blank" rel="noopener">Book Now</a>
     {% endif %}
