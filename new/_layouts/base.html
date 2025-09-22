@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -7,26 +6,29 @@
   <meta name="theme-color" content="#181818" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>{% if page.title %}{{ page.title }} — {{ site.data.globals.site_name }}{% else %}{{ site.data.globals.site_name }} — Events & Experiences{% endif %}</title>
-  <link rel="icon" href="/Games Lab Logo.png" type="image/png" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Icons / Fonts -->
+  <link rel="icon" href="{{ site.baseurl }}/Games Lab Logo.png" type="image/png" />
+  <link rel="apple-touch-icon" href="{{ site.baseurl }}/apple-touch-icon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- CSP: allow self + fonts and your widgets -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://ik.imagekit.io https://via.placeholder.com https://*.googleusercontent.com https://*.elfsightcdn.com data:; script-src 'self' https://cdnjs.cloudflare.com https://*.elfsight.com https://*.elfsightcdn.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; connect-src https://docs.google.com https://*.googleusercontent.com https://*.elfsight.com https://*.elfsightcdn.com; frame-src https://www.youtube.com https://player.vimeo.com https://*.elfsight.com https://*.elfsightcdn.com; object-src 'none'; base-uri 'self';">
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
-  <link rel="preconnect" href="https://static.elfsight.com" crossorigin>
-  <link rel="preconnect" href="https://apps.elfsight.com" crossorigin>
-  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/css/legacy.css' | relative_url }}">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <!-- CRITICAL: use site.baseurl so preview at /new/preview works -->
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/main.css">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/legacy.css">
 </head>
 <body>
   <div class="topbar-bleed" aria-hidden="true"></div>
   {% include topbar.html %}
   <div class="topbar-spacer" aria-hidden="true"></div>
+
   <main class="wrap" role="main">
     {{ content }}
   </main>
-  <script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="{{ site.baseurl }}/assets/js/main.js" defer></script>
 </body>
 </html>
