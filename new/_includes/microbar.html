@@ -10,7 +10,7 @@
     </div>
     <div class="microbar-right">
       {% if page.scheduled %}
-        <a class="microbar-link" href="/calendar/{{ page.slug }}.ics" download>Add to Calendar</a>
+        <a class="microbar-link" href="{{ '/calendar/' | append: page.slug | append: '.ics' | relative_url }}" download>Add to Calendar</a>
         <a class="microbar-link" href="{{ page.maps_url }}" target="_blank" rel="noopener">Get Directions</a>
       {% endif %}
     </div>
