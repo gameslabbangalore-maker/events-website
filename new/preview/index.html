@@ -7,13 +7,13 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>{{ site.data.globals.site_name }} — Events & Experiences — Games Lab</title>
 
-  <!-- Hardcoded preview paths (DEBUG) -->
-  <link rel="icon" href="/new/preview/Logo.png" type="image/png" />
-  <link rel="apple-touch-icon" href="/new/preview/apple-touch-icon.png" />
+  <link rel="icon" href="/Logo.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/new/preview/assets/css/main.css">
-  <link rel="stylesheet" href="/new/preview/assets/css/legacy.css">
+  <!-- baseurl-aware (works in /new/preview and later at /) -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/legacy.css">
 </head>
 <body>
   <div class="topbar-bleed" aria-hidden="true"></div>
@@ -114,6 +114,6 @@
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="/new/preview/assets/js/main.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
 </body>
 </html>
